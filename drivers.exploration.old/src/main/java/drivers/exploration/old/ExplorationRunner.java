@@ -85,10 +85,10 @@ public final class ExplorationRunner {
 	 * beginning or end of the string, since we use {@link String#split}.
 	 */
 	public String recursiveConsultTable(final String table, final Point location, final @Nullable TileType terrain,
-										final boolean mountainous, final Iterable<TileFixture> fixtures,
-										final MapDimensions mapDimensions)
+	                                    final EncounterTable.TerrainModifier terrainMod,
+	                                    final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
-		final String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
+		final String result = consultTable(table, location, terrain, terrainMod, fixtures, mapDimensions);
 		if (result.contains("#")) {
 			final List<String> broken = new LinkedList<>(splitOnHash(result));
 			if (broken.size() < 2) {
@@ -99,7 +99,7 @@ public final class ExplorationRunner {
 			final String middle = broken.removeFirst();
 			final StringBuilder builder = new StringBuilder();
 			builder.append(before);
-			builder.append(recursiveConsultTable(middle, location, terrain, mountainous,
+			builder.append(recursiveConsultTable(middle, location, terrain, terrainMod,
 					fixtures, mapDimensions));
 			broken.forEach(builder::append);
 			return builder.toString();
@@ -209,10 +209,10 @@ public final class ExplorationRunner {
 	 * @param mapDimensions The dimensions of the map
 	 */
 	public String consultTable(final String table, final Point location, final @Nullable TileType terrain,
-							   final boolean mountainous, final Iterable<TileFixture> fixtures,
-							   final MapDimensions mapDimensions)
+	                           final EncounterTable.TerrainModifier terrainMod, final Iterable<TileFixture> fixtures,
+	                           final MapDimensions mapDimensions)
 			throws MissingTableException {
-		return getTable(table).generateEvent(location, terrain, mountainous, fixtures,
+		return getTable(table).generateEvent(location, terrain, terrainMod, fixtures,
 				mapDimensions);
 	}
 
@@ -225,10 +225,10 @@ public final class ExplorationRunner {
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String getPrimaryRock(final Point location, final TileType terrain, final boolean mountainous,
-								 final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
-			throws MissingTableException {
-		return consultTable("major_rock", location, terrain, mountainous, fixtures, mapDimensions);
+	public String getPrimaryRock(final Point location, final TileType terrain,
+	                             final EncounterTable.TerrainModifier terrainMod, final Iterable<TileFixture> fixtures,
+	                             final MapDimensions mapDimensions) throws MissingTableException {
+		return consultTable("major_rock", location, terrain, terrainMod, fixtures, mapDimensions);
 	}
 
 	/**
@@ -240,22 +240,22 @@ public final class ExplorationRunner {
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String getPrimaryTree(final Point location, final TileType terrain, final boolean mountainous,
-								 final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
-			throws MissingTableException {
+	public String getPrimaryTree(final Point location, final TileType terrain,
+	                             final EncounterTable.TerrainModifier terrainMod, final Iterable<TileFixture> fixtures,
+	                             final MapDimensions mapDimensions) throws MissingTableException {
 		switch (terrain) {
 			case Steppe:
 				if (StreamSupport.stream(fixtures.spliterator(), true)
 						.anyMatch(Forest.class::isInstance)) {
 					return consultTable("boreal_major_tree", location, terrain,
-							mountainous, fixtures, mapDimensions);
+							terrainMod, fixtures, mapDimensions);
 				}
 				break;
 			case Plains:
 				if (StreamSupport.stream(fixtures.spliterator(), true)
 						.anyMatch(Forest.class::isInstance)) {
 					return consultTable("temperate_major_tree", location, terrain,
-							mountainous, fixtures, mapDimensions);
+							terrainMod, fixtures, mapDimensions);
 				}
 				break;
 		}
@@ -271,17 +271,17 @@ public final class ExplorationRunner {
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String defaultResults(final Point location, final TileType terrain, final boolean mountainous,
-								 final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
-			throws MissingTableException {
+	public String defaultResults(final Point location, final TileType terrain,
+	                             final EncounterTable.TerrainModifier terrainMod, final Iterable<TileFixture> fixtures,
+	                             final MapDimensions mapDimensions) throws MissingTableException {
 		if (StreamSupport.stream(fixtures.spliterator(), true).anyMatch(Forest.class::isInstance)
 				&& (terrain == TileType.Steppe || terrain == TileType.Plains)) {
 			return "The primary rock type here is %s.%nThe main kind of tree here is %s.%n".formatted(
-					getPrimaryRock(location, terrain, mountainous, fixtures, mapDimensions),
-					getPrimaryTree(location, terrain, mountainous, fixtures, mapDimensions));
+					getPrimaryRock(location, terrain, terrainMod, fixtures, mapDimensions),
+					getPrimaryTree(location, terrain, terrainMod, fixtures, mapDimensions));
 		} else {
 			return "The primary rock type here is %s.".formatted(
-					getPrimaryRock(location, terrain, mountainous, fixtures, mapDimensions));
+					getPrimaryRock(location, terrain, terrainMod, fixtures, mapDimensions));
 		}
 	}
 

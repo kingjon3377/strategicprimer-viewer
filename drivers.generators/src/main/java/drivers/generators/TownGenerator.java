@@ -2,6 +2,7 @@ package drivers.generators;
 
 import java.io.IOException;
 
+import drivers.exploration.old.EncounterTable;
 import drivers.exploration.old.MissingTableException;
 
 import java.nio.file.Paths;
@@ -522,7 +523,8 @@ import java.math.BigDecimal;
 
 		for (int i = 0; i < skillCount; i++) {
 			final String skill = runner.recursiveConsultTable(skillTable, location,
-					map.getBaseTerrain(location), map.isMountainous(location),
+					map.getBaseTerrain(location), map.isMountainous(location) ?
+							EncounterTable.TerrainModifier.Mountains : EncounterTable.TerrainModifier.None,
 					map.getFixtures(location), map.getDimensions());
 			final int level = skillLevelSource.getAsInt();
 			if (Optional.ofNullable(retval.getHighestSkillLevels().get(skill)).orElse(0)
@@ -549,7 +551,9 @@ import java.math.BigDecimal;
 					retval.addYearlyProduction(new ResourcePileImpl(
 							idf.createID(), "unknown",
 							runner.consultTable(tableName, location,
-									map.getBaseTerrain(location), map.isMountainous(location),
+									map.getBaseTerrain(location), map.isMountainous(location) ?
+											EncounterTable.TerrainModifier.Mountains :
+											EncounterTable.TerrainModifier.None,
 									map.getFixtures(location), map.getDimensions()),
 							new LegacyQuantity(Math.pow(2, level - 1),
 									(level == 1) ? "unit" : "units")));

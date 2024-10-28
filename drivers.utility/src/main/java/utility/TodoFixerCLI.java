@@ -1,5 +1,6 @@
 package utility;
 
+import drivers.exploration.old.EncounterTable;
 import legacy.map.fixtures.mobile.IMutableUnit;
 import drivers.common.DriverFailedException;
 
@@ -242,7 +243,8 @@ public final class TodoFixerCLI implements CLIDriver {
 					final String table = resource.getContents().split("#")[1];
 					final IResourcePile replacement = new ResourcePileImpl(resource.getId(),
 							resource.getKind(), eRunner.recursiveConsultTable(table, loc,
-							map.getBaseTerrain(loc), map.isMountainous(loc),
+							map.getBaseTerrain(loc), map.isMountainous(loc) ?
+									EncounterTable.TerrainModifier.Mountains : EncounterTable.TerrainModifier.None,
 							map.getFixtures(loc), map.getDimensions()),
 							resource.getQuantity());
 					production.remove(resource);
@@ -269,12 +271,14 @@ public final class TodoFixerCLI implements CLIDriver {
 				population.setSkillLevel("", 0);
 				String newSkill = eRunner.recursiveConsultTable(
 						simpleTerrain(map, loc) + "_skills", loc, map.getBaseTerrain(loc),
-						map.isMountainous(loc), map.getFixtures(loc), map.getDimensions());
+						map.isMountainous(loc) ? EncounterTable.TerrainModifier.Mountains :
+								EncounterTable.TerrainModifier.None, map.getFixtures(loc), map.getDimensions());
 				if (population.getHighestSkillLevels().containsKey(newSkill) &&
 						population.getHighestSkillLevels().get(newSkill) >= level) {
 					final int existingLevel = population.getHighestSkillLevels().get(newSkill);
 					newSkill = eRunner.recursiveConsultTable("regional_specialty", loc,
-							map.getBaseTerrain(loc), map.isMountainous(loc),
+							map.getBaseTerrain(loc), map.isMountainous(loc) ?
+									EncounterTable.TerrainModifier.Mountains : EncounterTable.TerrainModifier.None,
 							map.getFixtures(loc), map.getDimensions());
 				}
 				if (population.getHighestSkillLevels().containsKey(newSkill) &&

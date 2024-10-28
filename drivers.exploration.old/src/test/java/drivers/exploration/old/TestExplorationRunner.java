@@ -34,7 +34,8 @@ public final class TestExplorationRunner {
 		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("major_rock", new MockTable("primary_rock_test"));
 		assertEquals("primary_rock_test", runner.getPrimaryRock(new Point(0, 0),
-						TileType.Tundra, false, Collections.emptyList(), new MapDimensionsImpl(69, 88, 2)),
+						TileType.Tundra, EncounterTable.TerrainModifier.None, Collections.emptyList(),
+						new MapDimensionsImpl(69, 88, 2)),
 				"primary rock test");
 	}
 
@@ -48,10 +49,12 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree", new MockTable("temperate_major_test"));
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
-		assertEquals("boreal_major_test", runner.getPrimaryTree(point, TileType.Steppe, false,
+		assertEquals("boreal_major_test", runner.getPrimaryTree(point, TileType.Steppe,
+						EncounterTable.TerrainModifier.None,
 						Collections.singletonList(new Forest("kind", false, 3)), dimensions),
 				"primary tree test for forest in steppe");
-		assertEquals("temperate_major_test", runner.getPrimaryTree(point, TileType.Plains, false,
+		assertEquals("temperate_major_test", runner.getPrimaryTree(point, TileType.Plains,
+						EncounterTable.TerrainModifier.None,
 						Collections.singletonList(new Forest("second", false, 4)), dimensions),
 				"primary tree test for forest in plains");
 	}
@@ -64,7 +67,8 @@ public final class TestExplorationRunner {
 	public void testIllegalGetPrimaryTree() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new ExplorationRunner().getPrimaryTree(new Point(0, 0), TileType.Tundra,
-						false, Collections.emptyList(), new MapDimensionsImpl(69, 88, 2)),
+						EncounterTable.TerrainModifier.None, Collections.emptyList(),
+						new MapDimensionsImpl(69, 88, 2)),
 				"getPrimaryTree objects to non-forested tile input");
 	}
 
@@ -79,12 +83,12 @@ public final class TestExplorationRunner {
 		runner.loadTable("test_table_three", new MockTable("test_three"));
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
-		assertEquals("test_one", runner.consultTable("test_table_one", point,
-				TileType.Tundra, false, Collections.emptyList(), dimensions), "first table");
-		assertEquals("test_two", runner.consultTable("test_table_two", point,
-				TileType.Tundra, false, Collections.emptyList(), dimensions), "second table");
-		assertEquals("test_three", runner.consultTable("test_table_three", point,
-				TileType.Tundra, false, Collections.emptyList(), dimensions), "third table");
+		assertEquals("test_one", runner.consultTable("test_table_one", point, TileType.Tundra,
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions), "first table");
+		assertEquals("test_two", runner.consultTable("test_table_two", point, TileType.Tundra,
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions), "second table");
+		assertEquals("test_three", runner.consultTable("test_table_three", point, TileType.Tundra,
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions), "third table");
 	}
 
 	/**
@@ -103,15 +107,17 @@ public final class TestExplorationRunner {
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("( ( test_three ) )", runner.recursiveConsultTable("test_table_one", point,
-						TileType.Tundra, false, Collections.emptyList(), dimensions),
+						TileType.Tundra, EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions),
 				"two levels of recursion");
 		assertEquals("( test_three )", runner.recursiveConsultTable("test_table_two", point,
-						TileType.Tundra, false, Collections.emptyList(), dimensions),
+						TileType.Tundra, EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions),
 				"one level of recursion");
 		assertEquals("test_three", runner.recursiveConsultTable("test_table_three", point,
-				TileType.Tundra, false, Collections.emptyList(), dimensions), "no recursion");
+				TileType.Tundra, EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions),
+				"no recursion");
 		assertEquals("_ ( ( test_three ) )", runner.recursiveConsultTable("test_table_four", point,
-				TileType.Plains, false, Collections.emptyList(), dimensions), "one-sided split");
+				TileType.Plains, EncounterTable.TerrainModifier.None, Collections.emptyList(), dimensions),
+				"one-sided split");
 	}
 
 	/**
@@ -126,17 +132,18 @@ public final class TestExplorationRunner {
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 0);
 		assertEquals("The primary rock type here is test_rock.",
-				runner.defaultResults(point, TileType.Tundra, false, Collections.emptyList(),
+				runner.defaultResults(point, TileType.Tundra, EncounterTable.TerrainModifier.None,
+						Collections.emptyList(),
 						dimensions), "defaultResults in non-forest");
 		assertEquals(
 				"The primary rock type here is test_rock.%nThe main kind of tree here is boreal_tree.%n".formatted(),
-				runner.defaultResults(point, TileType.Steppe, false, Collections.singletonList(
-						new Forest("boreal_tree", false, 1)), dimensions),
+				runner.defaultResults(point, TileType.Steppe, EncounterTable.TerrainModifier.None,
+						Collections.singletonList(new Forest("boreal_tree", false, 1)), dimensions),
 				"defaultResults in boreal forest");
 		assertEquals(
 				"The primary rock type here is test_rock.%nThe main kind of tree here is temperate_tree.%n".formatted(),
-				runner.defaultResults(point, TileType.Plains, false, Collections.singletonList(
-						new Forest("temperate_tree", false, 2)), dimensions),
+				runner.defaultResults(point, TileType.Plains, EncounterTable.TerrainModifier.None,
+						Collections.singletonList(new Forest("temperate_tree", false, 2)), dimensions),
 				"defaultResults in temperate forest");
 	}
 
@@ -191,14 +198,14 @@ public final class TestExplorationRunner {
 		runner.loadTableFromDataStream(data.iterator(), table);
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
-		assertEquals("one", runner.consultTable(table, point, TileType.Tundra, false,
+		assertEquals("one", runner.consultTable(table, point, TileType.Tundra, EncounterTable.TerrainModifier.None,
 				Collections.emptyList(), dimensions), "loading quadrant table");
 		final Point pointTwo = new Point(36, 30);
-		assertEquals("one", runner.consultTable(table, point, TileType.Ocean, false,
+		assertEquals("one", runner.consultTable(table, point, TileType.Ocean, EncounterTable.TerrainModifier.None,
 				Collections.emptyList(), dimensions), "quadrant table isn't a terrain table");
-		assertEquals("five", runner.consultTable(table, pointTwo, TileType.Tundra, false,
+		assertEquals("five", runner.consultTable(table, pointTwo, TileType.Tundra, EncounterTable.TerrainModifier.None,
 				Collections.emptyList(), dimensions), "quadrant table isn't a constant table");
-		assertEquals("six", runner.consultTable(table, pointTwo, TileType.Tundra, false,
+		assertEquals("six", runner.consultTable(table, pointTwo, TileType.Tundra, EncounterTable.TerrainModifier.None,
 						Collections.emptyList(), new MapDimensionsImpl(35, 32, 2)),
 				"quadrant table can use alternate dimensions");
 		assertThrows(IllegalArgumentException.class,
@@ -246,7 +253,7 @@ public final class TestExplorationRunner {
 				new LinkedList<>(Arrays.asList("random", "0 one", "99 two")).iterator(),
 				table);
 		assertEquals("one", runner.consultTable(table, Point.INVALID_POINT, TileType.Tundra,
-				false, Collections.emptyList(), mockDimensions), "loading random table");
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), mockDimensions), "loading random table");
 	}
 
 	/**
@@ -261,16 +268,20 @@ public final class TestExplorationRunner {
 						"temperate_forest five")).iterator(),
 				table);
 		assertEquals("one", runner.consultTable(table, Point.INVALID_POINT, TileType.Tundra,
-				false, Collections.emptyList(), mockDimensions), "loading terrain table: tundra");
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), mockDimensions),
+				"loading terrain table: tundra");
 		assertEquals("two", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
-				false, Collections.emptyList(), mockDimensions), "loading terrain table: plains");
-		assertEquals("three", runner.consultTable(table, Point.INVALID_POINT, TileType.Ocean, false,
-				Collections.emptyList(), mockDimensions), "loading terrain table: ocean");
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), mockDimensions),
+				"loading terrain table: plains");
+		assertEquals("three", runner.consultTable(table, Point.INVALID_POINT, TileType.Ocean,
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), mockDimensions),
+				"loading terrain table: ocean");
 		assertEquals("five", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
-						false, Collections.singletonList(new Forest("forestKind", false, 1)), mockDimensions),
+						EncounterTable.TerrainModifier.None,
+						Collections.singletonList(new Forest("forestKind", false, 1)), mockDimensions),
 				"loading terrain table: version 2 equivalent of temperate forest");
-		assertEquals("four", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains, true,
-						Collections.emptyList(), mockDimensions),
+		assertEquals("four", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
+						EncounterTable.TerrainModifier.Mountains, Collections.emptyList(), mockDimensions),
 				"loading terrain table: version 2 equivalent of mountain");
 	}
 
@@ -284,7 +295,7 @@ public final class TestExplorationRunner {
 		runner.loadTableFromDataStream(
 				new LinkedList<>(Arrays.asList("constant", "one")).iterator(), table);
 		assertEquals("one", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
-				false, Collections.emptyList(), mockDimensions), "one");
+				EncounterTable.TerrainModifier.None, Collections.emptyList(), mockDimensions), "one");
 	}
 
 	/**

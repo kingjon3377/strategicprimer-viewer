@@ -15,6 +15,10 @@ import java.util.Set;
  * Perception modifier and perhaps other data.
  */
 public interface EncounterTable {
+	enum TerrainModifier {
+		Mountains,
+		None
+	}
 	/**
 	 * Generates an appropriate event, an "encounter." For {@link
 	 * QuadrantTable}s this is always the same for each tile, for
@@ -27,7 +31,7 @@ public interface EncounterTable {
 	 * @param fixtures      The fixtures on the tile, if any.
 	 * @param mapDimensions The dimensions of the map.
 	 */
-	String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous,
+	String generateEvent(Point point, @Nullable TileType terrain, TerrainModifier terrainMod,
 						 Iterable<TileFixture> fixtures, MapDimensions mapDimensions);
 
 	/**

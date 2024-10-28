@@ -40,7 +40,7 @@ final class TerrainTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
+	public String generateEvent(final Point point, final @Nullable TileType terrain, final TerrainModifier terrainMod,
 								final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		if (Objects.isNull(terrain)) {
 			throw new IllegalArgumentException(
@@ -49,7 +49,7 @@ final class TerrainTable implements EncounterTable {
 		final String actual;
 		final boolean forested = StreamSupport.stream(fixtures.spliterator(), true)
 				.anyMatch(Forest.class::isInstance);
-		if (mountainous) {
+		if (TerrainModifier.Mountains == terrainMod) {
 			actual = "mountain";
 		} else if (TileType.Plains == terrain && forested) {
 			actual = "temperate_forest";
