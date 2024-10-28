@@ -157,13 +157,13 @@ public final class SPMenu extends JMenuBar {
 		if (Platform.SYSTEM_IS_MAC) {
 			Desktop.getDesktop().setAboutHandler(
 					(event) -> handler.actionPerformed(new ActionEvent(Stream.<Object>of(
-									WindowList.getWindows(true, false)).filter(Objects::nonNull)
-							.reduce((first, second) -> second).orElse(event),
+									WindowList.getWindows(WindowList.WindowSorting.Layer, false))
+							.filter(Objects::nonNull).reduce((first, second) -> second).orElse(event),
 							ActionEvent.ACTION_FIRST, "About")));
 			Desktop.getDesktop().setQuitHandler((event, quitResponse) -> {
 				localDefaultQuit = quitResponse::performQuit;
 				handler.actionPerformed(new ActionEvent(
-						Stream.<Object>of(WindowList.getWindows(true, false))
+						Stream.<Object>of(WindowList.getWindows(WindowList.WindowSorting.Layer, false))
 								.filter(Objects::nonNull).reduce((first, second) -> second)
 								.orElse(event), ActionEvent.ACTION_FIRST, "Quit"));
 			});

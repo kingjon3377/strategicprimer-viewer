@@ -195,8 +195,9 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	public static void handleDroppedFiles(final OpenFilesEvent openFilesEvent) {
-		final SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
-				.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
+		final SPFrame topWindow = Stream.of(WindowList.getWindows(WindowList.WindowSorting.Layer, false))
+				.filter(SPFrame.class::isInstance).map(SPFrame.class::cast).reduce((first, second) -> second)
+				.orElse(null);
 		if (!Objects.isNull(topWindow)) {
 			for (final File file : openFilesEvent.getFiles()) {
 				try {

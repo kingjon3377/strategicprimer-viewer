@@ -110,11 +110,11 @@ public final class WindowList {
 		final Runnable proofRunnable = () -> {
 			boolean changed = false;
 
-			Window[] newVisibleWindows = getWindows(false, false);
-			Window[] newInvisibleWindows = getWindows(false, true);
-			Frame[] newVisibleFrames = getFrames(false, false, false);
-			Frame[] newInvisibleFrames = getFrames(false, true, false);
-			Frame[] newIconifiedFrames = getFrames(false, false, true);
+			Window[] newVisibleWindows = getWindows(WindowSorting.Origin, false);
+			Window[] newInvisibleWindows = getWindows(WindowSorting.Origin, true);
+			Frame[] newVisibleFrames = getFrames(WindowSorting.Origin, false, false);
+			Frame[] newInvisibleFrames = getFrames(WindowSorting.Origin, true, false);
+			Frame[] newIconifiedFrames = getFrames(WindowSorting.Origin, false, true);
 
 			if (!arrayEquals(newVisibleWindows, visibleWindows))
 				changed = true;
@@ -178,24 +178,35 @@ public final class WindowList {
 		}
 	}
 
+	public enum WindowSorting {
+		/**
+		 * Sort so that the lowest index corresponds to the window farthest behind, and
+		 * the highest index represents the highest window.
+		 */
+		Layer,
+		/**
+		 * Sort so that the lowest index corresponds to the first window activated, and
+		 * the highest index is the most recently activated window.
+		 */
+		Origin
+	}
+
 	/**
 	 * Returns a list of windows.
 	 *
-	 * @param sortByLayer
-	 *            whether to sort by layer or origin. If this is true, then the
-	 *            lowest index corresponds to the window farthest behind; the
-	 *            highest index represents the highest window. If this is false,
-	 *            then the lowest index corresponds to the first window
-	 *            activated, and the highest index is the most recently
-	 *            activated window.
+	 * @param sorting
+	 *            how to sort: by layer (furthest behind to highest) or origin (first window activated to most recently
+	 *            activated).
 	 * @param includeInvisible
 	 *            if this is false then only visible Windows will be returned.
 	 *            Otherwise, all Windows will be returned.
 	 */
-	public static Window[] getWindows(final boolean sortByLayer,
+	public static Window[] getWindows(final WindowSorting sorting,
 									  final boolean includeInvisible) {
-		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
-				: windowList;
+		final ArrayList<WeakReference<Window>> list = switch (sorting) {
+			case Layer -> windowLayerList;
+			case Origin -> windowList;
+		};
 		final Collection<Window> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
@@ -216,13 +227,9 @@ public final class WindowList {
 	/**
 	 * Returns a list of frames.
 	 *
-	 * @param sortByLayer
-	 *            whether to sort by layer or origin. If this is true, then the
-	 *            lowest index corresponds to the frame farthest behind; the
-	 *            highest index represents the highest frame. If this is false,
-	 *            then the lowest index corresponds to the first frame
-	 *            activated, and the highest index is the most recently
-	 *            activated frame.
+	 * @param sorting
+	 *            how to sort: by layer or origin (furthest behind to highest) or origin (first frame activated to most
+	 *            recent).
 	 * @param includeInvisible
 	 *            if this is false then visible Frames will be returned. If this
 	 *            is true then all Frames will be returned, so the next argument
@@ -230,10 +237,12 @@ public final class WindowList {
 	 * @param includeIconified
 	 *            if this is true then iconified Frames will be returned.
 	 */
-	public static Frame[] getFrames(final boolean sortByLayer,
+	public static Frame[] getFrames(final WindowSorting sorting,
 									final boolean includeInvisible, final boolean includeIconified) {
-		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
-				: windowList;
+		final ArrayList<WeakReference<Window>> list = switch (sorting) {
+			case Layer -> windowLayerList;
+			case Origin -> windowList;
+		};
 		final Collection<Frame> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {

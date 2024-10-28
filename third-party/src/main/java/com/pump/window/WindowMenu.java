@@ -91,7 +91,7 @@ public class WindowMenu extends JMenu {
 		addSeparator();
 		add(bringItem);
 		addSeparator();
-		final Frame[] frames = WindowList.getFrames(false, false, true);
+		final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin, false, true);
 		for (final Frame frame : frames) {
 			final JCheckBoxMenuItem item = new SummonMenuItem(frame);
 			item.setSelected(frame == myFrame);
@@ -129,7 +129,7 @@ public class WindowMenu extends JMenu {
 			if (src == minimizeItem) {
 				myFrame.setExtendedState(Frame.ICONIFIED);
 			} else if (src == bringItem) {
-				final Frame[] frames = WindowList.getFrames(false, false, true);
+				final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin, false, true);
 				for (final Frame w : frames) {
 					if (w.isVisible() || frame
 							.getExtendedState() == Frame.ICONIFIED) {
