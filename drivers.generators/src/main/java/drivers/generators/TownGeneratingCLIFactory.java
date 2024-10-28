@@ -15,6 +15,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to let the user enter or generate 'stats' for towns.
  */
@@ -23,7 +25,8 @@ public final class TownGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "generate-towns",
 			ParamCount.AtLeastOne,
 			"Enter or generate stats and contents for towns and villages",
-			"Enter or generate stats and contents for towns and villages", true, false);
+			"Enter or generate stats and contents for towns and villages",
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
 
 	@Override
 	public final IDriverUsage getUsage() {

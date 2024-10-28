@@ -15,6 +15,8 @@ import drivers.common.ModelDriver;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to remove duplicate hills, forests, etc., from the
  * map (to reduce the disk space it takes up and the memory and CPU required to
@@ -25,7 +27,7 @@ public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory 
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "remove-duplicates",
 			ParamCount.AtLeastOne, "Remove duplicate fixtures",
 			"Remove duplicate fixtures (identical except ID# and on the same tile) from a map.",
-			true, false, "--current-turn=NN");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

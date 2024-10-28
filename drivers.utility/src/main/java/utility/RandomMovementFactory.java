@@ -18,6 +18,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for an app to move independent units around at random.
  *
@@ -27,7 +29,7 @@ import com.google.auto.service.AutoService;
 public final class RandomMovementFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "random-move",
 			ParamCount.One, "Move independent units at random", "Move independent units randomly around the map.",
-			true, false);
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -12,6 +12,8 @@ import drivers.common.UtilityDriverFactory;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to compare the performance of TileDrawHelpers.
  */
@@ -20,7 +22,7 @@ public final class DrawHelperComparatorFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "drawing-performance",
 			ParamCount.AtLeastOne, "Test drawing performance.",
 			"Test the performance of map-rendering implementations using a variety of automated tests.",
-			true, false, "--report=out.csv");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--report=out.csv");
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -12,6 +12,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to check whether player maps are subsets of the main
  * map and display the results graphically.
@@ -23,7 +25,7 @@ public final class SubsetGUIFactory implements UtilityDriverFactory {
 			"""
 					Check that subordinate maps are subsets of the main map, containing nothing that it does not \
 					contain in the same place.""",
-			false, true);
+			EnumSet.of(IDriverUsage.DriverMode.Graphical));
 
 	@Override
 	public IDriverUsage getUsage() {

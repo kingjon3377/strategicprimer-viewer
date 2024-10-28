@@ -15,6 +15,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to generate new workers.
  */
@@ -22,7 +24,8 @@ import com.google.auto.service.AutoService;
 public final class StatGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "generate-stats",
 			ParamCount.AtLeastOne, "Generate new workers.",
-			"Generate new workers with random stats and experience.", true, false, "--current-turn=NN");
+			"Generate new workers with random stats and experience.", EnumSet.of(IDriverUsage.DriverMode.CommandLine),
+			"--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

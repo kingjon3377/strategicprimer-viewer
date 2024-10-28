@@ -2,6 +2,7 @@ package drivers;
 
 import drivers.common.DriverFailedException;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import java.nio.file.Path;
@@ -30,7 +31,7 @@ import com.google.auto.service.AutoService;
 public final class TabularReportGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "tabular-report",
 			ParamCount.One, "Tabular Report Viewer", "Show the contents of a map in tabular form",
-			false, true, "--hq-row=NN --hq-col=NN");
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--hq-row=NN --hq-col=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

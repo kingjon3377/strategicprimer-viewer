@@ -18,6 +18,8 @@ import legacy.map.IMutableLegacyMap;
 import com.google.auto.service.AutoService;
 import lovelace.util.LovelaceLogger;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to check whether player maps are subsets of the main map.
  */
@@ -28,7 +30,7 @@ public final class SubsetCLIFactory implements ModelDriverFactory {
 			"""
 					Check that subordinate maps are subsets of the main map, containing nothing that it does not \
 					contain in the same place.""",
-			true, false);
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
 
 	@Override
 	public IDriverUsage getUsage() {

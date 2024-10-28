@@ -13,6 +13,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * An app to produce a difference between two maps, to aid understanding what
  * an explorer has found. This modifies non-main maps in place; only run on
@@ -22,8 +24,8 @@ import com.google.auto.service.AutoService;
 public final class SubtractFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "subtract",
 			ParamCount.AtLeastTwo, "Subtract one map from another",
-			"Remove everything known in a base map from submaps for easier comparison", false, false,
-			"baseMap.xml", "operand.xml");
+			"Remove everything known in a base map from submaps for easier comparison",
+			EnumSet.noneOf(IDriverUsage.DriverMode.class), "baseMap.xml", "operand.xml");
 
 	@Override
 	public IDriverUsage getUsage() {

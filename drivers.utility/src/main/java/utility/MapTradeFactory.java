@@ -15,14 +15,16 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A driver for an app to copy selected contents from one map to another.
  */
 @AutoService(DriverFactory.class)
 public final class MapTradeFactory implements ModelDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "trade-maps",
-			ParamCount.Two, "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
-			"destination.xml");
+			ParamCount.Two, "Trade maps", "Copy contents from one map to another.",
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "source.xml", "destination.xml");
 
 	@Override
 	public IDriverUsage getUsage() {

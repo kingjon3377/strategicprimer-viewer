@@ -12,6 +12,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to create a spreadsheet model of a mine. Its
  * parameters are the name of the file to write the CSV to and the value at the
@@ -22,7 +24,7 @@ import com.google.auto.service.AutoService;
 public final class MiningCLIFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "mining",
 			ParamCount.Two, "Create a model of a mine", "Create a CSV spreadsheet representing a mine's area",
-			true, false, "output.csv", "status", "--seed=NN", "--banded");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "output.csv", "status", "--seed=NN", "--banded");
 
 	@Override
 	public IDriverUsage getUsage() {

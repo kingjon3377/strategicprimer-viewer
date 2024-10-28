@@ -20,6 +20,7 @@ import exploration.common.ExplorationModel;
 
 import drivers.gui.common.SPFileChooser;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import lovelace.util.FileChooser;
@@ -35,8 +36,8 @@ import com.google.auto.service.AutoService;
 public final class ExplorationGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "explore",
 			ParamCount.AtLeastOne, "Run exploration.",
-			"Move a unit around the map, updating the player's map with what it sees.", false,
-			true, "--current-turn=NN");
+			"Move a unit around the map, updating the player's map with what it sees.",
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

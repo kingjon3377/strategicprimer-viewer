@@ -15,6 +15,8 @@ import drivers.common.IDriverModel;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to let the user enter a player's resources and equipment.
  */
@@ -22,7 +24,7 @@ import com.google.auto.service.AutoService;
 public final class ResourceAddingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
-			true, false, "--current-turn=NN");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

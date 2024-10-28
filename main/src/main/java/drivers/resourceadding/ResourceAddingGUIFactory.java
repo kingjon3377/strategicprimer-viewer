@@ -6,6 +6,7 @@ import java.nio.file.Path;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import lovelace.util.FileChooser;
@@ -32,7 +33,7 @@ import com.google.auto.service.AutoService;
 public final class ResourceAddingGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
-			false, true, "--current-turn=NN");
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

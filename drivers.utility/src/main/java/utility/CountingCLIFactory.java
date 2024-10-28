@@ -13,6 +13,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for an app to report statistics on the contents of the map.
  */
@@ -20,7 +22,7 @@ import com.google.auto.service.AutoService;
 public final class CountingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "count",
 			ParamCount.One, "Calculate statistics of map contents", "Print statistical report of map contents.",
-			false, false);
+			EnumSet.noneOf(IDriverUsage.DriverMode.class));
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -15,6 +15,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to add some kind of fixture to suitable tiles throughout the map.
  */
@@ -22,8 +24,8 @@ import com.google.auto.service.AutoService;
 public final class MapPopulatorFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "populate-map",
 			ParamCount.One, "Add missing fixtures to a map",
-			"Add specified kinds of fixtures to suitable points throughout a map", true, false,
-			"--current-turn=NN");
+			"Add specified kinds of fixtures to suitable points throughout a map",
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

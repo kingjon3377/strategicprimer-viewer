@@ -13,6 +13,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for the driver to "query" the driver model about various things.
  */
@@ -21,7 +23,7 @@ public final class QueryCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "query",
 			ParamCount.One, "Answer questions about a map.",
 			"Answer questions about a map, such as counting workers or calculating distances.",
-			true, false);
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
 
 	@Override
 	public IDriverUsage getUsage() {

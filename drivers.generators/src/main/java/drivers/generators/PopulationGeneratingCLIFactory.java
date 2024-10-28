@@ -15,6 +15,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to let the user generate animal and shrub
  * populations, meadow and grove sizes, and forest acreages.
@@ -23,8 +25,8 @@ import com.google.auto.service.AutoService;
 public final class PopulationGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine,
 			"generate-populations", ParamCount.One, "Generate animal populations, etc.",
-			"Generate animal and shrub populations, meadow and grove sizes, and forest acreages.", true,
-			false); // TODO: We'd like a GUI equivalent
+			"Generate animal and shrub populations, meadow and grove sizes, and forest acreages.",
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine)); // TODO: We'd like a GUI equivalent
 
 	@Override
 	public IDriverUsage getUsage() {

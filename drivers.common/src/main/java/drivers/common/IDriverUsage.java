@@ -54,9 +54,9 @@ public interface IDriverUsage {
 
 	/**
 	 * Whether this driver should be included in the list presented for the
-	 * user to choose from. FIXME: Convert boolean parameter to enum, or split the method
+	 * user to choose from.
 	 *
-	 * @param gui If true, this is a GUI list; if false, a CLI list
+	 * @param mode the mode corresponding to the list being shown
 	 */
-	boolean includeInList(boolean gui);
+	boolean includeInList(DriverMode mode);
 }

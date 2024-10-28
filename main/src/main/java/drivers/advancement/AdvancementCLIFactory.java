@@ -18,6 +18,8 @@ import worker.common.WorkerModel;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for the worker-advancement CLI driver.
  */
@@ -26,7 +28,7 @@ public final class AdvancementCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "advance",
 			ParamCount.AtLeastOne, "View a player's workers and manage their advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
-			true, false, "--current-turn=NN", "--allow-expert-mentoring");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN", "--allow-expert-mentoring");
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -4,6 +4,7 @@ import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriver;
 import drivers.common.ViewerDriverFactory;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import java.nio.file.Path;
@@ -31,7 +32,7 @@ import lovelace.util.LovelaceLogger;
 public final class ViewerGUIFactory implements ViewerDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "view-map",
 			ParamCount.One, "Map viewer", "Look at the map visually. This is probably the app you want.",
-			false, true, "--current-turn=NN", "--background=image.png",
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN", "--background=image.png",
 			"--starting-row=NN --starting-column=NN");
 
 	@Override

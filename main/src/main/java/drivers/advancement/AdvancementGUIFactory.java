@@ -14,6 +14,7 @@ import drivers.common.IWorkerModel;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import worker.common.WorkerModel;
@@ -36,7 +37,7 @@ public final class AdvancementGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "advance",
 			ParamCount.AtLeastOne, "Worker Skill Advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
-			false, true, "--current-turn=NN");
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

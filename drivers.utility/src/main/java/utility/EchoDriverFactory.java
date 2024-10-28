@@ -11,6 +11,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver that reads in maps and then writes them out again, to
  * test the map-reading logic and to correct deprecated syntax.
@@ -19,7 +21,7 @@ import com.google.auto.service.AutoService;
 public final class EchoDriverFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "echo",
 			ParamCount.Two, "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
-			true, false, "input.xml", "output.xml", "--current-turn=NN");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "input.xml", "output.xml", "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

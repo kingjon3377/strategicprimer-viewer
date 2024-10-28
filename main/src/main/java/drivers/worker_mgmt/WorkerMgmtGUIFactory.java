@@ -2,6 +2,7 @@ package drivers.worker_mgmt;
 
 import drivers.common.DriverFailedException;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.nio.file.Path;
 
@@ -29,8 +30,8 @@ import com.google.auto.service.AutoService;
 public final class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "worker-mgmt",
 			ParamCount.AtLeastOne, "Unit Orders and Worker Management", "Organize the members of a player's units.",
-			false, true, "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",
-			"--summarize-large-units", "--edit-results");
+			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN", "--print-empty",
+			"--include-unleveled-jobs", "--summarize-large-units", "--edit-results");
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -1,6 +1,8 @@
 package drivers.common;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class DriverUsage implements IDriverUsage {
 	/**
@@ -69,14 +71,9 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	/**
-	 * Whether to include in a CLI list for the user to choose from.
+	 * Which app-choosing list(s) to show this app in.
 	 */
-	private final boolean includeInCLIList;
-
-	/**
-	 * Whether to include in a GUI list for the user to choose from.
-	 */
-	private final boolean includeInGUIList;
+	private final Set<DriverMode> listsToShowIn;
 
 	/**
 	 * A description of the first (non-option) parameter, for use in a usage statement.
@@ -122,17 +119,16 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
-	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-	                   final boolean includeInGUIList) {
+	                   final String shortDescription, final String longDescription, final Set<DriverMode> listsToShowIn) {
 		this(mode, invocation, paramsWanted, shortDescription, longDescription,
-				includeInCLIList, includeInGUIList, "filename.xml");
+				listsToShowIn, "filename.xml");
 	}
 
 	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
-	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-	                   final boolean includeInGUIList, final String firstParamDescription) {
+	                   final String shortDescription, final String longDescription, final Set<DriverMode> listsToShowIn,
+	                   final String firstParamDescription) {
 		this(mode, invocation, paramsWanted, shortDescription, longDescription,
-				includeInCLIList, includeInGUIList, firstParamDescription, "filename.xml");
+				listsToShowIn, firstParamDescription, "filename.xml");
 	}
 
 	/**
@@ -141,8 +137,7 @@ public class DriverUsage implements IDriverUsage {
 	 * @param paramsWanted               How many parameters this driver wants.
 	 * @param shortDescription           A short description of the driver
 	 * @param longDescription            A longer description of the driver
-	 * @param includeInCLIList           Whether to include in a CLI list for the user to choose from.
-	 * @param includeInGUIList           Whether to include in a GUI list for the user to choose from.
+	 * @param listsToShowIn              Which lists for the user to choose an app from to show this app in
 	 * @param firstParamDescription      A description of the first (non-option)
 	 *                                   parameter, for use in a usage statement.
 	 * @param subsequentParamDescription A description of a later
@@ -151,23 +146,22 @@ public class DriverUsage implements IDriverUsage {
 	 * @param supportedOptions           The options this driver supports.
 	 */
 	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
-	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-	                   final boolean includeInGUIList, final String firstParamDescription,
-	                   final String subsequentParamDescription, final String... supportedOptions) {
+	                   final String shortDescription, final String longDescription, final Set<DriverMode> listsToShowIn,
+	                   final String firstParamDescription, final String subsequentParamDescription,
+	                   final String... supportedOptions) {
 		this.mode = mode;
 		this.invocation = invocation;
 		this.paramsWanted = paramsWanted;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;
-		this.includeInCLIList = includeInCLIList;
-		this.includeInGUIList = includeInGUIList;
+		this.listsToShowIn = Collections.unmodifiableSet(listsToShowIn);
 		this.firstParamDescription = firstParamDescription;
 		this.subsequentParamDescription = subsequentParamDescription;
 		this.supportedOptions = List.of(supportedOptions);
 	}
 
 	@Override
-	public final boolean includeInList(final boolean gui) {
-		return (gui) ? includeInGUIList : includeInCLIList;
+	public final boolean includeInList(final DriverMode mode) {
+		return listsToShowIn.contains(mode);
 	}
 }

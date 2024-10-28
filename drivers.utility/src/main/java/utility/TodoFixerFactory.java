@@ -15,6 +15,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for the hackish driver to fix missing content in the map, namely
  * units with "TODO" for their "kind" and aquatic villages with non-aquatic
@@ -24,7 +26,8 @@ import com.google.auto.service.AutoService;
 public final class TodoFixerFactory implements ModelDriverFactory {
 	private final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-todos",
 			ParamCount.AtLeastOne, "Fix TODOs in maps",
-			"Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false, false);
+			"Fix TODOs in unit kinds and aquatic villages with non-aquatic races",
+			EnumSet.noneOf(IDriverUsage.DriverMode.class));
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -15,6 +15,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to fix ID mismatches between forests and Ground in the main and player maps.
  */
@@ -22,7 +24,7 @@ import com.google.auto.service.AutoService;
 public final class ForestFixerFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-forests",
 			ParamCount.AtLeastTwo, "Fix forest IDs",
-			"Make sure that forest IDs in submaps match the main map", false, false);
+			"Make sure that forest IDs in submaps match the main map", EnumSet.noneOf(IDriverUsage.DriverMode.class));
 
 	@Override
 	public IDriverUsage getUsage() {

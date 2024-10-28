@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 			AppChooserState.createCache(); // TODO: Can we, and should we, inline that into here?
 
 	private static boolean includeInCLIList(final DriverFactory driver) {
-		return driver.getUsage().includeInList(false);
+		return driver.getUsage().includeInList(IDriverUsage.DriverMode.CommandLine);
 	}
 
 	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args)

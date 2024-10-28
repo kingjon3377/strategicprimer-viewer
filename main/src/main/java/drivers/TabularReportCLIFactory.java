@@ -17,6 +17,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to produce tabular (CSV) reports of the contents of a player's map.
  */
@@ -24,7 +26,8 @@ import com.google.auto.service.AutoService;
 public final class TabularReportCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "tabular-report",
 			ParamCount.AtLeastOne, "Tabular Report Generator",
-			"Produce CSV reports of the contents of a map.", true, false, "--serve[=8080]");
+			"Produce CSV reports of the contents of a map.", EnumSet.of(IDriverUsage.DriverMode.CommandLine),
+			"--serve[=8080]");
 
 	@Override
 	public IDriverUsage getUsage() {

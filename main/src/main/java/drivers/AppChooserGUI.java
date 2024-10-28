@@ -1,6 +1,7 @@
 package drivers;
 
 import drivers.common.DriverFactory;
+import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.UtilityGUI;
 import drivers.common.cli.ICLIHelper;
@@ -48,7 +49,7 @@ import lovelace.util.ListenedButton;
 	private final Collection<String> additionalFiles = new ArrayList<>();
 
 	private static boolean includeInGUIList(final DriverFactory driver) {
-		return driver.getUsage().includeInList(true);
+		return driver.getUsage().includeInList(IDriverUsage.DriverMode.Graphical);
 	}
 
 	@Override

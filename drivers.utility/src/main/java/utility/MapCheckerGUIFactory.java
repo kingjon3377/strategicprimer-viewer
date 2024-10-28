@@ -12,14 +12,16 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to check every map file in a list for errors and report the results in a window.
  */
 @AutoService(DriverFactory.class)
 public final class MapCheckerGUIFactory implements UtilityDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "check",
-			ParamCount.AnyNumber, "Check map for errors", "Check a map file for errors, deprecated syntax, etc.", false,
-			true);
+			ParamCount.AnyNumber, "Check map for errors", "Check a map file for errors, deprecated syntax, etc.",
+			EnumSet.of(IDriverUsage.DriverMode.Graphical));
 
 	@Override
 	public IDriverUsage getUsage() {

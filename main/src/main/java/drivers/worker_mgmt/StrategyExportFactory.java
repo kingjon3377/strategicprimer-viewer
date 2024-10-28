@@ -16,6 +16,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a command-line program to export a proto-strategy for a player from orders in a map.
  */
@@ -23,8 +25,8 @@ import com.google.auto.service.AutoService;
 public final class StrategyExportFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "export-strategy",
 			ParamCount.One, "Export a proto-strategy", "Create a proto-strategy using orders stored in the map",
-			true, false, "--current-turn=NN", "--print-empty", "--export=filename.txt",
-			"--include-unleveled-jobs", "--summarize-large-units", "--results");
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN", "--print-empty",
+			"--export=filename.txt", "--include-unleveled-jobs", "--summarize-large-units", "--results");
 
 	@Override
 	public IDriverUsage getUsage() {

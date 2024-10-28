@@ -12,6 +12,8 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for a driver to compare the performance and results of the two map reading implementations.
  */
@@ -20,7 +22,7 @@ public final class ReaderComparatorFactory implements UtilityDriverFactory {
 	private final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "compare-readers",
 			ParamCount.AtLeastOne, "Test map readers",
 			"Test map-reading implementations by comparing their results on the same file.",
-			true, false);
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
 
 	@Override
 	public IDriverUsage getUsage() {

@@ -1,6 +1,7 @@
 package drivers;
 
 import java.io.File;
+import java.util.EnumSet;
 
 import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
@@ -25,7 +26,7 @@ import com.google.auto.service.AutoService;
 public final class ReportCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "create-report",
 			ParamCount.AtLeastOne, "Report Generator", "Produce HTML report of the contents of a map",
-			true, false,
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine),
 			('\\' == File.separatorChar) ? "--out=C:\\path\\to\\output.html"
 					: "--out=/path/to/output.html",
 			"--player=NN", "--current-turn=NN", "--serve[=8080]");

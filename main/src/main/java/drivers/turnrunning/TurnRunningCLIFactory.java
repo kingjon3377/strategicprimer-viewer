@@ -15,6 +15,8 @@ import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
+import java.util.EnumSet;
+
 /**
  * A factory for the turn-running CLI app.
  */
@@ -22,7 +24,8 @@ import com.google.auto.service.AutoService;
 public final class TurnRunningCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "run-turn",
 			ParamCount.AtLeastTwo, "Run a turn's orders and enter results",
-			"Run a player's orders for a turn and enter results.", true, false, "--current-turn=NN");
+			"Run a player's orders for a turn and enter results.", EnumSet.of(IDriverUsage.DriverMode.CommandLine),
+			"--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {
