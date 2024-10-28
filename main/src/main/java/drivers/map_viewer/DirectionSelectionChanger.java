@@ -2,6 +2,7 @@ package drivers.map_viewer;
 
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
+import java.util.function.Consumer;
 
 import lovelace.util.Platform;
 
@@ -22,23 +23,34 @@ import legacy.map.Point;
 
 	private final IViewerModel model;
 
+	public enum SelectionMode {
+		Selection, Cursor
+	}
 	/**
 	 * Get the base point for the current mode (selection vs cursor).
 	 *
 	 * TODO: boolean to enum
 	 */
-	private Point get(final boolean selection) {
-		return (selection) ? model.getSelection() : model.getCursor();
+	private Point get(final SelectionMode mode) {
+		switch (mode) {
+			case Selection -> {
+				return model.getSelection();
+			}
+			case Cursor -> {
+				return model.getCursor();
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		}
 	}
 
 	/**
 	 * Assign the given point correctly for the given mode.
 	 */
-	private void set(final boolean selection, final Point point) {
-		if (selection) {
-			model.setSelection(point);
-		} else {
-			model.setCursor(point);
+	private void set(final SelectionMode mode, final Point point) {
+		switch (mode) {
+			case Selection -> model.setSelection(point);
+			case Cursor -> model.setCursor(point);
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 	}
 
@@ -46,16 +58,16 @@ import legacy.map.Point;
 	 * Move the cursor up a row.
 	 */
 	public void up() {
-		up(true);
+		up(SelectionMode.Selection);
 	}
 
 	/**
 	 * Move the cursor up a row.
 	 */
-	public void up(final boolean selection) {
-		final Point old = get(selection);
+	public void up(final SelectionMode mode) {
+		final Point old = get(mode);
 		if (old.row() > 0) {
-			set(selection, new Point(old.row() - 1, old.column()));
+			set(mode, new Point(old.row() - 1, old.column()));
 		}
 	}
 
@@ -63,16 +75,16 @@ import legacy.map.Point;
 	 * Move the cursor left a column.
 	 */
 	public void left() {
-		left(true);
+		left(SelectionMode.Selection);
 	}
 
 	/**
 	 * Move the cursor left a column.
 	 */
-	public void left(final boolean selection) {
-		final Point old = get(selection);
+	public void left(final SelectionMode mode) {
+		final Point old = get(mode);
 		if (old.column() > 0) {
-			set(selection, new Point(old.row(), old.column() - 1));
+			set(mode, new Point(old.row(), old.column() - 1));
 		}
 	}
 
@@ -80,16 +92,16 @@ import legacy.map.Point;
 	 * Move the cursor down a row.
 	 */
 	public void down() {
-		down(true);
+		down(SelectionMode.Selection);
 	}
 
 	/**
 	 * Move the cursor down a row.
 	 */
-	public void down(final boolean selection) {
-		final Point old = get(selection);
+	public void down(final SelectionMode mode) {
+		final Point old = get(mode);
 		if (old.row() < model.getMapDimensions().rows() - 1) {
-			set(selection, new Point(old.row() + 1, old.column()));
+			set(mode, new Point(old.row() + 1, old.column()));
 		}
 	}
 
@@ -97,16 +109,16 @@ import legacy.map.Point;
 	 * Move the cursor right a column.
 	 */
 	public void right() {
-		right(true);
+		right(SelectionMode.Selection);
 	}
 
 	/**
 	 * Move the cursor right a column.
 	 */
-	public void right(final boolean selection) {
-		final Point old = get(selection);
+	public void right(final SelectionMode mode) {
+		final Point old = get(mode);
 		if (old.column() < model.getMapDimensions().columns() - 1) {
-			set(selection, new Point(old.row(), old.column() + 1));
+			set(mode, new Point(old.row(), old.column() + 1));
 		}
 	}
 
@@ -170,7 +182,7 @@ import legacy.map.Point;
 	 * TODO: Boolean parameters should be enums instead
 	 */
 	private void scroll(final boolean horizontal, final boolean forward, final int count) {
-		final BooleanConsumer func;
+		final Consumer<SelectionMode> func;
 		if (horizontal && forward) {
 			func = this::right;
 		} else if (horizontal) {
@@ -181,7 +193,7 @@ import legacy.map.Point;
 			func = this::up;
 		}
 		for (int i = 0; i < count; i++) {
-			func.accept(false);
+			func.accept(SelectionMode.Cursor);
 		}
 	}
 
