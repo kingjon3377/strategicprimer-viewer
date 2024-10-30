@@ -325,7 +325,7 @@ import java.util.stream.Collectors;
 	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
-		final Predicate<IUnit> leadingFilter;
+		final @Nullable Predicate<IUnit> leadingFilter;
 		if (Objects.isNull(starting)) {
 			leading = false;
 			leadingFilter = null;

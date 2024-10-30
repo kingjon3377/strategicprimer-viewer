@@ -45,6 +45,7 @@ import common.map.fixtures.mobile.MaturityModel;
 import static legacy.map.fixtures.mobile.Immortal.IMMORTAL_ANIMALS;
 
 import legacy.map.fixtures.towns.IFortress;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.text.ParseException;
@@ -226,7 +227,7 @@ import java.util.function.Predicate;
 		tagStack.addFirst(element.getName());
 		tagStack.addFirst(mapTag.getName());
 		final IMutableLegacyMap retval = new LegacyMap(dimensions, players, currentTurn);
-		Point point = null;
+		@Nullable Point point = null;
 		final Predicate<Object> isFortress = IFortress.class::isInstance;
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		for (final XMLEvent event : stream) {

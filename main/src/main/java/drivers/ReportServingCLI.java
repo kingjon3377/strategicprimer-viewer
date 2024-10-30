@@ -146,7 +146,7 @@ import org.takes.http.Exit;
 			}
 			port = PORT;
 		}
-		Player player;
+		@Nullable Player player;
 		try {
 			player = model.getMap().getPlayers().getPlayer(
 					Integer.parseInt(options.getArgument("--player")));

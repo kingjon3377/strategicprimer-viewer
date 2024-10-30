@@ -25,6 +25,7 @@ import legacy.map.fixtures.towns.Town;
 import legacy.map.fixtures.towns.Village;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -95,7 +96,7 @@ import java.util.function.Consumer;
 		final CommunityStats retval = new CommunityStatsImpl(getIntegerParameter(element, "size"));
 		final Consumer<IResourcePile> addProductionLambda = retval::addYearlyProduction;
 		final Consumer<IResourcePile> addConsumptionLambda = retval::addYearlyConsumption;
-		String current = null;
+		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		for (final XMLEvent event : stream) {

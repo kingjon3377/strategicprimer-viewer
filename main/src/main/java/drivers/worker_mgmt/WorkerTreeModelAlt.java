@@ -574,7 +574,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 				new IteratorWrapper<>(new EnumerationWrapper<>(enumeration));
 		final Iterable<WorkerTreeNode<?>> sequence;
 		boolean leading;
-		final WorkerTreeNode<?> toTrim;
+		final @Nullable WorkerTreeNode<?> toTrim;
 		if (Objects.isNull(starting)) {
 			sequence = wrapped;
 			leading = false;

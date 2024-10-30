@@ -98,7 +98,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
 
-		final OrdersPanel.IOrdersConsumer resultsSupplier;
+		final @Nullable OrdersPanel.IOrdersConsumer resultsSupplier;
 		if ("true".equals(options.getArgument("--edit-results"))) {
 			resultsSupplier = model::setUnitResults;
 		} else {
