@@ -5,7 +5,7 @@ package drivers.common;
  * in the app starter and in help text.
  */
 public interface IDriverUsage {
-	public enum DriverMode {
+	enum DriverMode {
 		Graphical, CommandLine
 	}
 	/**
