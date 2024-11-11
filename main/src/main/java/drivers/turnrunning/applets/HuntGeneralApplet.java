@@ -67,7 +67,7 @@ import org.jetbrains.annotations.Nullable;
 		return "%s (%s)".formatted(unit.getName(), unit.getKind());
 	}
 
-	protected @Nullable final Boolean handleCapture(final HasKind find) {
+	protected final @Nullable Boolean handleCapture(final HasKind find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 						.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
 				"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT,
@@ -84,7 +84,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	protected @Nullable final Integer processMeat() {
+	protected final @Nullable Integer processMeat() {
 		int cost = 0;
 		// TODO: somehow handle processing-in-parallel case
 		final Integer iterations = cli.inputNumber("How many carcasses?");
