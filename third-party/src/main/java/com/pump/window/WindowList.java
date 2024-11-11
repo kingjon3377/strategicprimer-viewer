@@ -21,6 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -163,12 +164,12 @@ public final class WindowList {
 	 * References to every Window that has been activated, in order of when they
 	 * were made active.
 	 */
-	private static final ArrayList<WeakReference<Window>> windowLayerList = new ArrayList<>();
+	private static final List<WeakReference<Window>> windowLayerList = new ArrayList<>();
 	/**
 	 * References to every Window that has been activated, in order of
 	 * z-layering.
 	 */
-	private static final ArrayList<WeakReference<Window>> windowList = new ArrayList<>();
+	private static final List<WeakReference<Window>> windowList = new ArrayList<>();
 
 	static {
 		Toolkit.getDefaultToolkit().addAWTEventListener(windowListener,
@@ -216,7 +217,7 @@ public final class WindowList {
 	 */
 	public static Window[] getWindows(final WindowSorting sorting,
 									  final Set<WindowFiltering> filtering) {
-		final ArrayList<WeakReference<Window>> list = switch (sorting) {
+		final List<WeakReference<Window>> list = switch (sorting) {
 			case Layer -> windowLayerList;
 			case Origin -> windowList;
 		};
@@ -253,7 +254,7 @@ public final class WindowList {
 	 *            if this is true then iconified Frames will be returned.
 	 */
 	public static Frame[] getFrames(final WindowSorting sorting, final Set<WindowFiltering> filtering) {
-		final ArrayList<WeakReference<Window>> list = switch (sorting) {
+		final List<WeakReference<Window>> list = switch (sorting) {
 			case Layer -> windowLayerList;
 			case Origin -> windowList;
 		};
