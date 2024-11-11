@@ -153,31 +153,6 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	}
 
 	/**
-	 * Turn a series of items into a comma-separated list of their string
-	 * representations, with "and" before the final item and a special
-	 * no-comma case for a list of only two items.
-	 */
-	protected static String commaSeparatedList(final Object... list) {
-		if (list.length == 0) {
-			return "";
-		} else if (list.length == 1) {
-			return list[0].toString();
-		} else if (list.length == 2) {
-			return "%s and %s".formatted(list[0], list[1]);
-		}
-		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < list.length; i++) {
-			builder.append(list[i]);
-			if (i == list.length - 2) {
-				builder.append(", and ");
-			} else if (i != list.length - 1) {
-				builder.append(", ");
-			}
-		}
-		return builder.toString();
-	}
-
-	/**
 	 * A list of Points that produces a comma-separated list in its {@link #toString} and has a "header".
 	 */
 	protected static final class PointList extends ArrayList<Point> implements HeadedList<Point> {
