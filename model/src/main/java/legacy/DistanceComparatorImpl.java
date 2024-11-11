@@ -13,7 +13,7 @@ import java.util.Objects;
  * A class to compare {@link Point}s based on their distance to a specified
  * point (such as a player's HQ).
  */
-public final class DistanceComparatorImpl implements DistanceComparator, Serializable {
+public final class DistanceComparatorImpl implements DistanceComparator {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	public DistanceComparatorImpl(final Point base, final @Nullable MapDimensions dimensions) {
