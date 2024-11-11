@@ -106,7 +106,6 @@ import worker.common.IFixtureEditHelper;
 
 	private final IExplorationModel driverModel;
 	private final HuntingModel huntingModel;
-	private final Supplier<Speed> speedSource;
 	private final SpinnerNumberModel mpModel;
 
 	private void movementDeductionTracker(final Number cost) {
@@ -151,7 +150,7 @@ import worker.common.IFixtureEditHelper;
 
 		final JLabel speedLabel = new JLabel("Current relative speed:");
 
-		speedSource = () -> (Speed) speedModel.getSelectedItem();
+		final Supplier<Speed> speedSource = () -> (Speed) speedModel.getSelectedItem();
 		final ImprovedComboBox<Speed> speedBox = new ImprovedComboBox<>(speedModel);
 
 		headerPanel.add(explorerChangeButton);

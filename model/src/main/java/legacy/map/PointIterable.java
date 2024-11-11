@@ -62,11 +62,6 @@ public final class PointIterable implements Iterable<Point> {
 		private final boolean horizontal;
 
 		/**
-		 * The selected point; we start from (just before) (0, 0) if omitted.
-		 */
-		private final @Nullable Point selection;
-
-		/**
 		 * The maximum row in the map.
 		 */
 		private final int maxRow;
@@ -97,7 +92,6 @@ public final class PointIterable implements Iterable<Point> {
 		                         final boolean forwards, final boolean horizontal) {
 			maxRow = dimensions.rows() - 1;
 			maxColumn = dimensions.columns() - 1;
-			this.selection = selection;
 			this.forwards = forwards;
 			this.horizontal = horizontal;
 			if (!Objects.isNull(selection)) {

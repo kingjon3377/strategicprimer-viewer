@@ -60,20 +60,12 @@ public final class FixtureList extends JList<TileFixture>
 		implements DragGestureListener, SelectionChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
-	private final JComponent parentComponent;
 	private final FixtureListModel listModel;
-	private final IFixtureEditHelper feh;
-	private final IDRegistrar idf;
-	private final Iterable<Player> players;
 
 	public FixtureList(final JComponent parentComponent, final FixtureListModel listModel,
 					   final IFixtureEditHelper feh, final IDRegistrar idf, final Iterable<Player> players) {
 		super(listModel);
-		this.parentComponent = parentComponent;
 		this.listModel = listModel;
-		this.feh = feh;
-		this.idf = idf;
-		this.players = players;
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		addMouseListener(new FixtureMouseListener(listModel, this::locationToIndex, players, feh, idf));
