@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
 import lovelace.util.ThrowingConsumer;
@@ -11,6 +12,7 @@ import lovelace.util.ThrowingConsumer;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.Implement;
 import common.xmlio.Warning;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for {@link Implement}s.
@@ -21,12 +23,13 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public Implement read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public Implement read(final StartElement element, final @Nullable Path path, final QName parent,
+	                      final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, "kind", "id", "image");
 		final Implement retval = new Implement(getParameter(element, "kind"),
-				getOrGenerateID(element), getIntegerParameter(element, "count", 1));
+				getOrGenerateID(element, path), getIntegerParameter(element, "count", 1));
 		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;

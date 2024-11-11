@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
@@ -42,9 +43,9 @@ import java.util.function.Consumer;
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory) throws SPFormatException {
+	public static Town readTown(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "town");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
@@ -63,7 +64,7 @@ import java.util.function.Consumer;
 		}
 		final Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory),
+				getOrGenerateID(element, warner, path, idFactory),
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
@@ -71,7 +72,7 @@ import java.util.function.Consumer;
 			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
-					fix.setPopulation(readCommunityStats(se,
+					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
@@ -84,8 +85,8 @@ import java.util.function.Consumer;
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static Fortification readFortification(final StartElement element, final QName parent,
-												  final Iterable<XMLEvent> stream,
+	public static Fortification readFortification(final StartElement element, final @Nullable Path path,
+	                                              final QName parent, final Iterable<XMLEvent> stream,
 												  final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "fortification");
@@ -107,7 +108,7 @@ import java.util.function.Consumer;
 		final Fortification fix = new Fortification(status, size,
 				getIntegerAttribute(element, "dc"),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory),
+				getOrGenerateID(element, warner, path, idFactory),
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
@@ -115,7 +116,7 @@ import java.util.function.Consumer;
 			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
-					fix.setPopulation(readCommunityStats(se,
+					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
@@ -130,9 +131,9 @@ import java.util.function.Consumer;
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory) throws SPFormatException {
+	public static City readCity(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "city");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
@@ -151,7 +152,7 @@ import java.util.function.Consumer;
 		}
 		final City fix = new City(status, size, getIntegerAttribute(element, "dc"),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory),
+				getOrGenerateID(element, warner, path, idFactory),
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
@@ -159,7 +160,7 @@ import java.util.function.Consumer;
 			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
-					fix.setPopulation(readCommunityStats(se,
+					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
@@ -173,14 +174,14 @@ import java.util.function.Consumer;
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									  final ILegacyPlayerCollection players, final Warning warner,
-									  final IDRegistrar idFactory) throws SPFormatException {
+	public static Village readVillage(final StartElement element, final @Nullable Path path, final QName parent,
+	                                  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "village");
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
 				"portrait", "name");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, path, idFactory);
 		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
@@ -197,7 +198,7 @@ import java.util.function.Consumer;
 			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(retval.getPopulation())) {
-					retval.setPopulation(readCommunityStats(se,
+					retval.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
@@ -210,8 +211,8 @@ import java.util.function.Consumer;
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static CommunityStats readCommunityStats(final StartElement element, final QName parent,
-													final Iterable<XMLEvent> stream,
+	public static CommunityStats readCommunityStats(final StartElement element, final @Nullable Path path,
+	                                                final QName parent, final Iterable<XMLEvent> stream,
 													final ILegacyPlayerCollection players, final Warning warner,
 													final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
@@ -262,7 +263,7 @@ import java.util.function.Consumer;
 									Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
 									"production", "consumption");
 						};
-						lambda.accept(FluidResourceHandler.readResource(se,
+						lambda.accept(FluidResourceHandler.readResource(se, path,
 								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
 								stream, players, warner, idFactory));
 						break;

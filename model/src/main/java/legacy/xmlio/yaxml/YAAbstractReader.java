@@ -1,5 +1,6 @@
 package legacy.xmlio.yaxml;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 import org.jetbrains.annotations.Nullable;
@@ -513,17 +514,18 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Register the specified ID number, noting that it came from the
 	 * specified location, and return it.
 	 */
-	protected final int registerID(final Integer id, final Location location) {
-		return idf.register(id, warner, location);
+	protected final int registerID(final Integer id, final @Nullable Path path, final Location location) {
+		return idf.register(id, warner, Pair.with(path, location));
 	}
 
 	/**
 	 * If the specified tag has an ID as a property, return it; otherwise,
 	 * warn about its absence and generate one.
 	 */
-	protected final int getOrGenerateID(final StartElement element) throws SPFormatException {
+	protected final int getOrGenerateID(final StartElement element, final @Nullable Path path)
+			throws SPFormatException {
 		if (hasParameter(element, "id")) {
-			return registerID(getIntegerParameter(element, "id"), element.getLocation());
+			return registerID(getIntegerParameter(element, "id"), path, element.getLocation());
 		} else {
 			warner.handle(new MissingPropertyException(element, "id"));
 			return idf.createID();

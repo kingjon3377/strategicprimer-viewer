@@ -3,6 +3,7 @@ package legacy.xmlio.yaxml;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import legacy.map.fixtures.mobile.Unicorn;
 import legacy.map.fixtures.mobile.Kraken;
 import legacy.map.fixtures.mobile.ImmortalAnimal;
 import common.xmlio.Warning;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for "mobile fixtures"
@@ -82,7 +84,7 @@ import common.xmlio.Warning;
 				Map.entry("kraken", Kraken::new));
 	}
 
-	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {
+	private MobileFixture createAnimal(final StartElement element, final @Nullable Path path) throws SPFormatException {
 		final String tag = element.getName().getLocalPart();
 		final String kind;
 		final boolean tracks;
@@ -97,7 +99,7 @@ import common.xmlio.Warning;
 							getParameter(element, "traces", "").isEmpty());
 			if (!tracks) {
 				if (IMMORTAL_ANIMALS.contains(kind)) {
-					return ImmortalAnimal.parse(kind).apply(getOrGenerateID(element));
+					return ImmortalAnimal.parse(kind).apply(getOrGenerateID(element, path));
 				}
 				expectAttributes(element, "traces", "id", "count", "talking", "kind",
 						"status", "wild", "born", "image");
@@ -120,7 +122,7 @@ import common.xmlio.Warning;
 			final int count = getIntegerParameter(element, "count", 1);
 			return new AnimalImpl(kind,
 					getBooleanParameter(element, "talking", false),
-					getParameter(element, "status", "wild"), getOrGenerateID(element),
+					getParameter(element, "status", "wild"), getOrGenerateID(element, path),
 					getIntegerParameter(element, "born", -1), count);
 		}
 	}
@@ -142,26 +144,27 @@ import common.xmlio.Warning;
 		MobileFixture apply(String str, int num);
 	}
 
-	private MobileFixture twoParam(final StartElement element, final StringIntConstructor constr)
+	private MobileFixture twoParam(final StartElement element, final @Nullable Path path, final StringIntConstructor constr)
 			throws SPFormatException {
 		expectAttributes(element, "id", "kind", "image");
-		return constr.apply(getParameter(element, "kind"), getOrGenerateID(element));
+		return constr.apply(getParameter(element, "kind"), getOrGenerateID(element, path));
 	}
 
 	@Override
-	public MobileFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public MobileFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                          final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-			case "animal" -> retval = createAnimal(element);
-			case "centaur" -> retval = twoParam(element, Centaur::new);
-			case "dragon" -> retval = twoParam(element, Dragon::new);
-			case "fairy" -> retval = twoParam(element, Fairy::new);
-			case "giant" -> retval = twoParam(element, Giant::new);
+			case "animal" -> retval = createAnimal(element, path);
+			case "centaur" -> retval = twoParam(element, path, Centaur::new);
+			case "dragon" -> retval = twoParam(element, path, Dragon::new);
+			case "fairy" -> retval = twoParam(element, path, Fairy::new);
+			case "giant" -> retval = twoParam(element, path, Giant::new);
 			default -> {
 				expectAttributes(element, "image", "id");
-				retval = readSimple(element.getName().getLocalPart(), getOrGenerateID(element));
+				retval = readSimple(element.getName().getLocalPart(), getOrGenerateID(element, path));
 			}
 		}
 		spinUntilEnd(element.getName(), stream);

@@ -7,11 +7,13 @@ import legacy.map.ILegacyPlayerCollection;
 import legacy.map.Player;
 import legacy.map.fixtures.explorable.AdventureFixture;
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * A reader for adventure hooks.
@@ -28,7 +30,7 @@ import java.io.IOException;
 	 * Read an adventure from XML.
 	 */
 	@Override
-	public AdventureFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public AdventureFixture read(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, "owner", "brief", "full", "image", "id");
@@ -40,7 +42,7 @@ import java.io.IOException;
 		}
 		final AdventureFixture retval = new AdventureFixture(player,
 				getParameter(element, "brief", ""), getParameter(element, "full", ""),
-				getOrGenerateID(element));
+				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		spinUntilEnd(element.getName(), stream);
 		return retval;

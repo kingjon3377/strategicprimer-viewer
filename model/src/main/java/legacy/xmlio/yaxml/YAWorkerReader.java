@@ -24,6 +24,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -163,12 +164,13 @@ import java.util.Objects;
 	}
 
 	@Override
-	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public IWorker read(final StartElement element, final @Nullable Path path, final QName parent,
+	                    final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
 		final Worker retval = new Worker(getParameter(element, "name"),
-				getParameter(element, "race", "human"), getOrGenerateID(element));
+				getParameter(element, "race", "human"), getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
@@ -183,14 +185,14 @@ import java.util.Objects;
 							readNote(se, element.getName(), stream));
 				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) &&
 						Objects.isNull(retval.getMount())) {
-					final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
+					final MobileFixture animal = mobileReader.read(se, path, element.getName(), stream);
 					if (animal instanceof final Animal a) {
 						retval.setMount(a);
 					} else {
 						throw new UnwantedChildException(se.getName(), element);
 					}
 				} else if ("implement".equalsIgnoreCase(se.getName().getLocalPart())) {
-					retval.addEquipment(implementReader.read(se, element.getName(), stream));
+					retval.addEquipment(implementReader.read(se, path, element.getName(), stream));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
 							se, "job", "stats", "note", "animal", "implement");

@@ -1,5 +1,6 @@
 package legacy.xmlio.yaxml;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -83,7 +85,8 @@ import java.util.List;
 	 *
 	 * @throws SPFormatException on SP format problems
 	 */
-	public Object parse(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public Object parse(final StartElement element, final @Nullable Path path, final QName parent,
+	                    final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		// Since all implementations of necessity check the tag's namespace, we leave that
 		// to them.
@@ -94,15 +97,15 @@ import java.util.List;
 		}
 		// Handle "population" specially.
 		if ("population".equals(tag)) {
-			return townReader.parseCommunityStats(element, parent, stream);
+			return townReader.parseCommunityStats(element, path, parent, stream);
 		}
 		if (readerCache.containsKey(tag)) {
-			return readerCache.get(tag).read(element, parent, stream);
+			return readerCache.get(tag).read(element, path, parent, stream);
 		}
 		for (final YAReader<?, ?> reader : readers) {
 			if (reader.isSupportedTag(tag)) {
 				readerCache.put(tag, reader);
-				return reader.read(element, parent, stream);
+				return reader.read(element, path, parent, stream);
 			}
 		}
 		throw new UnwantedChildException(parent, element);

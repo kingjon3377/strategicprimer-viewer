@@ -2,6 +2,7 @@ package legacy.idreg;
 
 import common.entity.LegacyIdentifier;
 import common.idreg.DuplicateIDException;
+import org.javatuples.Pair;
 import org.roaringbitmap.RoaringBitmap;
 
 import common.xmlio.Warning;
@@ -10,6 +11,7 @@ import javax.xml.stream.Location;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -35,22 +37,23 @@ public final class IDFactory implements IDRegistrar {
 	 * Register, and return, the given ID, using the given Warning instance
 	 * to report if it has already been registered.
 	 */
-	@Override
-	public int register(final int id, final Warning warning, final @Nullable Location location) {
+	public int register(final int id, final Warning warning, final @Nullable Pair<@Nullable Path, Location> location) {
 		if (id >= 0) {
 			if (usedIDs.contains(id)) {
 				if (Objects.isNull(location)) {
 					warning.handle(new DuplicateIDException(new LegacyIdentifier(id)));
-				} else {
+				} else if (Objects.isNull(location.getValue0())) {
 					warning.handle(new DuplicateIDException(new LegacyIdentifier(id),
-							location.getLineNumber(), location.getColumnNumber()));
+							location.getValue1().getLineNumber(), location.getValue1().getColumnNumber()));
+				} else {
+					warning.handle(new DuplicateIDException(new LegacyIdentifier(id), location.getValue0(),
+							location.getValue1().getLineNumber(), location.getValue1().getColumnNumber()));
 				}
 			}
 			usedIDs.add(id);
 		}
 		return id;
 	}
-
 	/**
 	 * Generate and register an ID that hasn't been previously registered.
 	 */

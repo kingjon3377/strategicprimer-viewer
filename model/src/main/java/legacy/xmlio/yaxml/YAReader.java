@@ -5,12 +5,14 @@ import common.xmlio.SPFormatException;
 import javax.xml.stream.XMLStreamException;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An interface for XML readers that can read multiple related types, in the
@@ -25,7 +27,7 @@ public interface YAReader<Item, Value> {
 	 * @param stream  The stream of XML events to read more from
 	 * @throws SPFormatException on SP format errors
 	 */
-	Item read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	Item read(StartElement element, @Nullable Path path, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException;
 
 	/**

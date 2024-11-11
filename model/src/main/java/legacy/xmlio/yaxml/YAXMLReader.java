@@ -22,6 +22,7 @@ import legacy.xmlio.IMapReader;
 import impl.xmlio.ISPReader;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
 
@@ -53,7 +54,7 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 					// Unchecked-cast warning is unavoidable without reified generics or a Class<Element> object
 					//noinspection unchecked
 					return (Element) new YAReaderAdapter(warner, idFactory)
-							.parse(se, new QName("root"), eventReader);
+							.parse(se, file, new QName("root"), eventReader);
 				}
 			}
 		}

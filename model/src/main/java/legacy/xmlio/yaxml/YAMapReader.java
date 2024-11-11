@@ -1,5 +1,6 @@
 package legacy.xmlio.yaxml;
 
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
@@ -157,25 +158,26 @@ import java.util.function.Predicate;
 	/**
 	 * Parse what should be a {@link TileFixture} from the XML.
 	 */
-	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	private TileFixture parseFixture(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		final String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
-			return readerCache.get(name.toLowerCase()).read(element, parent, stream);
+			return readerCache.get(name.toLowerCase()).read(element, path, parent, stream);
 		}
 		for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 			if (reader.isSupportedTag(name)) {
 				readerCache.put(name.toLowerCase(), reader);
-				return reader.read(element, parent, stream);
+				return reader.read(element, path, parent, stream);
 			}
 		}
 		if (IMMORTAL_ANIMALS.contains(name.toLowerCase())) {
 			if (readerCache.containsKey("animal")) {
-				return readerCache.get("animal").read(element, parent, stream);
+				return readerCache.get("animal").read(element, path, parent, stream);
 			} else {
 				for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 					if (reader.isSupportedTag("animal")) {
-						return reader.read(element, parent, stream);
+						return reader.read(element, path, parent, stream);
 					}
 				}
 			}
@@ -189,7 +191,8 @@ import java.util.function.Predicate;
 	 */
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	@Override
-	public IMutableLegacyMap read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public IMutableLegacyMap read(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
@@ -236,7 +239,7 @@ import java.util.function.Predicate;
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				final String type = se.getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {
-					retval.addPlayer(playerReader.read(se, Objects.requireNonNull(tagStack.peekFirst()), stream));
+					retval.addPlayer(playerReader.read(se, path, Objects.requireNonNull(tagStack.peekFirst()), stream));
 				} else if ("row".equals(type)) {
 					expectAttributes(se, "index");
 					tagStack.addFirst(se.getName());
@@ -318,7 +321,7 @@ import java.util.function.Predicate;
 						}
 						default -> {
 							final QName top = Objects.requireNonNull(tagStack.peekFirst());
-							final TileFixture child = parseFixture(se, top, stream);
+							final TileFixture child = parseFixture(se, path, top, stream);
 							if (child instanceof final IFortress f &&
 									retval.getFixtures(point).stream()
 											.filter(isFortress)

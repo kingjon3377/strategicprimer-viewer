@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.ThrowingConsumer;
@@ -13,6 +14,7 @@ import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
 import common.xmlio.Warning;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for resource piles.
@@ -23,11 +25,12 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public IMutableResourcePile read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public IMutableResourcePile read(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
-		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element),
+		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element, path),
 				getParameter(element, "kind"), getParameter(element, "contents"),
 				new LegacyQuantity(getNumericParameter(element, "quantity"),
 						getParameter(element, "unit", "")));

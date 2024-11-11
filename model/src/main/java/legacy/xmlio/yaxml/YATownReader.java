@@ -33,6 +33,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,8 +89,8 @@ import java.util.function.Consumer;
 		};
 	}
 
-	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
-											  final Iterable<XMLEvent> stream)
+	public CommunityStats parseCommunityStats(final StartElement element, final @Nullable Path path, final QName parent,
+	                                          final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
@@ -156,7 +157,7 @@ import java.util.function.Consumer;
 										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
 												.toArray(String[]::new));
 							}
-							lambda.accept(resourceReader.read(se,
+							lambda.accept(resourceReader.read(se, path,
 									Objects.requireNonNull(stack.peekFirst()).getName(), stream));
 							break;
 						default:
@@ -189,11 +190,12 @@ import java.util.function.Consumer;
 		return retval;
 	}
 
-	private ITownFixture parseVillage(final StartElement element, final Iterable<XMLEvent> stream)
+	private ITownFixture parseVillage(final StartElement element, final @Nullable Path path,
+	                                  final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
 		requireNonEmptyParameter(element, "name", false);
-		final int idNum = getOrGenerateID(element);
+		final int idNum = getOrGenerateID(element, path);
 		final TownStatus status;
 		try {
 			status = TownStatus.parse(getParameter(element, "status"));
@@ -208,7 +210,7 @@ import java.util.function.Consumer;
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (Objects.isNull(retval.getPopulation())) {
-					retval.setPopulation(parseCommunityStats(se,
+					retval.setPopulation(parseCommunityStats(se, path,
 							element.getName(), stream));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
@@ -220,7 +222,8 @@ import java.util.function.Consumer;
 		return retval;
 	}
 
-	private ITownFixture parseTown(final StartElement element, final Iterable<XMLEvent> stream)
+	private ITownFixture parseTown(final StartElement element, final @Nullable Path path,
+	                               final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
 				"portrait");
@@ -239,7 +242,7 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "size", except);
 		}
 		final int dc = getIntegerParameter(element, "dc");
-		final int id = getOrGenerateID(element);
+		final int id = getOrGenerateID(element, path);
 		final Player owner = getOwnerOrIndependent(element);
 		final AbstractTown retval = switch (element.getName().getLocalPart().toLowerCase()) {
 			case "town" -> new Town(status, size, dc, name, id, owner);
@@ -251,7 +254,7 @@ import java.util.function.Consumer;
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (Objects.isNull(retval.getPopulation())) {
-					retval.setPopulation(parseCommunityStats(se, element.getName(), stream));
+					retval.setPopulation(parseCommunityStats(se, path, element.getName(), stream));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
@@ -264,7 +267,8 @@ import java.util.function.Consumer;
 		return retval;
 	}
 
-	private ITownFixture parseFortress(final StartElement element, final Iterable<XMLEvent> stream)
+	private ITownFixture parseFortress(final StartElement element, final @Nullable Path path,
+	                                   final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
 		requireNonEmptyParameter(element, "owner", false);
@@ -277,7 +281,7 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "size", except);
 		}
 		retval = new FortressImpl(getOwnerOrIndependent(element),
-				getParameter(element, "name", ""), getOrGenerateID(element), size);
+				getParameter(element, "name", ""), getOrGenerateID(element, path), size);
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				final String memberTag = se.getName().getLocalPart().toLowerCase();
@@ -285,7 +289,7 @@ import java.util.function.Consumer;
 						reader = memberReaders.stream()
 						.filter(yar -> yar.isSupportedTag(memberTag)).findAny();
 				if (reader.isPresent()) {
-					retval.addMember(reader.get().read(se, element.getName(), stream));
+					retval.addMember(reader.get().read(se, path, element.getName(), stream));
 				} else if ("orders".equals(memberTag) || "results".equals(memberTag) ||
 						"science".equals(memberTag)) {
 					// We're thinking about storing per-fortress "standing orders" or
@@ -369,13 +373,14 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public ITownFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public ITownFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                         final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
 		return switch (element.getName().getLocalPart().toLowerCase()) {
-			case "village" -> parseVillage(element, stream);
-			case "fortress" -> parseFortress(element, stream);
-			default -> parseTown(element, stream);
+			case "village" -> parseVillage(element, path, stream);
+			case "fortress" -> parseFortress(element, path, stream);
+			default -> parseTown(element, path, stream);
 		};
 	}
 

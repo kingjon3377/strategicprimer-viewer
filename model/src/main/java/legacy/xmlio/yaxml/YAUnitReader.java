@@ -11,6 +11,7 @@ import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Unit;
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -19,6 +20,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -102,13 +104,14 @@ import java.util.Map;
 		unit.setResults(turn, builder.toString().strip());
 	}
 
-	private UnitMember parseChild(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	private UnitMember parseChild(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		final String name = element.getName().getLocalPart().toLowerCase();
 		for (final YAReader<?, ?> reader : readers) {
 			if (reader.isSupportedTag(name)) {
 				final Object retval;
-				retval = reader.read(element, parent, stream);
+				retval = reader.read(element, path, parent, stream);
 				if (retval instanceof final UnitMember um) {
 					return um;
 				} else {
@@ -120,7 +123,8 @@ import java.util.Map;
 	}
 
 	@Override
-	public IUnit read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public IUnit read(final StartElement element, final @Nullable Path path, final QName parent,
+	                  final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "unit");
 		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
@@ -129,7 +133,7 @@ import java.util.Map;
 		final IMutableUnit retval = new Unit(
 				players.getPlayer(getIntegerParameter(element, "owner", -1)),
 				parseKind(element), getParameter(element, "name", ""),
-				getOrGenerateID(element));
+				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder();
@@ -142,7 +146,7 @@ import java.util.Map;
 					} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
 						parseResults(se, retval, stream);
 					} else {
-						retval.addMember(parseChild(se, element.getName(), stream));
+						retval.addMember(parseChild(se, path, element.getName(), stream));
 					}
 				}
 				case final Characters c -> orders.append(c.getData());

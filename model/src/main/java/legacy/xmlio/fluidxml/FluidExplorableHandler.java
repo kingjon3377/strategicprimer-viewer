@@ -12,17 +12,20 @@ import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.Cave;
 import legacy.map.fixtures.explorable.Portal;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
-	public static AdventureFixture readAdventure(final StartElement element, final QName parent,
-												 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-												 final Warning warner, final IDRegistrar idFactory)
+	public static AdventureFixture readAdventure(final StartElement element, final Path path,
+	                                             final QName parent, final Iterable<XMLEvent> stream,
+	                                             final ILegacyPlayerCollection players, final Warning warner,
+	                                             final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
@@ -35,12 +38,12 @@ import javax.xml.stream.events.XMLEvent;
 		final AdventureFixture retval = setImage(new AdventureFixture(player,
 				getAttribute(element, "brief", ""),
 				getAttribute(element, "full", ""),
-				getOrGenerateID(element, warner, idFactory)), element, warner);
+				getOrGenerateID(element, warner, path, idFactory)), element, warner);
 		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
-	public static Portal readPortal(final StartElement element, final QName parent,
+	public static Portal readPortal(final StartElement element, final @Nullable Path path, final QName parent,
 									final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "portal");
@@ -49,36 +52,36 @@ import javax.xml.stream.events.XMLEvent;
 				getIntegerAttribute(element, "column"));
 		final Portal retval = setImage(new Portal(
 				getAttribute(element, "world"), location,
-				getOrGenerateID(element, warner, idFactory)), element, warner);
+				getOrGenerateID(element, warner, path, idFactory)), element, warner);
 		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 
-	public static Cave readCave(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory)
+	public static Cave readCave(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "cave");
 		expectAttributes(element, warner, "id", "dc", "image");
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, path, idFactory);
 		final Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}
 
-	public static Battlefield readBattlefield(final StartElement element, final QName parent,
+	public static Battlefield readBattlefield(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "battlefield");
 		expectAttributes(element, warner, "id", "dc", "image");
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, path, idFactory);
 		final Battlefield retval = new Battlefield(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}
 
-	public static TextFixture readTextFixture(final StartElement element, final QName parent,
+	public static TextFixture readTextFixture(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {

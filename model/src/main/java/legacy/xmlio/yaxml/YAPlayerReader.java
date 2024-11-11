@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import common.xmlio.SPFormatException;
@@ -13,6 +14,7 @@ import legacy.map.PlayerImpl;
 import common.xmlio.Warning;
 
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for {@link Player}s."
@@ -24,7 +26,8 @@ final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	}
 
 	@Override
-	public Player read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public Player read(final StartElement element, final @Nullable Path path, final QName parent,
+	                   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		expectAttributes(element, "number", "code_name", "portrait", "country");

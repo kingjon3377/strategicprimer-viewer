@@ -23,7 +23,9 @@ import common.map.fixtures.towns.TownStatus;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.DeprecatedPropertyException;
+import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.util.Set;
 
 /**
@@ -85,10 +87,11 @@ import java.util.Set;
 	}
 
 	@Override
-	public HarvestableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public HarvestableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS);
-		final int idNum = getOrGenerateID(element);
+		final int idNum = getOrGenerateID(element, path);
 		final HarvestableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 			case "cache" -> {

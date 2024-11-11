@@ -60,6 +60,7 @@ import legacy.xmlio.IMapReader;
 import lovelace.util.IteratorWrapper;
 import lovelace.util.TypesafeXMLEventReader;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -90,9 +91,9 @@ import static legacy.xmlio.fluidxml.FluidBase.*;
  * The main reader-from-XML class in the 'fluid XML' implementation.
  */
 public final class SPFluidReader implements IMapReader, ISPReader {
-	private Object readSPObject(final StartElement element, final QName parent,
-								final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
-								final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+	private Object readSPObject(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		final String namespace = element.getName().getNamespaceURI();
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || namespace.equals(SP_NAMESPACE) ||
@@ -101,9 +102,9 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 					Immortal.IMMORTAL_ANIMALS.contains(getAttribute(element, "kind")) &&
 					!getBooleanAttribute(element, "traces", false)) {
 				return setImage(ImmortalAnimal.parse(getAttribute(element, "kind"))
-						.apply(getOrGenerateID(element, warner, idFactory)), element, warner);
+						.apply(getOrGenerateID(element, warner, path, idFactory)), element, warner);
 			} else if (readers.containsKey(tag)) {
-				return readers.get(tag).read(element, parent, stream,
+				return readers.get(tag).read(element, path, parent, stream,
 						players, warner, idFactory);
 			}
 		}
@@ -112,14 +113,14 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 
 	private record SimpleFixtureReader(String tag, IntFunction<Object> factory) {
 
-		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-							 final IMutableLegacyPlayerCollection players, final Warning warner,
-							 final IDRegistrar idFactory) throws SPFormatException {
+		public Object reader(final StartElement element, final @Nullable Path path, final QName parent,
+		                     final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+		                     final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "image");
 			spinUntilEnd(element.getName(), stream);
 			return setImage(factory.apply(getOrGenerateID(element, warner,
-					idFactory)), element, warner);
+					path, idFactory)), element, warner);
 		}
 
 		public Pair<String, FluidXMLReader<?>> getPair() {
@@ -134,14 +135,14 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 
 	private record SimpleHasKindReader(String tag, HasKindFactory factory) {
 
-		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-							 final IMutableLegacyPlayerCollection players, final Warning warner,
-							 final IDRegistrar idFactory) throws SPFormatException {
+		public Object reader(final StartElement element, final @Nullable Path path, final QName parent,
+		                     final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+		                     final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "kind", "image");
 			spinUntilEnd(element.getName(), stream);
 			return setImage(factory.apply(getAttribute(element, "kind"),
-					getOrGenerateID(element, warner, idFactory)), element, warner);
+					getOrGenerateID(element, warner, path, idFactory)), element, warner);
 		}
 
 		public Pair<String, FluidXMLReader<?>> getPair() {
@@ -168,8 +169,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private void parseTileChild(final IMutableLegacyMap map, final StartElement parent,
-								final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	private void parseTileChild(final IMutableLegacyMap map, final StartElement parent, final @Nullable Path path,
+	                            final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
 								final Warning warner, final IDRegistrar idFactory, final Point currentTile,
 								final StartElement element)
 			throws SPFormatException {
@@ -203,7 +204,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 			map.setRoadLevel(currentTile, direction, getIntegerAttribute(element, "quality"));
 			return;
 		}
-		final Object child = readSPObject(element, parent.getName(), stream, players, warner, idFactory);
+		final Object child = readSPObject(element, path, parent.getName(), stream, players, warner, idFactory);
 		switch (child) {
 			case final River r -> map.addRivers(currentTile, r);
 			case final TileFixture tf -> {
@@ -221,9 +222,9 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private void parseTile(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
-						   final IMutableLegacyPlayerCollection players, final Warning warner,
-						   final IDRegistrar idFactory) throws SPFormatException {
+	private void parseTile(final IMutableLegacyMap map, final StartElement element, final @Nullable Path path,
+	                       final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                       final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		expectAttributes(element, warner, "row", "column", "kind", "type", "mountain");
 		final Point loc = new Point(getIntegerAttribute(element, "row"),
 				getIntegerAttribute(element, "column"));
@@ -245,7 +246,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) -> {
-					parseTileChild(map, element, stream, players, warner, idFactory, loc, se);
+					parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
 				}
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return;
@@ -262,15 +263,15 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private void parseElsewhere(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
-								final IMutableLegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory) throws SPFormatException {
+	private void parseElsewhere(final IMutableLegacyMap map, final StartElement element, final @Nullable Path path,
+	                            final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		expectAttributes(element, warner);
 		final Point loc = Point.INVALID_POINT;
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) ->
-						parseTileChild(map, element, stream, players, warner, idFactory, loc, se);
+						parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return;
 				}
@@ -287,8 +288,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	private IMutableLegacyMap readMapOrViewTag(final StartElement element, final QName parent,
-											   final Iterable<XMLEvent> stream,
+	private IMutableLegacyMap readMapOrViewTag(final StartElement element, final @Nullable Path path,
+	                                           final QName parent, final Iterable<XMLEvent> stream,
 											   final IMutableLegacyPlayerCollection players, final Warning warner,
 											   final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -346,13 +347,13 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 					// Deliberately ignore
 					continue;
 				} else if ("tile".equals(type)) {
-					parseTile(retval, se, stream, players, warner, idFactory);
+					parseTile(retval, se, path, stream, players, warner, idFactory);
 					continue;
 				} else if ("elsewhere".equals(type)) {
-					parseElsewhere(retval, se, stream, players, warner, idFactory);
+					parseElsewhere(retval, se, path, stream, players, warner, idFactory);
 					continue;
 				}
-				final Object player = readSPObject(se, Objects.requireNonNull(stackTop), stream, players, warner,
+				final Object player = readSPObject(se, path, Objects.requireNonNull(stackTop), stream, players, warner,
 						idFactory);
 				if (player instanceof final Player p) {
 					retval.addPlayer(p);
@@ -387,9 +388,9 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	private static Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									 final IMutableLegacyPlayerCollection players, final Warning warner,
-									 final IDRegistrar idFactory)
+	private static Player readPlayer(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                                 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
@@ -443,9 +444,9 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	private IUnit readUnit(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-						   final IMutableLegacyPlayerCollection players, final Warning warner,
-						   final IDRegistrar idFactory) throws SPFormatException {
+	private IUnit readUnit(final StartElement element, final @Nullable Path path, final QName parent,
+	                       final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                       final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		requireNonEmptyAttribute(element, "owner", false, warner);
@@ -464,7 +465,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		final Unit retval = setImage(new Unit(
 				getPlayerOrIndependent(element, warner, players), kind,
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory)), element, warner);
+				getOrGenerateID(element, warner, path, idFactory)), element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
@@ -478,7 +479,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 					parseResults((StartElement) event, retval, stream, warner);
 					continue;
 				}
-				final Object child = readSPObject(se, element.getName(), stream,
+				final Object child = readSPObject(se, path, element.getName(), stream,
 						players, warner, idFactory);
 				if (child instanceof final UnitMember um) {
 					retval.addMember(um);
@@ -499,9 +500,9 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	private IFortress readFortress(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								   final IMutableLegacyPlayerCollection players, final Warning warner,
-								   final IDRegistrar idFactory)
+	private IFortress readFortress(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
+	                               final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "fortress");
 		requireNonEmptyAttribute(element, "owner", false, warner);
@@ -517,7 +518,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		final IMutableFortress retval = new FortressImpl(
 				getPlayerOrIndependent(element, warner, players),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory), size);
+				getOrGenerateID(element, warner, path, idFactory), size);
 		for (final XMLEvent event : stream) {
 			// switch would require break-to-label
 			//noinspection IfCanBeSwitch
@@ -533,7 +534,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 					warner.handle(new UnwantedChildException(element.getName(), se));
 					continue;
 				}
-				final Object child = readSPObject(se, element.getName(), stream,
+				final Object child = readSPObject(se, path, element.getName(), stream,
 						players, warner, idFactory);
 				if (child instanceof final FortressMember fm) {
 					retval.addMember(fm);
@@ -627,7 +628,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 						isSPStartElement(event)) {
 					// unchecked cast is unavoidable unless we take a Class<Type> parameter
 					//noinspection unchecked
-					return (Type) readSPObject(se, new QName("root"), eventReader, players, warner, idFactory);
+					return (Type) readSPObject(se, file, new QName("root"), eventReader, players, warner, idFactory);
 				}
 			}
 		} catch (final IOException except) {

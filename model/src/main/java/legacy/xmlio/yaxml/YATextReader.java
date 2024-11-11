@@ -5,6 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.Characters;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
 import lovelace.util.ThrowingConsumer;
@@ -13,6 +14,7 @@ import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.TextFixture;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnwantedChildException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for arbitrary-text notes.
@@ -29,7 +31,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	@Override
-	public TextFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public TextFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                        final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, "turn", "image");

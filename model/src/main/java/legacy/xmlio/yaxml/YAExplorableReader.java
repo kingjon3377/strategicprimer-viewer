@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -14,6 +15,7 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnsupportedTagException;
 
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for Caves and Battlefields.
@@ -32,11 +34,12 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public ExplorableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public ExplorableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
-		final int idNum = getOrGenerateID(element);
+		final int idNum = getOrGenerateID(element, path);
 		final ExplorableFixture retval = switch (element.getName().getLocalPart().toLowerCase()) {
 			case "battlefield" -> new Battlefield(getIntegerParameter(element, "dc"), idNum);
 			case "cave" -> new Cave(getIntegerParameter(element, "dc"), idNum);

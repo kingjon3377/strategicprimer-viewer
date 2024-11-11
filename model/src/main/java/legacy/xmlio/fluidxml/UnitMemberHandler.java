@@ -27,6 +27,7 @@ import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.Job;
 import legacy.map.fixtures.mobile.worker.Skill;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -35,13 +36,14 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
-	public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	public static Worker readWorker(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream,
 	                                final ILegacyPlayerCollection players, final Warning warner,
 	                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "worker");
@@ -49,23 +51,23 @@ import java.util.stream.StreamSupport;
 		final Worker retval = setImage(
 				new Worker(getAttribute(element, "name"),
 						getAttribute(element, "race", "human"),
-						getOrGenerateID(element, warner, idFactory)),
+						getOrGenerateID(element, warner, path, idFactory)),
 				element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) -> {
 					switch (se.getName().getLocalPart().toLowerCase()) {
-						case "job" -> retval.addJob(readJob(se, element.getName(),
+						case "job" -> retval.addJob(readJob(se, path, element.getName(),
 								stream, players, warner, idFactory));
-						case "stats" -> retval.setStats(readStats(se, element.getName(),
+						case "stats" -> retval.setStats(readStats(se, path, element.getName(),
 								stream, players, warner, idFactory));
 						case "note" -> retval.setNote(
 								players.getPlayer(getIntegerAttribute(se, "player")),
 								readNote(se, element.getName(), stream, warner));
 						case "animal" -> {
 							if (Objects.isNull(retval.getMount())) {
-								final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
+								final AnimalOrTracks animal = readAnimal(se, path, element.getName(), stream, players,
 										warner, idFactory);
 								if (animal instanceof final Animal a) {
 									retval.setMount(a);
@@ -74,8 +76,8 @@ import java.util.stream.StreamSupport;
 							}
 							throw new UnwantedChildException(se.getName(), element);
 						}
-						case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, element.getName()
-								, stream,
+						case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, path,
+								element.getName(), stream,
 								players, warner, idFactory));
 						default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
 								se, "job", "stats", "note", "animal", "implement");
@@ -111,8 +113,9 @@ import java.util.stream.StreamSupport;
 		return retval.toString().strip();
 	}
 
-	public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                           final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+	public static IJob readJob(final StartElement element, final @Nullable Path path, final QName parent,
+	                           final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+	                           final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, warner, "name", "level");
@@ -122,7 +125,7 @@ import java.util.stream.StreamSupport;
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) &&
 						"skill".equalsIgnoreCase(se.getName().getLocalPart()) ->
-						retval.addSkill(readSkill(se, element.getName(), stream, players, warner, idFactory));
+						retval.addSkill(readSkill(se, path, element.getName(), stream, players, warner, idFactory));
 				case final StartElement se when isSPStartElement(event) ->
 						throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
@@ -135,9 +138,9 @@ import java.util.stream.StreamSupport;
 		return retval;
 	}
 
-	public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                               final ILegacyPlayerCollection players, final Warning warner,
-	                               final IDRegistrar idFactory) throws SPFormatException {
+	public static ISkill readSkill(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                               final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, warner, "name", "level", "hours");
 		requireNonEmptyAttribute(element, "name", true, warner);
@@ -147,9 +150,9 @@ import java.util.stream.StreamSupport;
 				getIntegerAttribute(element, "hours"));
 	}
 
-	public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                                    final ILegacyPlayerCollection players, final Warning warner,
-	                                    final IDRegistrar idFactory) throws SPFormatException {
+	public static WorkerStats readStats(final StartElement element, final @Nullable Path path, final QName parent,
+	                                    final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                    final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
 				"wis", "cha");
@@ -247,7 +250,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	// TODO: split into Animal and Tracks methods, if at all possible
-	public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
+	public static AnimalOrTracks readAnimal(final StartElement element, final @Nullable Path path, final QName parent,
 	                                        final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                        final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -300,7 +303,7 @@ import java.util.stream.StreamSupport;
 			}
 			return setImage(new AnimalTracks(kind), element, warner);
 		} else {
-			id = getOrGenerateID(element, warner, idFactory);
+			id = getOrGenerateID(element, warner, path, idFactory);
 			return setImage(
 					new AnimalImpl(kind, talking, status, id, born, count), element, warner);
 		}

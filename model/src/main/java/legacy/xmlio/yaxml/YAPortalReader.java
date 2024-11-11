@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -11,6 +12,7 @@ import legacy.map.fixtures.explorable.Portal;
 import common.xmlio.Warning;
 
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reader for portals.
@@ -21,12 +23,13 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public Portal read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public Portal read(final StartElement element, final @Nullable Path path, final QName parent,
+	                   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "portal");
 		expectAttributes(element, "world", "row", "column", "id", "image");
 		final Portal retval = new Portal(getParameter(element, "world"), parsePoint(element),
-				getOrGenerateID(element));
+				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		spinUntilEnd(element.getName(), stream);
 		return retval;

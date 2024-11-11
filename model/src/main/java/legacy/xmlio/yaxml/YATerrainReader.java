@@ -17,7 +17,9 @@ import legacy.map.fixtures.terrain.Oasis;
 import legacy.map.fixtures.terrain.Hill;
 import legacy.map.fixtures.terrain.Forest;
 import common.xmlio.Warning;
+import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.util.Set;
 
 /**
@@ -37,7 +39,8 @@ import java.util.Set;
 	}
 
 	@Override
-	public TerrainFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	public TerrainFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                           final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final TerrainFixture retval;
@@ -46,7 +49,7 @@ import java.util.Set;
 				expectAttributes(element, "id", "image", "kind", "rows", "acres");
 				final int id = getIntegerParameter(element, "id", -1);
 				if (id >= 0) {
-					registerID(id, element.getLocation());
+					registerID(id, path, element.getLocation());
 				}
 				retval = new Forest(getParameter(element, "kind"),
 						getBooleanParameter(element, "rows", false), id,
@@ -54,11 +57,11 @@ import java.util.Set;
 			}
 			case "hill" -> {
 				expectAttributes(element, "id", "image");
-				retval = new Hill(getOrGenerateID(element));
+				retval = new Hill(getOrGenerateID(element, path));
 			}
 			case "oasis" -> {
 				expectAttributes(element, "id", "image");
-				retval = new Oasis(getOrGenerateID(element));
+				retval = new Oasis(getOrGenerateID(element, path));
 			}
 			default -> throw new IllegalArgumentException("Unhandled terrain fixture tag " +
 					element.getName().getLocalPart());

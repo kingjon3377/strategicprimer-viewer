@@ -10,25 +10,27 @@ import legacy.map.River;
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.terrain.Forest;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Collection;
 
 /* package */ class FluidTerrainHandler extends FluidBase {
-	public static Ground readGround(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory)
+	public static Ground readGround(final StartElement element, final @Nullable Path path, final QName parent,
+	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
-			idFactory.register(id, warner, element.getLocation());
+			idFactory.register(id, warner, Pair.with(path, element.getLocation()));
 		}
 		final String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
 		spinUntilEnd(element.getName(), stream);
@@ -36,15 +38,15 @@ import java.util.Collection;
 				element, warner);
 	}
 
-	public static Forest readForest(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory)
+	public static Forest readForest(final StartElement element, final @Nullable Path path, final QName parent,
+	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "forest");
 		expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
-			idFactory.register(id, warner, element.getLocation());
+			idFactory.register(id, warner, Pair.with(path, element.getLocation()));
 		}
 		final Forest retval = new Forest(getAttribute(element, "kind"),
 				getBooleanAttribute(element, "rows", false), id,
@@ -75,9 +77,9 @@ import java.util.Collection;
 		writeImage(ostream, obj);
 	}
 
-	public static River readLake(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								 final ILegacyPlayerCollection players, final Warning warner,
-								 final IDRegistrar idFactory)
+	public static River readLake(final StartElement element, final @Nullable Path path, final QName parent,
+	                             final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                             final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "lake");
 		expectAttributes(element, warner);
@@ -85,9 +87,9 @@ import java.util.Collection;
 		return River.Lake;
 	}
 
-	public static River readRiver(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								  final ILegacyPlayerCollection players, final Warning warner,
-								  final IDRegistrar idFactory)
+	public static River readRiver(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "river");
 		expectAttributes(element, warner, "direction");

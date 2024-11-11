@@ -24,6 +24,7 @@ import legacy.map.fixtures.resources.Shrub;
 import legacy.map.fixtures.resources.StoneDeposit;
 import legacy.map.fixtures.resources.StoneKind;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -31,18 +32,19 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.nio.file.Path;
 
 /* package */ class FluidResourceHandler extends FluidBase {
-	public static IMutableResourcePile readResource(final StartElement element, final QName parent,
-													final Iterable<XMLEvent> stream,
-													final ILegacyPlayerCollection players, final Warning warner,
-													final IDRegistrar idFactory) throws SPFormatException {
+	public static IMutableResourcePile readResource(final StartElement element, final @Nullable Path path,
+	                                                final QName parent, final Iterable<XMLEvent> stream,
+	                                                final ILegacyPlayerCollection players, final Warning warner,
+	                                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
 				"created", "id", "image");
 		spinUntilEnd(element.getName(), stream);
 		final IMutableResourcePile retval = new ResourcePileImpl(
-				getOrGenerateID(element, warner, idFactory),
+				getOrGenerateID(element, warner, path, idFactory),
 				getAttribute(element, "kind"),
 				getAttribute(element, "contents"),
 				new LegacyQuantity(getNumericAttribute(element, "quantity"), getAttribute(element,
@@ -53,19 +55,19 @@ import javax.xml.stream.events.XMLEvent;
 		return setImage(retval, element, warner);
 	}
 
-	public static Implement readImplement(final StartElement element, final QName parent,
+	public static Implement readImplement(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, warner, "kind", "id", "count", "image");
 		spinUntilEnd(element.getName(), stream);
 		return setImage(new Implement(getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory),
+				getOrGenerateID(element, warner, path, idFactory),
 				getIntegerAttribute(element, "count", 1, warner)), element, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static CacheFixture readCache(final StartElement element, final QName parent,
+	public static CacheFixture readCache(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "cache");
@@ -91,13 +93,13 @@ import javax.xml.stream.events.XMLEvent;
 		return setImage(
 				new CacheFixture(getAttribute(element, "kind"),
 						getAttribute(element, "contents"),
-						getOrGenerateID(element, warner, idFactory)),
+						getOrGenerateID(element, warner, path, idFactory)),
 				element, warner);
 	}
 
-	public static Grove readGrove(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								  final ILegacyPlayerCollection players, final Warning warner,
-								  final IDRegistrar idFactory)
+	public static Grove readGrove(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "grove");
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -115,13 +117,13 @@ import javax.xml.stream.events.XMLEvent;
 		return setImage(
 				new Grove(false, cultivated,
 						getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-						getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, warner);
 	}
 
-	public static Grove readOrchard(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory)
+	public static Grove readOrchard(final StartElement element, final @Nullable Path path, final QName parent,
+	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "orchard");
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -139,19 +141,19 @@ import javax.xml.stream.events.XMLEvent;
 		return setImage(
 				new Grove(true, cultivated,
 						getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-						getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, warner);
 	}
 
-	public static Meadow readMeadow(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory)
+	public static Meadow readMeadow(final StartElement element, final @Nullable Path path, final QName parent,
+	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "meadow");
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
 		spinUntilEnd(element.getName(), stream);
-		final int id = getOrGenerateID(element, warner, idFactory);
+		final int id = getOrGenerateID(element, warner, path, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.handle(new MissingPropertyException(element, "status"));
 		}
@@ -167,15 +169,15 @@ import javax.xml.stream.events.XMLEvent;
 				getNumericAttribute(element, "acres", -1)), element, warner);
 	}
 
-	public static Meadow readField(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								   final ILegacyPlayerCollection players, final Warning warner,
-								   final IDRegistrar idFactory)
+	public static Meadow readField(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                               final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "field");
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
 		spinUntilEnd(element.getName(), stream);
-		final int id = getOrGenerateID(element, warner, idFactory);
+		final int id = getOrGenerateID(element, warner, path, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.handle(new MissingPropertyException(element, "status"));
 		}
@@ -191,9 +193,9 @@ import javax.xml.stream.events.XMLEvent;
 				getNumericAttribute(element, "acres", -1)), element, warner);
 	}
 
-	public static Mine readMine(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory)
+	public static Mine readMine(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mine");
 		expectAttributes(element, warner, "status", "kind", "product", "id", "image");
@@ -206,11 +208,11 @@ import javax.xml.stream.events.XMLEvent;
 		}
 		return setImage(
 				new Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
-						status, getOrGenerateID(element, warner, idFactory)), element,
+						status, getOrGenerateID(element, warner, path, idFactory)), element,
 				warner);
 	}
 
-	public static MineralVein readMineral(final StartElement element, final QName parent,
+	public static MineralVein readMineral(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -222,23 +224,23 @@ import javax.xml.stream.events.XMLEvent;
 						getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
 						getBooleanAttribute(element, "exposed"),
 						getIntegerAttribute(element, "dc"),
-						getOrGenerateID(element, warner, idFactory)), element, warner);
+						getOrGenerateID(element, warner, path, idFactory)), element, warner);
 	}
 
-	public static Shrub readShrub(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								  final ILegacyPlayerCollection players, final Warning warner,
-								  final IDRegistrar idFactory)
+	public static Shrub readShrub(final StartElement element, final @Nullable Path path, final QName parent,
+	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "shrub");
 		expectAttributes(element, warner, "kind", "shrub", "id", "image", "count");
 		spinUntilEnd(element.getName(), stream);
 		return setImage(new Shrub(
 				getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
-				getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+				getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 				"count", -1)), element, warner);
 	}
 
-	public static StoneDeposit readStone(final StartElement element, final QName parent,
+	public static StoneDeposit readStone(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -254,7 +256,7 @@ import javax.xml.stream.events.XMLEvent;
 		return setImage(
 				new StoneDeposit(stone,
 						getIntegerAttribute(element, "dc"),
-						getOrGenerateID(element, warner, idFactory)), element, warner);
+						getOrGenerateID(element, warner, path, idFactory)), element, warner);
 	}
 
 	public static void writeResource(final XMLStreamWriter ostream, final IResourcePile obj, final int indent)

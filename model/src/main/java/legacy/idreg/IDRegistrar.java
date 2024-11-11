@@ -4,7 +4,10 @@ import common.xmlio.Warning;
 
 import javax.xml.stream.Location;
 
+import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.file.Path;
 
 /**
  * An interface for a factory that XML-reading code can use to register IDs and
@@ -26,7 +29,7 @@ public interface IDRegistrar {
 	 * @param location The location in some XML that this is coming from,
 	 *                 if the caller is an XML reader.
 	 */
-	int register(int id, Warning warning, @Nullable Location location);
+	int register(int id, Warning warning, @Nullable Pair<@Nullable Path, Location> location);
 
 	default int register(final int id, final Warning warning) {
 		return register(id, warning, null);

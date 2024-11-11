@@ -28,6 +28,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -264,13 +265,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param idFactory The factory to use to register an existing ID or get a new one
 	 * @throws SPFormatException on SP format problems reading the property
 	 */
-	protected static int getOrGenerateID(final StartElement element, final Warning warner,
+	protected static int getOrGenerateID(final StartElement element, final Warning warner, final @Nullable Path path,
 										 final IDRegistrar idFactory) throws SPFormatException {
 		if (hasAttribute(element, "id")) {
 			try {
 				return idFactory.register(
 						NUM_PARSER.parse(getAttribute(element, "id")).intValue(),
-						warner, element.getLocation());
+						warner, Pair.with(path, element.getLocation()));
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}
