@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -38,8 +37,6 @@ import legacy.map.fixtures.mobile.IWorker;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
 import common.map.fixtures.mobile.worker.RaceFactory;
-
-import drivers.worker_mgmt.UnitSelectionListener;
 
 import worker.common.IWorkerTreeModel;
 

@@ -20,7 +20,6 @@ import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;

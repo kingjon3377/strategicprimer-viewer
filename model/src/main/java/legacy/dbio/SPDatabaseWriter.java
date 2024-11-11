@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.HashMap;
-import javax.xml.stream.XMLStreamException;
 
 import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;

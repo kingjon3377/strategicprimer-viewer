@@ -11,8 +11,6 @@ import drivers.common.DriverFailedException;
 
 import java.nio.file.Path;
 
-import java.io.IOException;
-
 import drivers.common.IDriverModel;
 import drivers.common.SPOptions;
 import drivers.common.GUIDriver;
@@ -22,7 +20,6 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.map.IMutableLegacyMap;
 
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
