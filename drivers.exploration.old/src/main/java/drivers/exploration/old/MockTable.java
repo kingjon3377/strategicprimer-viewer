@@ -25,8 +25,8 @@ final class MockTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(final Point point, final @Nullable TileType terrain, TerrainModifier terrainMod,
-								final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
+	public String generateEvent(final Point point, final @Nullable TileType terrain, final TerrainModifier terrainMod,
+	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		return queue.removeFirst();
 	}
 

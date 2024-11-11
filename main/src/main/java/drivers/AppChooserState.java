@@ -110,10 +110,10 @@ import org.jetbrains.annotations.Nullable;
 	public enum UsageVerbosity {
 		Verbose(IDriverUsage::getLongDescription), Terse(IDriverUsage::getShortDescription);
 		private final Function<IDriverUsage, String> impl;
-		private UsageVerbosity(Function<IDriverUsage, String> impl) {
+		UsageVerbosity(final Function<IDriverUsage, String> impl) {
 			this.impl = impl;
 		}
-		public String getUsageMessage(IDriverUsage usage) {
+		public String getUsageMessage(final IDriverUsage usage) {
 			return impl.apply(usage);
 		}
 	}
