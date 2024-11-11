@@ -18,12 +18,12 @@ public record CoordinateLocation(@NotNull String world, int region, int row, int
 			throw new IllegalArgumentException("Region must be -1 if unknown, or nonnegative");
 		} else if (region < 0 && (row >= 0 || column >= 0)) {
 			throw new IllegalArgumentException("Coordinates cannot be known if region is unknown");
-		} else if (differentSignImpl(row, column) || differentSignImpl(column, row)) {
+		} else if (isDifferentSign(row, column) || isDifferentSign(column, row)) {
 			throw new IllegalArgumentException("Either both or neither row and column must be valid");
 		}
 	}
 
-	private static boolean differentSignImpl(final int one, final int two) {
+	private static boolean isDifferentSign(final int one, final int two) {
 		return one < 0 && two >= 0;
 	}
 }
