@@ -8,21 +8,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 /**
- * A game-world within the game. TODO: terrain information, etc. TODO: Add nullness annotations
+ * A game-world within the game. TODO: terrain information, etc.
  */
 public interface IMap {
 	@Nullable
 	IEntity getEntity(@NotNull EntityIdentifier id);
 
 	@NotNull
-	Collection<IEntity> getAllEntities();
+	Collection<@NotNull IEntity> getAllEntities();
 
 	/**
 	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another (sharing an edge is
 	 * fine), and no two regions have the same ID number.
 	 */
 	@NotNull
-	Collection<MapRegion> getRegions();
+	Collection<@NotNull MapRegion> getRegions();
 
 	/**
 	 * The players in the map.
