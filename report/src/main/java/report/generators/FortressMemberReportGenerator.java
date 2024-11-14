@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
@@ -133,8 +134,10 @@ public final class FortressMemberReportGenerator extends AbstractReportGenerator
 					fixtures.remove(resource.getId());
 				}
 				case final Implement implement -> {
-					// TODO: Ensure it's not displacing anything (i.e. no duplicate equipment fixtures)
-					equipment.put(implement, loc);
+					final var old = equipment.put(implement, loc);
+					if (Objects.nonNull(old)) {
+						ostream.accept("Duplicate equipment found: %s at %s and %s".formatted(implement, old, loc));
+					}
 					fixtures.remove(implement.getId());
 				}
 				default -> {
