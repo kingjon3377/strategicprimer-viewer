@@ -89,41 +89,41 @@ import org.jetbrains.annotations.Nullable;
 		final String kind;
 		final boolean tracks;
 		if ("animal".equalsIgnoreCase(tag)) {
-			kind = getParameter(element, "kind");
+			kind = getParameter(element, path, "kind");
 			// To get the intended meaning of existing maps, we have to parse
 			// traces="" as traces="true". If compatibility with existing maps
 			// ever becomes unnecessary, I will change the default-value here to
 			// simply `false`.
-			tracks = getBooleanParameter(element, "traces",
+			tracks = getBooleanParameter(element, path, "traces",
 					hasParameter(element, "traces") &&
 							getParameter(element, "traces", "").isEmpty());
 			if (!tracks) {
 				if (IMMORTAL_ANIMALS.contains(kind)) {
 					return ImmortalAnimal.parse(kind).apply(getOrGenerateID(element, path));
 				}
-				expectAttributes(element, "traces", "id", "count", "talking", "kind",
+				expectAttributes(element, path, "traces", "id", "count", "talking", "kind",
 						"status", "wild", "born", "image");
 			}
 		} else {
-			warnFutureTag(element);
-			expectAttributes(element, "id", "count", "image");
+			warnFutureTag(element, path);
+			expectAttributes(element, path, "id", "count", "image");
 			kind = tag.toLowerCase();
 			tracks = false;
 		}
 		if (tracks) {
 			if ("wild".equals(getParameter(element, "status", "wild"))) {
-				expectAttributes(element, "traces", "status", "image", "kind");
+				expectAttributes(element, path, "traces", "status", "image", "kind");
 			} else {
-				expectAttributes(element, "traces", "image", "kind");
+				expectAttributes(element, path, "traces", "image", "kind");
 			}
 			return new AnimalTracks(kind);
 		} else {
 			// TODO: We'd like default to be 1 inside a unit and -1 outside
-			final int count = getIntegerParameter(element, "count", 1);
+			final int count = getIntegerParameter(element, path, "count", 1);
 			return new AnimalImpl(kind,
-					getBooleanParameter(element, "talking", false),
+					getBooleanParameter(element, path, "talking", false),
 					getParameter(element, "status", "wild"), getOrGenerateID(element, path),
-					getIntegerParameter(element, "born", -1), count);
+					getIntegerParameter(element, path, "born", -1), count);
 		}
 	}
 
@@ -146,15 +146,15 @@ import org.jetbrains.annotations.Nullable;
 
 	private MobileFixture twoParam(final StartElement element, final @Nullable Path path, final StringIntConstructor constr)
 			throws SPFormatException {
-		expectAttributes(element, "id", "kind", "image");
-		return constr.apply(getParameter(element, "kind"), getOrGenerateID(element, path));
+		expectAttributes(element, path, "id", "kind", "image");
+		return constr.apply(getParameter(element, path, "kind"), getOrGenerateID(element, path));
 	}
 
 	@Override
 	public MobileFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                          final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, SUPPORTED_TAGS);
+		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 			case "animal" -> retval = createAnimal(element, path);
@@ -163,11 +163,11 @@ import org.jetbrains.annotations.Nullable;
 			case "fairy" -> retval = twoParam(element, path, Fairy::new);
 			case "giant" -> retval = twoParam(element, path, Giant::new);
 			default -> {
-				expectAttributes(element, "image", "id");
+				expectAttributes(element, path, "image", "id");
 				retval = readSimple(element.getName().getLocalPart(), getOrGenerateID(element, path));
 			}
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		if (retval instanceof final HasMutableImage hmi) {
 			hmi.setImage(getParameter(element, "image", ""));
 		}

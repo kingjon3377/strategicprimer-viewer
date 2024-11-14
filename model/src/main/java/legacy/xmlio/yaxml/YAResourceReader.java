@@ -42,43 +42,45 @@ import java.util.Set;
 	private static final Set<String> SUPPORTED_TAGS = Set.of("cache", "grove", "orchard", "field", "meadow", "mine",
 			"mineral", "shrub", "stone");
 
-	private HarvestableFixture createMeadow(final StartElement element, final boolean field, final int idNum)
+	private HarvestableFixture createMeadow(final StartElement element, final @Nullable Path path, final boolean field,
+	                                        final int idNum)
 			throws SPFormatException {
-		expectAttributes(element, "status", "kind", "id", "cultivated", "image", "acres");
-		requireNonEmptyParameter(element, "status", false);
+		expectAttributes(element, path, "status", "kind", "id", "cultivated", "image", "acres");
+		requireNonEmptyParameter(element, path, "status", false);
 		final FieldStatus status;
 		try {
 			// TODO: add FieldStatus.parse() overload taking FieldStatus as default
 			status = FieldStatus.parse(getParameter(element, "status",
 					FieldStatus.random(idNum).toString()));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return new Meadow(getParameter(element, "kind"), field,
-				getBooleanParameter(element, "cultivated"), idNum, status,
-				getNumericParameter(element, "acres", -1));
+		return new Meadow(getParameter(element, path, "kind"), field,
+				getBooleanParameter(element, path, "cultivated"), idNum, status,
+				getNumericParameter(element, path, "acres", -1));
 	}
 
-	private boolean isCultivated(final StartElement element) throws SPFormatException {
+	private boolean isCultivated(final StartElement element, final @Nullable Path path) throws SPFormatException {
 		if (hasParameter(element, "cultivated")) {
-			return getBooleanParameter(element, "cultivated");
+			return getBooleanParameter(element, path, "cultivated");
 		} else if (hasParameter(element, "wild")) {
-			warner.handle(new DeprecatedPropertyException(element, "wild", "cultivated"));
-			return !getBooleanParameter(element, "wild");
+			warner.handle(new DeprecatedPropertyException(element, path, "wild", "cultivated"));
+			return !getBooleanParameter(element, path, "wild");
 		} else {
-			throw new MissingPropertyException(element, "cultivated");
+			throw new MissingPropertyException(element, path, "cultivated");
 		}
 	}
 
 	/**
 	 * TODO: Inline?
 	 */
-	private HarvestableFixture createGrove(final StartElement element, final boolean orchard, final int idNum)
+	private HarvestableFixture createGrove(final StartElement element, final @Nullable Path path, final boolean orchard,
+	                                       final int idNum)
 			throws SPFormatException {
-		expectAttributes(element, "kind", "tree", "cultivated", "wild", "id", "image", "count");
-		return new Grove(orchard, isCultivated(element),
-				getParamWithDeprecatedForm(element, "kind", "tree"), idNum,
-				getIntegerParameter(element, "count", -1));
+		expectAttributes(element, path, "kind", "tree", "cultivated", "wild", "id", "image", "count");
+		return new Grove(orchard, isCultivated(element, path),
+				getParamWithDeprecatedForm(element, path, "kind", "tree"), idNum,
+				getIntegerParameter(element, path, "count", -1));
 	}
 
 	@Override
@@ -90,60 +92,60 @@ import java.util.Set;
 	public HarvestableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                               final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, SUPPORTED_TAGS);
+		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final int idNum = getOrGenerateID(element, path);
 		final HarvestableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 			case "cache" -> {
-				expectAttributes(element, "kind", "contents", "id", "image");
-				retval = new CacheFixture(getParameter(element, "kind"),
-						getParameter(element, "contents"), idNum);
+				expectAttributes(element, path, "kind", "contents", "id", "image");
+				retval = new CacheFixture(getParameter(element, path, "kind"),
+						getParameter(element, path, "contents"), idNum);
 				// We want to transition from arbitrary-String 'contents' to sub-tags. As a
 				// first step, future-proof *this* version of the suite by only firing a
 				// warning if such children are detected, instead of aborting.
-				spinUntilEnd(element.getName(), stream, "resource", "implement");
+				spinUntilEnd(element.getName(), path, stream, "resource", "implement");
 				retval.setImage(getParameter(element, "image", ""));
 				return retval;
 			}
-			case "field" -> retval = createMeadow(element, true, idNum);
-			case "grove" -> retval = createGrove(element, false, idNum);
-			case "meadow" -> retval = createMeadow(element, false, idNum);
+			case "field" -> retval = createMeadow(element, path, true, idNum);
+			case "grove" -> retval = createGrove(element, path, false, idNum);
+			case "meadow" -> retval = createMeadow(element, path, false, idNum);
 			case "mine" -> {
-				expectAttributes(element, "status", "kind", "product", "id", "image");
+				expectAttributes(element, path, "status", "kind", "product", "id", "image");
 				final TownStatus status;
 				try {
-					status = TownStatus.parse(getParameter(element, "status"));
+					status = TownStatus.parse(getParameter(element, path, "status"));
 				} catch (final IllegalArgumentException except) {
-					throw new MissingPropertyException(element, "status", except);
+					throw new MissingPropertyException(element, path, "status", except);
 				}
-				retval = new Mine(getParamWithDeprecatedForm(element, "kind", "product"),
+				retval = new Mine(getParamWithDeprecatedForm(element, path, "kind", "product"),
 						status, idNum);
 			}
 			case "mineral" -> {
-				expectAttributes(element, "kind", "mineral", "exposed", "id", "dc", "image");
-				retval = new MineralVein(getParamWithDeprecatedForm(element, "kind", "mineral"),
-						getBooleanParameter(element, "exposed"),
-						getIntegerParameter(element, "dc"), idNum);
+				expectAttributes(element, path, "kind", "mineral", "exposed", "id", "dc", "image");
+				retval = new MineralVein(getParamWithDeprecatedForm(element, path, "kind", "mineral"),
+						getBooleanParameter(element, path, "exposed"),
+						getIntegerParameter(element, path, "dc"), idNum);
 			}
-			case "orchard" -> retval = createGrove(element, true, idNum);
+			case "orchard" -> retval = createGrove(element, path, true, idNum);
 			case "shrub" -> {
-				expectAttributes(element, "kind", "shrub", "id", "image", "count");
-				retval = new Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum,
-						getIntegerParameter(element, "count", -1));
+				expectAttributes(element, path, "kind", "shrub", "id", "image", "count");
+				retval = new Shrub(getParamWithDeprecatedForm(element, path, "kind", "shrub"), idNum,
+						getIntegerParameter(element, path, "count", -1));
 			}
 			case "stone" -> {
-				expectAttributes(element, "kind", "stone", "id", "dc", "image");
+				expectAttributes(element, path, "kind", "stone", "id", "dc", "image");
 				final StoneKind stone;
 				try {
-					stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind", "stone"));
+					stone = StoneKind.parse(getParamWithDeprecatedForm(element, path, "kind", "stone"));
 				} catch (final IllegalArgumentException except) {
-					throw new MissingPropertyException(element, "kind", except);
+					throw new MissingPropertyException(element, path, "kind", except);
 				}
-				retval = new StoneDeposit(stone, getIntegerParameter(element, "dc"), idNum);
+				retval = new StoneDeposit(stone, getIntegerParameter(element, path, "dc"), idNum);
 			}
 			default -> throw new IllegalArgumentException("Unhandled harvestable tag");
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

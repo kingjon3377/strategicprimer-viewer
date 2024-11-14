@@ -1,11 +1,13 @@
 package impl.xmlio.exceptions;
 
 import common.xmlio.SPFormatException;
+import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import java.io.Serial;
+import java.nio.file.Path;
 
 /**
  * An exception to indicate that a map file specified a map version not supported by the code reading it.
@@ -55,10 +57,10 @@ public class MapVersionException extends SPFormatException {
 	 * @param minimum the lowest version the code supports
 	 * @param maximum the highest version the code supports
 	 */
-	public MapVersionException(final StartElement context, final int version, final int minimum, final int maximum) {
+	public MapVersionException(final StartElement context, final @Nullable Path path, final int version, final int minimum, final int maximum) {
 		super("Unsupported map version %d in tag %s%s".formatted(version,
 						context.getName().getLocalPart(), messageFragment(minimum, maximum)),
-				context.getLocation());
+				Pair.with(path, context.getLocation()));
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class MapVersionException extends SPFormatException {
 	 */
 	private MapVersionException(final int version, final int minimum, final int maximum) {
 		super("Unsupported SP map version %d%s".formatted(version,
-				messageFragment(minimum, maximum)), new DummyLocation());
+				messageFragment(minimum, maximum)), Pair.with(null, new DummyLocation()));
 	}
 
 	/**

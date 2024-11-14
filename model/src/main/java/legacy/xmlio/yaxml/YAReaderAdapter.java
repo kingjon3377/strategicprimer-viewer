@@ -93,7 +93,7 @@ import java.util.List;
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
-			return mapReader.parseRiver(element, parent);
+			return mapReader.parseRiver(element, path, parent);
 		}
 		// Handle "population" specially.
 		if ("population".equals(tag)) {
@@ -108,7 +108,7 @@ import java.util.List;
 				return reader.read(element, path, parent, stream);
 			}
 		}
-		throw new UnwantedChildException(parent, element);
+		throw new UnwantedChildException(parent, element, path);
 	}
 
 	/**

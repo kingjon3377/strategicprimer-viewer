@@ -27,16 +27,16 @@ import org.jetbrains.annotations.Nullable;
 	public Ground read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "ground");
-		expectAttributes(element, "kind", "ground", "exposed", "id", "image");
-		final String kind = getParamWithDeprecatedForm(element, "kind", "ground");
-		requireNonEmptyParameter(element, "exposed", true);
-		spinUntilEnd(element.getName(), stream);
-		final int id = getIntegerParameter(element, "id", -1);
+		requireTag(element, path, parent, "ground");
+		expectAttributes(element, path, "kind", "ground", "exposed", "id", "image");
+		final String kind = getParamWithDeprecatedForm(element, path, "kind", "ground");
+		requireNonEmptyParameter(element, path, "exposed", true);
+		spinUntilEnd(element.getName(), path, stream);
+		final int id = getIntegerParameter(element, path, "id", -1);
 		if (id >= 0) {
 			registerID(id, path, element.getLocation());
 		}
-		final Ground retval = new Ground(id, kind, getBooleanParameter(element, "exposed"));
+		final Ground retval = new Ground(id, kind, getBooleanParameter(element, path, "exposed"));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

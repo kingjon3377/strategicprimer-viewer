@@ -42,31 +42,31 @@ import java.util.Set;
 	public TerrainFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                           final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, SUPPORTED_TAGS);
+		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 			case "forest" -> {
-				expectAttributes(element, "id", "image", "kind", "rows", "acres");
-				final int id = getIntegerParameter(element, "id", -1);
+				expectAttributes(element, path, "id", "image", "kind", "rows", "acres");
+				final int id = getIntegerParameter(element, path, "id", -1);
 				if (id >= 0) {
 					registerID(id, path, element.getLocation());
 				}
-				retval = new Forest(getParameter(element, "kind"),
-						getBooleanParameter(element, "rows", false), id,
-						getNumericParameter(element, "acres", -1));
+				retval = new Forest(getParameter(element, path, "kind"),
+						getBooleanParameter(element, path, "rows", false), id,
+						getNumericParameter(element, path, "acres", -1));
 			}
 			case "hill" -> {
-				expectAttributes(element, "id", "image");
+				expectAttributes(element, path, "id", "image");
 				retval = new Hill(getOrGenerateID(element, path));
 			}
 			case "oasis" -> {
-				expectAttributes(element, "id", "image");
+				expectAttributes(element, path, "id", "image");
 				retval = new Oasis(getOrGenerateID(element, path));
 			}
 			default -> throw new IllegalArgumentException("Unhandled terrain fixture tag " +
 					element.getName().getLocalPart());
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		// All types we currently support implement HasMutableImage
 		((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
 		return retval;

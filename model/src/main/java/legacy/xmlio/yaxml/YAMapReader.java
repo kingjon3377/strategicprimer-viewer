@@ -102,14 +102,14 @@ import java.util.function.Predicate;
 	/**
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
-	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
+	private static StartElement getFirstStartElement(final @Nullable Path file, final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException {
 		for (final XMLEvent element : stream) {
 			if (element instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				return se;
 			}
 		}
-		throw new MissingChildException(parent);
+		throw new MissingChildException(parent, file);
 	}
 
 	/**
@@ -126,17 +126,18 @@ import java.util.function.Predicate;
 	 * Parse a river from XML. The caller is now responsible for advancing
 	 * the stream past the closing tag.
 	 */
-	public River parseRiver(final StartElement element, final QName parent) throws SPFormatException {
-		requireTag(element, parent, "river", "lake");
+	public River parseRiver(final StartElement element, final @Nullable Path path, final QName parent)
+			throws SPFormatException {
+		requireTag(element, path, parent, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
-			expectAttributes(element);
+			expectAttributes(element, path);
 			return River.Lake;
 		} else {
-			expectAttributes(element, "direction");
+			expectAttributes(element, path, "direction");
 			try {
-				return River.parse(getParameter(element, "direction"));
+				return River.parse(getParameter(element, path, "direction"));
 			} catch (final IllegalArgumentException | ParseException except) {
-				throw new MissingPropertyException(element, "direction", except);
+				throw new MissingPropertyException(element, path, "direction", except);
 			}
 		}
 	}
@@ -183,7 +184,7 @@ import java.util.function.Predicate;
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(), "tile"),
-				element);
+				element, path);
 	}
 
 	/**
@@ -194,35 +195,35 @@ import java.util.function.Predicate;
 	public IMutableLegacyMap read(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		requireTag(element, parent, "map", "view");
+		requireTag(element, path, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 			case "view" -> {
-				expectAttributes(element, "current_turn", "current_player");
-				currentTurn = getIntegerParameter(element, "current_turn");
+				expectAttributes(element, path, "current_turn", "current_player");
+				currentTurn = getIntegerParameter(element, path, "current_turn");
 				if (currentTurn >= 0) {
 					MaturityModel.setCurrentTurn(currentTurn);
 				}
-				mapTag = getFirstStartElement(stream, element);
-				requireTag(mapTag, element.getName(), "map");
-				expectAttributes(mapTag, "version", "rows", "columns");
+				mapTag = getFirstStartElement(path, stream, element);
+				requireTag(mapTag, path, element.getName(), "map");
+				expectAttributes(mapTag, path, "version", "rows", "columns");
 			}
 			case "map" -> {
 				currentTurn = 0;
 				mapTag = element;
-				expectAttributes(mapTag, "version", "rows", "columns", "current_player");
+				expectAttributes(mapTag, path, "version", "rows", "columns", "current_player");
 			}
-			default -> throw UnwantedChildException.listingExpectedTags(new QName("xml"), element,
+			default -> throw UnwantedChildException.listingExpectedTags(new QName("xml"), element, path,
 					"map", "view");
 		}
 		final MapDimensions dimensions;
-		final MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
-				getIntegerParameter(mapTag, "columns"), getIntegerParameter(mapTag, "version"));
+		final MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, path, "rows"),
+				getIntegerParameter(mapTag, path, "columns"), getIntegerParameter(mapTag, path, "version"));
 		if (readDimensions.version() == 2) {
 			dimensions = readDimensions;
 		} else {
-			warner.handle(new MapVersionException(mapTag, readDimensions.version(), 2, 2));
+			warner.handle(new MapVersionException(mapTag, path, readDimensions.version(), 2, 2));
 			dimensions = new MapDimensionsImpl(readDimensions.rows(),
 					readDimensions.columns(), 2);
 		}
@@ -241,55 +242,54 @@ import java.util.function.Predicate;
 				if ("player".equals(type)) {
 					retval.addPlayer(playerReader.read(se, path, Objects.requireNonNull(tagStack.peekFirst()), stream));
 				} else if ("row".equals(type)) {
-					expectAttributes(se, "index");
+					expectAttributes(se, path, "index");
 					tagStack.addFirst(se.getName());
 					// Deliberately ignore "row"
 					continue;
 				} else if ("tile".equals(type)) {
 					if (!Objects.isNull(point)) {
-						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se);
+						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
-					expectAttributes(se, "row", "column", "kind",
+					expectAttributes(se, path, "row", "column", "kind",
 							"type", "mountain");
 					tagStack.addFirst(se.getName());
 					// TODO: Just assign to point, maybe?
-					final Point localPoint = parsePoint(se);
+					final Point localPoint = parsePoint(se, path);
 					point = localPoint;
 					// Since tiles have sometimes been *written* without "kind", then
 					// failed to load, be liberal in what we accept here.
 					if ((hasParameter(se, "kind") || hasParameter(se, "type"))) {
 						try {
 							retval.setBaseTerrain(localPoint,
-									TileType.parse(getParamWithDeprecatedForm(se, "kind",
-											"type")));
+									TileType.parse(getParamWithDeprecatedForm(se, path, "kind", "type")));
 						} catch (final IllegalArgumentException | ParseException except) {
-							warner.handle(new MissingPropertyException(se, "kind", except));
+							warner.handle(new MissingPropertyException(se, path, "kind", except));
 						}
 					} else {
-						warner.handle(new MissingPropertyException(se, "kind"));
+						warner.handle(new MissingPropertyException(se, path, "kind"));
 					}
-					if (getBooleanParameter(se, "mountain", false)) {
+					if (getBooleanParameter(se, path, "mountain", false)) {
 						retval.setMountainous(localPoint, true);
 					}
 				} else if ("elsewhere".equals(type)) {
 					if (!Objects.isNull(point)) {
-						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se);
+						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
-					expectAttributes(se);
+					expectAttributes(se, path);
 					tagStack.addFirst(se.getName());
 					point = Point.INVALID_POINT;
 				} else if (FUTURE_TAGS.contains(type)) {
 					tagStack.addFirst(se.getName());
-					warner.handle(UnsupportedTagException.future(se));
+					warner.handle(UnsupportedTagException.future(se, path));
 				} else if ("sandbar".equals(type)) {
 					tagStack.addFirst(se.getName());
-					warner.handle(UnsupportedTagException.obsolete(se));
+					warner.handle(UnsupportedTagException.obsolete(se, path));
 				} else if (!Objects.isNull(point)) {
 					switch (type) {
 						case "lake", "river" -> {
 							retval.addRivers(point,
-									parseRiver(se, Objects.requireNonNull(tagStack.peekFirst())));
-							spinUntilEnd(se.getName(), stream);
+									parseRiver(se, path, Objects.requireNonNull(tagStack.peekFirst())));
+							spinUntilEnd(se.getName(), path, stream);
 						}
 						case "mountain" -> {
 							tagStack.addFirst(se.getName());
@@ -297,27 +297,26 @@ import java.util.function.Predicate;
 						}
 						case "bookmark" -> {
 							tagStack.addFirst(se.getName());
-							expectAttributes(se, "player");
+							expectAttributes(se, path, "player");
 							retval.addBookmark(point,
 									players.getPlayer(getIntegerParameter(
-											se, "player")));
+											se, path, "player")));
 						}
 						case "road" -> {
 							tagStack.addFirst(se.getName());
-							expectAttributes(se, "direction", "quality");
+							expectAttributes(se, path, "direction", "quality");
 							final Direction direction;
 							try {
 								direction = Direction.parse(
-										getParameter(se,
-												"direction"));
+										getParameter(se, path, "direction"));
 							} catch (final IllegalArgumentException except) {
-								throw new MissingPropertyException(se, "direction", except);
+								throw new MissingPropertyException(se, path, "direction", except);
 							}
 							if (direction == null) {
-								throw new MissingPropertyException(se, "direction");
+								throw new MissingPropertyException(se, path, "direction");
 							}
 							retval.setRoadLevel(point, direction,
-									getIntegerParameter(se, "quality"));
+									getIntegerParameter(se, path, "quality"));
 						}
 						default -> {
 							final QName top = Objects.requireNonNull(tagStack.peekFirst());
@@ -328,7 +327,7 @@ import java.util.function.Predicate;
 											.map(fortressCast)
 											.map(IFortress::owner)
 											.anyMatch(Predicate.isEqual(f.owner()))) {
-								warner.handle(new UnwantedChildException(top, se,
+								warner.handle(new UnwantedChildException(top, path, se,
 										"Multiple fortresses owned by one player on a tile"));
 							}
 							retval.addFixture(point, child);
@@ -337,7 +336,7 @@ import java.util.function.Predicate;
 				} else {
 					// fixture outside tile
 					throw UnwantedChildException.listingExpectedTags(
-							Objects.requireNonNull(tagStack.peekFirst()), se, "tile",
+							Objects.requireNonNull(tagStack.peekFirst()), se, path, "tile",
 							"elsewhere");
 				}
 			} else if (event instanceof final EndElement ee) {
@@ -360,13 +359,13 @@ import java.util.function.Predicate;
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(mapTag,
+			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(mapTag, path,
 					"current_player")));
 		} else if (hasParameter(element, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(element,
+			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(element, path,
 					"current_player")));
 		} else {
-			warner.handle(new MissingPropertyException(mapTag, "current_player"));
+			warner.handle(new MissingPropertyException(mapTag, path, "current_player"));
 		}
 		retval.setModified(false);
 		return retval;

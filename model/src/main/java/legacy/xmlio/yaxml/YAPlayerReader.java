@@ -29,24 +29,24 @@ final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	public Player read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "player");
-		expectAttributes(element, "number", "code_name", "portrait", "country");
-		requireNonEmptyParameter(element, "number", true);
-		requireNonEmptyParameter(element, "code_name", true);
+		requireTag(element, path, parent, "player");
+		expectAttributes(element, path, "number", "code_name", "portrait", "country");
+		requireNonEmptyParameter(element, path, "number", true);
+		requireNonEmptyParameter(element, path, "code_name", true);
 		final String countryRaw = getParameter(element, "country", "");
 		final String country = countryRaw.isEmpty() ? null : countryRaw;
 		// We're thinking about storing "standing orders" in the XML under the <player>
 		// tag; so as to not require players to upgrade to even read their maps once we
 		// start doing so, we *now* only *warn* instead of *dying* if the XML contains
 		// that idiom.
-		spinUntilEnd(element.getName(), stream, "orders", "results", "science");
+		spinUntilEnd(element.getName(), path, stream, "orders", "results", "science");
 		final Player retval;
 		if (Objects.isNull(country)) {
-			retval = new PlayerImpl(getIntegerParameter(element, "number"),
-					getParameter(element, "code_name"));
+			retval = new PlayerImpl(getIntegerParameter(element, path, "number"),
+					getParameter(element, path, "code_name"));
 		} else {
-			retval = new PlayerImpl(getIntegerParameter(element, "number"),
-					getParameter(element, "code_name"), country);
+			retval = new PlayerImpl(getIntegerParameter(element, path, "number"),
+					getParameter(element, path, "code_name"), country);
 		}
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;

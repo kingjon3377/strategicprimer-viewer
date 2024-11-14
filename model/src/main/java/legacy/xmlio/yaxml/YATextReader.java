@@ -34,12 +34,12 @@ import org.jetbrains.annotations.Nullable;
 	public TextFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                        final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "text");
-		expectAttributes(element, "turn", "image");
+		requireTag(element, path, parent, "text");
+		expectAttributes(element, path, "turn", "image");
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se) {
-				throw new UnwantedChildException(element.getName(), se);
+				throw new UnwantedChildException(element.getName(), se, path);
 			} else if (event instanceof final Characters c) {
 				builder.append(c.getData());
 			} else if (isMatchingEnd(element.getName(), event)) {
@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		final TextFixture fixture = new TextFixture(builder.toString().strip(),
-				getIntegerParameter(element, "turn", -1));
+				getIntegerParameter(element, path, "turn", -1));
 		fixture.setImage(getParameter(element, "image", ""));
 		return fixture;
 	}

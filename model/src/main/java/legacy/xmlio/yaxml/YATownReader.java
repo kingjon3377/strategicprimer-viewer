@@ -71,11 +71,11 @@ import java.util.function.Consumer;
 	 * If the tag has an "owner" parameter, return the player it indicates;
 	 * otherwise trigger a warning and return the "independent" player.
 	 */
-	private Player getOwnerOrIndependent(final StartElement element) throws SPFormatException {
+	private Player getOwnerOrIndependent(final StartElement element, final @Nullable Path path) throws SPFormatException {
 		if (hasParameter(element, "owner")) {
-			return players.getPlayer(getIntegerParameter(element, "owner"));
+			return players.getPlayer(getIntegerParameter(element, path, "owner"));
 		} else {
-			warner.handle(new MissingPropertyException(element, "owner"));
+			warner.handle(new MissingPropertyException(element, path, "owner"));
 			return players.getIndependent();
 		}
 	}
@@ -92,9 +92,9 @@ import java.util.function.Consumer;
 	public CommunityStats parseCommunityStats(final StartElement element, final @Nullable Path path, final QName parent,
 	                                          final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		requireTag(element, parent, "population");
-		expectAttributes(element, "size");
-		final CommunityStats retval = new CommunityStatsImpl(getIntegerParameter(element, "size"));
+		requireTag(element, path, parent, "population");
+		expectAttributes(element, path, "size");
+		final CommunityStats retval = new CommunityStatsImpl(getIntegerParameter(element, path, "size"));
 		final Consumer<IResourcePile> addProductionLambda = retval::addYearlyProduction;
 		final Consumer<IResourcePile> addConsumptionLambda = retval::addYearlyConsumption;
 		@Nullable String current = null;
@@ -109,39 +109,39 @@ import java.util.function.Consumer;
 					switch (se.getName().getLocalPart().toLowerCase()) {
 						case "expertise":
 							if (Objects.isNull(current)) {
-								expectAttributes(se, "skill", "level");
-								retval.setSkillLevel(getParameter(se, "skill"),
-										getIntegerParameter(se, "level"));
+								expectAttributes(se, path, "skill", "level");
+								retval.setSkillLevel(getParameter(se, path, "skill"),
+										getIntegerParameter(se, path, "level"));
 								stack.addFirst(se);
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										Objects.requireNonNull(stack.peekFirst()).getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
 						case "claim":
 							if (Objects.isNull(current)) {
-								expectAttributes(se, "resource");
+								expectAttributes(se, path, "resource");
 								retval.addWorkedField(getIntegerParameter(
-										se, "resource"));
+										se, path, "resource"));
 								stack.addFirst(se);
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										Objects.requireNonNull(stack.peekFirst()).getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
 						case "production":
 						case "consumption":
 							if (Objects.isNull(current)) {
-								expectAttributes(se);
+								expectAttributes(se, path);
 								stack.addFirst(se);
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										Objects.requireNonNull(stack.peekFirst()).getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
@@ -153,7 +153,7 @@ import java.util.function.Consumer;
 								lambda = addConsumptionLambda;
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										Objects.requireNonNull(stack.peekFirst()).getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
 										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
 												.toArray(String[]::new));
 							}
@@ -164,7 +164,7 @@ import java.util.function.Consumer;
 							throw UnwantedChildException.listingExpectedTags(
 									stack.isEmpty() ? element.getName() :
 											stack.peekFirst().getName(),
-									se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
+									se, path, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
 											.toArray(String[]::new));
 					}
 				}
@@ -193,17 +193,17 @@ import java.util.function.Consumer;
 	private ITownFixture parseVillage(final StartElement element, final @Nullable Path path,
 	                                  final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
-		requireNonEmptyParameter(element, "name", false);
+		expectAttributes(element, path, "status", "name", "race", "image", "portrait", "id", "owner");
+		requireNonEmptyParameter(element, path, "name", false);
 		final int idNum = getOrGenerateID(element, path);
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getParameter(element, "status"));
+			status = TownStatus.parse(getParameter(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
 		final Village retval = new Village(status, getParameter(element, "name", ""), idNum,
-				getOwnerOrIndependent(element), getParameter(element, "race",
+				getOwnerOrIndependent(element, path), getParameter(element, "race",
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
@@ -213,7 +213,7 @@ import java.util.function.Consumer;
 					retval.setPopulation(parseCommunityStats(se, path,
 							element.getName(), stream));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -225,25 +225,25 @@ import java.util.function.Consumer;
 	private ITownFixture parseTown(final StartElement element, final @Nullable Path path,
 	                               final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
+		expectAttributes(element, path, "name", "status", "size", "dc", "id", "image", "owner",
 				"portrait");
-		requireNonEmptyParameter(element, "name", false);
+		requireNonEmptyParameter(element, path, "name", false);
 		final String name = getParameter(element, "name", "");
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getParameter(element, "status"));
+			status = TownStatus.parse(getParameter(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
 		final TownSize size;
 		try {
-			size = TownSize.parseTownSize(getParameter(element, "size"));
+			size = TownSize.parseTownSize(getParameter(element, path, "size"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "size", except);
+			throw new MissingPropertyException(element, path, "size", except);
 		}
-		final int dc = getIntegerParameter(element, "dc");
+		final int dc = getIntegerParameter(element, path, "dc");
 		final int id = getOrGenerateID(element, path);
-		final Player owner = getOwnerOrIndependent(element);
+		final Player owner = getOwnerOrIndependent(element, path);
 		final AbstractTown retval = switch (element.getName().getLocalPart().toLowerCase()) {
 			case "town" -> new Town(status, size, dc, name, id, owner);
 			case "city" -> new City(status, size, dc, name, id, owner);
@@ -256,7 +256,7 @@ import java.util.function.Consumer;
 				if (Objects.isNull(retval.getPopulation())) {
 					retval.setPopulation(parseCommunityStats(se, path, element.getName(), stream));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -270,17 +270,17 @@ import java.util.function.Consumer;
 	private ITownFixture parseFortress(final StartElement element, final @Nullable Path path,
 	                                   final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
-		requireNonEmptyParameter(element, "owner", false);
-		requireNonEmptyParameter(element, "name", false);
+		expectAttributes(element, path, "owner", "name", "size", "status", "id", "portrait", "image");
+		requireNonEmptyParameter(element, path, "owner", false);
+		requireNonEmptyParameter(element, path, "name", false);
 		final IMutableFortress retval;
 		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getParameter(element, "size", "small"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "size", except);
+			throw new MissingPropertyException(element, path, "size", except);
 		}
-		retval = new FortressImpl(getOwnerOrIndependent(element),
+		retval = new FortressImpl(getOwnerOrIndependent(element, path),
 				getParameter(element, "name", ""), getOrGenerateID(element, path), size);
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
@@ -297,9 +297,9 @@ import java.util.function.Consumer;
 					// scientific research progress within fortresses. To ease the
 					// transition, we *now* warn, instead of aborting, if the tags we
 					// expect to use for this appear in this position in the XML.
-					warner.handle(new UnwantedChildException(element.getName(), se));
+					warner.handle(new UnwantedChildException(element.getName(), se, path));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -376,7 +376,7 @@ import java.util.function.Consumer;
 	public ITownFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                         final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
+		requireTag(element, path, parent, "village", "fortress", "town", "city", "fortification");
 		return switch (element.getName().getLocalPart().toLowerCase()) {
 			case "village" -> parseVillage(element, path, stream);
 			case "fortress" -> parseFortress(element, path, stream);

@@ -37,15 +37,15 @@ import org.jetbrains.annotations.Nullable;
 	public ExplorableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "battlefield", "cave");
-		expectAttributes(element, "id", "dc", "image");
+		requireTag(element, path, parent, "battlefield", "cave");
+		expectAttributes(element, path, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, path);
 		final ExplorableFixture retval = switch (element.getName().getLocalPart().toLowerCase()) {
-			case "battlefield" -> new Battlefield(getIntegerParameter(element, "dc"), idNum);
-			case "cave" -> new Cave(getIntegerParameter(element, "dc"), idNum);
-			default -> throw UnsupportedTagException.future(element);
+			case "battlefield" -> new Battlefield(getIntegerParameter(element, path, "dc"), idNum);
+			case "cave" -> new Cave(getIntegerParameter(element, path, "dc"), idNum);
+			default -> throw UnsupportedTagException.future(element, path);
 		};
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

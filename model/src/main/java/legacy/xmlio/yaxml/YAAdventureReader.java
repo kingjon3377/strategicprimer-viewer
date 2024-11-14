@@ -32,11 +32,11 @@ import java.nio.file.Path;
 	@Override
 	public AdventureFixture read(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "adventure");
-		expectAttributes(element, "owner", "brief", "full", "image", "id");
+		requireTag(element, path, parent, "adventure");
+		expectAttributes(element, path, "owner", "brief", "full", "image", "id");
 		final Player player;
 		if (hasParameter(element, "owner")) {
-			player = players.getPlayer(getIntegerParameter(element, "owner"));
+			player = players.getPlayer(getIntegerParameter(element, path, "owner"));
 		} else {
 			player = players.getIndependent();
 		}
@@ -44,7 +44,7 @@ import java.nio.file.Path;
 				getParameter(element, "brief", ""), getParameter(element, "full", ""),
 				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		return retval;
 	}
 

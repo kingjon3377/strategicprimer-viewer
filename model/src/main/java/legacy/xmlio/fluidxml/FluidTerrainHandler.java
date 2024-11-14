@@ -26,33 +26,33 @@ import java.util.Collection;
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "ground");
-		expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
+		requireTag(element, path, parent, "ground");
+		expectAttributes(element, path, warner, "id", "kind", "ground", "image", "exposed");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
 			idFactory.register(id, warner, Pair.with(path, element.getLocation()));
 		}
-		final String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
-		spinUntilEnd(element.getName(), stream);
-		return setImage(new Ground(id, kind, getBooleanAttribute(element, "exposed")),
-				element, warner);
+		final String kind = getAttrWithDeprecatedForm(element, path, "kind", "ground", warner);
+		spinUntilEnd(element.getName(), path, stream);
+		return setImage(new Ground(id, kind, getBooleanAttribute(element, path, "exposed")),
+				element, path, warner);
 	}
 
 	public static Forest readForest(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "forest");
-		expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
+		requireTag(element, path, parent, "forest");
+		expectAttributes(element, path, warner, "id", "kind", "rows", "image", "acres");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
 			idFactory.register(id, warner, Pair.with(path, element.getLocation()));
 		}
-		final Forest retval = new Forest(getAttribute(element, "kind"),
-				getBooleanAttribute(element, "rows", false), id,
-				getNumericAttribute(element, "acres", -1));
-		spinUntilEnd(element.getName(), stream);
-		return setImage(retval, element, warner);
+		final Forest retval = new Forest(getAttribute(element, path, "kind"),
+				getBooleanAttribute(element, path, "rows", false), id,
+				getNumericAttribute(element, path, "acres", -1));
+		spinUntilEnd(element.getName(), path, stream);
+		return setImage(retval, element, path, warner);
 	}
 
 	public static void writeGround(final XMLStreamWriter ostream, final Ground obj, final int indent)
@@ -81,9 +81,9 @@ import java.util.Collection;
 	                             final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                             final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "lake");
-		expectAttributes(element, warner);
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "lake");
+		expectAttributes(element, path, warner);
+		spinUntilEnd(element.getName(), path, stream);
 		return River.Lake;
 	}
 
@@ -91,13 +91,13 @@ import java.util.Collection;
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "river");
-		expectAttributes(element, warner, "direction");
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "river");
+		expectAttributes(element, path, warner, "direction");
+		spinUntilEnd(element.getName(), path, stream);
 		try {
-			return River.parse(getAttribute(element, "direction"));
+			return River.parse(getAttribute(element, path, "direction"));
 		} catch (final ParseException | IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "direction", except);
+			throw new MissingPropertyException(element, path, "direction", except);
 		}
 	}
 

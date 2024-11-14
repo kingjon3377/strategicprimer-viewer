@@ -27,33 +27,33 @@ import java.nio.file.Path;
 	                                             final ILegacyPlayerCollection players, final Warning warner,
 	                                             final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "adventure");
-		expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
+		requireTag(element, path, parent, "adventure");
+		expectAttributes(element, path, warner, "owner", "brief", "full", "id", "image");
 		final Player player;
 		if (hasAttribute(element, "owner")) {
-			player = players.getPlayer(getIntegerAttribute(element, "owner"));
+			player = players.getPlayer(getIntegerAttribute(element, path, "owner"));
 		} else {
 			player = players.getIndependent();
 		}
 		final AdventureFixture retval = setImage(new AdventureFixture(player,
 				getAttribute(element, "brief", ""),
 				getAttribute(element, "full", ""),
-				getOrGenerateID(element, warner, path, idFactory)), element, warner);
-		spinUntilEnd(element.getName(), stream);
+				getOrGenerateID(element, warner, path, idFactory)), element, path, warner);
+		spinUntilEnd(element.getName(), path, stream);
 		return retval;
 	}
 
 	public static Portal readPortal(final StartElement element, final @Nullable Path path, final QName parent,
 									final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 									final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "portal");
-		expectAttributes(element, warner, "row", "column", "world", "id", "image");
-		final Point location = new Point(getIntegerAttribute(element, "row"),
-				getIntegerAttribute(element, "column"));
+		requireTag(element, path, parent, "portal");
+		expectAttributes(element, path, warner, "row", "column", "world", "id", "image");
+		final Point location = new Point(getIntegerAttribute(element, path, "row"),
+				getIntegerAttribute(element, path, "column"));
 		final Portal retval = setImage(new Portal(
-				getAttribute(element, "world"), location,
-				getOrGenerateID(element, warner, path, idFactory)), element, warner);
-		spinUntilEnd(element.getName(), stream);
+				getAttribute(element, path, "world"), location,
+				getOrGenerateID(element, warner, path, idFactory)), element, path, warner);
+		spinUntilEnd(element.getName(), path, stream);
 		return retval;
 	}
 
@@ -61,34 +61,34 @@ import java.nio.file.Path;
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "cave");
-		expectAttributes(element, warner, "id", "dc", "image");
+		requireTag(element, path, parent, "cave");
+		expectAttributes(element, path, warner, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, warner, path, idFactory);
-		final Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
-		spinUntilEnd(element.getName(), stream);
-		return setImage(retval, element, warner);
+		final Cave retval = new Cave(getIntegerAttribute(element, path, "dc"), idNum);
+		spinUntilEnd(element.getName(), path, stream);
+		return setImage(retval, element, path, warner);
 	}
 
 	public static Battlefield readBattlefield(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "battlefield");
-		expectAttributes(element, warner, "id", "dc", "image");
+		requireTag(element, path, parent, "battlefield");
+		expectAttributes(element, path, warner, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, warner, path, idFactory);
-		final Battlefield retval = new Battlefield(getIntegerAttribute(element, "dc"), idNum);
-		spinUntilEnd(element.getName(), stream);
-		return setImage(retval, element, warner);
+		final Battlefield retval = new Battlefield(getIntegerAttribute(element, path, "dc"), idNum);
+		spinUntilEnd(element.getName(), path, stream);
+		return setImage(retval, element, path, warner);
 	}
 
 	public static TextFixture readTextFixture(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "text");
-		expectAttributes(element, warner, "turn", "image");
-		return setImage(new TextFixture(getTextUntil(element.getName(), stream),
-				getIntegerAttribute(element, "turn", -1, warner)), element, warner);
+		requireTag(element, path, parent, "text");
+		expectAttributes(element, path, warner, "turn", "image");
+		return setImage(new TextFixture(getTextUntil(element.getName(), path, stream),
+				getIntegerAttribute(element, "turn", -1, warner)), element, path, warner);
 	}
 
 	public static void writeAdventure(final XMLStreamWriter ostream, final AdventureFixture obj,

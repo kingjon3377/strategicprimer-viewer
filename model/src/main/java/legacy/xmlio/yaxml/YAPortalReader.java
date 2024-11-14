@@ -26,12 +26,12 @@ import org.jetbrains.annotations.Nullable;
 	public Portal read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "portal");
-		expectAttributes(element, "world", "row", "column", "id", "image");
-		final Portal retval = new Portal(getParameter(element, "world"), parsePoint(element),
+		requireTag(element, path, parent, "portal");
+		expectAttributes(element, path, "world", "row", "column", "id", "image");
+		final Portal retval = new Portal(getParameter(element, path, "world"), parsePoint(element, path),
 				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		return retval;
 	}
 

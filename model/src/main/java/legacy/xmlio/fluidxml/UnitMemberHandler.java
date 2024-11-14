@@ -46,13 +46,13 @@ import java.util.stream.StreamSupport;
 	public static Worker readWorker(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream,
 	                                final ILegacyPlayerCollection players, final Warning warner,
 	                                final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "worker");
-		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
+		requireTag(element, path, parent, "worker");
+		expectAttributes(element, path, warner, "name", "race", "portrait", "id", "image");
 		final Worker retval = setImage(
-				new Worker(getAttribute(element, "name"),
+				new Worker(getAttribute(element, path, "name"),
 						getAttribute(element, "race", "human"),
 						getOrGenerateID(element, warner, path, idFactory)),
-				element, warner);
+				element, path, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			switch (event) {
@@ -63,8 +63,8 @@ import java.util.stream.StreamSupport;
 						case "stats" -> retval.setStats(readStats(se, path, element.getName(),
 								stream, players, warner, idFactory));
 						case "note" -> retval.setNote(
-								players.getPlayer(getIntegerAttribute(se, "player")),
-								readNote(se, element.getName(), stream, warner));
+								players.getPlayer(getIntegerAttribute(se, path, "player")),
+								readNote(se, path, element.getName(), stream, warner));
 						case "animal" -> {
 							if (Objects.isNull(retval.getMount())) {
 								final AnimalOrTracks animal = readAnimal(se, path, element.getName(), stream, players,
@@ -74,13 +74,13 @@ import java.util.stream.StreamSupport;
 									break;
 								}
 							}
-							throw new UnwantedChildException(se.getName(), element);
+							throw new UnwantedChildException(se.getName(), element, path);
 						}
 						case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, path,
 								element.getName(), stream,
 								players, warner, idFactory));
 						default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
-								se, "job", "stats", "note", "animal", "implement");
+								se, path, "job", "stats", "note", "animal", "implement");
 					}
 				}
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
@@ -93,15 +93,15 @@ import java.util.stream.StreamSupport;
 		return retval;
 	}
 
-	private static String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                               final Warning warner) throws SPFormatException {
-		requireTag(element, parent, "note");
-		expectAttributes(element, warner, "player");
+	private static String readNote(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream, final Warning warner) throws SPFormatException {
+		requireTag(element, path, parent, "note");
+		expectAttributes(element, path, warner, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) ->
-						throw new UnwantedChildException(element.getName(), se);
+						throw new UnwantedChildException(element.getName(), se, path);
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return retval.toString().strip();
 				}
@@ -117,17 +117,17 @@ import java.util.stream.StreamSupport;
 	                           final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
 	                           final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "job");
-		expectAttributes(element, warner, "name", "level");
-		final IMutableJob retval = new Job(getAttribute(element, "name"),
-				getIntegerAttribute(element, "level"));
+		requireTag(element, path, parent, "job");
+		expectAttributes(element, path, warner, "name", "level");
+		final IMutableJob retval = new Job(getAttribute(element, path, "name"),
+				getIntegerAttribute(element, path, "level"));
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) &&
 						"skill".equalsIgnoreCase(se.getName().getLocalPart()) ->
 						retval.addSkill(readSkill(se, path, element.getName(), stream, players, warner, idFactory));
 				case final StartElement se when isSPStartElement(event) ->
-						throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
+						throw UnwantedChildException.listingExpectedTags(element.getName(), se, path, "skill");
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return retval;
 				}
@@ -141,30 +141,30 @@ import java.util.stream.StreamSupport;
 	public static ISkill readSkill(final StartElement element, final @Nullable Path path, final QName parent,
 	                               final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                               final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "skill");
-		expectAttributes(element, warner, "name", "level", "hours");
-		requireNonEmptyAttribute(element, "name", true, warner);
-		spinUntilEnd(element.getName(), stream);
-		return new Skill(getAttribute(element, "name"),
-				getIntegerAttribute(element, "level"),
-				getIntegerAttribute(element, "hours"));
+		requireTag(element, path, parent, "skill");
+		expectAttributes(element, path, warner, "name", "level", "hours");
+		requireNonEmptyAttribute(element, path, "name", true, warner);
+		spinUntilEnd(element.getName(), path, stream);
+		return new Skill(getAttribute(element, path, "name"),
+				getIntegerAttribute(element, path, "level"),
+				getIntegerAttribute(element, path, "hours"));
 	}
 
 	public static WorkerStats readStats(final StartElement element, final @Nullable Path path, final QName parent,
 	                                    final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                    final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "stats");
-		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
+		requireTag(element, path, parent, "stats");
+		expectAttributes(element, path, warner, "hp", "max", "str", "dex", "con", "int",
 				"wis", "cha");
-		spinUntilEnd(element.getName(), stream);
-		return new WorkerStats(getIntegerAttribute(element, "hp"),
-				getIntegerAttribute(element, "max"),
-				getIntegerAttribute(element, "str"),
-				getIntegerAttribute(element, "dex"),
-				getIntegerAttribute(element, "con"),
-				getIntegerAttribute(element, "int"),
-				getIntegerAttribute(element, "wis"),
-				getIntegerAttribute(element, "cha"));
+		spinUntilEnd(element.getName(), path, stream);
+		return new WorkerStats(getIntegerAttribute(element, path, "hp"),
+				getIntegerAttribute(element, path, "max"),
+				getIntegerAttribute(element, path, "str"),
+				getIntegerAttribute(element, path, "dex"),
+				getIntegerAttribute(element, path, "con"),
+				getIntegerAttribute(element, path, "int"),
+				getIntegerAttribute(element, path, "wis"),
+				getIntegerAttribute(element, path, "cha"));
 	}
 
 	public static void writeWorker(final XMLStreamWriter ostream, final IWorker obj, final int indentation)
@@ -254,27 +254,27 @@ import java.util.stream.StreamSupport;
 	                                        final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                        final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "animal");
+		requireTag(element, path, parent, "animal");
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		final String kind;
 		if ("animal".equals(tag)) {
-			expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
+			expectAttributes(element, path, warner, "traces", "id", "count", "kind", "talking",
 					"status", "wild", "born", "image");
-			kind = getAttribute(element, "kind");
+			kind = getAttribute(element, path, "kind");
 		} else {
-			warner.handle(UnsupportedTagException.future(element));
-			expectAttributes(element, warner, "id", "count", "image");
+			warner.handle(UnsupportedTagException.future(element, path));
+			expectAttributes(element, path, warner, "id", "count", "image");
 			kind = tag;
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		// To get the intended meaning of existing maps, we have to parse
 		// traces="" as traces="true". If compatibility with existing maps
 		// ever becomes unnecessary, I will change the default-value here to
 		// simply `false`.
-		final boolean traces = getBooleanAttribute(element, "traces",
+		final boolean traces = getBooleanAttribute(element, path, "traces",
 				hasAttribute(element, "traces") && getAttribute(element, "traces", "").isEmpty(),
 				warner);
-		final boolean talking = getBooleanAttribute(element, "talking", false, warner);
+		final boolean talking = getBooleanAttribute(element, path, "talking", false, warner);
 		final String status = getAttribute(element, "status", "wild");
 		final int born = getIntegerAttribute(element, "born", -1, warner);
 		// TODO: We'd like the default to be 1 inside a unit and -1 outside
@@ -282,30 +282,30 @@ import java.util.stream.StreamSupport;
 		final int id;
 		if (traces) {
 			if (hasAttribute(element, "id")) {
-				warner.handle(UnsupportedPropertyException.inContext(element, "id",
+				warner.handle(UnsupportedPropertyException.inContext(element, path, "id",
 						"when tracks=\"true\""));
 			}
 			if (talking) {
-				warner.handle(UnsupportedPropertyException.inContext(element, "talking",
+				warner.handle(UnsupportedPropertyException.inContext(element, path, "talking",
 						"when tracks=\"true\""));
 			}
 			if (!"wild".equals(status)) {
-				warner.handle(UnsupportedPropertyException.inContext(element, "status",
+				warner.handle(UnsupportedPropertyException.inContext(element, path, "status",
 						"when tracks=\"true\""));
 			}
 			if (born != -1) {
-				warner.handle(UnsupportedPropertyException.inContext(element, "born",
+				warner.handle(UnsupportedPropertyException.inContext(element, path, "born",
 						"when tracks=\"true\""));
 			}
 			if (count != 1) {
-				warner.handle(UnsupportedPropertyException.inContext(element, "count",
+				warner.handle(UnsupportedPropertyException.inContext(element, path, "count",
 						"when tracks=\"true\""));
 			}
-			return setImage(new AnimalTracks(kind), element, warner);
+			return setImage(new AnimalTracks(kind), element, path, warner);
 		} else {
 			id = getOrGenerateID(element, warner, path, idFactory);
 			return setImage(
-					new AnimalImpl(kind, talking, status, id, born, count), element, warner);
+					new AnimalImpl(kind, talking, status, id, born, count), element, path, warner);
 		}
 	}
 

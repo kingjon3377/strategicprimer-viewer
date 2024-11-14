@@ -45,11 +45,11 @@ import java.util.Map;
 	 * Parse the kind of unit, from the "kind" or deprecated "type"
 	 * parameter, but merely warn if neither is present.
 	 */
-	private String parseKind(final StartElement element) throws SPFormatException {
+	private String parseKind(final StartElement element, final @Nullable Path path) throws SPFormatException {
 		try {
-			final String retval = getParamWithDeprecatedForm(element, "kind", "type");
+			final String retval = getParamWithDeprecatedForm(element, path, "kind", "type");
 			if (retval.isEmpty()) {
-				warner.handle(new MissingPropertyException(element, "kind"));
+				warner.handle(new MissingPropertyException(element, path, "kind"));
 			}
 			return retval;
 		} catch (final MissingPropertyException except) {
@@ -61,15 +61,15 @@ import java.util.Map;
 	/**
 	 * Parse orders for a unit for a specified turn.
 	 */
-	private void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
+	private void parseOrders(final StartElement element, final @Nullable Path path, final IMutableUnit unit, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		expectAttributes(element, "turn");
-		final int turn = getIntegerParameter(element, "turn", -1);
+		expectAttributes(element, path, "turn");
+		final int turn = getIntegerParameter(element, path, "turn", -1);
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final Characters c -> builder.append(c.getData());
-				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
+				case final StartElement se -> throw new UnwantedChildException(element.getName(), se, path);
 				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					unit.setOrders(turn, builder.toString().strip());
 					return;
@@ -84,15 +84,16 @@ import java.util.Map;
 	/**
 	 * Parse results for a unit for a specified turn.
 	 */
-	private void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
+	private void parseResults(final StartElement element, final @Nullable Path path, final IMutableUnit unit,
+	                          final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		expectAttributes(element, "turn");
-		final int turn = getIntegerParameter(element, "turn", -1);
+		expectAttributes(element, path, "turn");
+		final int turn = getIntegerParameter(element, path, "turn", -1);
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final Characters c -> builder.append(c.getData());
-				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
+				case final StartElement se -> throw new UnwantedChildException(element.getName(), se, path);
 				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					unit.setResults(turn, builder.toString().strip());
 					return;
@@ -115,24 +116,24 @@ import java.util.Map;
 				if (retval instanceof final UnitMember um) {
 					return um;
 				} else {
-					throw new UnwantedChildException(parent, element);
+					throw new UnwantedChildException(parent, element, path);
 				}
 			}
 		}
-		throw new UnwantedChildException(parent, element);
+		throw new UnwantedChildException(parent, element, path);
 	}
 
 	@Override
 	public IUnit read(final StartElement element, final @Nullable Path path, final QName parent,
 	                  final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
-		requireTag(element, parent, "unit");
-		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
-		requireNonEmptyParameter(element, "name", false);
-		requireNonEmptyParameter(element, "owner", false);
+		requireTag(element, path, parent, "unit");
+		expectAttributes(element, path, "name", "owner", "image", "portrait", "kind", "id", "type");
+		requireNonEmptyParameter(element, path, "name", false);
+		requireNonEmptyParameter(element, path, "owner", false);
 		final IMutableUnit retval = new Unit(
-				players.getPlayer(getIntegerParameter(element, "owner", -1)),
-				parseKind(element), getParameter(element, "name", ""),
+				players.getPlayer(getIntegerParameter(element, path, "owner", -1)),
+				parseKind(element, path), getParameter(element, "name", ""),
 				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
@@ -142,9 +143,9 @@ import java.util.Map;
 				case final StartElement se when isSupportedNamespace(se.getName()) -> {
 					// TODO: merge with case condition?
 					if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
-						parseOrders(se, retval, stream);
+						parseOrders(se, path, retval, stream);
 					} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
-						parseResults(se, retval, stream);
+						parseResults(se, path, retval, stream);
 					} else {
 						retval.addMember(parseChild(se, path, element.getName(), stream));
 					}

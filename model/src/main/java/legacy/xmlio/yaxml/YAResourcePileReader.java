@@ -28,16 +28,16 @@ import org.jetbrains.annotations.Nullable;
 	public IMutableResourcePile read(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "resource");
-		expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
+		requireTag(element, path, parent, "resource");
+		expectAttributes(element, path, "quantity", "kind", "contents", "unit", "created", "id", "image");
 		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element, path),
-				getParameter(element, "kind"), getParameter(element, "contents"),
-				new LegacyQuantity(getNumericParameter(element, "quantity"),
+				getParameter(element, path, "kind"), getParameter(element, path, "contents"),
+				new LegacyQuantity(getNumericParameter(element, path, "quantity"),
 						getParameter(element, "unit", "")));
 		if (hasParameter(element, "created")) {
-			retval.setCreated(getIntegerParameter(element, "created"));
+			retval.setCreated(getIntegerParameter(element, path, "created"));
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

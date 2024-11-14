@@ -83,32 +83,34 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Require that an element be one of the specified tags.
 	 */
-	protected static void requireTag(final StartElement element, final QName parent, final String... tags)
+	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final String... tags)
 			throws SPFormatException {
 		if (!isSupportedNamespace(element.getName())) {
-			throw UnwantedChildException.unexpectedNamespace(parent, element);
+			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
 		}
 		final String elementTag = element.getName().getLocalPart();
 		if (Stream.of(tags).noneMatch(elementTag::equalsIgnoreCase)) {
 			// While we'd like tests to exercise this, we're always careful to only call
 			// readers when we know they support the tag ...
-			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
+			throw UnwantedChildException.listingExpectedTags(parent, element, path, tags);
 		}
 	}
 
 	/**
 	 * Require that an element be one of the specified tags.
 	 */
-	protected static void requireTag(final StartElement element, final QName parent, final Collection<String> tags)
+	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final Collection<String> tags)
 			throws SPFormatException {
 		if (!isSupportedNamespace(element.getName())) {
-			throw UnwantedChildException.unexpectedNamespace(parent, element);
+			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
 		}
 		final String elementTag = element.getName().getLocalPart();
 		if (tags.stream().noneMatch(elementTag::equalsIgnoreCase)) {
 			// While we'd like tests to exercise this, we're always careful to only call
 			// readers when we know they support the tag ...
-			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
+			throw UnwantedChildException.listingExpectedTags(parent, element, path, tags);
 		}
 	}
 
@@ -134,7 +136,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Read a parameter (aka attribute aka property) from an XML tag.
 	 */
-	protected static String getParameter(final StartElement element, final String param) throws SPFormatException {
+	protected static String getParameter(final StartElement element, final @Nullable Path path, final String param)
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (!Objects.isNull(attr)) {
 			final String retval = attr.getValue();
@@ -142,7 +145,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				return retval;
 			}
 		}
-		throw new MissingPropertyException(element, param);
+		throw new MissingPropertyException(element, path, param);
 	}
 
 	/**
@@ -273,7 +276,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Read a parameter from XML whose value must be an integer.
 	 */
-	protected static int getIntegerParameter(final StartElement element, final String parameter)
+	protected static int getIntegerParameter(final StartElement element, final @Nullable Path path,
+	                                         final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
@@ -282,17 +286,18 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				try {
 					return parseInt(retval, element.getLocation());
 				} catch (final ParseException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			}
 		}
-		throw new MissingPropertyException(element, parameter);
+		throw new MissingPropertyException(element, path, parameter);
 	}
 
 	/**
 	 * Read a parameter from XML whose value must be an integer.
 	 */
-	protected static int getIntegerParameter(final StartElement element, final String parameter, final int defaultValue)
+	protected static int getIntegerParameter(final StartElement element, final @Nullable Path path,
+	                                         final String parameter, final int defaultValue)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
@@ -301,7 +306,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				try {
 					return parseInt(retval, element.getLocation());
 				} catch (final ParseException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			}
 		}
@@ -311,46 +316,48 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Read a parameter from XML whose value can be an Integer or a Decimal.
 	 */
-	protected static Number getNumericParameter(final StartElement element, final String parameter)
+	protected static Number getNumericParameter(final StartElement element, final @Nullable Path path,
+	                                            final String parameter)
 			throws SPFormatException {
 		if (hasParameter(element, parameter)) {
-			final String paramString = getParameter(element, parameter);
+			final String paramString = getParameter(element, path, parameter);
 			if (paramString.contains(".")) {
 				try {
 					return new BigDecimal(paramString);
 				} catch (final NumberFormatException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			} else {
 				try {
 					return Integer.parseInt(paramString);
 				} catch (final NumberFormatException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			}
 		} else {
-			throw new MissingPropertyException(element, parameter);
+			throw new MissingPropertyException(element, path, parameter);
 		}
 	}
 
 	/**
 	 * Read a parameter from XML whose value can be an Integer or a Decimal.
 	 */
-	protected static Number getNumericParameter(final StartElement element, final String parameter,
-												final Number defaultValue) throws SPFormatException {
+	protected static Number getNumericParameter(final StartElement element, final @Nullable Path path,
+	                                            final String parameter, final Number defaultValue)
+			throws SPFormatException {
 		if (hasParameter(element, parameter)) {
-			final String paramString = getParameter(element, parameter);
+			final String paramString = getParameter(element, path, parameter);
 			if (paramString.contains(".")) {
 				try {
 					return new BigDecimal(paramString);
 				} catch (final NumberFormatException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			} else {
 				try {
 					return Integer.parseInt(paramString);
 				} catch (final NumberFormatException except) {
-					throw new MissingPropertyException(element, parameter, except);
+					throw new MissingPropertyException(element, path, parameter, except);
 				}
 			}
 		} else {
@@ -401,9 +408,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Parse a Point from a tag's properties.
 	 */
-	protected static Point parsePoint(final StartElement element) throws SPFormatException {
-		return new Point(getIntegerParameter(element, "row"),
-				getIntegerParameter(element, "column"));
+	protected static Point parsePoint(final StartElement element, final @Nullable Path path) throws SPFormatException {
+		return new Point(getIntegerParameter(element, path, "row"),
+				getIntegerParameter(element, path, "column"));
 	}
 
 	/**
@@ -423,22 +430,22 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Warn about a not-yet-(fully-)supported tag.
 	 */
-	protected final void warnFutureTag(final StartElement tag) {
-		warner.handle(UnsupportedTagException.future(tag));
+	protected final void warnFutureTag(final StartElement tag, final @Nullable Path path) {
+		warner.handle(UnsupportedTagException.future(tag, path));
 	}
 
 	/**
 	 * Advance the stream until we hit an end element matching the given
 	 * name, but object to any start elements.
 	 */
-	protected final void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader, final String... futureTags)
+	protected final void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader, final String... futureTags)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (FUTURE_TAGS.stream().anyMatch(se.getName().getLocalPart()::equalsIgnoreCase)) {
-					warner.handle(new UnwantedChildException(tag, se));
+					warner.handle(new UnwantedChildException(tag, se, path));
 				} else {
-					throw new UnwantedChildException(tag, se);
+					throw new UnwantedChildException(tag, se, path);
 				}
 			} else if (isMatchingEnd(tag, event)) {
 				break;
@@ -453,7 +460,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Boolean#parseBoolean} because it doesn't object to non-boolean
 	 * input, just returns false for everything but "true".
 	 */
-	protected static boolean getBooleanParameter(final StartElement element, final String parameter)
+	protected static boolean getBooleanParameter(final StartElement element, final @Nullable Path path,
+	                                             final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
@@ -463,18 +471,18 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 			} else if ("false".equalsIgnoreCase(val)) {
 				return false;
 			} else {
-				throw new MissingPropertyException(element, parameter,
+				throw new MissingPropertyException(element, path, parameter,
 						new IllegalArgumentException("Boolean can only be true or false"));
 			}
 		}
-		throw new MissingPropertyException(element, parameter);
+		throw new MissingPropertyException(element, path, parameter);
 	}
 
 	/**
 	 * Read a parameter from XML whose value must be a boolean.
 	 */
-	protected final boolean getBooleanParameter(final StartElement element, final String parameter,
-	                                            final boolean defaultValue) {
+	protected final boolean getBooleanParameter(final StartElement element, final @Nullable Path path,
+	                                            final String parameter, final boolean defaultValue) {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();
@@ -484,7 +492,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				} else if ("false".equalsIgnoreCase(val)) {
 					return false;
 				} else {
-					warner.handle(new MissingPropertyException(element, parameter,
+					warner.handle(new MissingPropertyException(element, path, parameter,
 							new IllegalArgumentException(
 									"Boolean can only be true or false")));
 				}
@@ -498,10 +506,10 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 *
 	 * TODO: Try to avoid Boolean parameters
 	 */
-	protected final void requireNonEmptyParameter(final StartElement element, final String parameter,
-	                                              final boolean mandatory) throws SPFormatException {
+	protected final void requireNonEmptyParameter(final StartElement element, final @Nullable Path path,
+	                                              final String parameter, final boolean mandatory) throws SPFormatException {
 		if (getParameter(element, parameter, "").isEmpty()) {
-			final SPFormatException except = new MissingPropertyException(element, parameter);
+			final SPFormatException except = new MissingPropertyException(element, path, parameter);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -525,9 +533,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	protected final int getOrGenerateID(final StartElement element, final @Nullable Path path)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
-			return registerID(getIntegerParameter(element, "id"), path, element.getLocation());
+			return registerID(getIntegerParameter(element, path, "id"), path, element.getLocation());
 		} else {
-			warner.handle(new MissingPropertyException(element, "id"));
+			warner.handle(new MissingPropertyException(element, path, "id"));
 			return idf.createID();
 		}
 	}
@@ -536,8 +544,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Get a parameter from an element in its preferred form, if present,
 	 * or in a deprecated form, in which case fire a warning.
 	 */
-	protected final String getParamWithDeprecatedForm(final StartElement element, final String preferred,
-	                                                  final String deprecated) throws SPFormatException {
+	protected final String getParamWithDeprecatedForm(final StartElement element, final @Nullable Path path,
+	                                                  final String preferred, final String deprecated)
+			throws SPFormatException {
 		final Attribute preferredProperty = getAttributeByName(element, preferred);
 		if (!Objects.isNull(preferredProperty)) {
 			final String retval = preferredProperty.getValue();
@@ -549,18 +558,19 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 		if (!Objects.isNull(deprecatedProperty)) {
 			final String retval = deprecatedProperty.getValue();
 			if (!Objects.isNull(retval)) {
-				warner.handle(new DeprecatedPropertyException(element, deprecated,
+				warner.handle(new DeprecatedPropertyException(element, path, deprecated,
 						preferred));
 				return retval;
 			}
 		}
-		throw new MissingPropertyException(element, preferred);
+		throw new MissingPropertyException(element, path, preferred);
 	}
 
 	/**
 	 * Warn if any unsupported attribute is on this tag.
 	 */
-	protected final void expectAttributes(final StartElement element, final String... attributes) {
+	protected final void expectAttributes(final StartElement element, final @Nullable Path path,
+	                                      final String... attributes) {
 		final Set<String> local = Stream.of(attributes).map(String::toLowerCase)
 				.collect(Collectors.toSet());
 		for (final String attribute : StreamSupport.stream(
@@ -569,7 +579,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				.map(Attribute::getName).filter(YAAbstractReader::isSupportedNamespace)
 				.map(QName::getLocalPart).map(String::toLowerCase).toList()) {
 			if (!local.contains(attribute)) {
-				warner.handle(new UnsupportedPropertyException(element, attribute));
+				warner.handle(new UnsupportedPropertyException(element, path, attribute));
 			}
 		}
 	}

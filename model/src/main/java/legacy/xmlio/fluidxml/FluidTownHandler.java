@@ -46,26 +46,26 @@ import java.util.function.Consumer;
 	public static Town readTown(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "town");
-		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+		requireTag(element, path, parent, "town");
+		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
-		requireNonEmptyAttribute(element, "name", false, warner);
+		requireNonEmptyAttribute(element, path, "name", false, warner);
 		final TownSize size;
 		try {
-			size = TownSize.parseTownSize(getAttribute(element, "size"));
+			size = TownSize.parseTownSize(getAttribute(element, path, "size"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "size", except);
+			throw new MissingPropertyException(element, path, "size", except);
 		}
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getAttribute(element, "status"));
+			status = TownStatus.parse(getAttribute(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
-		final Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
+		final Town fix = new Town(status, size, getIntegerAttribute(element, path, "dc"),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, path, idFactory),
-				getPlayerOrIndependent(element, warner, players));
+				getPlayerOrIndependent(element, path, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			// switch would require break-to-label
@@ -75,13 +75,13 @@ import java.util.function.Consumer;
 					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
-		return setImage(fix, element, warner);
+		return setImage(fix, element, path, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
@@ -89,27 +89,27 @@ import java.util.function.Consumer;
 	                                              final QName parent, final Iterable<XMLEvent> stream,
 												  final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "fortification");
-		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+		requireTag(element, path, parent, "fortification");
+		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
-		requireNonEmptyAttribute(element, "name", false, warner);
+		requireNonEmptyAttribute(element, path, "name", false, warner);
 		final TownSize size;
 		try {
-			size = TownSize.parseTownSize(getAttribute(element, "size"));
+			size = TownSize.parseTownSize(getAttribute(element, path, "size"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "size", except);
+			throw new MissingPropertyException(element, path, "size", except);
 		}
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getAttribute(element, "status"));
+			status = TownStatus.parse(getAttribute(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
 		final Fortification fix = new Fortification(status, size,
-				getIntegerAttribute(element, "dc"),
+				getIntegerAttribute(element, path, "dc"),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, path, idFactory),
-				getPlayerOrIndependent(element, warner, players));
+				getPlayerOrIndependent(element, path, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			// switch statement would require break-to-label
@@ -119,41 +119,40 @@ import java.util.function.Consumer;
 					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (event instanceof final EndElement ee &&
 					ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
-		return setImage(fix, element, warner);
+		return setImage(fix, element, path, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static City readCity(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "city");
-		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+		requireTag(element, path, parent, "city");
+		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
-		requireNonEmptyAttribute(element, "name", false, warner);
+		requireNonEmptyAttribute(element, path, "name", false, warner);
 		final TownSize size;
 		try {
-			size = TownSize.parseTownSize(getAttribute(element, "size"));
+			size = TownSize.parseTownSize(getAttribute(element, path, "size"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "size", except);
+			throw new MissingPropertyException(element, path, "size", except);
 		}
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getAttribute(element, "status"));
+			status = TownStatus.parse(getAttribute(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
-		final City fix = new City(status, size, getIntegerAttribute(element, "dc"),
+		final City fix = new City(status, size, getIntegerAttribute(element, path, "dc"),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, path, idFactory),
-				getPlayerOrIndependent(element, warner, players));
+				getPlayerOrIndependent(element, path, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			// switch would require break-to-label
@@ -163,33 +162,32 @@ import java.util.function.Consumer;
 					fix.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
-		return setImage(fix, element, warner);
+		return setImage(fix, element, path, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Village readVillage(final StartElement element, final @Nullable Path path, final QName parent,
 	                                  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "village");
-		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
+		requireTag(element, path, parent, "village");
+		expectAttributes(element, path, warner, "status", "race", "owner", "id", "image",
 				"portrait", "name");
-		requireNonEmptyAttribute(element, "name", false, warner);
+		requireNonEmptyAttribute(element, path, "name", false, warner);
 		final int idNum = getOrGenerateID(element, warner, path, idFactory);
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getAttribute(element, "status"));
+			status = TownStatus.parse(getAttribute(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
 		final Village retval = new Village(status, getAttribute(element, "name", ""), idNum,
-				getPlayerOrIndependent(element, warner, players),
+				getPlayerOrIndependent(element, path, warner, players),
 				getAttribute(element, "race",
 						RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
@@ -201,13 +199,13 @@ import java.util.function.Consumer;
 					retval.setPopulation(readCommunityStats(se, path,
 							element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
-		return setImage(retval, element, warner);
+		return setImage(retval, element, path, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
@@ -215,9 +213,9 @@ import java.util.function.Consumer;
 	                                                final QName parent, final Iterable<XMLEvent> stream,
 													final ILegacyPlayerCollection players, final Warning warner,
 													final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "population");
-		expectAttributes(element, warner, "size");
-		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, "size"));
+		requireTag(element, path, parent, "population");
+		expectAttributes(element, path, warner, "size");
+		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, path, "size"));
 		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
@@ -231,27 +229,27 @@ import java.util.function.Consumer;
 			} else if (event instanceof final StartElement se && isSPStartElement(event)) {
 				switch (se.getName().getLocalPart().toLowerCase()) {
 					case "expertise":
-						expectAttributes(se, warner, "skill", "level");
-						retval.setSkillLevel(getAttribute(se, "skill"),
-								getIntegerAttribute(se, "level"));
+						expectAttributes(se, path, warner, "skill", "level");
+						retval.setSkillLevel(getAttribute(se, path, "skill"),
+								getIntegerAttribute(se, path, "level"));
 						stack.addFirst(se);
 						break;
 					case "claim":
-						expectAttributes(se, warner, "resource");
-						retval.addWorkedField(getIntegerAttribute(se,
+						expectAttributes(se, path, warner, "resource");
+						retval.addWorkedField(getIntegerAttribute(se, path,
 								"resource"));
 						stack.addFirst(se);
 						break;
 					case "production":
 					case "consumption":
 						if (Objects.isNull(current)) {
-							expectAttributes(se, warner);
+							expectAttributes(se, path, warner);
 							current = se.getName().getLocalPart();
 							stack.addFirst(se);
 						} else {
 							throw new UnwantedChildException(
 									Optional.ofNullable(stack.peekFirst()).map(StartElement::getName)
-											.orElse(NULL_QNAME), se);
+											.orElse(NULL_QNAME), se, path);
 						}
 						break;
 					case "resource":
@@ -261,7 +259,7 @@ import java.util.function.Consumer;
 							case "consumption" -> addConsumption;
 							case null, default -> throw UnwantedChildException.listingExpectedTags(
 									Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
-									"production", "consumption");
+									path, "production", "consumption");
 						};
 						lambda.accept(FluidResourceHandler.readResource(se, path,
 								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
@@ -269,7 +267,7 @@ import java.util.function.Consumer;
 						break;
 					default:
 						throw UnwantedChildException.listingExpectedTags(
-								se.getName(), element, "expertise",
+								se.getName(), element, path, "expertise",
 								"claim", "production", "consumption", "resource");
 				}
 			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&

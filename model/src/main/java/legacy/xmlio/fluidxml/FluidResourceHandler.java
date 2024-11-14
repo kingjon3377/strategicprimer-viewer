@@ -39,39 +39,39 @@ import java.nio.file.Path;
 	                                                final QName parent, final Iterable<XMLEvent> stream,
 	                                                final ILegacyPlayerCollection players, final Warning warner,
 	                                                final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "resource");
-		expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
+		requireTag(element, path, parent, "resource");
+		expectAttributes(element, path, warner, "quantity", "kind", "contents", "unit",
 				"created", "id", "image");
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		final IMutableResourcePile retval = new ResourcePileImpl(
 				getOrGenerateID(element, warner, path, idFactory),
-				getAttribute(element, "kind"),
-				getAttribute(element, "contents"),
-				new LegacyQuantity(getNumericAttribute(element, "quantity"), getAttribute(element,
+				getAttribute(element, path, "kind"),
+				getAttribute(element, path, "contents"),
+				new LegacyQuantity(getNumericAttribute(element, path, "quantity"), getAttribute(element,
 						"unit", "")));
 		if (hasAttribute(element, "created")) {
-			retval.setCreated(getIntegerAttribute(element, "created"));
+			retval.setCreated(getIntegerAttribute(element, path, "created"));
 		}
-		return setImage(retval, element, warner);
+		return setImage(retval, element, path, warner);
 	}
 
 	public static Implement readImplement(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "implement");
-		expectAttributes(element, warner, "kind", "id", "count", "image");
-		spinUntilEnd(element.getName(), stream);
-		return setImage(new Implement(getAttribute(element, "kind"),
+		requireTag(element, path, parent, "implement");
+		expectAttributes(element, path, warner, "kind", "id", "count", "image");
+		spinUntilEnd(element.getName(), path, stream);
+		return setImage(new Implement(getAttribute(element, path, "kind"),
 				getOrGenerateID(element, warner, path, idFactory),
-				getIntegerAttribute(element, "count", 1, warner)), element, warner);
+				getIntegerAttribute(element, "count", 1, warner)), element, path, warner);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CacheFixture readCache(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, parent, "cache");
-		expectAttributes(element, warner, "kind", "contents", "id", "image");
+		requireTag(element, path, parent, "cache");
+		expectAttributes(element, path, warner, "kind", "contents", "id", "image");
 		// We want to transition from arbitrary-String 'contents' to sub-tags. As a first
 		// step, future-proof *this* version of the suite by only firing a warning if
 		// such children are detected, instead of aborting.
@@ -81,9 +81,9 @@ import java.nio.file.Path;
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if ("resource".equalsIgnoreCase(se.getName().getLocalPart()) ||
 						"implement".equalsIgnoreCase(se.getName().getLocalPart())) {
-					warner.handle(new UnwantedChildException(element.getName(), se));
+					warner.handle(new UnwantedChildException(element.getName(), se, path));
 				} else {
-					throw new UnwantedChildException(element.getName(), se);
+					throw new UnwantedChildException(element.getName(), se, path);
 				}
 			} else if (event instanceof final EndElement ee &&
 					element.getName().equals(ee.getName())) {
@@ -91,124 +91,124 @@ import java.nio.file.Path;
 			}
 		}
 		return setImage(
-				new CacheFixture(getAttribute(element, "kind"),
-						getAttribute(element, "contents"),
+				new CacheFixture(getAttribute(element, path, "kind"),
+						getAttribute(element, path, "contents"),
 						getOrGenerateID(element, warner, path, idFactory)),
-				element, warner);
+				element, path, warner);
 	}
 
 	public static Grove readGrove(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "grove");
-		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
+		requireTag(element, path, parent, "grove");
+		expectAttributes(element, path, warner, "cultivated", "wild", "kind", "tree", "id",
 				"image", "count");
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
-			cultivated = getBooleanAttribute(element, "cultivated");
+			cultivated = getBooleanAttribute(element, path, "cultivated");
 		} else if (hasAttribute(element, "wild")) {
-			warner.handle(new DeprecatedPropertyException(element, "wild", "cultivated"));
-			cultivated = !getBooleanAttribute(element, "wild");
+			warner.handle(new DeprecatedPropertyException(element, path, "wild", "cultivated"));
+			cultivated = !getBooleanAttribute(element, path, "wild");
 		} else {
-			throw new MissingPropertyException(element, "cultivated");
+			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
 				new Grove(false, cultivated,
-						getAttrWithDeprecatedForm(element, "kind", "tree", warner),
+						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
-						"count", -1)), element, warner);
+						"count", -1)), element, path, warner);
 	}
 
 	public static Grove readOrchard(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "orchard");
-		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
+		requireTag(element, path, parent, "orchard");
+		expectAttributes(element, path, warner, "cultivated", "wild", "kind", "tree", "id",
 				"image", "count");
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
-			cultivated = getBooleanAttribute(element, "cultivated");
+			cultivated = getBooleanAttribute(element, path, "cultivated");
 		} else if (hasAttribute(element, "wild")) {
-			warner.handle(new DeprecatedPropertyException(element, "wild", "cultivated"));
-			cultivated = !getBooleanAttribute(element, "wild");
+			warner.handle(new DeprecatedPropertyException(element, path, "wild", "cultivated"));
+			cultivated = !getBooleanAttribute(element, path, "wild");
 		} else {
-			throw new MissingPropertyException(element, "cultivated");
+			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
 				new Grove(true, cultivated,
-						getAttrWithDeprecatedForm(element, "kind", "tree", warner),
+						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
-						"count", -1)), element, warner);
+						"count", -1)), element, path, warner);
 	}
 
 	public static Meadow readMeadow(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "meadow");
-		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
+		requireTag(element, path, parent, "meadow");
+		expectAttributes(element, path, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		final int id = getOrGenerateID(element, warner, path, idFactory);
 		if (!hasAttribute(element, "status")) {
-			warner.handle(new MissingPropertyException(element, "status"));
+			warner.handle(new MissingPropertyException(element, path, "status"));
 		}
 		final FieldStatus status;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 					FieldStatus.random(id).toString()));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return setImage(new Meadow(getAttribute(element, "kind"), false,
-				getBooleanAttribute(element, "cultivated"), id, status,
-				getNumericAttribute(element, "acres", -1)), element, warner);
+		return setImage(new Meadow(getAttribute(element, path, "kind"), false,
+				getBooleanAttribute(element, path, "cultivated"), id, status,
+				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
 	}
 
 	public static Meadow readField(final StartElement element, final @Nullable Path path, final QName parent,
 	                               final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                               final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "field");
-		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
+		requireTag(element, path, parent, "field");
+		expectAttributes(element, path, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		final int id = getOrGenerateID(element, warner, path, idFactory);
 		if (!hasAttribute(element, "status")) {
-			warner.handle(new MissingPropertyException(element, "status"));
+			warner.handle(new MissingPropertyException(element, path, "status"));
 		}
 		final FieldStatus status;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 					FieldStatus.random(id).toString()));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return setImage(new Meadow(getAttribute(element, "kind"), true,
-				getBooleanAttribute(element, "cultivated"), id, status,
-				getNumericAttribute(element, "acres", -1)), element, warner);
+		return setImage(new Meadow(getAttribute(element, path, "kind"), true,
+				getBooleanAttribute(element, path, "cultivated"), id, status,
+				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
 	}
 
 	public static Mine readMine(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "mine");
-		expectAttributes(element, warner, "status", "kind", "product", "id", "image");
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "mine");
+		expectAttributes(element, path, warner, "status", "kind", "product", "id", "image");
+		spinUntilEnd(element.getName(), path, stream);
 		final TownStatus status;
 		try {
-			status = TownStatus.parse(getAttribute(element, "status"));
+			status = TownStatus.parse(getAttribute(element, path, "status"));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "status", except);
+			throw new MissingPropertyException(element, path, "status", except);
 		}
 		return setImage(
-				new Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
-						status, getOrGenerateID(element, warner, path, idFactory)), element,
+				new Mine(getAttrWithDeprecatedForm(element, path, "kind", "product", warner),
+						status, getOrGenerateID(element, warner, path, idFactory)), element, path,
 				warner);
 	}
 
@@ -216,47 +216,47 @@ import java.nio.file.Path;
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "mineral");
-		expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id", "image");
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "mineral");
+		expectAttributes(element, path, warner, "kind", "mineral", "exposed", "dc", "id", "image");
+		spinUntilEnd(element.getName(), path, stream);
 		return setImage(
 				new MineralVein(
-						getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
-						getBooleanAttribute(element, "exposed"),
-						getIntegerAttribute(element, "dc"),
-						getOrGenerateID(element, warner, path, idFactory)), element, warner);
+						getAttrWithDeprecatedForm(element, path, "kind", "mineral", warner),
+						getBooleanAttribute(element, path, "exposed"),
+						getIntegerAttribute(element, path, "dc"),
+						getOrGenerateID(element, warner, path, idFactory)), element, path, warner);
 	}
 
 	public static Shrub readShrub(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "shrub");
-		expectAttributes(element, warner, "kind", "shrub", "id", "image", "count");
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "shrub");
+		expectAttributes(element, path, warner, "kind", "shrub", "id", "image", "count");
+		spinUntilEnd(element.getName(), path, stream);
 		return setImage(new Shrub(
-				getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
+				getAttrWithDeprecatedForm(element, path, "kind", "shrub", warner),
 				getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
-				"count", -1)), element, warner);
+				"count", -1)), element, path, warner);
 	}
 
 	public static StoneDeposit readStone(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		requireTag(element, parent, "stone");
-		expectAttributes(element, warner, "kind", "stone", "dc", "id", "image");
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "stone");
+		expectAttributes(element, path, warner, "kind", "stone", "dc", "id", "image");
+		spinUntilEnd(element.getName(), path, stream);
 		final StoneKind stone;
 		try {
-			stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind", "stone", warner));
+			stone = StoneKind.parse(getAttrWithDeprecatedForm(element, path, "kind", "stone", warner));
 		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, "kind", except);
+			throw new MissingPropertyException(element, path, "kind", except);
 		}
 		return setImage(
 				new StoneDeposit(stone,
-						getIntegerAttribute(element, "dc"),
-						getOrGenerateID(element, warner, path, idFactory)), element, warner);
+						getIntegerAttribute(element, path, "dc"),
+						getOrGenerateID(element, warner, path, idFactory)), element, path, warner);
 	}
 
 	public static void writeResource(final XMLStreamWriter ostream, final IResourcePile obj, final int indent)

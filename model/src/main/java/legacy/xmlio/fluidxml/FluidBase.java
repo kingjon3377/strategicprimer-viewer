@@ -51,15 +51,16 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param tags    The tags we accept here
 	 * @throws SPFormatException on a tag other than one, or not in a namespace, we accept
 	 */
-	protected static void requireTag(final StartElement element, final QName parent, final String... tags)
+	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
+	                                 final String... tags)
 			throws SPFormatException {
 		if (!SP_NAMESPACE.equals(element.getName().getNamespaceURI()) &&
 				!XMLConstants.NULL_NS_URI.equals(element.getName().getNamespaceURI())) {
-			throw UnwantedChildException.unexpectedNamespace(parent, element);
+			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
 		}
 		final String localName = element.getName().getLocalPart().toLowerCase();
 		if (Stream.of(tags).noneMatch(localName::equalsIgnoreCase)) {
-			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
+			throw UnwantedChildException.listingExpectedTags(parent, element, path, tags);
 		}
 	}
 
@@ -100,14 +101,15 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param param   The parameter we want to get.
 	 * @throws SPFormatException if the tag doesn't have that parameter
 	 */
-	protected static String getAttribute(final StartElement element, final String param) throws SPFormatException {
+	protected static String getAttribute(final StartElement element, final @Nullable Path file, final String param)
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.isNull(attr)) {
-			throw new MissingPropertyException(element, param);
+			throw new MissingPropertyException(element, file, param);
 		}
 		final String retval = attr.getValue();
 		if (Objects.isNull(retval)) {
-			throw new MissingPropertyException(element, param);
+			throw new MissingPropertyException(element, file, param);
 		} else {
 			return retval;
 		}
@@ -116,16 +118,16 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	/**
 	 * Get an attribute that should only contain "true" or "false" from the
 	 * XML, returning the specified value if the attribute does not exist
-	 * or has a non-boolean value.
+	 * or has a non-boolean value. TODO: Audit callers: should provide their own Warning
 	 *
 	 * @param element      The current tag.
 	 * @param param        The parameter we want to get
 	 * @param defaultValue The value to return if the tag doesn't have that parameter
 	 * @throws SPFormatException if the tag doesn't have that parameter and no default was provided
 	 */
-	protected static boolean getBooleanAttribute(final StartElement element, final String param,
-												 final boolean defaultValue) {
-		return getBooleanAttribute(element, param, defaultValue, Warning.WARN);
+	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
+	                                             final String param, final boolean defaultValue) {
+		return getBooleanAttribute(element, path, param, defaultValue, Warning.WARN);
 	}
 
 	/**
@@ -139,8 +141,8 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param warner       The {@link Warning} instance to use if the attribute was present but non-Boolean but a
 	 *                     default was provided
 	 */
-	protected static boolean getBooleanAttribute(final StartElement element, final String param,
-												 final boolean defaultValue, final Warning warner) {
+	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
+	                                             final String param, final boolean defaultValue, final Warning warner) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.isNull(attr)) {
 			return defaultValue;
@@ -154,7 +156,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 		} else if ("false".equalsIgnoreCase(val)) {
 			return false;
 		} else {
-			warner.handle(new MissingPropertyException(element, param,
+			warner.handle(new MissingPropertyException(element, path, param,
 					new IllegalArgumentException("Cannot parse boolean from " + val)));
 			return defaultValue;
 		}
@@ -168,22 +170,23 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param param   The parameter we want to get
 	 * @throws SPFormatException if the tag doesn't have that parameter and no default was provided
 	 */
-	protected static boolean getBooleanAttribute(final StartElement element, final String param)
+	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
+	                                             final String param)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.isNull(attr)) {
-			throw new MissingPropertyException(element, param);
+			throw new MissingPropertyException(element, path, param);
 		}
 		final String val = attr.getValue();
 		if (Objects.isNull(val) || val.isEmpty()) {
-			throw new MissingPropertyException(element, param);
+			throw new MissingPropertyException(element, path, param);
 		}
 		if ("true".equalsIgnoreCase(val)) {
 			return true;
 		} else if ("false".equalsIgnoreCase(val)) {
 			return false;
 		} else {
-			throw new MissingPropertyException(element, param,
+			throw new MissingPropertyException(element, path, param,
 					new IllegalArgumentException("Cannot parse boolean from " + val));
 		}
 	}
@@ -201,11 +204,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * TODO: Split into "require" and "recommend" method rather than having Boolean parameter?
 	 */
-	protected static void requireNonEmptyAttribute(final StartElement element, final String param,
-												   final boolean mandatory, final Warning warner)
+	protected static void requireNonEmptyAttribute(final StartElement element, final @Nullable Path path,
+	                                               final String param, final boolean mandatory, final Warning warner)
 			throws SPFormatException {
 		if (getAttribute(element, param, "").isEmpty()) {
-			final SPFormatException except = new MissingPropertyException(element, param);
+			final SPFormatException except = new MissingPropertyException(element, path, param);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -232,11 +235,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param reader the stream of XML
 	 * @throws SPFormatException on unwanted child tags
 	 */
-	protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
+	protected static void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			switch (event) {
-				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se);
+				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se, path);
 				case final EndElement ee when tag.equals(ee.getName()) -> {
 					return;
 				}
@@ -270,13 +273,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 		if (hasAttribute(element, "id")) {
 			try {
 				return idFactory.register(
-						NUM_PARSER.parse(getAttribute(element, "id")).intValue(),
+						NUM_PARSER.parse(getAttribute(element, path, "id")).intValue(),
 						warner, Pair.with(path, element.getLocation()));
 			} catch (final NumberFormatException | ParseException except) {
-				throw new MissingPropertyException(element, "id", except);
+				throw new MissingPropertyException(element, path, "id", except);
 			}
 		} else {
-			warner.handle(new MissingPropertyException(element, "id"));
+			warner.handle(new MissingPropertyException(element, path, "id"));
 			return idFactory.createID();
 		}
 	}
@@ -287,6 +290,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * return its value; otherwise, throw an exception.
 	 *
 	 * @param element    The current tag
+	 * @param file       The file containing the tag
 	 * @param preferred  The preferred name of the parameter
 	 * @param deprecated The deprecated name of the parameter
 	 * @param warner     The Warning instance to use
@@ -294,16 +298,17 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * TODO: Accept a default-value parameter and/or a type-conversion parameter
 	 */
-	protected static String getAttrWithDeprecatedForm(final StartElement element, final String preferred,
-													  final String deprecated, final Warning warner)
+	protected static String getAttrWithDeprecatedForm(final StartElement element, final @Nullable Path file,
+	                                                  final String preferred, final String deprecated,
+	                                                  final Warning warner)
 			throws SPFormatException {
 		if (hasAttribute(element, preferred)) {
-			return getAttribute(element, preferred);
+			return getAttribute(element, file, preferred);
 		} else if (hasAttribute(element, deprecated)) {
-			warner.handle(new DeprecatedPropertyException(element, deprecated, preferred));
-			return getAttribute(element, deprecated);
+			warner.handle(new DeprecatedPropertyException(element, file, deprecated, preferred));
+			return getAttribute(element, file, deprecated);
 		} else {
-			throw new MissingPropertyException(element, preferred);
+			throw new MissingPropertyException(element, file, preferred);
 		}
 	}
 
@@ -419,25 +424,26 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException if the tag doesn't have that parameter, or
 	 *                           if its value is non-numeric or otherwise malformed
 	 */
-	public static int getIntegerAttribute(final StartElement tag, final String parameter)
+	public static int getIntegerAttribute(final StartElement tag, final @Nullable Path path,
+	                                      final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
-			throw new MissingPropertyException(tag, parameter);
+			throw new MissingPropertyException(tag, path, parameter);
 		}
 		final String val = attr.getValue();
 		if (Objects.isNull(val)) {
-			throw new MissingPropertyException(tag, parameter);
+			throw new MissingPropertyException(tag, path, parameter);
 		}
 		try {
 			return parseInt(val, tag.getLocation());
 		} catch (final ParseException except) {
-			throw new MissingPropertyException(tag, parameter, except);
+			throw new MissingPropertyException(tag, path, parameter, except);
 		}
 	}
 
 	/**
-	 * Parse an XML parameter whose value can be an Integer or a Decimal.
+	 * Parse an XML parameter whose value can be an Integer or a Decimal. FIXME: Inline (callers pass warner)
 	 *
 	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
@@ -447,9 +453,10 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 *                           otherwise malformed
 	 */
-	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
-												final Number defaultValue) throws SPFormatException {
-		return getNumericAttribute(tag, parameter, defaultValue, Warning.WARN);
+	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
+	                                            final String parameter, final Number defaultValue)
+			throws SPFormatException {
+		return getNumericAttribute(tag, path, parameter, defaultValue, Warning.WARN);
 	}
 
 	/**
@@ -464,8 +471,9 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 *                           otherwise malformed
 	 */
-	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
-												final Number defaultValue, final Warning warner)
+	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
+	                                            final String parameter, final Number defaultValue,
+	                                            final Warning warner)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
@@ -479,13 +487,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 			try {
 				return new BigDecimal(val);
 			} catch (final NumberFormatException except) {
-				throw new MissingPropertyException(tag, parameter, except);
+				throw new MissingPropertyException(tag, path, parameter, except);
 			}
 		} else {
 			try {
 				return parseInt(val, tag.getLocation());
 			} catch (final ParseException except) {
-				throw new MissingPropertyException(tag, parameter, except);
+				throw new MissingPropertyException(tag, path, parameter, except);
 			}
 		}
 	}
@@ -500,27 +508,28 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException if the tag doesn't have that parameter, or
 	 *                           if its value is non-numeric or otherwise malformed
 	 */
-	protected static Number getNumericAttribute(final StartElement tag, final String parameter)
+	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
+	                                            final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
-			throw new MissingPropertyException(tag, parameter);
+			throw new MissingPropertyException(tag, path, parameter);
 		}
 		final String val = attr.getValue();
 		if (Objects.isNull(val)) {
-			throw new MissingPropertyException(tag, parameter);
+			throw new MissingPropertyException(tag, path, parameter);
 		}
 		if (val.contains(".")) {
 			try {
 				return new BigDecimal(val);
 			} catch (final NumberFormatException except) {
-				throw new MissingPropertyException(tag, parameter, except);
+				throw new MissingPropertyException(tag, path, parameter, except);
 			}
 		} else {
 			try {
 				return parseInt(val, tag.getLocation());
 			} catch (final ParseException except) {
-				throw new MissingPropertyException(tag, parameter, except);
+				throw new MissingPropertyException(tag, path, parameter, except);
 			}
 		}
 	}
@@ -603,12 +612,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param players The collection of players to refer to
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
-	protected static Player getPlayerOrIndependent(final StartElement element, final Warning warner,
-												   final ILegacyPlayerCollection players) throws SPFormatException {
+	protected static Player getPlayerOrIndependent(final StartElement element, final @Nullable Path path,
+	                                               final Warning warner, final ILegacyPlayerCollection players)
+			throws SPFormatException {
 		if (hasAttribute(element, "owner")) {
-			return players.getPlayer(getIntegerAttribute(element, "owner"));
+			return players.getPlayer(getIntegerAttribute(element, path, "owner"));
 		} else {
-			warner.handle(new MissingPropertyException(element, "owner"));
+			warner.handle(new MissingPropertyException(element, path, "owner"));
 			return players.getIndependent();
 		}
 	}
@@ -620,11 +630,12 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element The current XML tag
 	 * @param warner  The Warning instance to use if the object can't have an image but the XML specifies one
 	 */
-	protected static <Type> Type setImage(final Type obj, final StartElement element, final Warning warner) {
+	protected static <Type> Type setImage(final Type obj, final StartElement element, final @Nullable Path path,
+	                                      final Warning warner) {
 		if (obj instanceof final HasMutableImage hmi) {
 			hmi.setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {
-			warner.handle(new UnsupportedPropertyException(element, "image"));
+			warner.handle(new UnsupportedPropertyException(element, path, "image"));
 		}
 		return obj;
 	}
@@ -637,12 +648,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param stream The stream of XML elements to sift through
 	 * @throws SPFormatException on unwanted intervening tags
 	 */
-	protected static String getTextUntil(final QName tag, final Iterable<XMLEvent> stream)
+	protected static String getTextUntil(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {
-				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se);
+				case final StartElement se when isSPStartElement(event) ->
+						throw new UnwantedChildException(tag, se, path);
 				case final Characters c -> builder.append(c.getData());
 				case final EndElement ee when tag.equals(ee.getName()) -> {
 					return builder.toString().strip();
@@ -675,15 +687,15 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	/**
 	 * Warn if any unsupported attribute is on this tag.
 	 */
-	protected static void expectAttributes(final StartElement element, final Warning warner,
-										   final String... attributes) {
+	protected static void expectAttributes(final StartElement element, final @Nullable Path path, final Warning warner,
+	                                       final String... attributes) {
 		final List<String> local = Stream.of(attributes).map(String::toLowerCase).toList();
 		for (final Attribute attribute : new IteratorWrapper<>(
 				element.getAttributes())) {
 			final QName name = attribute.getName();
 			if (isSupportedNamespace(name) &&
 					!local.contains(name.getLocalPart().toLowerCase())) {
-				warner.handle(new UnsupportedPropertyException(element,
+				warner.handle(new UnsupportedPropertyException(element, path,
 						name.getLocalPart()));
 			}
 		}

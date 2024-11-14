@@ -88,34 +88,37 @@ import java.util.Objects;
 		int apply(Type item) throws SPFormatException;
 	}
 
-	private WorkerStats parseStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	private WorkerStats parseStats(final StartElement element, final @Nullable Path path, final QName parent,
+	                               final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "stats");
-		expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
-		final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
+		requireTag(element, path, parent, "stats");
+		expectAttributes(element, path, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
+		final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, path, attr);
 		final WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
 				inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
 				inner.apply("wis"), inner.apply("cha"));
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), path, stream);
 		return retval;
 	}
 
-	private ISkill parseSkill(final StartElement element, final QName parent) throws SPFormatException {
-		requireTag(element, parent, "skill");
-		expectAttributes(element, "name", "level", "hours");
+	private ISkill parseSkill(final StartElement element, final @Nullable Path path, final QName parent)
+			throws SPFormatException {
+		requireTag(element, path, parent, "skill");
+		expectAttributes(element, path, "name", "level", "hours");
 		// TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
-		return new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
-				getIntegerParameter(element, "hours"));
+		return new Skill(getParameter(element, path, "name"), getIntegerParameter(element, path, "level"),
+				getIntegerParameter(element, path, "hours"));
 	}
 
-	private String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	private String readNote(final StartElement element, final @Nullable Path path, final QName parent,
+	                        final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "note");
-		expectAttributes(element, "player");
+		requireTag(element, path, parent, "note");
+		expectAttributes(element, path, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-				throw new UnwantedChildException(element.getName(), se);
+				throw new UnwantedChildException(element.getName(), se, path);
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			} else if (event instanceof final Characters c) {
@@ -125,20 +128,21 @@ import java.util.Objects;
 		return retval.toString().strip();
 	}
 
-	private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+	private IJob parseJob(final StartElement element, final @Nullable Path path, final QName parent,
+	                      final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "job");
-		expectAttributes(element, "name", "level");
-		final IMutableJob retval = new Job(getParameter(element, "name"),
-				getIntegerParameter(element, "level"));
+		requireTag(element, path, parent, "job");
+		expectAttributes(element, path, "name", "level");
+		final IMutableJob retval = new Job(getParameter(element, path, "name"),
+				getIntegerParameter(element, path, "level"));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
-					retval.addSkill(parseSkill(se, element.getName()));
-					spinUntilEnd(se.getName(), stream);
+					retval.addSkill(parseSkill(se, path, element.getName()));
+					spinUntilEnd(se.getName(), path, stream);
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-							se, "skill");
+							se, path, "skill");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -167,35 +171,35 @@ import java.util.Objects;
 	public IWorker read(final StartElement element, final @Nullable Path path, final QName parent,
 	                    final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "worker");
-		expectAttributes(element, "name", "race", "image", "portrait", "id");
-		final Worker retval = new Worker(getParameter(element, "name"),
+		requireTag(element, path, parent, "worker");
+		expectAttributes(element, path, "name", "race", "image", "portrait", "id");
+		final Worker retval = new Worker(getParameter(element, path, "name"),
 				getParameter(element, "race", "human"), getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if ("job".equalsIgnoreCase(se.getName().getLocalPart())) {
-					retval.addJob(parseJob(se, element.getName(), stream));
+					retval.addJob(parseJob(se, path, element.getName(), stream));
 				} else if ("stats".equalsIgnoreCase(se.getName().getLocalPart())) {
-					retval.setStats(parseStats(se, element.getName(), stream));
+					retval.setStats(parseStats(se, path, element.getName(), stream));
 				} else if ("note".equalsIgnoreCase(se.getName().getLocalPart())) {
 					retval.setNote(
-							players.getPlayer(getIntegerParameter(se, "player")),
-							readNote(se, element.getName(), stream));
+							players.getPlayer(getIntegerParameter(se, path, "player")),
+							readNote(se, path, element.getName(), stream));
 				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) &&
 						Objects.isNull(retval.getMount())) {
 					final MobileFixture animal = mobileReader.read(se, path, element.getName(), stream);
 					if (animal instanceof final Animal a) {
 						retval.setMount(a);
 					} else {
-						throw new UnwantedChildException(se.getName(), element);
+						throw new UnwantedChildException(se.getName(), element, path);
 					}
 				} else if ("implement".equalsIgnoreCase(se.getName().getLocalPart())) {
 					retval.addEquipment(implementReader.read(se, path, element.getName(), stream));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-							se, "job", "stats", "note", "animal", "implement");
+							se, path, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;

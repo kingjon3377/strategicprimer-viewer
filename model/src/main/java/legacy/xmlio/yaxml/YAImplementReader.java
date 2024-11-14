@@ -26,11 +26,11 @@ import org.jetbrains.annotations.Nullable;
 	public Implement read(final StartElement element, final @Nullable Path path, final QName parent,
 	                      final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, "implement");
-		expectAttributes(element, "kind", "id", "image");
-		final Implement retval = new Implement(getParameter(element, "kind"),
-				getOrGenerateID(element, path), getIntegerParameter(element, "count", 1));
-		spinUntilEnd(element.getName(), stream);
+		requireTag(element, path, parent, "implement");
+		expectAttributes(element, path, "kind", "id", "image");
+		final Implement retval = new Implement(getParameter(element, path, "kind"),
+				getOrGenerateID(element, path), getIntegerParameter(element, path, "count", 1));
+		spinUntilEnd(element.getName(), path, stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
