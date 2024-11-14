@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import legacy.map.fixtures.towns.ITownFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import org.javatuples.Pair;
 
 import java.util.Comparator;
@@ -216,7 +215,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		}
 	}
 
-	private static Stream<?> flatten(final @Nullable Object item) {
+	private static Stream<?> flatten(final Object item) {
 		// Note that workers are counted separately; while we include their equipment and mounts we don't include them.
 		return switch (item) {
 			case final IWorker w -> Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
@@ -225,7 +224,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 			case final Iterable<?> iterable ->  // TODO: FixtureIterable?
 					Stream.concat(StreamSupport.stream(iterable.spliterator(), false)
 							.flatMap(CountingCLI::flatten), Stream.of(item));
-			case null, default -> Stream.ofNullable(item); // TODO: Why is it @Nullable?
+			default -> Stream.of(item);
 
 		};
 	}
