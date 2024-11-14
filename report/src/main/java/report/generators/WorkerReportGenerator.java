@@ -54,8 +54,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	}
 
 	/**
-	 * Produce the sub-sub-report on a worker's stats.
-	 * TODO: Take Consumer instead of returning String
+	 * Produce the sub-sub-report on a worker's stats. No real point in taking Consumer&lt;String&gt; instead of
+	 * returning String, as we'd havee to do formatting anyway.
 	 */
 	private static String statsString(final WorkerStats stats) {
 		return """
@@ -67,14 +67,14 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				mod(stats.getCharisma()));
 	}
 
-	// TODO: take Consumer instead of returning String
+	// Can't take Consumer because skills() can't reasonably do so
 	private static String skillString(final ISkill skill) {
 		return skill.getName() + " " + skill.getLevel();
 	}
 
 	/**
-	 * Produce text describing the given Skills.
-	 * TODO: Take Consumer instead of returning String?
+	 * Produce text describing the given Skills. As little as I like using a Collector and returning Stirng here, the
+	 * other choice is a loop with an "is this the first iteration" flag variable.
 	 */
 	private static String skills(final Iterable<ISkill> job) {
 		return (job.iterator().hasNext()) ? StreamSupport.stream(job.spliterator(), false)
