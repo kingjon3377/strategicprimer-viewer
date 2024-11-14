@@ -43,7 +43,6 @@ import java.util.Random;
 		final Random rng = new Random();
 		for (final IUnit unit : model.getPlayerChoices().stream()
 				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream()).toList()) {
-			// TODO: Pull out of loop and call setSeed() on it here instead.
 			rng.setSeed(unit.getId() << 8 + model.getMap().getCurrentTurn());
 			final int steps = rng.nextInt(3) + rng.nextInt(3);
 			model.setSelectedUnit(unit);
