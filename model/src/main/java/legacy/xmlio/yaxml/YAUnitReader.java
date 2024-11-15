@@ -140,16 +140,14 @@ import java.util.Map;
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {
-				case final StartElement se when isSupportedNamespace(se.getName()) -> {
-					// TODO: merge with case condition?
-					if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
+				case final StartElement se when isSupportedNamespace(se.getName()) &&
+						"orders".equalsIgnoreCase(se.getName().getLocalPart()) ->
 						parseOrders(se, path, retval, stream);
-					} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
+				case final StartElement se when isSupportedNamespace(se.getName()) &&
+						"results".equalsIgnoreCase(se.getName().getLocalPart()) ->
 						parseResults(se, path, retval, stream);
-					} else {
+				case final StartElement se when isSupportedNamespace(se.getName()) ->
 						retval.addMember(parseChild(se, path, element.getName(), stream));
-					}
-				}
 				case final Characters c -> orders.append(c.getData());
 				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					return retval;
