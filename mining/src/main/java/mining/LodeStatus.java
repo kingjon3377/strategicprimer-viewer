@@ -166,14 +166,4 @@ enum LodeStatus {
 	public @Nullable LodeStatus bandedAdjacent(final Random rng) {
 		return adjacent(rng::nextGaussian);
 	}
-
-	/**
-	 * One status is *greater* than another iff the former's {@link
-	 * LodeStatus#ratio} is <em>less</em> than the latter's.
-	 *
-	 * FIXME: Where was this, or should this be, used?
-	 */
-	public static int compareLodeStatus(final LodeStatus one, final LodeStatus two) {
-		return Integer.compare(two.getRatio(), one.getRatio());
-	}
 }
