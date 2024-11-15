@@ -141,9 +141,8 @@ import java.util.stream.Collectors;
 		cli.println();
 		cli.printf("Pruned %d branches beyond our boundaries%n", pruneCounter);
 
-		// FIXME: What is this procedure (by-row and by-column)
-		// supposed to do? On porting back to Java it looks like it's
-		// guaranteed to break on the first iteration in all three loops ...
+		// FIXME: What is this procedure (by-row and by-column) supposed to do? On porting back to Java it looks like
+		// it's guaranteed to break on the first iteration in all three loops ...
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
 				treeMap(unnormalized.keySet()
 								.stream().collect(
