@@ -616,18 +616,17 @@ public final class TestXMLIO {
 				<tile row="1" column="1" kind="plains">%s</tile></map>""".formatted(str);
 	}
 
-	// TODO: Add .limit() after .stream(), and take int to pass to it
-	static <T> Collector<T, ?, Stream<T>> toShuffledStream() {
+	private static <T> Collector<T, ?, Stream<T>> toShuffledStream(final long limit) {
 		return Collectors.collectingAndThen(Collectors.toList(), collected -> {
 			Collections.shuffle(collected);
-			return collected.stream();
+			return collected.stream().limit(limit);
 		});
 	}
 
 	private static Stream<Arguments> testVillageWantsName() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 				integers(2).flatMap(b ->
-						RACES.stream().collect(toShuffledStream()).limit(3).flatMap(c ->
+						RACES.stream().collect(toShuffledStream(3)).flatMap(c ->
 								writers().map(d -> Arguments.of(a, b, c, d)))));
 	}
 
@@ -647,9 +646,9 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testBasicVillageSerialization() {
-		return TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(a ->
+		return TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(a ->
 				Stream.of(TownStatus.values()).flatMap(b ->
-						RACES.stream().collect(toShuffledStream()).limit(3).flatMap(c ->
+						RACES.stream().collect(toShuffledStream(3)).flatMap(c ->
 								integers(2).map(d ->
 										Arguments.of(a, b, c, d)))));
 	}
@@ -681,7 +680,7 @@ public final class TestXMLIO {
 	// FIXME: Pass some bound to each of these nextInt() calls, instead of calling assume() so much in the test method.
 	private static Stream<Arguments> testVillagePopulationSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
-				RACES.stream().collect(toShuffledStream()).limit(3).map(b ->
+				RACES.stream().collect(toShuffledStream(3)).map(b ->
 						Arguments.of(a, b, randomInteger(), randomInteger(),
 								randomInteger(), randomInteger(),
 								randomInteger(), randomInteger(),
@@ -757,7 +756,7 @@ public final class TestXMLIO {
 	// TODO: reformat
 	private static Stream<Arguments> testCitySerialization() {
 		return Stream.of(TownSize.values()).flatMap(a -> Stream.of(TownStatus.values()).flatMap(b ->
-				TREE_TYPES.stream().collect(toShuffledStream()).limit(2).map(c ->
+				TREE_TYPES.stream().collect(toShuffledStream(2)).map(c ->
 						Arguments.of(a, b, randomInteger(),
 								randomInteger(), c))));
 	}
@@ -784,9 +783,9 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testCityPopulationSerialization() {
-		return TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(a ->
+		return TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(a ->
 				Stream.of(TownSize.values()).flatMap(b -> Stream.of(TownStatus.values()).flatMap(c ->
-						RACES.stream().collect(toShuffledStream()).limit(3).map(d ->
+						RACES.stream().collect(toShuffledStream(3)).map(d ->
 								Arguments.of(a, b, c, d, randomInteger(),
 										randomInteger(), randomInteger(),
 										randomInteger(), randomInteger(),
@@ -1467,7 +1466,7 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testMeadowSerialization() {
 		return integers(2).flatMap(a ->
 				Stream.of(FieldStatus.values()).flatMap(b ->
-						FIELD_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(c ->
+						FIELD_TYPES.stream().collect(toShuffledStream(2)).flatMap(c ->
 								bools().flatMap(d ->
 										bools().map(e ->
 												Arguments.of(a, b, c, d, e))))));
@@ -1509,7 +1508,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testMineSerialization() {
 		return integers(2).flatMap(a ->
-				MINERALS.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
+				MINERALS.stream().collect(toShuffledStream(2)).flatMap(b ->
 						Stream.of(TownStatus.values()).flatMap(c ->
 								writers().map(d ->
 										Arguments.of(a, b, c, d)))));
@@ -1543,7 +1542,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testShrubSerialization() {
 		return integers(2).flatMap(a ->
-				FIELD_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
+				FIELD_TYPES.stream().collect(toShuffledStream(2)).flatMap(b ->
 						writers().map(c -> Arguments.of(a, b, c))));
 	}
 
@@ -1569,7 +1568,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testTextSerialization() {
 		return integers(2).flatMap(a ->
-				FIELD_TYPES.stream().collect(toShuffledStream()).limit(2).map(b ->
+				FIELD_TYPES.stream().collect(toShuffledStream(2)).map(b ->
 						Arguments.of(a, b)));
 	}
 
@@ -1617,8 +1616,8 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testUnitWarnings() {
 		return writers().flatMap(a ->
 				integers(2).flatMap(b ->
-						TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(c ->
-								FIELD_TYPES.stream().collect(toShuffledStream()).limit(2).map(d ->
+						TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(c ->
+								FIELD_TYPES.stream().collect(toShuffledStream(2)).map(d ->
 										Arguments.of(a, b, c, d)))));
 	}
 
@@ -1835,7 +1834,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testAnimalTracksSerialization() {
-		return TREE_TYPES.stream().collect(toShuffledStream()).limit(2).map(Arguments::of);
+		return TREE_TYPES.stream().collect(toShuffledStream(2)).map(Arguments::of);
 	}
 
 	/**
@@ -1865,7 +1864,7 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testAnimalSerialization() {
 		return integers(2).flatMap(a ->
 				ANIMAL_STATUSES.stream().flatMap(b ->
-						TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(c ->
+						TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(c ->
 								bools().map(d -> Arguments.of(a, b, c, d)))));
 	}
 
@@ -1943,8 +1942,8 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testCacheSerialization() {
 		return integers(3).flatMap(a ->
-				TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
-						FIELD_TYPES.stream().collect(toShuffledStream()).limit(2).map(c ->
+				TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(b ->
+						FIELD_TYPES.stream().collect(toShuffledStream(2)).map(c ->
 								Arguments.of(a, b, c))));
 	}
 
@@ -1971,7 +1970,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testCentaurSerialization() {
 		return integers(3).flatMap(a ->
-				TREE_TYPES.stream().collect(toShuffledStream()).limit(2).map(b ->
+				TREE_TYPES.stream().collect(toShuffledStream(2)).map(b ->
 						Arguments.of(a, b)));
 	}
 
@@ -2033,7 +2032,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testForestSerialization() {
 		return integers(3).flatMap(a ->
-				TREE_TYPES.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
+				TREE_TYPES.stream().collect(toShuffledStream(2)).flatMap(b ->
 						bools().map(c -> Arguments.of(a, b, c))));
 	}
 
@@ -2273,7 +2272,7 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testMineralSerialization() {
 		return integers(2).flatMap(a ->
 				integers(2).flatMap(b ->
-						MINERALS.stream().collect(toShuffledStream()).flatMap(c ->
+						MINERALS.stream().flatMap(c ->
 								bools().flatMap(d ->
 										writers().map(e ->
 												Arguments.of(a, b, c, d, e))))));
