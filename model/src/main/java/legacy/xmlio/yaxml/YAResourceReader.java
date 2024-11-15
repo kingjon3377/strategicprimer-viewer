@@ -43,8 +43,8 @@ import java.util.Set;
 	private static final Set<String> SUPPORTED_TAGS = Set.of("cache", "grove", "orchard", "field", "meadow", "mine",
 			"mineral", "shrub", "stone");
 
-	private HarvestableFixture createMeadow(final StartElement element, final @Nullable Path path, final boolean field,
-	                                        final int idNum)
+	private HarvestableFixture createMeadow(final StartElement element, final @Nullable Path path,
+	                                        final Meadow.MeadowType type, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, path, "status", "kind", "id", "cultivated", "image", "acres");
 		requireNonEmptyParameter(element, path, "status", false);
@@ -56,7 +56,7 @@ import java.util.Set;
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return new Meadow(getParameter(element, path, "kind"), field,
+		return new Meadow(getParameter(element, path, "kind"), type,
 				getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
 						CultivationStatus.WILD, idNum, status,
 				getNumericParameter(element, path, "acres", -1));
@@ -110,9 +110,9 @@ import java.util.Set;
 				retval.setImage(getParameter(element, "image", ""));
 				return retval;
 			}
-			case "field" -> retval = createMeadow(element, path, true, idNum);
+			case "field" -> retval = createMeadow(element, path, Meadow.MeadowType.FIELD, idNum);
 			case "grove" -> retval = createGrove(element, path, Grove.GroveType.GROVE, idNum);
-			case "meadow" -> retval = createMeadow(element, path, false, idNum);
+			case "meadow" -> retval = createMeadow(element, path, Meadow.MeadowType.MEADOW, idNum);
 			case "mine" -> {
 				expectAttributes(element, path, "status", "kind", "product", "id", "image");
 				final TownStatus status;
@@ -163,7 +163,7 @@ import java.util.Set;
 				writeProperty(ostream, "contents", c.getContents());
 			}
 			case final Meadow m -> {
-				writeTag(ostream, m.isField() ? "field" : "meadow", indent);
+				writeTag(ostream, m.getType().toString(), indent);
 				writeProperty(ostream, "kind", obj.getKind());
 				writeProperty(ostream, "cultivated",
 						Boolean.toString(m.getCultivation() == CultivationStatus.CULTIVATED));

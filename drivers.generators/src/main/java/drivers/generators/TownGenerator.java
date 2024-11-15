@@ -410,7 +410,8 @@ import java.math.BigDecimal;
 		return switch (fixture) {
 			case final Grove g when g.getType() == Grove.GroveType.ORCHARD -> "food";
 			case final Grove g when g.getType() == Grove.GroveType.GROVE -> "wood";
-			case final Meadow m -> (m.isField()) ? "food" : "fodder";
+			case final Meadow m when m.getType() == Meadow.MeadowType.FIELD -> "food";
+			case final Meadow m when m.getType() == Meadow.MeadowType.MEADOW -> "fodder";
 			case final MineralVein mineralVein -> "mineral";
 			case final StoneDeposit stoneDeposit -> "stone";
 			default -> "unknown"; // TODO: log this case?

@@ -1480,7 +1480,7 @@ public final class TestXMLIO {
 		return integers(2).flatMap(a ->
 				Stream.of(FieldStatus.values()).flatMap(b ->
 						FIELD_TYPES.stream().collect(toShuffledStream(2)).flatMap(c ->
-								bools().flatMap(d ->
+								Stream.of(Meadow.MeadowType.values()).flatMap(d ->
 										Stream.of(CultivationStatus.values()).map(e ->
 												Arguments.of(a, b, c, d, e))))));
 	}
@@ -1492,11 +1492,11 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(final int id, final FieldStatus status, final String kind, final boolean field,
-	                                    final CultivationStatus cultivation)
+	public void testMeadowSerialization(final int id, final FieldStatus status, final String kind,
+	                                    final Meadow.MeadowType type, final CultivationStatus cultivation)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Meadow serialization",
-				new Meadow(kind, field, cultivation, id, status));
+				new Meadow(kind, type, cultivation, id, status));
 		this.<Meadow>assertUnwantedChild("""
 				<meadow kind="flax" cultivated="false"><troll /></meadow>""", null);
 		this.<Meadow>assertMissingProperty("""
@@ -1505,17 +1505,18 @@ public final class TestXMLIO {
 				<meadow kind="flax" />""", "cultivated", null);
 		assertMissingProperty("""
 						<field kind="kind" cultivated="true" />""", "id",
-				new Meadow("kind", true, CultivationStatus.CULTIVATED, 0, FieldStatus.random(0)));
+				new Meadow("kind", Meadow.MeadowType.FIELD, CultivationStatus.CULTIVATED, 0, FieldStatus.random(0)));
 		assertMissingProperty("""
 						<field kind="kind" cultivated="true" id="0" />""",
-				"status", new Meadow("kind", true, CultivationStatus.CULTIVATED, 0, FieldStatus.random(0)));
+				"status", new Meadow("kind", Meadow.MeadowType.FIELD, CultivationStatus.CULTIVATED, 0,
+						FieldStatus.random(0)));
 		assertImageSerialization("Meadow image property is preserved",
-				new Meadow(kind, field, cultivation, id, status));
+				new Meadow(kind, type, cultivation, id, status));
 		assertSerialization("Meadows can have acreage numbers",
-				new Meadow(kind, field, cultivation, id, status,
+				new Meadow(kind, type, cultivation, id, status,
 						new BigDecimal(5).divide(new BigDecimal(4))));
 		assertSerialization("Meadows can have acreage numbers",
-				new Meadow(kind, field, cultivation, id, status,
+				new Meadow(kind, type, cultivation, id, status,
 						new BigDecimal(3).divide(new BigDecimal(4))));
 	}
 

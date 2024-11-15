@@ -35,8 +35,8 @@ import java.util.function.Predicate;
 				FixtureMatcher.simpleMatcher(Ground.class, not(Ground::isExposed), "Ground"),
 				FixtureMatcher.simpleMatcher(Grove.class, g -> g.getType() == Grove.GroveType.ORCHARD, "Orchards"),
 				FixtureMatcher.simpleMatcher(Grove.class, g -> g.getType() == Grove.GroveType.GROVE, "Groves"),
-				FixtureMatcher.simpleMatcher(Meadow.class, Meadow::isField, "Fields"),
-				FixtureMatcher.simpleMatcher(Meadow.class, not(Meadow::isField), "Meadows"));
+				FixtureMatcher.simpleMatcher(Meadow.class, m -> m.getType() == Meadow.MeadowType.FIELD, "Fields"),
+				FixtureMatcher.simpleMatcher(Meadow.class, m -> m.getType() == Meadow.MeadowType.MEADOW, "Meadows"));
 		setModel(matcherListModel);
 		getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		getSelectionModel().addListSelectionListener(ignored -> selectionChanged());

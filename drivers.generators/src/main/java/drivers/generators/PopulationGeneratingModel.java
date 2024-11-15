@@ -159,7 +159,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Predicate<Object> isMeadow = Meadow.class::isInstance;
 		final Function<Object, Meadow> meadowCast = Meadow.class::cast;
 		final Predicate<Meadow> sameKind = m -> field.getKind().equals(m.getKind());
-		final Predicate<Meadow> sameField = m -> field.isField() == m.isField();
+		final Predicate<Meadow> sameField = m -> field.getType() == m.getType();
 		final Predicate<Meadow> sameCultivated = m -> field.getCultivation() == m.getCultivation();
 		final Predicate<Meadow> sameStatus = m -> field.getStatus() == m.getStatus();
 		final Predicate<Meadow> sameId = m -> field.getId() == m.getId();
@@ -174,7 +174,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 					.filter(sameId)
 					.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {
-				final TileFixture replacement = new Meadow(field.getKind(), field.isField(),
+				final TileFixture replacement = new Meadow(field.getKind(), field.getType(),
 						field.getCultivation(), field.getId(), field.getStatus(), acres);
 				map.replace(location, existing.get(), replacement);
 				retval = true;

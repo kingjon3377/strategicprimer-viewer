@@ -117,7 +117,7 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 		matchers.add(FixtureMatcher.trivialMatcher(CacheFixture.class, "Caches"));
 		matchers.add(FixtureMatcher.trivialMatcher(Oasis.class, "Oases"));
 		matchers.add(FixtureMatcher.trivialMatcher(Forest.class));
-		FixtureMatcher.complements(Meadow.class, Meadow::isField, "Fields", "Meadows")
+		FixtureMatcher.complements(Meadow.class, m -> m.getType() == Meadow.MeadowType.FIELD, "Fields", "Meadows")
 				.forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(Shrub.class));
 		matchers.add(FixtureMatcher.trivialMatcher(Hill.class));

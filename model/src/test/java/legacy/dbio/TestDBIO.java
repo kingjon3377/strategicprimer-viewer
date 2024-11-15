@@ -686,7 +686,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {
-		return bools().flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
+		return Stream.of(Meadow.MeadowType.values()).flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
 				Stream.of(FieldStatus.values()).map(c ->
 						Arguments.of(a, b, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), c,
 								SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
@@ -694,18 +694,18 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(final boolean field, final CultivationStatus cultivation, final int id,
+	public void testMeadowSerialization(final Meadow.MeadowType type, final CultivationStatus cultivation, final int id,
 										final FieldStatus status, final int acres) throws SQLException, IOException {
-		assertFixtureSerialization(new Meadow("kind", field, cultivation, id, status, acres));
+		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status, acres));
 	}
 
 	// TODO: Combine with testMeadowSerialization()?
 	@ParameterizedTest
 	@MethodSource("testMeadowSerialization")
-	public void testFractionalMeadowSerialization(final boolean field, final CultivationStatus cultivation,
+	public void testFractionalMeadowSerialization(final Meadow.MeadowType type, final CultivationStatus cultivation,
 	                                              final int id, final FieldStatus status, final int acres)
 			throws SQLException, IOException {
-		assertFixtureSerialization(new Meadow("kind", field, cultivation, id, status,
+		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status,
 				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
 

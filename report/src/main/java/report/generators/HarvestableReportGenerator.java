@@ -129,7 +129,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 					case WILD -> " wild or abandoned ";
 				});
 				ostream.accept(item.getKind());
-				ostream.accept(m.isField() ? " field " : " meadow ");
+				ostream.accept(" %s ".formatted(m.getType()));
 				ostream.accept(acreageString(m));
 			}
 			case final Mine mine -> ostream.accept(item.toString());

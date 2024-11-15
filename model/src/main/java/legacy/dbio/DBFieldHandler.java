@@ -9,6 +9,7 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	@Override
 	public void write(final Transactional db, final Meadow obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-				value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
+				value("id", obj.getId()), value("type", obj.getType().toString()),
 				value("kind", obj.getKind()), value("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
 				value("image", obj.getImage())).execute(db.connection());
@@ -69,7 +70,12 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
-			final String type = (String) dbRow.get("type");
+			final Meadow.MeadowType type;
+			try {
+				type = Meadow.MeadowType.parse((String) dbRow.get("type"));
+			} catch (ParseException except) {
+				throw new IllegalArgumentException(except);
+			}
 			final String kind = (String) dbRow.get("kind");
 			final CultivationStatus cultivation = getBooleanValue(dbRow, "cultivated") ?
 					CultivationStatus.CULTIVATED : CultivationStatus.WILD;
@@ -82,12 +88,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(acresString);
 			}
-			final boolean field = switch (type) {
-				case "meadow" -> false;
-				case "field" -> true;
-				default -> throw new IllegalArgumentException("Unhandled field type");
-			};
-			final Meadow meadow = new Meadow(kind, field, cultivation, id, status, acres);
+			final Meadow meadow = new Meadow(kind, type, cultivation, id, status, acres);
 			if (!Objects.isNull(image)) {
 				meadow.setImage(image);
 			}

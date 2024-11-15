@@ -165,7 +165,7 @@ import java.nio.file.Path;
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return setImage(new Meadow(getAttribute(element, path, "kind"), false,
+		return setImage(new Meadow(getAttribute(element, path, "kind"), Meadow.MeadowType.MEADOW,
 				getBooleanAttribute(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
 						CultivationStatus.WILD, id, status,
 				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
@@ -190,7 +190,7 @@ import java.nio.file.Path;
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, path, "status", except);
 		}
-		return setImage(new Meadow(getAttribute(element, path, "kind"), true,
+		return setImage(new Meadow(getAttribute(element, path, "kind"), Meadow.MeadowType.FIELD,
 				getBooleanAttribute(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
 						CultivationStatus.WILD, id, status,
 				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
@@ -295,7 +295,7 @@ import java.nio.file.Path;
 
 	public static void writeMeadow(final XMLStreamWriter ostream, final Meadow obj, final int indent)
 			throws XMLStreamException {
-		writeTag(ostream, (obj.isField()) ? "field" : "meadow", indent, true);
+		writeTag(ostream, obj.getType().toString(), indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 				Pair.with("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				Pair.with("status", obj.getStatus().toString()), Pair.with("id", obj.getId()));
