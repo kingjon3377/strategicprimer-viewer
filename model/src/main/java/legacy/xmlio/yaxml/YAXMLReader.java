@@ -50,7 +50,7 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 			final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			final IDRegistrar idFactory = new IDFactory();
 			for (final XMLEvent event : eventReader) {
-				if (event instanceof final StartElement se) { // TODO: Check namespace, surely?
+				if (event instanceof final StartElement se && isSPStartElement(se)) {
 					// Unchecked-cast warning is unavoidable without reified generics or a Class<Element> object
 					//noinspection unchecked
 					return (Element) new YAReaderAdapter(warner, idFactory)
@@ -59,6 +59,11 @@ public final class YAXMLReader implements IMapReader, ISPReader {
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");
+	}
+
+	private static boolean isSPStartElement(final StartElement se) {
+		return se.getName().getNamespaceURI().isBlank() ||
+				SP_NAMESPACE.equals(se.getName().getNamespaceURI());
 	}
 
 	/**
