@@ -9,6 +9,7 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.ILegacyPlayerCollection;
+import legacy.map.Player;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.towns.AbstractTown;
@@ -39,14 +40,18 @@ import java.util.function.Consumer;
 /* package */ class FluidTownHandler extends FluidBase {
 	private static final QName NULL_QNAME = new QName("null");
 
-	// FIXME: Extract a common readAbstractTown() method taking the
-	// expected tag and a constructor reference, since readTown(),
-	// readFortification(), and readCity() are very nearly identical
+	private static interface TownContructor<T> {
+		T construct(final TownStatus townStatus, final TownSize size, final int discoverDC,
+		                  final String townName, final int id, final Player player);
+	}
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public static Town readTown(final StartElement element, final @Nullable Path path, final QName parent,
-	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, path, parent, "town");
+	private static <T extends AbstractTown> T readAbstractTown(final TownContructor<T> factory, final String tag,
+	                                                           final StartElement element, final @Nullable Path path,
+	                                                           final QName parent, final Iterable<XMLEvent> stream,
+	                                                           final ILegacyPlayerCollection players,
+	                                                           final Warning warner,
+	                                                           final IDRegistrar idFactory) throws SPFormatException {
+		requireTag(element, path, parent, tag);
 		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, path, "name", false, warner);
@@ -62,7 +67,7 @@ import java.util.function.Consumer;
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, path, "status", except);
 		}
-		final Town fix = new Town(status, size, getIntegerAttribute(element, path, "dc"),
+		final T fix = factory.construct(status, size, getIntegerAttribute(element, path, "dc"),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, path, idFactory),
 				getPlayerOrIndependent(element, path, warner, players));
@@ -84,91 +89,24 @@ import java.util.function.Consumer;
 		return setImage(fix, element, path, warner);
 	}
 
-	@SuppressWarnings("ChainOfInstanceofChecks")
+	public static Town readTown(final StartElement element, final @Nullable Path path, final QName parent,
+	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+		return readAbstractTown(Town::new, "town", element, path, parent, stream, players, warner, idFactory);
+	}
+
 	public static Fortification readFortification(final StartElement element, final @Nullable Path path,
 	                                              final QName parent, final Iterable<XMLEvent> stream,
 												  final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, path, parent, "fortification");
-		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
-				"portrait", "image", "owner");
-		requireNonEmptyAttribute(element, path, "name", false, warner);
-		final TownSize size;
-		try {
-			size = TownSize.parseTownSize(getAttribute(element, path, "size"));
-		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, path, "size", except);
-		}
-		final TownStatus status;
-		try {
-			status = TownStatus.parse(getAttribute(element, path, "status"));
-		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, path, "status", except);
-		}
-		final Fortification fix = new Fortification(status, size,
-				getIntegerAttribute(element, path, "dc"),
-				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, path, idFactory),
-				getPlayerOrIndependent(element, path, warner, players));
-		fix.setPortrait(getAttribute(element, "portrait", ""));
-		for (final XMLEvent event : stream) {
-			// switch statement would require break-to-label
-			//noinspection IfCanBeSwitch
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (Objects.isNull(fix.getPopulation())) {
-					fix.setPopulation(readCommunityStats(se, path,
-							element.getName(), stream, players, warner, idFactory));
-				} else {
-					throw new UnwantedChildException(element.getName(), se, path);
-				}
-			} else if (event instanceof final EndElement ee &&
-					ee.getName().equals(element.getName())) {
-				break;
-			}
-		}
-		return setImage(fix, element, path, warner);
+		return readAbstractTown(Fortification::new, "fortification", element, path, parent, stream, players, warner,
+				idFactory);
 	}
 
-	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static City readCity(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
-		requireTag(element, path, parent, "city");
-		expectAttributes(element, path, warner, "name", "size", "status", "dc", "id",
-				"portrait", "image", "owner");
-		requireNonEmptyAttribute(element, path, "name", false, warner);
-		final TownSize size;
-		try {
-			size = TownSize.parseTownSize(getAttribute(element, path, "size"));
-		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, path, "size", except);
-		}
-		final TownStatus status;
-		try {
-			status = TownStatus.parse(getAttribute(element, path, "status"));
-		} catch (final IllegalArgumentException except) {
-			throw new MissingPropertyException(element, path, "status", except);
-		}
-		final City fix = new City(status, size, getIntegerAttribute(element, path, "dc"),
-				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, path, idFactory),
-				getPlayerOrIndependent(element, path, warner, players));
-		fix.setPortrait(getAttribute(element, "portrait", ""));
-		for (final XMLEvent event : stream) {
-			// switch would require break-to-label
-			//noinspection IfCanBeSwitch
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (Objects.isNull(fix.getPopulation())) {
-					fix.setPopulation(readCommunityStats(se, path,
-							element.getName(), stream, players, warner, idFactory));
-				} else {
-					throw new UnwantedChildException(element.getName(), se, path);
-				}
-			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
-				break;
-			}
-		}
-		return setImage(fix, element, path, warner);
+		return readAbstractTown(City::new, "city", element, path, parent, stream, players, warner, idFactory);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
