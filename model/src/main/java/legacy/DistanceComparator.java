@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * TODO: explain this class
+ * An interface for the class that compares points based on distance from some fixed starting point, which also
+ * provides helper methods to create a String representation of that distance.
  *
  * @author Jonathan Lovelace
  */
