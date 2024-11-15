@@ -2189,26 +2189,26 @@ public final class TestXMLIO {
 				new Ground(id, "five", true));
 	}
 
+	private static Stream<Arguments> testSimpleSerializationNoChildren() {
+		return Stream.of("djinn", "griffin", "hill", "minotaur", "oasis", "ogre", "phoenix", "simurgh",
+				"sphinx", "troll").map(Arguments::of);
+	}
 	/**
 	 * Test that the code reading various fixtures whose only properties
 	 * are ID and image properly objects when the XML tries to give them
 	 * child tags.
-	 *
-	 * TODO: Convert to property/source-based testing passing in each of these tags to a single assertion
 	 */
-	@Test
-	public void testSimpleSerializationNoChildren()
+	@ParameterizedTest
+	@MethodSource
+	public void testSimpleSerializationNoChildren(String tag)
 			throws SPFormatException, XMLStreamException, IOException {
-		this.<SimpleImmortal>assertUnwantedChild("<djinn><troll /></djinn>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<griffin><djinn /></griffin>", null);
-		this.<Hill>assertUnwantedChild("<hill><griffin /></hill>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<minotaur><troll /></minotaur>", null);
-		this.<Oasis>assertUnwantedChild("<oasis><troll /></oasis>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<ogre><troll /></ogre>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<phoenix><troll /></phoenix>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<simurgh><troll /></simurgh>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<sphinx><troll /></sphinx>", null);
-		this.<SimpleImmortal>assertUnwantedChild("<troll><troll /></troll>", null);
+		final String inner;
+		if ("troll".equals(tag)) {
+			inner = "oasis";
+		} else {
+			inner = "troll";
+		}
+		this.<SimpleImmortal>assertUnwantedChild("<%s><%s /></%s>".formatted(tag, inner, tag), null);
 	}
 
 	private static Stream<Arguments> testSimpleImageSerialization() {
