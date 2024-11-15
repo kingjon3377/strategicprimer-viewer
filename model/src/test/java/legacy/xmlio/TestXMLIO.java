@@ -344,10 +344,8 @@ public final class TestXMLIO {
 	/**
 	 * Create the XML-serialized representation of an object.
 	 *
-	 * TODO: It Would Be Nice to get rid of the Boolean parameter, perhaps replacing it with an enum
-	 *
 	 * @param obj        The object to serialize
-	 * @param deprecated Whether to use the deprecated i.e. one-generation-back writer
+	 * @param spWriter   The writer to use to create the serialized form
 	 */
 	private static String createSerializedForm(final Object obj, final SPWriter spWriter)
 			throws XMLStreamException, IOException {
