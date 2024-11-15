@@ -9,7 +9,6 @@ import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
 
-import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
 
 import impl.xmlio.ISPReader;
@@ -597,12 +596,10 @@ public final class TestXMLIO {
 	private void assertInvalid(final String xml)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Consumer<Exception> assertion = // TODO: Extract 'assert instance of any' helper method (in lovelace-util)
-				// TODO: NSFE not needed anymore with no 'import', right?
 				except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
 						() -> assertInstanceOf(NoSuchElementException.class, except),
 						() -> assertInstanceOf(IllegalArgumentException.class, except),
-						() -> assertInstanceOf(XMLStreamException.class, except),
-						() -> assertInstanceOf(NoSuchFileException.class, except)
+						() -> assertInstanceOf(XMLStreamException.class, except)
 				);
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, null, Exception.class,
