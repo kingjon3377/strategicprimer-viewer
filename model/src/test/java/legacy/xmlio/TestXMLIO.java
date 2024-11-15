@@ -324,7 +324,7 @@ public final class TestXMLIO {
 	}
 
 	// TODO: Reformat methods using these extracted helpers
-	private static Stream<Integer> integers(final int count) {
+	private static Stream<Integer> integers(final long count) {
 		return SINGLETON_RANDOM.ints(count).boxed();
 	}
 
