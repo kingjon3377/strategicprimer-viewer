@@ -4,6 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -82,5 +83,10 @@ public final class ImmortalsTabularReportGenerator implements ITableGenerator<Im
 		return Comparator.<Pair<Point, Immortal>, Point>comparing(Pair::getValue0, distanceComparator)
 				.thenComparing(p -> p.getValue1().getClass().hashCode())
 				.thenComparing(p -> p.getValue1().hashCode());
+	}
+
+	@Override
+	public @NotNull Class<Immortal> getTableClass() {
+		return Immortal.class;
 	}
 }

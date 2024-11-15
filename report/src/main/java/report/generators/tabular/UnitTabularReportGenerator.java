@@ -4,6 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -104,5 +105,10 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 						Comparator.comparing(IUnit::owner)
 								.thenComparing(IUnit::getKind)
 								.thenComparing(IUnit::getName));
+	}
+
+	@Override
+	public @NotNull Class<IUnit> getTableClass() {
+		return IUnit.class;
 	}
 }

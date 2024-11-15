@@ -4,6 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -85,5 +86,10 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 		return Comparator.<Pair<Point, Village>, Point>comparing(Pair::getValue0, distanceComparator)
 				.thenComparing(Pair::getValue1, Comparator.comparing(Village::owner)
 						.thenComparing(Village::getName));
+	}
+
+	@Override
+	public @NotNull Class<Village> getTableClass() {
+		return Village.class;
 	}
 }

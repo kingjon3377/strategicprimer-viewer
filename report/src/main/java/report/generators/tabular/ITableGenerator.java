@@ -5,6 +5,7 @@ import java.util.List;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -51,11 +52,10 @@ public interface ITableGenerator<T extends IFixture> {
 	default void produceTable(final ThrowingConsumer<String, IOException> ostream, final DelayedRemovalMap<Integer,
 			Pair<Point, IFixture>> fixtures, final Map<Integer, Integer> parentMap)
 			throws IOException {
-		// TODO: Add a method returning Class<T> to the interface so we can use Class::cast to avoid this warning
-		@SuppressWarnings("unchecked") final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
+		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 				.filter(e -> canHandle(e.getValue().getValue1()))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
-						(T) e.getValue().getValue1()))
+						getTableClass().cast(e.getValue().getValue1())))
 				.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 				.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(String[]::new));
@@ -231,4 +231,9 @@ public interface ITableGenerator<T extends IFixture> {
 	 * The file-name to (by default) write this table to.
 	 */
 	String getTableName();
+
+	/**
+	 * The type of item we handle.
+	 */
+	@NotNull Class<T> getTableClass();
 }

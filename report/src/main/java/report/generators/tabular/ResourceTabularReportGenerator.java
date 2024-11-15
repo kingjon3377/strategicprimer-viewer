@@ -6,6 +6,7 @@ import java.util.List;
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -196,5 +197,10 @@ public final class ResourceTabularReportGenerator
 					"equipment", Integer.toString(count), key);
 		}
 		fixtures.coalesce();
+	}
+
+	@Override
+	public @NotNull Class<IFixture> getTableClass() {
+		return IFixture.class;
 	}
 }

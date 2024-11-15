@@ -14,6 +14,7 @@ import common.map.fixtures.mobile.MaturityModel;
 import legacy.map.fixtures.mobile.AnimalTracks;
 import legacy.map.fixtures.mobile.AnimalOrTracks;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -157,5 +158,10 @@ public final class AnimalTabularReportGenerator implements ITableGenerator<Anima
 		} else {
 			return cmp;
 		}
+	}
+
+	@Override
+	public @NotNull Class<AnimalOrTracks> getTableClass() {
+		return AnimalOrTracks.class;
 	}
 }

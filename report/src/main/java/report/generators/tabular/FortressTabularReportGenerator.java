@@ -6,6 +6,7 @@ import common.map.HasName;
 import legacy.DistanceComparatorImpl;
 import legacy.map.HasOwner;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -121,5 +122,10 @@ public final class FortressTabularReportGenerator implements ITableGenerator<IFo
 				.thenComparing(Pair::getValue0, distanceComparator)
 				.thenComparing(Pair::getValue1, FortressTabularReportGenerator::compareNames)
 				.thenComparing(p -> p.getValue1().owner());
+	}
+
+	@Override
+	public @NotNull Class<IFortress> getTableClass() {
+		return IFortress.class;
 	}
 }

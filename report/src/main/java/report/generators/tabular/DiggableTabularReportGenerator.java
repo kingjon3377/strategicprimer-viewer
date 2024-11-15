@@ -4,6 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -108,5 +109,10 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Min
 		return Comparator.<Pair<Point, MineralFixture>, String>comparing(p -> p.getValue1().getKind())
 				.thenComparing(Pair::getValue0, distanceComparator)
 				.thenComparing(p -> p.getValue1().hashCode());
+	}
+
+	@Override
+	public @NotNull Class<MineralFixture> getTableClass() {
+		return MineralFixture.class;
 	}
 }

@@ -6,6 +6,7 @@ import legacy.DistanceComparatorImpl;
 import legacy.map.HasExtent;
 import legacy.map.HasPopulation;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -158,5 +159,10 @@ public final class CropTabularReportGenerator implements ITableGenerator</*Fores
 				.thenComparing(Pair::getValue0, distanceComparator)
 				.thenComparing(p -> p.getValue1().getClass().hashCode())
 				.thenComparing(p -> p.getValue1().hashCode());
+	}
+
+	@Override
+	public @NotNull Class<TileFixture> getTableClass() {
+		return TileFixture.class;
 	}
 }

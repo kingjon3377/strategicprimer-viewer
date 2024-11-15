@@ -6,6 +6,7 @@ import legacy.map.fixtures.explorable.ExplorableFixture;
 import java.util.List;
 
 import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -146,5 +147,10 @@ public final class ExplorableTabularReportGenerator
 	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
 				.thenComparing(p -> p.getValue1().toString());
+	}
+
+	@Override
+	public @NotNull Class<TileFixture> getTableClass() {
+		return TileFixture.class;
 	}
 }

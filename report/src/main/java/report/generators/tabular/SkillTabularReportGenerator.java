@@ -10,6 +10,7 @@ import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.fixtures.mobile.worker.ISkill;
 import lovelace.util.DelayedRemovalMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -75,5 +76,10 @@ public final class SkillTabularReportGenerator implements ITableGenerator<IWorke
 	@Override
 	public String getTableName() {
 		return "skills";
+	}
+
+	@Override
+	public @NotNull Class<IWorker> getTableClass() {
+		return IWorker.class;
 	}
 }
