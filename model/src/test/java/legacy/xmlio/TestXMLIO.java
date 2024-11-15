@@ -2335,17 +2335,20 @@ public final class TestXMLIO {
 				new Battlefield(dc, id));
 	}
 
+	private static Stream<Arguments> testCommaSeparators() {
+		return SINGLETON_RANDOM.ints().filter(i -> i > 1000).limit(2).boxed().map(a ->
+				Arguments.of("<hill id=\"%,d\" />".formatted(a),
+						"<hill id=\"%s\" />".formatted(Integer.toString(a))));
+	}
+
 	/**
 	 * Test that XML-reading code can handle numbers containing commas.
-	 *
-	 * TODO: Randomize somehow
 	 */
-	@Test
-	public void testCommaSeparators()
+	@ParameterizedTest
+	@MethodSource("testCommaSeparators")
+	public void testCommaSeparators(final String withComma, final String withoutComma)
 			throws SPFormatException, XMLStreamException, IOException {
-		assertEquivalentForms("ID numbers can contain commas", """
-				<hill id="1,002" />""", """
-				<hill id="1002" />""", Warning.DIE);
+		assertEquivalentForms("ID numbers can contain commas", withComma, withoutComma, Warning.DIE);
 	}
 
 	/**
