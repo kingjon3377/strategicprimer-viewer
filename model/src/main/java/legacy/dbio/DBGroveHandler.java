@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
+import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.Grove;
 import common.xmlio.Warning;
 
@@ -52,7 +53,7 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 	public void write(final Transactional db, final Grove obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("type", (obj.isOrchard()) ? "orchard" : "grove"),
-				value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
+				value("kind", obj.getKind()), value("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				value("count", obj.getPopulation()), value("image", obj.getImage())).execute(db.connection());
 	}
 
@@ -71,7 +72,8 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 				case "orchard" -> true;
 				default -> throw new IllegalArgumentException("Unexpected grove type");
 			};
-			final Grove grove = new Grove(orchard, cultivated, kind, id, count);
+			final Grove grove = new Grove(orchard, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
+					kind, id, count);
 			if (!Objects.isNull(image)) {
 				grove.setImage(image);
 			}

@@ -16,6 +16,7 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.Grove;
 import legacy.map.fixtures.resources.Meadow;
 import legacy.map.fixtures.resources.Mine;
@@ -115,7 +116,7 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
-				new Grove(false, cultivated,
+				new Grove(false, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, path, warner);
@@ -139,7 +140,7 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
-				new Grove(true, cultivated,
+				new Grove(true, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, path, warner);
@@ -165,7 +166,8 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "status", except);
 		}
 		return setImage(new Meadow(getAttribute(element, path, "kind"), false,
-				getBooleanAttribute(element, path, "cultivated"), id, status,
+				getBooleanAttribute(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
+						CultivationStatus.WILD, id, status,
 				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
 	}
 
@@ -189,7 +191,8 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "status", except);
 		}
 		return setImage(new Meadow(getAttribute(element, path, "kind"), true,
-				getBooleanAttribute(element, path, "cultivated"), id, status,
+				getBooleanAttribute(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
+						CultivationStatus.WILD, id, status,
 				getNumericAttribute(element, path, "acres", -1)), element, path, warner);
 	}
 
@@ -294,7 +297,7 @@ import java.nio.file.Path;
 			throws XMLStreamException {
 		writeTag(ostream, (obj.isField()) ? "field" : "meadow", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
-				Pair.with("cultivated", obj.isCultivated()),
+				Pair.with("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				Pair.with("status", obj.getStatus().toString()), Pair.with("id", obj.getId()));
 		if (HasExtent.isPositive(obj.getAcres())) {
 			writeAttributes(ostream, Pair.with("acres", obj.getAcres()));
@@ -305,7 +308,7 @@ import java.nio.file.Path;
 	public static void writeGrove(final XMLStreamWriter ostream, final Grove obj, final int indent)
 			throws XMLStreamException {
 		writeTag(ostream, (obj.isOrchard()) ? "orchard" : "grove", indent, true);
-		writeAttributes(ostream, Pair.with("cultivated", obj.isCultivated()),
+		writeAttributes(ostream, Pair.with("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
 		if (obj.getPopulation() >= 1) {
 			writeAttributes(ostream, Pair.with("count", obj.getPopulation()));

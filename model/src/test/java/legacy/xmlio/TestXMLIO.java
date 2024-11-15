@@ -13,6 +13,7 @@ import common.map.fixtures.mobile.MaturityModel;
 import javax.xml.stream.XMLStreamException;
 
 import impl.xmlio.ISPReader;
+import legacy.map.fixtures.resources.CultivationStatus;
 import lovelace.util.AssertAny;
 import org.jetbrains.annotations.Nullable;
 
@@ -1435,7 +1436,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testGroveSerialization() {
 		return TREE_TYPES.stream().flatMap(a -> integers(2).flatMap(b ->
-				bools().flatMap(c -> bools().map(d ->
+				bools().flatMap(c -> Stream.of(CultivationStatus.values()).map(d ->
 						Arguments.of(c, d, a, b)))));
 	}
 
@@ -1446,9 +1447,10 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(final boolean fruit, final boolean cultivated, final String trees, final int id)
+	public void testGroveSerialization(final boolean fruit, final CultivationStatus cultivation, final String trees,
+	                                   final int id)
 			throws SPFormatException, XMLStreamException, IOException {
-		assertSerialization("Test of Grove serialization", new Grove(fruit, cultivated, trees, id));
+		assertSerialization("Test of Grove serialization", new Grove(fruit, cultivation, trees, id));
 		this.<Grove>assertUnwantedChild("""
 				<grove wild="true" kind="kind"><troll /></grove>""", null);
 		this.<Grove>assertMissingProperty("<grove />", "cultivated", null);
@@ -1456,21 +1458,22 @@ public final class TestXMLIO {
 				<grove wild="false" />""", "kind", null);
 		assertDeprecatedProperty("""
 						<grove cultivated="true" tree="tree" id="0" />""",
-				"tree", "kind", "grove", new Grove(false, true, "tree", 0));
+				"tree", "kind", "grove", new Grove(false, CultivationStatus.CULTIVATED, "tree", 0));
 		assertMissingProperty("""
 						<grove cultivated="true" kind="kind" />""", "id",
-				new Grove(false, true, "kind", 0));
+				new Grove(false, CultivationStatus.CULTIVATED, "kind", 0));
 		assertDeprecatedProperty("""
 						<grove wild="true" kind="tree" id="0" />""",
-				"wild", "cultivated", "grove", new Grove(false, false, "tree", 0));
+				"wild", "cultivated", "grove", new Grove(false, CultivationStatus.WILD, "tree", 0));
 		assertEquivalentForms("Assert that wild is the inverse of cultivated",
 				"""
 						<grove wild="true" kind="tree" id="0" />""",
 				"""
 						<grove cultivated="false" kind="tree" id="0" />""", Warning.IGNORE);
 		assertImageSerialization("Grove image property is preserved",
-				new Grove(false, false, trees, id));
-		assertSerialization("Groves can have 'count' property", new Grove(true, true, trees, id, 4));
+				new Grove(false, CultivationStatus.WILD, trees, id));
+		assertSerialization("Groves can have 'count' property", new Grove(true, CultivationStatus.CULTIVATED, trees,
+				id, 4));
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {
@@ -1478,7 +1481,7 @@ public final class TestXMLIO {
 				Stream.of(FieldStatus.values()).flatMap(b ->
 						FIELD_TYPES.stream().collect(toShuffledStream(2)).flatMap(c ->
 								bools().flatMap(d ->
-										bools().map(e ->
+										Stream.of(CultivationStatus.values()).map(e ->
 												Arguments.of(a, b, c, d, e))))));
 	}
 
@@ -1490,10 +1493,10 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMeadowSerialization(final int id, final FieldStatus status, final String kind, final boolean field,
-	                                    final boolean cultivated)
+	                                    final CultivationStatus cultivation)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Meadow serialization",
-				new Meadow(kind, field, cultivated, id, status));
+				new Meadow(kind, field, cultivation, id, status));
 		this.<Meadow>assertUnwantedChild("""
 				<meadow kind="flax" cultivated="false"><troll /></meadow>""", null);
 		this.<Meadow>assertMissingProperty("""
@@ -1502,17 +1505,17 @@ public final class TestXMLIO {
 				<meadow kind="flax" />""", "cultivated", null);
 		assertMissingProperty("""
 						<field kind="kind" cultivated="true" />""", "id",
-				new Meadow("kind", true, true, 0, FieldStatus.random(0)));
+				new Meadow("kind", true, CultivationStatus.CULTIVATED, 0, FieldStatus.random(0)));
 		assertMissingProperty("""
 						<field kind="kind" cultivated="true" id="0" />""",
-				"status", new Meadow("kind", true, true, 0, FieldStatus.random(0)));
+				"status", new Meadow("kind", true, CultivationStatus.CULTIVATED, 0, FieldStatus.random(0)));
 		assertImageSerialization("Meadow image property is preserved",
-				new Meadow(kind, field, cultivated, id, status));
+				new Meadow(kind, field, cultivation, id, status));
 		assertSerialization("Meadows can have acreage numbers",
-				new Meadow(kind, field, cultivated, id, status,
+				new Meadow(kind, field, cultivation, id, status,
 						new BigDecimal(5).divide(new BigDecimal(4))));
 		assertSerialization("Meadows can have acreage numbers",
-				new Meadow(kind, field, cultivated, id, status,
+				new Meadow(kind, field, cultivation, id, status,
 						new BigDecimal(3).divide(new BigDecimal(4))));
 	}
 

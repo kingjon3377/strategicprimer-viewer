@@ -117,15 +117,17 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 				ostream.accept(cf.getContents());
 			}
 			case final Grove g -> {
-				ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
+				ostream.accept(g.getCultivation().toString());
 				ostream.accept(item.getKind());
 				ostream.accept(g.isOrchard() ? " orchard " : " grove ");
 				ostream.accept(populationCountString(g, "tree"));
 			}
 			case final Meadow m -> {
 				ostream.accept(m.getStatus().toString());
-				ostream.accept(m.isCultivated() ? " cultivated " :
-						" wild or abandoned ");
+				ostream.accept(switch (m.getCultivation()) {
+					case CULTIVATED -> " cultivated ";
+					case WILD -> " wild or abandoned ";
+				});
 				ostream.accept(item.getKind());
 				ostream.accept(m.isField() ? " field " : " meadow ");
 				ostream.accept(acreageString(m));

@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.xmlio.TestXMLIO;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -685,7 +686,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {
-		return bools().flatMap(a -> bools().flatMap(b ->
+		return bools().flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
 				Stream.of(FieldStatus.values()).map(c ->
 						Arguments.of(a, b, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), c,
 								SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
@@ -693,18 +694,18 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(final boolean field, final boolean cultivated, final int id,
+	public void testMeadowSerialization(final boolean field, final CultivationStatus cultivation, final int id,
 										final FieldStatus status, final int acres) throws SQLException, IOException {
-		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status, acres));
+		assertFixtureSerialization(new Meadow("kind", field, cultivation, id, status, acres));
 	}
 
 	// TODO: Combine with testMeadowSerialization()?
 	@ParameterizedTest
 	@MethodSource("testMeadowSerialization")
-	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
-												  final FieldStatus status, final int acres)
+	public void testFractionalMeadowSerialization(final boolean field, final CultivationStatus cultivation,
+	                                              final int id, final FieldStatus status, final int acres)
 			throws SQLException, IOException {
-		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
+		assertFixtureSerialization(new Meadow("kind", field, cultivation, id, status,
 				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
 
@@ -773,7 +774,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
-		return bools().flatMap(a -> bools().flatMap(b ->
+		return bools().flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
 				SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
 						races.stream().collect(toShuffledStream(1)).map(d ->
 								Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), d)))));
@@ -781,9 +782,9 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(final boolean orchard, final boolean cultivated, final int id, final int count,
-									   final String kind) throws SQLException, IOException {
-		assertFixtureSerialization(new Grove(orchard, cultivated, kind, id, count));
+	public void testGroveSerialization(final boolean orchard, final CultivationStatus cultivation, final int id,
+	                                   final int count, final String kind) throws SQLException, IOException {
+		assertFixtureSerialization(new Grove(orchard, cultivation, kind, id, count));
 	}
 
 	private static Stream<Arguments> testSimpleImmortalSerialization() {

@@ -16,19 +16,19 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	private static final double BASE_DC = 20;
 	private static final double DC_MOD_PER_ACRE = 3.0 / 40.0;
 
-	public Meadow(final String kind, final boolean field, final boolean cultivated, final int id,
+	public Meadow(final String kind, final boolean field, final CultivationStatus cultivation, final int id,
 	              final FieldStatus status, final Number acres) {
 		this.kind = kind;
 		this.field = field;
-		this.cultivated = cultivated;
+		this.cultivation = cultivation;
 		this.id = id;
 		this.status = status;
 		this.acres = acres;
 	}
 
-	public Meadow(final String kind, final boolean field, final boolean cultivated, final int id,
+	public Meadow(final String kind, final boolean field, final CultivationStatus cultivation, final int id,
 				  final FieldStatus status) {
-		this(kind, field, cultivated, id, status, -1);
+		this(kind, field, cultivation, id, status, -1);
 	}
 
 	/**
@@ -61,13 +61,13 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	/**
 	 * Whether this field or meadow is under cultivation.
 	 */
-	private final boolean cultivated;
+	private final CultivationStatus cultivation;
 
 	/**
 	 * Whether this field or meadow is under cultivation.
 	 */
-	public boolean isCultivated() {
-		return cultivated;
+	public CultivationStatus getCultivation() {
+		return cultivation;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public Meadow copy(final CopyBehavior zero) {
-		final Meadow retval = new Meadow(kind, field, cultivated, id, status,
+		final Meadow retval = new Meadow(kind, field, cultivation, id, status,
 				(zero == CopyBehavior.ZERO) ? -1 : acres);
 		retval.setImage(image);
 		return retval;
@@ -160,8 +160,10 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			acreage = acres + "-acre ";
 		}
 		if (field) {
-			return (cultivated) ? "%s%s field".formatted(acreage, kind) :
-					"Wild or abandoned %s%s field".formatted(acreage, kind);
+			return switch (cultivation) {
+				case CULTIVATED -> "%s%s field".formatted(acreage, kind);
+				case WILD -> "Wild or abandoned %s%s field".formatted(acreage, kind);
+			};
 		} else {
 			return "%s%s meadow".formatted(acreage, kind);
 		}
@@ -178,7 +180,7 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			return kind.equals(it.getKind()) &&
 					field == it.isField() &&
 					status == it.getStatus() &&
-					cultivated == it.isCultivated() &&
+					cultivation == it.getCultivation() &&
 					id == it.getId() &&
 					NumberComparator.compareNumbers(acres, it.getAcres()) == 0;
 		} else {
@@ -192,7 +194,7 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			return kind.equals(it.getKind()) &&
 					field == it.isField() &&
 					status == it.getStatus() &&
-					cultivated == it.isCultivated() &&
+					cultivation == it.getCultivation() &&
 					NumberComparator.compareNumbers(acres, it.getAcres()) == 0;
 		} else {
 			return false;
@@ -227,7 +229,7 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 				localReport.accept("Field status differs");
 				retval = false;
 			}
-			if (cultivated != it.isCultivated()) { // TODO: Should non-cultivated be subset of cultivated?
+			if (cultivation != it.getCultivation()) { // TODO: Should non-cultivated be subset of cultivated?
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}
@@ -262,11 +264,11 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public Meadow combined(final Meadow other) {
-		return new Meadow(kind, field, cultivated, id, status, HasExtent.sum(acres, other.getAcres()));
+		return new Meadow(kind, field, cultivation, id, status, HasExtent.sum(acres, other.getAcres()));
 	}
 
 	@Override
 	public Meadow reduced(final Number subtrahend) {
-		return new Meadow(kind, field, cultivated, id, status, HasExtent.sum(acres, HasExtent.negate(subtrahend)));
+		return new Meadow(kind, field, cultivation, id, status, HasExtent.sum(acres, HasExtent.negate(subtrahend)));
 	}
 }

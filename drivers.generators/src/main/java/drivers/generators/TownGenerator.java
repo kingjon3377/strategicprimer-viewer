@@ -18,6 +18,7 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.map.HasKind;
 import legacy.map.fixtures.LegacyQuantity;
+import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.CommunityStats;
@@ -232,10 +233,10 @@ import java.math.BigDecimal;
 				return mv.isExposed();
 			}
 			case final Meadow m -> {
-				return m.isCultivated();
+				return m.getCultivation() == CultivationStatus.CULTIVATED;
 			}
 			case final Grove g -> {
-				return g.isCultivated();
+				return g.getCultivation() == CultivationStatus.CULTIVATED;
 			}
 			case final Mine m -> {
 				return TownStatus.Active == m.getStatus();

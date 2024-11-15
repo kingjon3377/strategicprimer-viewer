@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
+import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.Meadow;
 import common.map.fixtures.resources.FieldStatus;
 import common.xmlio.Warning;
@@ -58,7 +59,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	public void write(final Transactional db, final Meadow obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
-				value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
+				value("kind", obj.getKind()), value("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
 				value("image", obj.getImage())).execute(db.connection());
 	}
@@ -70,7 +71,8 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			final int id = (Integer) dbRow.get("id");
 			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
-			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
+			final CultivationStatus cultivation = getBooleanValue(dbRow, "cultivated") ?
+					CultivationStatus.CULTIVATED : CultivationStatus.WILD;
 			final FieldStatus status = FieldStatus.parse((String) dbRow.get("status"));
 			final String acresString = (String) dbRow.get("acres");
 			final String image = (String) dbRow.get("image");
@@ -85,7 +87,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 				case "field" -> true;
 				default -> throw new IllegalArgumentException("Unhandled field type");
 			};
-			final Meadow meadow = new Meadow(kind, field, cultivated, id, status, acres);
+			final Meadow meadow = new Meadow(kind, field, cultivation, id, status, acres);
 			if (!Objects.isNull(image)) {
 				meadow.setImage(image);
 			}

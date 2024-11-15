@@ -160,7 +160,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Function<Object, Meadow> meadowCast = Meadow.class::cast;
 		final Predicate<Meadow> sameKind = m -> field.getKind().equals(m.getKind());
 		final Predicate<Meadow> sameField = m -> field.isField() == m.isField();
-		final Predicate<Meadow> sameCultivated = m -> field.isCultivated() == m.isCultivated();
+		final Predicate<Meadow> sameCultivated = m -> field.getCultivation() == m.getCultivation();
 		final Predicate<Meadow> sameStatus = m -> field.getStatus() == m.getStatus();
 		final Predicate<Meadow> sameId = m -> field.getId() == m.getId();
 		// TODO: Should submaps really all get this information?
@@ -175,7 +175,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 					.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {
 				final TileFixture replacement = new Meadow(field.getKind(), field.isField(),
-						field.isCultivated(), field.getId(), field.getStatus(), acres);
+						field.getCultivation(), field.getId(), field.getStatus(), acres);
 				map.replace(location, existing.get(), replacement);
 				retval = true;
 			}

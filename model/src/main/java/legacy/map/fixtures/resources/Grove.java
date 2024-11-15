@@ -11,17 +11,17 @@ import java.util.function.Consumer;
  * TODO: Convert Boolean fields to enums.
  */
 public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
-	public Grove(final boolean orchard, final boolean cultivated, final String kind, final int id,
+	public Grove(final boolean orchard, final CultivationStatus cultivation, final String kind, final int id,
 				 final int population) {
 		this.orchard = orchard;
-		this.cultivated = cultivated;
+		this.cultivation = cultivation;
 		this.kind = kind;
 		this.id = id;
 		this.population = population;
 	}
 
-	public Grove(final boolean orchard, final boolean cultivated, final String kind, final int id) {
-		this(orchard, cultivated, kind, id, -1);
+	public Grove(final boolean orchard, final CultivationStatus cultivation, final String kind, final int id) {
+		this(orchard, cultivation, kind, id, -1);
 	}
 
 	/**
@@ -39,13 +39,13 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	/**
 	 * If true, this is a cultivated grove or orchard; if false, wild or abandoned.
 	 */
-	private final boolean cultivated;
+	private final CultivationStatus cultivation;
 
 	/**
 	 * If true, this is a cultivated grove or orchard; if false, wild or abandoned.
 	 */
-	public boolean isCultivated() {
-		return cultivated;
+	public CultivationStatus getCultivation() {
+		return cultivation;
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public Grove copy(final CopyBehavior zero) {
-		final Grove retval = new Grove(orchard, cultivated, kind, id,
+		final Grove retval = new Grove(orchard, cultivation, kind, id,
 				(zero == CopyBehavior.ZERO) ? -1 : population);
 		retval.setImage(image);
 		return retval;
@@ -118,12 +118,12 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public Grove reduced(final int newPopulation, final int newId) {
-		return new Grove(orchard, cultivated, kind, newId, newPopulation);
+		return new Grove(orchard, cultivation, kind, newId, newPopulation);
 	}
 
 	@Override
 	public Grove combined(final Grove addend) {
-		return new Grove(orchard, cultivated, kind, id,
+		return new Grove(orchard, cultivation, kind, id,
 				Math.max(population, 0) + Math.max(addend.getPopulation(), 0));
 	}
 
@@ -135,13 +135,8 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	@Override
 	public String getShortDescription() {
 		final String type;
-		final String cultivation;
+		final String cultivation = this.cultivation.capitalized();
 		String retval;
-		if (cultivated) {
-			cultivation = "Cultivated";
-		} else {
-			cultivation = "Wild";
-		}
 		if (orchard) {
 			type = "orchard";
 		} else {
@@ -164,7 +159,7 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 		if (obj instanceof final Grove that) {
 			return kind.equals(that.getKind()) &&
 					orchard == that.isOrchard() &&
-					cultivated == that.isCultivated() &&
+					cultivation == that.getCultivation() &&
 					id == that.getId() &&
 					population == that.getPopulation();
 		} else {
@@ -182,7 +177,7 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 		if (fixture instanceof final Grove that) {
 			return kind.equals(that.getKind()) &&
 					orchard == that.isOrchard() &&
-					cultivated == that.isCultivated() &&
+					cultivation == that.getCultivation() &&
 					population == that.getPopulation();
 		} else {
 			return false;
@@ -212,7 +207,7 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 				localReport.accept("Grove vs. orchard differs");
 				retval = false;
 			}
-			if (cultivated != it.isCultivated()) { // TODO: Should a non-cultivated one be a subset of a cultivated one?
+			if (cultivation != it.getCultivation()) { // TODO: Should a non-cultivated one be a subset of a cultivated one?
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}

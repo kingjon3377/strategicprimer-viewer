@@ -5,6 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
+import legacy.map.fixtures.resources.CultivationStatus;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -56,16 +57,18 @@ import java.util.Set;
 			throw new MissingPropertyException(element, path, "status", except);
 		}
 		return new Meadow(getParameter(element, path, "kind"), field,
-				getBooleanParameter(element, path, "cultivated"), idNum, status,
+				getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
+						CultivationStatus.WILD, idNum, status,
 				getNumericParameter(element, path, "acres", -1));
 	}
 
-	private boolean isCultivated(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	private CultivationStatus getCultivvation(final StartElement element, final @Nullable Path path) throws SPFormatException {
 		if (hasParameter(element, "cultivated")) {
-			return getBooleanParameter(element, path, "cultivated");
+			return getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
+					CultivationStatus.WILD;
 		} else if (hasParameter(element, "wild")) {
 			warner.handle(new DeprecatedPropertyException(element, path, "wild", "cultivated"));
-			return !getBooleanParameter(element, path, "wild");
+			return getBooleanParameter(element, path, "wild") ? CultivationStatus.WILD : CultivationStatus.CULTIVATED;
 		} else {
 			throw new MissingPropertyException(element, path, "cultivated");
 		}
@@ -78,7 +81,7 @@ import java.util.Set;
 	                                       final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, path, "kind", "tree", "cultivated", "wild", "id", "image", "count");
-		return new Grove(orchard, isCultivated(element, path),
+		return new Grove(orchard, getCultivvation(element, path),
 				getParamWithDeprecatedForm(element, path, "kind", "tree"), idNum,
 				getIntegerParameter(element, path, "count", -1));
 	}
@@ -162,7 +165,8 @@ import java.util.Set;
 			case final Meadow m -> {
 				writeTag(ostream, m.isField() ? "field" : "meadow", indent);
 				writeProperty(ostream, "kind", obj.getKind());
-				writeProperty(ostream, "cultivated", Boolean.toString(m.isCultivated()));
+				writeProperty(ostream, "cultivated",
+						Boolean.toString(m.getCultivation() == CultivationStatus.CULTIVATED));
 				writeProperty(ostream, "status", m.getStatus().toString());
 				if (HasExtent.isPositive(m.getAcres())) {
 					writeProperty(ostream, "acres", m.getAcres().toString());
@@ -170,7 +174,8 @@ import java.util.Set;
 			}
 			case final Grove g -> {
 				writeTag(ostream, g.isOrchard() ? "orchard" : "grove", indent);
-				writeProperty(ostream, "cultivated", Boolean.toString(g.isCultivated()));
+				writeProperty(ostream, "cultivated",
+						Boolean.toString(g.getCultivation() == CultivationStatus.CULTIVATED));
 				writeProperty(ostream, "kind", obj.getKind());
 				if (g.getPopulation() >= 1) {
 					writeProperty(ostream, "count", g.getPopulation());
