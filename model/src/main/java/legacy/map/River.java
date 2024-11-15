@@ -54,13 +54,7 @@ public enum River {
 	 * Get the river matching the given description.
 	 */
 	public static River parse(final String description) throws ParseException {
-		final Optional<River> retval = Stream.of(values())
-				.filter((r) -> description.equals(r.description)).findAny();
-		if (retval.isPresent()) {
-			return retval.get();
-		} else { // TODO: orElseThrow()
-			throw new ParseException(
-					"Failed to parse River from '%s'".formatted(description), -1);
-		}
+		return Stream.of(values()).filter(r -> description.equals(r.description)).findAny()
+				.orElseThrow(() -> new ParseException("Failed to parse River from '%s'".formatted(description), -1));
 	}
 }
