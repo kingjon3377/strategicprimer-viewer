@@ -108,9 +108,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 				|| item instanceof Shrub || item instanceof StoneDeposit)) {
 			return;
 		}
-		ostream.accept("At ");
-		ostream.accept(loc.toString());
-		ostream.accept(": ");
+		atPoint(ostream, loc, ": ");
 		switch (item) {
 			case final CacheFixture cf -> {
 				ostream.accept("A cache of ");

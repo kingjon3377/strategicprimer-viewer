@@ -47,10 +47,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator</*Anima
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							  final ILegacyMap map, final Consumer<String> ostream,
 			/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) {
-		// TODO: Extract helper method for the "At (loc):" idiom
-		ostream.accept("At ");
-		ostream.accept(loc.toString());
-		ostream.accept(":");
+		atPoint(ostream, loc, ":");
 		if (item instanceof AnimalTracks) {
 			ostream.accept(" tracks or traces of ");
 			ostream.accept(item.getKind());

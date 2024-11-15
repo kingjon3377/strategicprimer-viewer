@@ -41,9 +41,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							  final ILegacyMap map, final Consumer<String> ostream, final TextFixture item,
 							  final Point loc) {
-		ostream.accept("At ");
-		ostream.accept(loc.toString());
-		ostream.accept(" ");
+		atPoint(ostream, loc, " ");
 		ostream.accept(distanceString.apply(loc));
 		if (item.getTurn() >= 0) {
 			ostream.accept(": On turn ");

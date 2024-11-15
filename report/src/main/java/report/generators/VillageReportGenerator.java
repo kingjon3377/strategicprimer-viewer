@@ -94,9 +94,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	                          final ILegacyMap map, final Consumer<String> ostream, final Village item,
 	                          final Point loc) {
 		fixtures.remove(item.getId());
-		ostream.accept("At ");
-		ostream.accept(loc.toString());
-		ostream.accept(": ");
+		atPoint(ostream, loc, ": ");
 		ostream.accept(item.getName());
 		ostream.accept(", a(n) ");
 		ostream.accept(item.getRace());

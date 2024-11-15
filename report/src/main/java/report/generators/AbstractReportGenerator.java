@@ -17,6 +17,7 @@ import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
@@ -302,6 +303,14 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		@Override
 		public boolean containsValue(final Object obj) {
 			return wrapped.containsValue(obj);
+		}
+	}
+
+	protected static void atPoint(final Consumer<String> ostream, final Point point, final String... addenda) {
+		ostream.accept("At ");
+		ostream.accept(point.toString());
+		for (final String str : addenda) {
+			ostream.accept(str);
 		}
 	}
 }

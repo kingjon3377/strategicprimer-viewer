@@ -218,8 +218,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private void unitFormatter(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							   final ILegacyMap map, final IUnit unit, final Point loc,
 							   final Consumer<String> formatter) {
-		formatter.accept("At ");
-		formatter.accept(loc.toString());
+		atPoint(formatter, loc);
 		formatter.accept(distanceString.apply(loc));
 		produceSingle(fixtures, map, formatter, unit, loc);
 	}

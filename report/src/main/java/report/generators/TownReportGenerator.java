@@ -82,9 +82,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 					.produceSingle(fixtures, map, ostream, v, loc);
 			case final AbstractTown abstractTown when item.owner().isIndependent() -> {
 				fixtures.remove(item.getId());
-				ostream.accept("At ");
-				ostream.accept(loc.toString());
-				ostream.accept(": ");
+				atPoint(ostream, loc, ": ");
 				ostream.accept(item.getName());
 				ostream.accept(", ");
 				ostream.accept("an independent ");
@@ -98,9 +96,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			}
 			case final AbstractTown abstractTown when !item.owner().isIndependent() -> {
 				fixtures.remove(item.getId());
-				ostream.accept("At ");
-				ostream.accept(loc.toString());
-				ostream.accept(": ");
+				atPoint(ostream, loc, ": ");
 				ostream.accept(item.getName());
 				ostream.accept(", ");
 				ostream.accept("a ");

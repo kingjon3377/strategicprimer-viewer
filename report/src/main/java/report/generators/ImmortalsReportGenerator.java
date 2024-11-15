@@ -62,9 +62,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Immo
 							  final ILegacyMap map, final Consumer<String> ostream, final Immortal item,
 							  final Point loc) {
 		fixtures.remove(item.getId());
-		ostream.accept("At ");
-		ostream.accept(loc.toString());
-		ostream.accept(": A(n) ");
+		atPoint(ostream, loc, ": A(n) ");
 		ostream.accept(item.toString());
 		ostream.accept(" ");
 		ostream.accept(distanceString.apply(loc));
