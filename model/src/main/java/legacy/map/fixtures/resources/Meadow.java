@@ -175,7 +175,6 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof final Meadow it) {
-			// TODO: Make NumberComparator.compare() static first, with the dynamic one delegating?
 			return kind.equals(it.getKind()) &&
 					field == it.isField() &&
 					status == it.getStatus() &&
