@@ -80,7 +80,7 @@ import java.util.function.Predicate;
 
 	private final Warning warner;
 
-	private final IMutableLegacyPlayerCollection players; // TODO: ILegacyPlayerCollection instead?
+	private final IMutableLegacyPlayerCollection players; // Has to be mutable to pass to LegacyMap constructor
 
 	/**
 	 * The reader for players
