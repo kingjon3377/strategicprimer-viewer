@@ -88,7 +88,6 @@ public interface ITableGenerator<T extends IFixture> {
 			for (final List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
 				// TODO: We'd like special handling of numeric fields ...
-				// TODO: Offer a version of addRow() that takes a List?
 				retval.addRow(row.toArray(String[]::new));
 				count++;
 			}
