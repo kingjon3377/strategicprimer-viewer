@@ -307,19 +307,19 @@ public final class TestXMLIO {
 	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
 	                                             final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, XMLStreamException, IOException {
-		// FIXME: assertFormatIssue takes assertions as varargs, so split
-		final Consumer<DeprecatedPropertyException> assertion = (except) -> {
-			assertEquals(deprecated, except.getOld(),
-					"Missing property should be the one we're expecting");
-			assertEquals(tag, except.getTag().getLocalPart(),
-					"Missing property should be on the tag we expect");
-			assertEquals(preferred, except.getPreferred(),
-					"Preferred form should be as expected");
-		};
+		final Consumer<DeprecatedPropertyException> expectedProperty =
+				(except) -> assertEquals(deprecated, except.getOld(),
+						"Missing property should be the one we're expecting");
+		final Consumer<DeprecatedPropertyException> expectedTag =
+				(except) -> assertEquals(tag, except.getTag().getLocalPart(),
+						"Missing property should be on the tag we expect");
+		final Consumer<DeprecatedPropertyException> expectedPreferred =
+				(except) -> assertEquals(preferred, except.getPreferred(),
+						"Preferred form should be as expected");
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, desideratum,
 					DeprecatedPropertyException.class,
-					assertion);
+					expectedProperty, expectedTag, expectedPreferred);
 		}
 	}
 
