@@ -1,7 +1,6 @@
 package legacy.xmlio.yaxml;
 
 import java.nio.file.Path;
-import java.util.Collection;
 
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
@@ -109,21 +108,6 @@ import java.util.List;
 			}
 		}
 		throw new UnwantedChildException(parent, element, path);
-	}
-
-	/**
-	 * Write a series of rivers.
-	 *
-	 * TODO: Test this
-	 *
-	 * @throws IOException on I/O error
-	 */
-	private static void writeAllRivers(final ThrowingConsumer<String, IOException> ostream,
-	                                   final Collection<River> rivers, final int indent)
-			throws IOException {
-		for (final River river : rivers.stream().sorted().toList()) {
-			YAMapReader.writeRiver(ostream, river, indent);
-		}
 	}
 
 	/**
