@@ -151,8 +151,12 @@ public final class QueryCLI implements ReadOnlyDriver {
 		if (Objects.isNull(point)) {
 			return;
 		}
-		// FIXME: Also limit search radius
+		final Integer distance = cli.inputNumber("Within how many tiles? ");
+		if (Objects.isNull(distance)) {
+			return;
+		}
 		for (final Pair<Point, ITownFixture> pair : map.streamLocations()
+				.filter(l -> distance(point, l, map.getDimensions()) <= distance)
 				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
 				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 						.map(ITownFixture.class::cast).filter(t -> !Objects.isNull(t.getPopulation()))
