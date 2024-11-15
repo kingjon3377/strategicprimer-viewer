@@ -144,9 +144,6 @@ public final class SPFluidWriter implements SPWriter {
 		writeSPObject(arg, map);
 	}
 
-	/**
-	 * TODO: Does this really need to be an instance (non-static) method?
-	 */
 	private static void writePlayer(final XMLStreamWriter ostream, final Player obj, final int indentation)
 			throws XMLStreamException {
 		if (!obj.getName().isEmpty()) {
