@@ -1,5 +1,6 @@
 package legacy.xmlio;
 
+import static impl.xmlio.ISPReader.FUTURE_TAGS;
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
 import impl.xmlio.SPWriter;
@@ -1237,38 +1238,47 @@ public final class TestXMLIO {
 		assertMissingProperty(createSerializedForm(six, writer), "kind", six);
 	}
 
+	private static Stream<Arguments> testSkippableSerialization() {
+		return FUTURE_TAGS.stream().map(Arguments::of);
+	}
 	/**
-	 * Test that tags we intend to possibly support in the future (or
-	 * include in the XML for readability, like {@code row}) are
-	 * properly skipped when deserializing.
-	 *
-	 * TODO: Check each tag marked as "future", not just selected ones
+	 * Test that the {@code row} tag is properly skipped when deserializing
 	 */
 	@Test
-	public void testSkippableSerialization()
-			throws SPFormatException, XMLStreamException, IOException {
-		assertEquivalentForms("Two maps, one with row tags, one without",
+	public void testRowDeserialization() throws SPFormatException, XMLStreamException, IOException {
+		assertEquivalentForms("Two maps, one with skippable tags, one without",
 				"""
 						<map rows="1" columns="1" version="2" current_player="-1" />""",
 				"""
 						<map rows="1" columns="1" version="2" current_player="-1"><row /></map>""",
 				Warning.DIE);
-		assertEquivalentForms("Two maps, one with future tag, one without",
+	}
+
+	/**
+	 * Test that tags we intend to possibly support in the future (or
+	 * include in the XML for readability, like {@code row}) are
+	 * properly skipped when deserializing.
+	 */
+	@ParameterizedTest
+	@MethodSource
+	public void testSkippableSerialization(final String tag)
+			throws SPFormatException, XMLStreamException, IOException {
+		assertEquivalentForms("Two maps, one with skippable tags, one without",
 				"""
 						<map rows="1" columns="1" version="2" current_player="-1" />""",
 				"""
-						<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
+						<map rows="1" columns="1" version="2" current_player="-1"><%s /></map>""".formatted(tag),
 				Warning.IGNORE);
 		this.<ILegacyMap>assertUnsupportedTag("""
-						<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
-				"future", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0));
+						<map rows="1" columns="1" version="2" current_player="-1"><%s /></map>""".formatted(tag),
+				tag, new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0));
 		final IMutableLegacyMap expected =
 				new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0);
 		expected.setBaseTerrain(new Point(0, 0), TileType.Steppe);
 		this.<ILegacyMap>assertUnsupportedTag("""
-						<map rows="1" columns="1" version="2" current_player="-1">
-						<tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
-				"futureTag", expected);
+					<map rows="1" columns="1" version="2" current_player="-1">
+					<tile row="0" column="0" kind="steppe"><%s /></tile></map>""".formatted(tag),
+				tag, expected);
 	}
 
 	/**
