@@ -9,6 +9,7 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 	@Override
 	public void write(final Transactional db, final Grove obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-				value("id", obj.getId()), value("type", (obj.isOrchard()) ? "orchard" : "grove"),
+				value("id", obj.getId()), value("type", obj.getType().toString()),
 				value("kind", obj.getKind()), value("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				value("count", obj.getPopulation()), value("image", obj.getImage())).execute(db.connection());
 	}
@@ -62,17 +63,17 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
-			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
 			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
-			final boolean orchard = switch (type) {
-				case "grove" -> false;
-				case "orchard" -> true;
-				default -> throw new IllegalArgumentException("Unexpected grove type");
-			};
-			final Grove grove = new Grove(orchard, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
+			final Grove.GroveType type;
+			try {
+				type = Grove.GroveType.parse((String) dbRow.get("type"));
+			} catch (final ParseException except) {
+				throw new IllegalArgumentException(except);
+			}
+			final Grove grove = new Grove(type, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 					kind, id, count);
 			if (!Objects.isNull(image)) {
 				grove.setImage(image);

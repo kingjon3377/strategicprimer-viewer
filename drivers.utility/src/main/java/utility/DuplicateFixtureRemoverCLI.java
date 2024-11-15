@@ -208,7 +208,7 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 				DuplicateFixtureRemoverCLI::combineExtents));
 		mapping.put(Grove.class, new CoalescedHolder<>(
 				Grove.class, Grove[]::new,
-				grove -> Triplet.with(grove.isOrchard(), grove.getCultivation(), grove.getKind()),
+				grove -> Triplet.with(grove.getType(), grove.getCultivation(), grove.getKind()),
 				DuplicateFixtureRemoverCLI::combinePopulations));
 		mapping.put(Meadow.class, new CoalescedHolder<>(Meadow.class, Meadow[]::new,
 				meadow -> Quartet.with(meadow.getKind(), meadow.isField(),

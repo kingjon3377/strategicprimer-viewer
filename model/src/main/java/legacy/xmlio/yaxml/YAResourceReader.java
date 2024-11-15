@@ -77,11 +77,11 @@ import java.util.Set;
 	/**
 	 * TODO: Inline?
 	 */
-	private HarvestableFixture createGrove(final StartElement element, final @Nullable Path path, final boolean orchard,
-	                                       final int idNum)
+	private HarvestableFixture createGrove(final StartElement element, final @Nullable Path path,
+	                                       final Grove.GroveType type, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, path, "kind", "tree", "cultivated", "wild", "id", "image", "count");
-		return new Grove(orchard, getCultivvation(element, path),
+		return new Grove(type, getCultivvation(element, path),
 				getParamWithDeprecatedForm(element, path, "kind", "tree"), idNum,
 				getIntegerParameter(element, path, "count", -1));
 	}
@@ -111,7 +111,7 @@ import java.util.Set;
 				return retval;
 			}
 			case "field" -> retval = createMeadow(element, path, true, idNum);
-			case "grove" -> retval = createGrove(element, path, false, idNum);
+			case "grove" -> retval = createGrove(element, path, Grove.GroveType.GROVE, idNum);
 			case "meadow" -> retval = createMeadow(element, path, false, idNum);
 			case "mine" -> {
 				expectAttributes(element, path, "status", "kind", "product", "id", "image");
@@ -130,7 +130,7 @@ import java.util.Set;
 						getBooleanParameter(element, path, "exposed"),
 						getIntegerParameter(element, path, "dc"), idNum);
 			}
-			case "orchard" -> retval = createGrove(element, path, true, idNum);
+			case "orchard" -> retval = createGrove(element, path, Grove.GroveType.ORCHARD, idNum);
 			case "shrub" -> {
 				expectAttributes(element, path, "kind", "shrub", "id", "image", "count");
 				retval = new Shrub(getParamWithDeprecatedForm(element, path, "kind", "shrub"), idNum,
@@ -173,7 +173,7 @@ import java.util.Set;
 				}
 			}
 			case final Grove g -> {
-				writeTag(ostream, g.isOrchard() ? "orchard" : "grove", indent);
+				writeTag(ostream, g.getType().toString(), indent);
 				writeProperty(ostream, "cultivated",
 						Boolean.toString(g.getCultivation() == CultivationStatus.CULTIVATED));
 				writeProperty(ostream, "kind", obj.getKind());

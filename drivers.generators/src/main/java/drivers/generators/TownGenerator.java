@@ -408,7 +408,8 @@ import java.math.BigDecimal;
 	 */
 	private static String getHarvestableKind(final HarvestableFixture fixture) {
 		return switch (fixture) {
-			case final Grove g -> (g.isOrchard()) ? "food" : "wood";
+			case final Grove g when g.getType() == Grove.GroveType.ORCHARD -> "food";
+			case final Grove g when g.getType() == Grove.GroveType.GROVE -> "wood";
 			case final Meadow m -> (m.isField()) ? "food" : "fodder";
 			case final MineralVein mineralVein -> "mineral";
 			case final StoneDeposit stoneDeposit -> "stone";

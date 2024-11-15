@@ -110,7 +110,7 @@ public final class MapTradeCLI implements CLIDriver {
 		retval.add(FixtureMatcher.trivialMatcher(Kraken.class));
 		retval.add(FixtureMatcher.trivialMatcher(Cave.class));
 		retval.add(FixtureMatcher.trivialMatcher(Battlefield.class));
-		FixtureMatcher.complements(Grove.class, Grove::isOrchard, "Orchards", "Groves")
+		FixtureMatcher.complements(Grove.class, g -> g.getType() == Grove.GroveType.ORCHARD, "Orchards", "Groves")
 				.forEach(retval::add);
 		retval.add(FixtureMatcher.trivialMatcher(Shrub.class));
 		FixtureMatcher.complements(Meadow.class, Meadow::isField, "Fields", "Meadows")

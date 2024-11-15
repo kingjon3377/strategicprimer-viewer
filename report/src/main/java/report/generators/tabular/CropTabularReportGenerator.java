@@ -121,7 +121,7 @@ public final class CropTabularReportGenerator implements ITableGenerator</*Fores
 				status = m.getStatus().toString();
 			}
 			case final Grove g -> {
-				kind = g.isOrchard() ? "orchard" : "grove";
+				kind = g.getType().toString();
 				cultivation = g.getCultivation().toString();
 				status = "---";
 				sizeUnit = "trees";

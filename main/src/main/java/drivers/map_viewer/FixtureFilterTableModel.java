@@ -109,7 +109,7 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 		matchers.add(FixtureMatcher.trivialMatcher(AnimalTracks.class, "Animal Tracks"));
 		matchers.add(FixtureMatcher.trivialMatcher(StoneDeposit.class, "Stone Deposits"));
 		matchers.add(FixtureMatcher.trivialMatcher(MineralVein.class, "Mineral Veins"));
-		FixtureMatcher.complements(Grove.class, Grove::isOrchard, "Orchards", "Groves")
+		FixtureMatcher.complements(Grove.class, g -> g.getType() == Grove.GroveType.ORCHARD, "Orchards", "Groves")
 				.forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(TextFixture.class, "Arbitrary-Text Notes"));
 		matchers.add(FixtureMatcher.trivialMatcher(Portal.class));

@@ -774,7 +774,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
-		return bools().flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
+		return Stream.of(Grove.GroveType.values()).flatMap(a -> Stream.of(CultivationStatus.values()).flatMap(b ->
 				SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
 						races.stream().collect(toShuffledStream(1)).map(d ->
 								Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), d)))));
@@ -782,9 +782,9 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(final boolean orchard, final CultivationStatus cultivation, final int id,
+	public void testGroveSerialization(final Grove.GroveType type, final CultivationStatus cultivation, final int id,
 	                                   final int count, final String kind) throws SQLException, IOException {
-		assertFixtureSerialization(new Grove(orchard, cultivation, kind, id, count));
+		assertFixtureSerialization(new Grove(type, cultivation, kind, id, count));
 	}
 
 	private static Stream<Arguments> testSimpleImmortalSerialization() {

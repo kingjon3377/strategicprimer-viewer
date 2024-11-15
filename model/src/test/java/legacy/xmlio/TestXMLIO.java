@@ -1436,7 +1436,7 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testGroveSerialization() {
 		return TREE_TYPES.stream().flatMap(a -> integers(2).flatMap(b ->
-				bools().flatMap(c -> Stream.of(CultivationStatus.values()).map(d ->
+				Stream.of(Grove.GroveType.values()).flatMap(c -> Stream.of(CultivationStatus.values()).map(d ->
 						Arguments.of(c, d, a, b)))));
 	}
 
@@ -1447,10 +1447,10 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(final boolean fruit, final CultivationStatus cultivation, final String trees,
+	public void testGroveSerialization(final Grove.GroveType type, final CultivationStatus cultivation, final String trees,
 	                                   final int id)
 			throws SPFormatException, XMLStreamException, IOException {
-		assertSerialization("Test of Grove serialization", new Grove(fruit, cultivation, trees, id));
+		assertSerialization("Test of Grove serialization", new Grove(type, cultivation, trees, id));
 		this.<Grove>assertUnwantedChild("""
 				<grove wild="true" kind="kind"><troll /></grove>""", null);
 		this.<Grove>assertMissingProperty("<grove />", "cultivated", null);
@@ -1458,22 +1458,22 @@ public final class TestXMLIO {
 				<grove wild="false" />""", "kind", null);
 		assertDeprecatedProperty("""
 						<grove cultivated="true" tree="tree" id="0" />""",
-				"tree", "kind", "grove", new Grove(false, CultivationStatus.CULTIVATED, "tree", 0));
+				"tree", "kind", "grove", new Grove(Grove.GroveType.GROVE, CultivationStatus.CULTIVATED, "tree", 0));
 		assertMissingProperty("""
 						<grove cultivated="true" kind="kind" />""", "id",
-				new Grove(false, CultivationStatus.CULTIVATED, "kind", 0));
+				new Grove(Grove.GroveType.GROVE, CultivationStatus.CULTIVATED, "kind", 0));
 		assertDeprecatedProperty("""
 						<grove wild="true" kind="tree" id="0" />""",
-				"wild", "cultivated", "grove", new Grove(false, CultivationStatus.WILD, "tree", 0));
+				"wild", "cultivated", "grove", new Grove(Grove.GroveType.GROVE, CultivationStatus.WILD, "tree", 0));
 		assertEquivalentForms("Assert that wild is the inverse of cultivated",
 				"""
 						<grove wild="true" kind="tree" id="0" />""",
 				"""
 						<grove cultivated="false" kind="tree" id="0" />""", Warning.IGNORE);
 		assertImageSerialization("Grove image property is preserved",
-				new Grove(false, CultivationStatus.WILD, trees, id));
-		assertSerialization("Groves can have 'count' property", new Grove(true, CultivationStatus.CULTIVATED, trees,
-				id, 4));
+				new Grove(Grove.GroveType.GROVE, CultivationStatus.WILD, trees, id));
+		assertSerialization("Groves can have 'count' property", new Grove(Grove.GroveType.ORCHARD,
+				CultivationStatus.CULTIVATED, trees, id, 4));
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {

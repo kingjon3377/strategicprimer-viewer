@@ -116,7 +116,7 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
-				new Grove(false, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
+				new Grove(Grove.GroveType.GROVE, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, path, warner);
@@ -140,7 +140,7 @@ import java.nio.file.Path;
 			throw new MissingPropertyException(element, path, "cultivated");
 		}
 		return setImage(
-				new Grove(true, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
+				new Grove(Grove.GroveType.ORCHARD, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 						getAttrWithDeprecatedForm(element, path, "kind", "tree", warner),
 						getOrGenerateID(element, warner, path, idFactory), getIntegerAttribute(element,
 						"count", -1)), element, path, warner);
@@ -307,7 +307,7 @@ import java.nio.file.Path;
 
 	public static void writeGrove(final XMLStreamWriter ostream, final Grove obj, final int indent)
 			throws XMLStreamException {
-		writeTag(ostream, (obj.isOrchard()) ? "orchard" : "grove", indent, true);
+		writeTag(ostream, obj.getType().toString(), indent, true);
 		writeAttributes(ostream, Pair.with("cultivated", obj.getCultivation() == CultivationStatus.CULTIVATED),
 				Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
 		if (obj.getPopulation() >= 1) {
