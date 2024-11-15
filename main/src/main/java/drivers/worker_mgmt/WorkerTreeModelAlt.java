@@ -73,7 +73,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		 */
 		@Override
 		public final Iterator<TreeNode> iterator() {
-			return new EnumerationWrapper<>(children());
+			return new EnumerationWrapper<>(children(), TreeNode.class);
 		}
 
 		/**
@@ -570,9 +570,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		final PlayerNode rootNode = (PlayerNode) getRoot();
 		final Enumeration<?> enumeration = rootNode.preorderEnumeration();
-		final Iterable<WorkerTreeNode<?>> wrapped =
-				new IteratorWrapper<>(new EnumerationWrapper<>(enumeration));
-		final Iterable<WorkerTreeNode<?>> sequence;
+		final Iterable<? extends WorkerTreeNode> wrapped =
+				new IteratorWrapper<>(new EnumerationWrapper<>(enumeration, WorkerTreeNode.class));
+		final Iterable<? extends WorkerTreeNode> sequence;
 		boolean leading;
 		final @Nullable WorkerTreeNode<?> toTrim;
 		if (Objects.isNull(starting)) {

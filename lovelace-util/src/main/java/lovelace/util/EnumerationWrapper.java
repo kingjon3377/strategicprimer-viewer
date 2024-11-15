@@ -9,14 +9,14 @@ import java.util.Iterator;
  * parameterize it, so we cast each item returned to the desired type instead
  * of requiring callers to coerce the type of the enumeration to be
  * parameterized properly.
- *
- * TODO: Take Class object for desired type to assert that elements are of it?
  */
 public final class EnumerationWrapper<Element> implements Iterator<Element> {
 	private final Enumeration<?> wrapped;
+	private final Class<? extends Element> cls;
 
-	public EnumerationWrapper(final Enumeration<?> enumeration) {
+	public EnumerationWrapper(final Enumeration<?> enumeration, final Class<? extends Element> cls) {
 		wrapped = enumeration;
+		this.cls = cls;
 	}
 
 	@Override
@@ -25,9 +25,8 @@ public final class EnumerationWrapper<Element> implements Iterator<Element> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Element next() {
-		return (Element) wrapped.nextElement();
+		return cls.cast(wrapped.nextElement());
 	}
 
 	@Override
