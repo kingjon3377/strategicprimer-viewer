@@ -2,16 +2,17 @@ package legacy.map.fixtures;
 
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
+import legacy.map.fixtures.resources.ExposureStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  */
 public final class Ground implements MineralFixture, HasMutableImage {
-	public Ground(final int id, final String kind, final boolean exposed) {
+	public Ground(final int id, final String kind, final ExposureStatus exposure) {
 		this.id = id;
 		this.kind = kind;
-		this.exposed = exposed;
+		this.exposure = exposure;
 	}
 
 	/**
@@ -29,23 +30,21 @@ public final class Ground implements MineralFixture, HasMutableImage {
 
 	/**
 	 * Whether the ground is exposed.
-	 *
-	 * TODO: convert to enum, or make Ground a sealed interface with ExposedGround and UnexposedGround implementations.
 	 */
-	private boolean exposed;
+	private ExposureStatus exposure;
 
 	/**
 	 * Whether the ground is exposed.
 	 */
-	public boolean isExposed() {
-		return exposed;
+	public ExposureStatus getExposure() {
+		return exposure;
 	}
 
 	/**
 	 * Set whether the ground is exposed.
 	 */
-	public void setExposed(final boolean exposed) {
-		this.exposed = exposed;
+	public void setExposure(final ExposureStatus exposure) {
+		this.exposure = exposure;
 	}
 
 	/**
@@ -98,7 +97,7 @@ public final class Ground implements MineralFixture, HasMutableImage {
 	 */
 	@Override
 	public @NotNull Ground copy(final @NotNull IFixture.CopyBehavior zero) {
-		final Ground retval = new Ground(id, kind, exposed);
+		final Ground retval = new Ground(id, kind, exposure);
 		retval.setImage(image);
 		return retval;
 	}
@@ -108,7 +107,10 @@ public final class Ground implements MineralFixture, HasMutableImage {
 	 */
 	@Override
 	public @NotNull String getDefaultImage() {
-		return (exposed) ? "expground.png" : "blank.png";
+		return switch (exposure) {
+			case EXPOSED -> "expground.png";
+			case HIDDEN -> "blank.png";
+		};
 	}
 
 	/**
@@ -121,7 +123,7 @@ public final class Ground implements MineralFixture, HasMutableImage {
 			return true;
 		} else if (obj instanceof final Ground that) {
 			return kind.equals(that.getKind()) &&
-					exposed == that.isExposed() && id == that.getId();
+					exposure == that.getExposure() && id == that.getId();
 		} else {
 			return false;
 		}
@@ -134,7 +136,10 @@ public final class Ground implements MineralFixture, HasMutableImage {
 
 	@Override
 	public @NotNull String getShortDescription() {
-		return "%s %s ground".formatted((exposed) ? "Exposed" : "Unexposed", kind);
+		return (switch (exposure) {
+			case EXPOSED -> "Exposed %s ground";
+			case HIDDEN -> "Unexposed %s ground";
+		}).formatted(kind);
 	}
 
 	@Override
@@ -151,7 +156,7 @@ public final class Ground implements MineralFixture, HasMutableImage {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final Ground that) {
-			return kind.equals(that.getKind()) && exposed == that.isExposed();
+			return kind.equals(that.getKind()) && exposure == that.getExposure();
 		} else {
 			return false;
 		}
@@ -172,6 +177,9 @@ public final class Ground implements MineralFixture, HasMutableImage {
 	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
-		return (exposed) ? 10 : 40;
+		return switch (exposure) {
+			case EXPOSED -> 10;
+			case HIDDEN -> 40;
+		};
 	}
 }

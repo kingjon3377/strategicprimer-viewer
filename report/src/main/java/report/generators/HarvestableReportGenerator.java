@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.Cave;
+import legacy.map.fixtures.resources.ExposureStatus;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -133,8 +134,12 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 				ostream.accept(acreageString(m));
 			}
 			case final Mine mine -> ostream.accept(item.toString());
-			case final MineralVein mv -> {
-				ostream.accept(mv.isExposed() ? "An exposed vein of " : "An unexposed vein of ");
+			case final MineralVein mv when mv.getExposure() == ExposureStatus.EXPOSED -> {
+				ostream.accept("An exposed vein of ");
+				ostream.accept(item.getKind());
+			}
+			case final MineralVein mv when mv.getExposure() == ExposureStatus.HIDDEN -> {
+				ostream.accept("An unexposed vein of ");
 				ostream.accept(item.getKind());
 			}
 			case final Shrub s -> {

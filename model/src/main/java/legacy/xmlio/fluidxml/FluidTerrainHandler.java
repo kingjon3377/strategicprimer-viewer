@@ -8,6 +8,7 @@ import legacy.map.HasExtent;
 import legacy.map.ILegacyPlayerCollection;
 import legacy.map.River;
 import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.terrain.Forest;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -34,8 +35,8 @@ import java.util.Collection;
 		}
 		final String kind = getAttrWithDeprecatedForm(element, path, "kind", "ground", warner);
 		spinUntilEnd(element.getName(), path, stream);
-		return setImage(new Ground(id, kind, getBooleanAttribute(element, path, "exposed")),
-				element, path, warner);
+		return setImage(new Ground(id, kind, getBooleanAttribute(element, path, "exposed") ? ExposureStatus.EXPOSED :
+						ExposureStatus.HIDDEN), element, path, warner);
 	}
 
 	public static Forest readForest(final StartElement element, final @Nullable Path path, final QName parent,
@@ -59,7 +60,7 @@ import java.util.Collection;
 			throws XMLStreamException {
 		writeTag(ostream, "ground", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
-				Pair.with("exposed", obj.isExposed()), Pair.with("id", obj.getId()));
+				Pair.with("exposed", obj.getExposure() == ExposureStatus.EXPOSED), Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}
 

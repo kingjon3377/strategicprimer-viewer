@@ -18,6 +18,7 @@ import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.Ground;
 import common.xmlio.Warning;
+import legacy.map.fixtures.resources.ExposureStatus;
 
 import static io.jenetics.facilejdbc.Param.value;
 
@@ -50,7 +51,8 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 	public void write(final Transactional db, final Ground obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("kind", obj.getKind()),
-				value("exposed", obj.isExposed()), value("image", obj.getImage())).execute(db.connection());
+				value("exposed", obj.getExposure() == ExposureStatus.EXPOSED),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readGround(final IMutableLegacyMap map) {
@@ -59,7 +61,8 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final boolean exposed = getBooleanValue(dbRow, "exposed");
+			final ExposureStatus exposed = getBooleanValue(dbRow, "exposed") ? ExposureStatus.EXPOSED :
+					ExposureStatus.HIDDEN;
 			final String image = (String) dbRow.get("image");
 			final Ground ground = new Ground(id, kind, exposed);
 			if (!Objects.isNull(image)) {

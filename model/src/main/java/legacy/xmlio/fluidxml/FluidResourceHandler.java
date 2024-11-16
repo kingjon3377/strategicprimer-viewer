@@ -17,6 +17,7 @@ import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.resources.CacheFixture;
 import legacy.map.fixtures.resources.CultivationStatus;
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.resources.Grove;
 import legacy.map.fixtures.resources.Meadow;
 import legacy.map.fixtures.resources.Mine;
@@ -225,7 +226,7 @@ import java.nio.file.Path;
 		return setImage(
 				new MineralVein(
 						getAttrWithDeprecatedForm(element, path, "kind", "mineral", warner),
-						getBooleanAttribute(element, path, "exposed"),
+						getBooleanAttribute(element, path, "exposed") ? ExposureStatus.EXPOSED : ExposureStatus.HIDDEN,
 						getIntegerAttribute(element, path, "dc"),
 						getOrGenerateID(element, warner, path, idFactory)), element, path, warner);
 	}
@@ -328,7 +329,7 @@ import java.nio.file.Path;
 			throws XMLStreamException {
 		writeTag(ostream, "mineral", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
-				Pair.with("exposed", obj.isExposed()), Pair.with("dc", obj.getDC()),
+				Pair.with("exposed", obj.getExposure() == ExposureStatus.EXPOSED), Pair.with("dc", obj.getDC()),
 				Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}

@@ -19,6 +19,7 @@ import drivers.common.cli.ICLIHelper;
 import legacy.map.HasKind;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.resources.CultivationStatus;
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.CommunityStats;
@@ -230,7 +231,7 @@ import java.math.BigDecimal;
 	private static boolean isReallyClaimable(final HarvestableFixture fix) {
 		switch (fix) {
 			case final MineralVein mv -> {
-				return mv.isExposed();
+				return mv.getExposure() == ExposureStatus.EXPOSED;
 			}
 			case final Meadow m -> {
 				return m.getCultivation() == CultivationStatus.CULTIVATED;

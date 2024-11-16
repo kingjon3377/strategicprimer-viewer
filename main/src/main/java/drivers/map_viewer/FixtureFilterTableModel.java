@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import drivers.common.IterableComparator;
+import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.Reorderable;
 
 import legacy.map.TileFixture;
@@ -121,8 +122,8 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 				.forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(Shrub.class));
 		matchers.add(FixtureMatcher.trivialMatcher(Hill.class));
-		FixtureMatcher.complements(Ground.class, Ground::isExposed, "Ground (exposed)", "Ground")
-				.forEach(matchers::add);
+		FixtureMatcher.complements(Ground.class, g -> g.getExposure() == ExposureStatus.EXPOSED, "Ground (exposed)",
+						"Ground").forEach(matchers::add);
 	}
 
 	@Override

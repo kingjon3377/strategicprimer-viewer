@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ThrowingConsumer;
 
 import legacy.idreg.IDRegistrar;
@@ -36,7 +37,8 @@ import org.jetbrains.annotations.Nullable;
 		if (id >= 0) {
 			registerID(id, path, element.getLocation());
 		}
-		final Ground retval = new Ground(id, kind, getBooleanParameter(element, path, "exposed"));
+		final Ground retval = new Ground(id, kind,
+				getBooleanParameter(element, path, "exposed") ? ExposureStatus.EXPOSED : ExposureStatus.HIDDEN);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -51,7 +53,10 @@ import org.jetbrains.annotations.Nullable;
 			throws IOException {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
-		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));
+		writeProperty(ostream, "exposed", switch (obj.getExposure()) {
+			case EXPOSED -> "true";
+			case HIDDEN -> "false";
+		});
 		writeProperty(ostream, "id", obj.getId());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);

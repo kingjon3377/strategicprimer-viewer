@@ -7,9 +7,9 @@ import legacy.map.fixtures.MineralFixture;
  * A vein of a mineral.
  */
 public final class MineralVein implements HarvestableFixture, MineralFixture {
-	public MineralVein(final String kind, final boolean exposed, final int dc, final int id) {
+	public MineralVein(final String kind, final ExposureStatus exposure, final int dc, final int id) {
 		this.kind = kind;
-		this.exposed = exposed;
+		this.exposure = exposure;
 		this.dc = dc;
 		this.id = id;
 	}
@@ -33,7 +33,7 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 	 * and make callers remove the non-exposed and add the exposed version
 	 * back.
 	 */
-	private boolean exposed;
+	private ExposureStatus exposure;
 
 	/**
 	 * Whether the vein is exposed or not.
@@ -41,8 +41,8 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 	 * and make callers remove the non-exposed and add the exposed version
 	 * back.
 	 */
-	public boolean isExposed() {
-		return exposed;
+	public ExposureStatus getExposure() {
+		return exposure;
 	}
 
 	/**
@@ -51,8 +51,8 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 	 * and make callers remove the non-exposed and add the exposed version
 	 * back.
 	 */
-	public void setExposed(final boolean exposed) {
-		this.exposed = exposed;
+	public void setExposure(final ExposureStatus exposure) {
+		this.exposure = exposure;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public MineralVein copy(final CopyBehavior zero) {
-		final MineralVein retval = new MineralVein(kind, exposed, (zero == CopyBehavior.ZERO) ? 0 : dc, id);
+		final MineralVein retval = new MineralVein(kind, exposure, (zero == CopyBehavior.ZERO) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}
@@ -117,7 +117,7 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final MineralVein it) {
 			return kind.equals(it.getKind()) &&
-					exposed == it.isExposed();
+					exposure == it.getExposure();
 		} else {
 			return false;
 		}
@@ -139,11 +139,10 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public String toString() {
-		if (exposed) {
-			return "A %s deposit, exposed, DC %d".formatted(kind, dc);
-		} else {
-			return "A %s deposit, not exposed, DC %d".formatted(kind, dc);
-		}
+		return (switch (exposure) {
+			case EXPOSED -> "A %s deposit, exposed, DC %d";
+			case HIDDEN -> "A %s deposit, not exposed, DC %d";
+		}).formatted(kind, dc);
 	}
 
 	@Override
@@ -158,6 +157,9 @@ public final class MineralVein implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public String getShortDescription() {
-		return (exposed) ? "exposed " + kind : "unexposed " + kind;
+		return (switch (exposure) {
+			case EXPOSED -> "exposed ";
+			case HIDDEN -> "unexposed ";
+		}) + kind;
 	}
 }

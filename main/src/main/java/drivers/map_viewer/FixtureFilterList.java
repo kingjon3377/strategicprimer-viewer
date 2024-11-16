@@ -10,6 +10,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.DropMode;
 
+import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ReorderableListModel;
 
 import legacy.map.TileFixture;
@@ -30,9 +31,9 @@ import java.util.function.Predicate;
 
 	public FixtureFilterList() {
 		matcherListModel = new ReorderableListModel<>(
-				FixtureMatcher.simpleMatcher(Ground.class, Ground::isExposed,
+				FixtureMatcher.simpleMatcher(Ground.class, g -> g.getExposure() == ExposureStatus.EXPOSED,
 						"Ground (exposed)"),
-				FixtureMatcher.simpleMatcher(Ground.class, not(Ground::isExposed), "Ground"),
+				FixtureMatcher.simpleMatcher(Ground.class, g -> g.getExposure() == ExposureStatus.HIDDEN, "Ground"),
 				FixtureMatcher.simpleMatcher(Grove.class, g -> g.getType() == Grove.GroveType.ORCHARD, "Orchards"),
 				FixtureMatcher.simpleMatcher(Grove.class, g -> g.getType() == Grove.GroveType.GROVE, "Groves"),
 				FixtureMatcher.simpleMatcher(Meadow.class, m -> m.getType() == Meadow.MeadowType.FIELD, "Fields"),

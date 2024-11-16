@@ -33,6 +33,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 import legacy.map.fixtures.resources.CultivationStatus;
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.xmlio.TestXMLIO;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -761,16 +762,16 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testGroundSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-				bools().flatMap(b ->
+				Stream.of(ExposureStatus.values()).flatMap(b ->
 						races.stream().collect(toShuffledStream(2)).map(c ->
 								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroundSerialization(final int id, final boolean exposed, final String kind)
+	public void testGroundSerialization(final int id, final ExposureStatus exposure, final String kind)
 			throws SQLException, IOException {
-		assertFixtureSerialization(new Ground(id, kind, exposed));
+		assertFixtureSerialization(new Ground(id, kind, exposure));
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
@@ -829,7 +830,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMineralSerialization() {
-		return bools().flatMap(a ->
+		return Stream.of(ExposureStatus.values()).flatMap(a ->
 				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
 						SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
 								races.stream().collect(toShuffledStream(1)).map(d ->
@@ -838,9 +839,9 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind)
+	public void testMineralSerialization(final ExposureStatus exposure, final int dc, final int id, final String kind)
 			throws SQLException, IOException {
-		assertFixtureSerialization(new MineralVein(kind, exposed, dc, id));
+		assertFixtureSerialization(new MineralVein(kind, exposure, dc, id));
 	}
 
 	private static Stream<Arguments> testStoneSerialization() {

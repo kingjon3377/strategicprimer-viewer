@@ -3,6 +3,7 @@ package report.generators.tabular;
 import java.util.List;
 
 import legacy.DistanceComparatorImpl;
+import legacy.map.fixtures.resources.ExposureStatus;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,9 +77,13 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Min
 		final String classField;
 		final String statusField;
 		switch (item) {
-			case final Ground g -> {
+			case final Ground g when g.getExposure() == ExposureStatus.EXPOSED -> {
 				classField = "ground";
-				statusField = g.isExposed() ? "exposed" : "not exposed";
+				statusField = "exposed";
+			}
+			case final Ground g when g.getExposure() == ExposureStatus.HIDDEN -> {
+				classField = "ground";
+				statusField = "not exposed";
 			}
 			case final Mine m -> {
 				classField = "mine";
@@ -88,9 +93,13 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Min
 				classField = "deposit";
 				statusField = "exposed";
 			}
-			case final MineralVein mv -> {
+			case final MineralVein mv when mv.getExposure() == ExposureStatus.EXPOSED -> {
 				classField = "vein";
-				statusField = mv.isExposed() ? "exposed" : "not exposed";
+				statusField = "exposed";
+			}
+			case final MineralVein mv when mv.getExposure() == ExposureStatus.HIDDEN -> {
+				classField = "vein";
+				statusField = "not exposed";
 			}
 			default -> {
 				return Collections.emptyList();

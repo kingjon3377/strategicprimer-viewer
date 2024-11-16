@@ -17,6 +17,7 @@ import java.util.Objects;
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
 
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.resources.MineralVein;
 import legacy.map.fixtures.MineralFixture;
 import legacy.map.fixtures.resources.StoneDeposit;
@@ -66,7 +67,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 		switch (obj) {
 			case final MineralVein m -> {
 				type = "mineral";
-				exposed = m.isExposed();
+				exposed = m.getExposure() == ExposureStatus.EXPOSED;
 			}
 			case final StoneDeposit stoneDeposit -> {
 				type = "stone";
@@ -86,7 +87,8 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final boolean exposed = getBooleanValue(dbRow, "exposed");
+			final ExposureStatus exposed = getBooleanValue(dbRow, "exposed") ? ExposureStatus.EXPOSED :
+					ExposureStatus.HIDDEN;
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final MineralVein mineral = new MineralVein(kind, exposed, dc, id);

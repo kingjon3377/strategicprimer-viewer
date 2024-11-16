@@ -14,6 +14,7 @@ import javax.xml.stream.XMLStreamException;
 
 import impl.xmlio.ISPReader;
 import legacy.map.fixtures.resources.CultivationStatus;
+import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.AssertAny;
 import org.jetbrains.annotations.Nullable;
 
@@ -1233,7 +1234,7 @@ public final class TestXMLIO {
 		final IMutableLegacyMap six = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
 				new LegacyPlayerCollection(), 5);
 		six.setMountainous(new Point(0, 0), true);
-		six.addFixture(new Point(0, 1), new Ground(22, "basalt", false));
+		six.addFixture(new Point(0, 1), new Ground(22, "basalt", ExposureStatus.HIDDEN));
 		six.addFixture(new Point(1, 0), new Forest("pine", false, 19));
 		six.addFixture(new Point(1, 1), new AnimalImpl("beaver", false, "wild", 18));
 		assertMissingProperty(createSerializedForm(six, writer), "kind", six);
@@ -2154,10 +2155,10 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testGroundSerialization(final int id)
 			throws SPFormatException, XMLStreamException, IOException {
-		assertSerialization("First test of Ground serialization", new Ground(id, "one", true));
+		assertSerialization("First test of Ground serialization", new Ground(id, "one", ExposureStatus.EXPOSED));
 		final Point loc = new Point(0, 0);
 		final IMutableLegacyMap map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
-		map.addFixture(loc, new Ground(-1, "four", true));
+		map.addFixture(loc, new Ground(-1, "four", ExposureStatus.EXPOSED));
 		assertSerialization("Test that reader handles ground as a fixture", map);
 		assertForwardDeserializationEquality("Duplicate Ground ignored", """
 						<view current_turn="-1" current_player="-1">
@@ -2166,7 +2167,7 @@ public final class TestXMLIO {
 						<ground kind="four" exposed="true" />
 						<ground kind="four" exposed="true" /></tile></map></view>""",
 				map);
-		map.addFixture(loc, new Ground(-1, "five", false));
+		map.addFixture(loc, new Ground(-1, "five", ExposureStatus.HIDDEN));
 		assertForwardDeserializationEquality("Exposed Ground made main", """
 						<view current_turn="-1" current_player="-1">
 						<map version="2" rows="1" columns="1">
@@ -2188,9 +2189,9 @@ public final class TestXMLIO {
 				<ground kind="ground" />""", "exposed", null);
 		assertDeprecatedProperty("""
 						<ground ground="ground" exposed="true" />""", "ground", "kind", "ground",
-				new Ground(-1, "ground", true));
+				new Ground(-1, "ground", ExposureStatus.EXPOSED));
 		assertImageSerialization("Ground image property is preserved",
-				new Ground(id, "five", true));
+				new Ground(id, "five", ExposureStatus.EXPOSED));
 	}
 
 	private static Stream<Arguments> testSimpleSerializationNoChildren() {
@@ -2287,7 +2288,7 @@ public final class TestXMLIO {
 		return integers(2).flatMap(a ->
 				integers(2).flatMap(b ->
 						MINERALS.stream().flatMap(c ->
-								bools().flatMap(d ->
+								Stream.of(ExposureStatus.values()).flatMap(d ->
 										writers().map(e ->
 												Arguments.of(a, b, c, d, e))))));
 	}
@@ -2297,28 +2298,28 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(final int dc, final int id, final String kind, final boolean exposed,
+	public void testMineralSerialization(final int dc, final int id, final String kind, final ExposureStatus exposure,
 	                                     final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
-		final MineralVein secondVein = new MineralVein(kind, exposed, dc, id);
+		final MineralVein secondVein = new MineralVein(kind, exposure, dc, id);
 		assertSerialization("MineralVein serialization", secondVein);
 		assertDeprecatedProperty(
 				createSerializedForm(secondVein, writer).replace("kind", "mineral"),
 				"mineral", "kind", "mineral", secondVein);
 		this.<MineralVein>assertUnwantedChild("""
-						<mineral kind="%s" exposed="%b" dc="%d"><hill /></mineral>""".formatted(kind, exposed, dc),
-				null);
+						<mineral kind="%s" exposed="%b" dc="%d"><hill /></mineral>""".formatted(kind,
+						exposure == ExposureStatus.EXPOSED, dc), null);
 		this.<MineralVein>assertMissingProperty("""
-						<mineral dc="%d" exposed="%b" />""".formatted(dc, exposed),
+						<mineral dc="%d" exposed="%b" />""".formatted(dc, exposure == ExposureStatus.EXPOSED),
 				"kind", null);
 		this.<MineralVein>assertMissingProperty("""
-				<mineral kind="%s" exposed="%b" />""".formatted(kind, exposed), "dc", null);
+				<mineral kind="%s" exposed="%b" />""".formatted(kind, exposure == ExposureStatus.EXPOSED), "dc", null);
 		this.<MineralVein>assertMissingProperty("""
 						<mineral dc="%d" kind="%s" />""".formatted(dc, kind),
 				"exposed", null);
 		assertMissingProperty("""
-						<mineral kind="%s" exposed="%b" dc="%d" />""".formatted(kind, exposed, dc),
-				"id", new MineralVein(kind, exposed, dc, 0));
+						<mineral kind="%s" exposed="%b" dc="%d" />""".formatted(kind, exposure == ExposureStatus.EXPOSED, dc),
+				"id", new MineralVein(kind, exposure, dc, 0));
 		assertImageSerialization("Mineral image property is preserved", secondVein);
 	}
 

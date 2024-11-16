@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.Village;
@@ -116,7 +117,7 @@ public final class MapTradeCLI implements CLIDriver {
 		FixtureMatcher.complements(Meadow.class, m -> m.getType() == Meadow.MeadowType.FIELD, "Fields", "Meadows")
 				.forEach(retval::add);
 		retval.add(FixtureMatcher.trivialMatcher(Hill.class));
-		FixtureMatcher.complements(Ground.class, Ground::isExposed, "Ground (exposed)",
+		FixtureMatcher.complements(Ground.class, g -> g.getExposure() == ExposureStatus.EXPOSED, "Ground (exposed)",
 				"Ground").forEach(retval::add);
 		return Collections.unmodifiableList(retval);
 	}

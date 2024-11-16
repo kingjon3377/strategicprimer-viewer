@@ -1,6 +1,7 @@
 package exploration.common;
 
 import common.map.HasName;
+import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.resources.MineralVein;
 import legacy.map.fixtures.resources.StoneDeposit;
 import lovelace.util.LovelaceLogger;
@@ -720,8 +721,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
 			// TODO: Extract an interface for 'exposed' so we only have to do one test
 			switch (newFixture) {
-				case final Ground g -> g.setExposed(true);
-				case final MineralVein mv -> mv.setExposed(true);
+				case final Ground g -> g.setExposure(ExposureStatus.EXPOSED);
+				case final MineralVein mv -> mv.setExposure(ExposureStatus.EXPOSED);
 				default -> {
 				}
 			}

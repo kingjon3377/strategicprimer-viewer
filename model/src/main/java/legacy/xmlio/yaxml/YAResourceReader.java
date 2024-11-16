@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import legacy.map.fixtures.resources.CultivationStatus;
+import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -127,7 +128,7 @@ import java.util.Set;
 			case "mineral" -> {
 				expectAttributes(element, path, "kind", "mineral", "exposed", "id", "dc", "image");
 				retval = new MineralVein(getParamWithDeprecatedForm(element, path, "kind", "mineral"),
-						getBooleanParameter(element, path, "exposed"),
+						getBooleanParameter(element, path, "exposed") ? ExposureStatus.EXPOSED : ExposureStatus.HIDDEN,
 						getIntegerParameter(element, path, "dc"), idNum);
 			}
 			case "orchard" -> retval = createGrove(element, path, Grove.GroveType.ORCHARD, idNum);
@@ -189,7 +190,7 @@ import java.util.Set;
 			case final MineralVein mv -> {
 				writeTag(ostream, "mineral", indent);
 				writeProperty(ostream, "kind", obj.getKind());
-				writeProperty(ostream, "exposed", Boolean.toString(mv.isExposed()));
+				writeProperty(ostream, "exposed", Boolean.toString(mv.getExposure() == ExposureStatus.EXPOSED));
 				writeProperty(ostream, "dc", obj.getDC());
 			}
 			case final Shrub s -> {
