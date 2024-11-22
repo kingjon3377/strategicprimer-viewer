@@ -167,13 +167,27 @@ import legacy.map.fixtures.towns.Village;
 		if (excludedVillages.containsKey(village)) {
 			return excludedVillages.get(village);
 		} else {
-			final Boolean retval = cli.inputBoolean(
+			final ICLIHelper.BooleanResponse retval = cli.inputBoolean(
 					"Has a newcomer come from %s in the last 7 turns?".formatted(village.getName()));
-			if (Objects.isNull(retval)) {
-				return false;
+			switch (retval) {
+				case YES -> {
+					excludedVillages.put(village, true);
+					return true;
+				}
+				case NO -> {
+					excludedVillages.put(village, false);
+					return false;
+				}
+				case QUIT -> {
+					return false;
+				}
+				case EOF -> {
+					return false; // TODO: Somehow signal EOF to caller to abort further processing
+				}
+				default -> {
+					throw new IllegalStateException("Exhaustive switch wasn't");
+				}
 			}
-			excludedVillages.put(village, retval);
-			return retval;
 		}
 	}
 
@@ -283,11 +297,20 @@ import legacy.map.fixtures.towns.Village;
 			worker.setStats(stats);
 			cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 			cli.println(stats.getPrintable());
-			final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
-			if (Objects.isNull(woolen)) {
-				return null;
+			switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?")) {
+				case YES -> {
+					worker.addEquipment(new Implement("woolen tunic", idf.createID()));
+				}
+				case NO -> {
+					worker.addEquipment(new Implement("linen tunic", idf.createID()));
+				}
+				case QUIT -> {
+					return worker;
+				}
+				case EOF -> {
+					return null;
+				}
 			}
-			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 			maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
 			maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
 			maybeAddEquipment(idf, worker, "leather satchel", 0.75);
@@ -332,11 +355,20 @@ import legacy.map.fixtures.towns.Village;
 				worker.setStats(stats);
 				cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 				cli.println(stats.getPrintable());
-				final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
-				if (Objects.isNull(woolen)) {
-					return null;
+				switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?")) {
+					case YES -> {
+						worker.addEquipment(new Implement("woolen tunic", idf.createID()));
+					}
+					case NO -> {
+						worker.addEquipment(new Implement("linen tunic", idf.createID()));
+					}
+					case QUIT -> {
+						return worker;
+					}
+					case EOF -> {
+						return null;
+					}
 				}
-				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 				maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
 				maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
 				maybeAddEquipment(idf, worker, "leather satchel", 0.75);
@@ -362,22 +394,29 @@ import legacy.map.fixtures.towns.Village;
 							name, village.getRace(), training.getLevel(),
 							training.getName(), village.getName());
 					cli.println(stats.getPrintable());
-					final Boolean acceptance = cli.inputBoolean("Do those stats fit that profile?");
-					if (Objects.isNull(acceptance)) {
+					final ICLIHelper.BooleanResponse acceptance = cli.inputBoolean("Do those stats fit that profile?");
+					if (acceptance == ICLIHelper.BooleanResponse.QUIT || acceptance == ICLIHelper.BooleanResponse.EOF) {
 						return null;
-					} else if (acceptance) {
+					} else if (acceptance == ICLIHelper.BooleanResponse.YES) {
 						worker.setStats(stats);
 						break;
 					}
 				}
-				final Boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?",
-						"mounted-" + training.getName());
-				if (Objects.isNull(hasMount)) {
-					return null;
-				} else if (hasMount) {
-					final String mountKind = cli.inputString("Kind of mount: ");
-					if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) { // TODO: return on EOF?
-						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
+				switch (cli.inputBooleanInSeries("Is the worker mounted?",
+						"mounted-" + training.getName())) {
+					case YES -> {
+						final String mountKind = cli.inputString("Kind of mount: ");
+						if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) { // TODO: return on EOF?
+							worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
+						}
+					}
+					case NO -> { // Do nothing
+					}
+					case QUIT -> {
+						return worker;
+					}
+					case EOF -> {
+						return null;
 					}
 				}
 				final List<String> standardEquipment =
@@ -390,7 +429,7 @@ import legacy.map.fixtures.towns.Village;
 					worker.addEquipment(new Implement(item, idf.createID()));
 				}
 				String equipmentPrompt = "Does the worker have any equipment?";
-				Function<String, @Nullable Boolean> equipmentQuery = cli::inputBooleanInSeries;
+				Function<String, ICLIHelper.BooleanResponse> equipmentQuery = cli::inputBooleanInSeries;
 				final BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
 					if (standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(key))) {
 						worker.addEquipment(new Implement(arg, idf.createID()));
@@ -399,13 +438,21 @@ import legacy.map.fixtures.towns.Village;
 				final Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase)
 						.noneMatch(s -> s.contains(arg));
 				if (stdOmits.test("tunic")) {
-					final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
-							"tunic-" + training.getName());
-					if (Objects.isNull(woolen)) {
-						return null;
+					switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
+							"tunic-" + training.getName())) {
+						case YES -> {
+							addIfStdOmits.accept("tunic", "woolen tunic");
+						}
+						case NO -> {
+							addIfStdOmits.accept("tunic", "linen tunic");
+						}
+						case QUIT -> {
+							return worker;
+						}
+						case EOF -> {
+							return null;
+						}
 					}
-					addIfStdOmits.accept("tunic",
-							woolen ? "woolen tunic" : "linen tunic");
 				}
 				final boolean hasMultipleLevels = training.getLevel() > 1;
 				final TriConsumer<String, String, Double> maybeAdd =
@@ -421,13 +468,21 @@ import legacy.map.fixtures.towns.Village;
 				maybeAdd.accept("satchel", "leather satchel", 0.75);
 				maybeAdd.accept("waterskin", "leather waterskin", 0.75);
 				// TODO: Accept strings until empty line instead of boolean-prompting every time
-				final Function<String, @Nullable Boolean> notInSeries = cli::inputBoolean;
-				while (true) {
-					final Boolean continueFlag = equipmentQuery.apply(equipmentPrompt);
-					if (Objects.isNull(continueFlag)) {
-						return null;
-					} else if (!continueFlag) {
-						break;
+				final Function<String, ICLIHelper.BooleanResponse> notInSeries = cli::inputBoolean;
+				ICLIHelper.BooleanResponse continueFlag = ICLIHelper.BooleanResponse.YES;
+				while (ICLIHelper.BooleanResponse.YES == continueFlag) {
+					switch (equipmentQuery.apply(equipmentPrompt)) {
+						case YES -> { // Leave flag at YES
+						}
+						case NO -> {
+							continueFlag = ICLIHelper.BooleanResponse.NO;
+						}
+						case QUIT -> {
+							return worker;
+						}
+						case EOF -> {
+							return null;
+						}
 					}
 					final String equipment = cli.inputString("Kind of equipment: ");
 					if (Objects.isNull(equipment) || equipment.isEmpty()) {
@@ -638,17 +693,19 @@ import legacy.map.fixtures.towns.Village;
 			} else {
 				break;
 			}
-			final Boolean load = cli.inputBooleanInSeries(
-					"Load names from file and use randomly generated stats?");
-			if (Objects.isNull(load)) {
-				return;
-			} else if (load) {
-				createWorkersFromFile(idf, item);
-			} else {
-				createWorkersForUnit(idf, item);
+			switch (cli.inputBooleanInSeries(
+					"Load names from file and use randomly generated stats?")) {
+				case YES -> {
+					createWorkersFromFile(idf, item);
+				}
+				case NO -> {
+					createWorkersForUnit(idf, item);
+				}
+				case QUIT, EOF -> {
+					return;
+				}
 			}
-			if (!Optional.ofNullable(cli.inputBoolean("Choose another unit? "))
-					.orElse(false)) {
+			if (ICLIHelper.BooleanResponse.YES != cli.inputBoolean("Choose another unit? ")) {
 				break;
 			}
 		}
@@ -677,15 +734,14 @@ import legacy.map.fixtures.towns.Village;
 				} catch (final IOException except) {
 					throw new DriverFailedException(except, "I/O error");
 				}
-				final Boolean continuation = cli.inputBoolean("Add more workers to another unit?");
-				if (Objects.isNull(continuation)) {
+				final ICLIHelper.BooleanResponse continuation = cli.inputBoolean("Add more workers to another unit?");
+				if (ICLIHelper.BooleanResponse.EOF == continuation) {
 					return;
-				} else if (!continuation) {
+				} else if (ICLIHelper.BooleanResponse.YES != continuation) {
 					break;
 				}
 			}
-			if (!Optional.ofNullable(cli.inputBoolean("Choose another player?"))
-					.orElse(false)) {
+			if (ICLIHelper.BooleanResponse.YES != cli.inputBoolean("Choose another player?")) {
 				break;
 			}
 		}

@@ -60,9 +60,19 @@ public final class AdvancementCLI implements CLIDriver {
 			}
 			units.remove(chosen);
 			helper.advanceWorkersInUnit(chosen, experienceConfig);
-			final Boolean continuation = cli.inputBoolean("Choose another unit?");
-			if (!Boolean.TRUE.equals(continuation)) {
-				break;
+			// FIXME: Don't prompt if there aren't any more units
+			switch (cli.inputBoolean("Choose another unit?")) {
+				case YES -> { // Do nothing
+				}
+				case NO -> {
+					return;
+				}
+				case QUIT -> { // TODO: Maybe abort from caller (but not its caller)
+					return;
+				}
+				case EOF -> { // TODO: Signal EOF to callers
+					return;
+				}
 			}
 		}
 	}
@@ -84,9 +94,12 @@ public final class AdvancementCLI implements CLIDriver {
 			advanceWorkers(chosen, options.hasOption("--allow-expert-mentoring") ?
 					AdvancementCLIHelper.ExperienceConfig.ExpertMentoring :
 					AdvancementCLIHelper.ExperienceConfig.SelfTeaching);
-			final Boolean continuation = cli.inputBoolean("Select another player?");
-			if (!Boolean.TRUE.equals(continuation)) {
-				break;
+			switch(cli.inputBoolean("Select another player?")) {
+				case YES -> { // Do nothing
+				}
+				case NO, QUIT, EOF -> {
+					return;
+				}
 			}
 		}
 	}

@@ -148,11 +148,20 @@ public final class MapTradeCLI implements CLIDriver {
 	}
 
 	private void askAbout(final FixtureMatcher matcher, final String key) {
-		final Boolean retval = cli.inputBooleanInSeries("Include %s items?".formatted(matcher.getDescription()), key);
-		if (Objects.isNull(retval)) {
-			throw new IllegalStateException("EOF in fixture-matcher query");
+		switch (cli.inputBooleanInSeries("Include %s items?".formatted(matcher.getDescription()), key)) {
+			case YES -> {
+				matcher.setDisplayed(true);
+			}
+			case NO -> {
+				matcher.setDisplayed(false);
+			}
+			case QUIT -> {
+				// TODO: We'd like to abort this operation, more gently than on EOF
+			}
+			case EOF -> {
+				throw new IllegalStateException("EOF in fixture-matcher query");
+			}
 		}
-		matcher.setDisplayed(retval);
 	}
 
 	private boolean testFixture(final TileFixture fixture) {
@@ -175,19 +184,43 @@ public final class MapTradeCLI implements CLIDriver {
 			throw new IncorrectUsageException(MapTradeFactory.USAGE);
 		}
 		final ILegacyMap second = model.getSubordinateMaps().iterator().next();
-		final Boolean copyPlayers = cli.inputBoolean("Copy players?");
-		if (Objects.isNull(copyPlayers)) {
-			return;
-		} else if (copyPlayers) {
-			model.copyPlayers();
+		switch (cli.inputBoolean("Copy players?")) {
+			case YES -> {
+				model.copyPlayers();
+			}
+			case NO -> {
+				// Do nothing
+			}
+			case QUIT -> {
+				return;
+			}
+			case EOF -> {
+				return;
+			}
 		}
-		final Boolean copyRivers = cli.inputBoolean("Include rivers?");
-		if (Objects.isNull(copyRivers)) {
-			return;
+		final boolean copyRivers;
+		switch (cli.inputBoolean("Include rivers?")) {
+			case YES -> copyRivers = true;
+			case NO -> copyRivers = false;
+			case QUIT -> {
+				return;
+			}
+			case EOF -> {
+				return;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
-		final Boolean copyRoads = cli.inputBoolean("Include roads?");
-		if (Objects.isNull(copyRoads)) {
-			return;
+		final boolean copyRoads;
+		switch (cli.inputBoolean("Include roads?")) {
+			case YES -> copyRoads = true;
+			case NO -> copyRoads = false;
+			case QUIT -> {
+				return;
+			}
+			case EOF -> {
+				return;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		matchers.forEach(this::askAbout);
 		final boolean zeroFixtures =

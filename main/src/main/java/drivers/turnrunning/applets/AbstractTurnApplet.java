@@ -72,14 +72,14 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		}
 		final Point selectedLocation = model.getSelectedUnitLocation();
 		if (selectedLocation.isValid()) {
-			final Boolean confirmation = cli.inputBoolean(
+			return switch (cli.inputBoolean(
 					"%s is %.1f away. Is that right?".formatted(retval,
-							model.getMapDimensions().distance(retval, selectedLocation)));
-			if (Boolean.TRUE.equals(confirmation)) {
-				return retval;
-			} else {
-				return null;
-			}
+							model.getMapDimensions().distance(retval, selectedLocation)))) {
+				case YES -> retval;
+				case NO -> null; // TODO: retry?
+				case QUIT -> null;
+				case EOF -> null; // TODO: signal EOF to callers
+			};
 		} else {
 			cli.println("No base location, so can't estimate distance.");
 			return retval;

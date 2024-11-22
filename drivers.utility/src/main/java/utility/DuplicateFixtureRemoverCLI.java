@@ -140,13 +140,13 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 
 	/**
 	 * If "matching" is not null, ask the user whether to remove
-	 * the fixture, and return the user's answer (null on EOF). If
+	 * the fixture, and return the user's answer. If
 	 * "matching" is null, return false.
 	 */
-	private @Nullable Boolean approveRemoval(final Point location, final TileFixture fixture,
-											 final @Nullable TileFixture matching) {
+	private ICLIHelper.BooleanResponse approveRemoval(final Point location, final TileFixture fixture,
+	                                                  final @Nullable TileFixture matching) {
 		if (Objects.isNull(matching)) {
-			return false;
+			return ICLIHelper.BooleanResponse.EOF;
 		} else {
 			final String fCls = fixture.getClass().getName();
 			final String mCls = matching.getClass().getName();
@@ -173,11 +173,18 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 				final TileFixture fixture = q.getValue2();
 				final Iterable<? extends TileFixture> duplicates = q.getValue3();
 				for (final TileFixture duplicate : duplicates) {
-					final Boolean approval = approveRemoval(location, duplicate, fixture);
-					if (Objects.isNull(approval)) {
-						return;
-					} else if (approval) {
-						deleteCallback.accept(duplicate);
+					switch (approveRemoval(location, duplicate, fixture)) {
+						case YES -> {
+							deleteCallback.accept(duplicate);
+						}
+						case NO -> { // Do nothing
+						}
+						case QUIT -> {
+							return;
+						}
+						case EOF -> {
+							return; // TODO: Somehow signal EOF to callers
+						}
 					}
 				}
 			}
@@ -227,12 +234,19 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 			cli.print(context);
 			cli.printf("The following %s can be combined:%n", plural);
 			fixtures.stream().map(Object::toString).forEach(println);
-			final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
-					memberKind(fixtures.iterator().next()));
-			if (Objects.isNull(resp)) {
-				return;
-			} else if (resp) {
-				callback.run();
+			switch (cli.inputBooleanInSeries("Combine them? ",
+					memberKind(fixtures.iterator().next()))) {
+				case YES -> {
+					callback.run();
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT -> {
+					return;
+				}
+				case EOF -> {
+					return; // TODO: Somehow signal EOF to callers
+				}
 			}
 		}
 	}

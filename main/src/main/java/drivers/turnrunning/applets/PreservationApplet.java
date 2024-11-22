@@ -95,16 +95,23 @@ import static lovelace.util.Decimalize.decimalize;
 				return null;
 			}
 			final BigDecimal subtrahend;
-			final Boolean useAll = cli.inputBoolean("Use all %s?".formatted(item.getQuantity()));
-			if (Objects.isNull(useAll)) {
-				return null;
-			} else if (useAll) {
-				subtrahend = decimalize(item.getQuantity().number());
-			} else {
-				subtrahend = cli.inputDecimal("How many %s to use?".formatted(item.getQuantity().units()));
-				if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {
+			switch (cli.inputBoolean("Use all %s?".formatted(item.getQuantity()))) {
+				case YES -> {
+					subtrahend = decimalize(item.getQuantity().number());
+				}
+				case NO -> {
+					subtrahend = cli.inputDecimal("How many %s to use?".formatted(item.getQuantity().units()));
+					if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {
+						return null;
+					}
+				}
+				case QUIT -> {
+					return builder.toString();
+				}
+				case EOF -> {
 					return null;
 				}
+				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			model.reduceResourceBy(item, subtrahend, unit.owner());
 			// TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any

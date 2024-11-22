@@ -129,30 +129,52 @@ import org.jetbrains.annotations.Nullable;
 		} else {
 			cost = temp;
 		}
-		final Boolean capture = cli.inputBooleanInSeries("Capture any animals?");
-		if (Objects.isNull(capture)) {
-			return null;
-		} else if (capture && Objects.isNull(handleCapture(find))) {
-			return null;
-		}
-		final Boolean processNow = cli.inputBooleanInSeries("Process carcasses now?");
-		if (Objects.isNull(processNow)) {
-			return null;
-		} else if (processNow) {
-			final Integer processingTime = processMeat();
-			if (Objects.isNull(processingTime)) {
+		switch (cli.inputBooleanInSeries("Capture any animals?")) {
+			case YES -> {
+				if (Objects.isNull(handleCapture(find))) {
+					return null;
+				}
+			}
+			case NO -> { // do nothing
+			}
+			case QUIT -> {
+				return null; // TODO: MAX_INT or similar
+			}
+			case EOF -> { // TODO: somehow signal EOF to callers
 				return null;
 			}
-			cost += processingTime;
 		}
-		final Boolean reduce = cli.inputBooleanInSeries("Reduce animal group population of %d?"
-				.formatted(find.getPopulation()));
-		if (Objects.isNull(reduce)) {
-			return null;
-		} else if (reduce) {
-			reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
-		} else {
-			model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
+		switch (cli.inputBooleanInSeries("Process carcasses now?")) {
+			case YES -> {
+				final Integer processingTime = processMeat();
+				if (Objects.isNull(processingTime)) {
+					return null;
+				}
+				cost += processingTime;
+			}
+			case NO -> { // Do nothing
+			}
+			case QUIT -> {
+				return null; // TODO: MAX_INT or similar
+			}
+			case EOF -> { // TODO: signal EOF to callers
+				return null;
+			}
+		}
+		switch (cli.inputBooleanInSeries("Reduce animal group population of %d?"
+				.formatted(find.getPopulation()))) {
+			case YES -> {
+				reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
+			}
+			case NO -> {
+				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
+			}
+			case QUIT -> {
+				return null; // TODO: MAX_INT or similar
+			}
+			case EOF -> { // TODO: signal EOF to callers
+				return null;
+			}
 		}
 		if (!Objects.isNull(model.getSelectedUnit())) {
 			resourceEntry(model.getSelectedUnit().owner());
@@ -162,34 +184,33 @@ import org.jetbrains.annotations.Nullable;
 
 	private @Nullable Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
 			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
-		switch (find) {
+		return switch (find) {
 			case final HuntingModel.NothingFound nothingFound -> {
 				cli.printf("Found nothing for the next %d minutes.%n", NO_RESULT_COST);
-				return NO_RESULT_COST;
+				yield NO_RESULT_COST;
 			}
 			case final AnimalTracks at -> {
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 				cli.printf("Found only tracks or traces from %s for the next %d minutes.%n",
 						at.getKind(), NO_RESULT_COST);
-				return NO_RESULT_COST;
+				yield NO_RESULT_COST;
 			}
-			case final Animal a -> {
-				final Boolean fight = cli.inputBooleanInSeries("Found %s. Should they %s?".formatted(
-						populationDescription(a), verb), a.getKind());
-				if (Objects.isNull(fight)) {
-					return null;
-				} else if (fight) {
-					return handleFight(loc, (Animal) find, time);
-				} else {
+			case final Animal a -> switch (cli.inputBooleanInSeries("Found %s. Should they %s?".formatted(
+					populationDescription(a), verb), a.getKind())) {
+				case YES -> handleFight(loc, (Animal) find, time);
+				case NO -> {
 					model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-					return NO_RESULT_COST;
+					yield NO_RESULT_COST;
 				}
-			}
+				case QUIT -> // TODO: MAX_INT or similar
+						null;
+				case EOF -> null; // TODO: Signal EOF to callers
+			};
 			default -> {
 				LovelaceLogger.error("Unhandled case from hunting model");
-				return null;
+				yield null;
 			}
-		}
+		};
 	}
 
 	// TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?

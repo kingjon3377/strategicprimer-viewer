@@ -24,6 +24,7 @@ import static lovelace.util.NumParsingHelper.parseInt;
 import java.util.List;
 import java.util.function.Function;
 import java.io.IOException;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -135,21 +136,27 @@ public final class CLIHelper implements ICLIHelper {
 	 * Ask the user a yes-or-no question. Returns null on EOF.
 	 */
 	@Override
-	public Boolean inputBoolean(final String prompt, final TrinaryPredicate<String> quitResultFactory) {
+	public BooleanResponse inputBoolean(final String prompt, final Predicate<String> shouldQuit) {
 		while (true) {
 			final String input = Optional.ofNullable(inputString(prompt))
 					.map(String::toLowerCase).orElse(null);
-			if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
-				return null;
-			} else if ("yes".equals(input) || "true".equals(input) ||
-					"y".equals(input) || "t".equals(input)) {
-				return true;
-			} else if ("no".equals(input) || "false".equals(input) ||
-					"n".equals(input) || "f".equals(input)) {
-				return false;
+			if (Objects.isNull(input)) {
+				return BooleanResponse.EOF;
+			} else if (shouldQuit.test(input)) {
+				return BooleanResponse.QUIT;
 			} else {
-				println("Please enter \"yes\", \"no\", \"true\", or \"false\",");
-				println("or the first character of any of those.");
+				switch (input) {
+					case "yes", "true", "y", "t" -> {
+						return BooleanResponse.YES;
+					}
+					case "no", "false", "n", "f" -> {
+						return BooleanResponse.NO;
+					}
+					default -> {
+						println("Please enter \"yes\", \"no\", \"true\", or \"false\",");
+						println("or the first character of any of those.");
+					}
+				}
 			}
 		}
 	}
@@ -280,42 +287,44 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public @Nullable String inputString(final String prompt) {
 		writePrompt(prompt);
-		return Optional.ofNullable(readLine()).map(String::trim).orElse(null);
+		return Optional.ofNullable(readLine()).map(String::trim).orElse(null); // TODO: String::strip instead of ::trim
 	}
 
 	/**
 	 * Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further questions.
 	 */
 	@Override
-	public @Nullable Boolean inputBooleanInSeries(final String prompt, final String key,
-												  final TrinaryPredicate<String> quitResultFactory) {
+	public @Nullable BooleanResponse inputBooleanInSeries(final String prompt, final String key,
+												  final Predicate<String> shouldQuit) {
 		if (seriesState.containsKey(key)) {
 			writePrompt(prompt);
 			final boolean retval = seriesState.get(key);
 			println(retval ? "yes" : "no");
-			return retval;
+			return retval ? BooleanResponse.YES : BooleanResponse.NO;
 		} // else
 		while (true) {
 			final String input = Optional.ofNullable(inputString(prompt))
 					.map(String::toLowerCase).orElse(null);
-			if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
-				return null;
+			if (Objects.isNull(input)) {
+				return BooleanResponse.EOF;
+			} else if ((shouldQuit.test(input))) {
+				return BooleanResponse.QUIT;
 			}
 			//noinspection SwitchStatementWithTooManyBranches
 			switch (input) {
 				case "all", "ya", "ta", "always" -> {
 					seriesState.put(key, true);
-					return true;
+					return BooleanResponse.YES;
 				}
 				case "none", "na", "fa", "never" -> {
 					seriesState.put(key, false);
-					return false;
+					return BooleanResponse.NO;
 				}
 				case "yes", "true", "y", "t" -> {
-					return true;
+					return BooleanResponse.YES;
 				}
 				case "no", "false", "n", "f" -> {
-					return false;
+					return BooleanResponse.NO;
 				}
 				default -> {
 					println("Please enter \"yes\", \"no\", \"true\", or \"false\", the first");

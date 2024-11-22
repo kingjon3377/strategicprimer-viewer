@@ -95,47 +95,60 @@ public final class ConsumptionApplet extends AbstractTurnApplet {
 				return null;
 			}
 			if (food.getQuantity().number().doubleValue() <= remainingConsumption.doubleValue()) {
-				final Boolean resp = cli.inputBooleanInSeries("Consume all of the %s?".formatted(food.getContents()),
-						"consume-all-of");
-				if (Objects.isNull(resp)) {
-					return null;
-				} else if (resp) {
-					model.reduceResourceBy(food, decimalize(food.getQuantity().number()),
-							localUnit.owner());
-					remainingConsumption = remainingConsumption.subtract(
-							decimalize(food.getQuantity().number()));
-					continue;
-				} else { // TODO: extract this as a function?
+				switch (cli.inputBooleanInSeries("Consume all of the %s?".formatted(food.getContents()),
+						"consume-all-of")) {
+					case YES -> {
+						model.reduceResourceBy(food, decimalize(food.getQuantity().number()),
+								localUnit.owner());
+						remainingConsumption = remainingConsumption.subtract(
+								decimalize(food.getQuantity().number()));
+						continue;
+					}
+					case NO -> { // TODO: extract this as a function?
+						final BigDecimal amountToConsume =
+								cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
+						if (Objects.isNull(amountToConsume)) {
+							return null;
+						}
+						final BigDecimal minuend = amountToConsume.min(decimalize(
+								food.getQuantity().number()));
+						model.reduceResourceBy(food, minuend, localUnit.owner());
+						remainingConsumption = remainingConsumption.subtract(minuend);
+						continue;
+					}
+					case QUIT -> {
+						return "";
+					}
+					case EOF -> {
+						return null;
+					}
+				}
+			} // else
+			switch (cli.inputBooleanInSeries("Eat all remaining %s from the %s?".formatted(
+					remainingConsumption, food.getContents()), "all-remaining")) {
+				case YES -> {
+					model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
+					remainingConsumption = decimalize(0);
+				}
+				case NO -> {
+					// TODO: extract this as a function?
 					final BigDecimal amountToConsume =
 							cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
 					if (Objects.isNull(amountToConsume)) {
 						return null;
+					} else if (amountToConsume.compareTo(remainingConsumption) > 0) {
+						model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
+						remainingConsumption = decimalize(0);
+					} else {
+						model.reduceResourceBy(food, amountToConsume, localUnit.owner());
+						remainingConsumption = remainingConsumption.subtract(amountToConsume);
 					}
-					final BigDecimal minuend = amountToConsume.min(decimalize(
-							food.getQuantity().number()));
-					model.reduceResourceBy(food, minuend, localUnit.owner());
-					remainingConsumption = remainingConsumption.subtract(minuend);
-					continue;
 				}
-			} // else
-			final Boolean resp = cli.inputBooleanInSeries("Eat all remaining %s from the %s?".formatted(
-					remainingConsumption, food.getContents()), "all-remaining");
-			if (Objects.isNull(resp)) {
-				return null;
-			} else if (resp) {
-				model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
-				remainingConsumption = decimalize(0);
-			} else { // TODO: extract this as a function?
-				final BigDecimal amountToConsume =
-						cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
-				if (Objects.isNull(amountToConsume)) {
+				case QUIT -> {
+					return "";
+				}
+				case EOF -> {
 					return null;
-				} else if (amountToConsume.compareTo(remainingConsumption) > 0) {
-					model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
-					remainingConsumption = decimalize(0);
-				} else {
-					model.reduceResourceBy(food, amountToConsume, localUnit.owner());
-					remainingConsumption = remainingConsumption.subtract(amountToConsume);
 				}
 			}
 		}

@@ -89,45 +89,58 @@ import org.jetbrains.annotations.Nullable;
 					cli.println(inHours(noResultsTime));
 					noResultsTime = 0;
 				}
-				final Boolean resp = cli.inputBooleanInSeries("Gather from %s%s".formatted(
-						find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
-				if (Objects.isNull(resp)) {
-					return null;
-				} else if (resp) {
-					final IUnit unit = model.getSelectedUnit();
-					if (!Objects.isNull(unit)) {
-						cli.println("Enter details of harvest (any empty string aborts):");
-						while (true) {
-							final IMutableResourcePile resource = resourceAddingHelper.enterResource();
-							if (Objects.isNull(resource)) {
-								break;
-							} else if ("food".equals(resource.getKind())) {
-								resource.setCreated(model.getMap().getCurrentTurn());
-							}
-							if (!model.addExistingResource(resource, unit.owner())) {
-								cli.println("Failed to find a fortress to add to in any map");
+				switch (cli.inputBooleanInSeries("Gather from %s%s".formatted(
+						find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind())) {
+					case YES -> {
+						final IUnit unit = model.getSelectedUnit();
+						if (!Objects.isNull(unit)) {
+							cli.println("Enter details of harvest (any empty string aborts):");
+							while (true) {
+								final IMutableResourcePile resource = resourceAddingHelper.enterResource();
+								if (Objects.isNull(resource)) {
+									break;
+								} else if ("food".equals(resource.getKind())) {
+									resource.setCreated(model.getMap().getCurrentTurn());
+								}
+								if (!model.addExistingResource(resource, unit.owner())) {
+									cli.println("Failed to find a fortress to add to in any map");
+								}
 							}
 						}
-					}
-					final int cost = Optional.ofNullable(cli.inputNumber("Time to gather: "))
-							.orElse((int) Short.MAX_VALUE);
-					time -= cost;
-					// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
-					if (find instanceof final Shrub s && s.getPopulation() > 0) {
-						final Boolean reduce = cli.inputBooleanInSeries("Reduce shrub population here?");
-						if (Objects.isNull(reduce)) {
-							return null;
-						} else if (reduce) {
-							reducePopulation(loc, (Shrub) find, "plants", IFixture.CopyBehavior.ZERO);
-							cli.print(inHours(time));
-							cli.println("remaining.");
-							continue;
+						final int cost = Optional.ofNullable(cli.inputNumber("Time to gather: "))
+								.orElse((int) Short.MAX_VALUE);
+						time -= cost;
+						// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
+						if (find instanceof final Shrub s && s.getPopulation() > 0) {
+							switch (cli.inputBooleanInSeries("Reduce shrub population here?")) {
+								case YES -> {
+									reducePopulation(loc, (Shrub) find, "plants", IFixture.CopyBehavior.ZERO);
+									cli.print(inHours(time));
+									cli.println("remaining.");
+									continue;
+								}
+								case NO -> { // Do nothing
+								}
+								case QUIT -> {
+									return buffer.toString().strip();
+								}
+								case EOF -> {
+									return null;
+								}
+							}
 						}
+						cli.print(inHours(time));
+						cli.println(" remaining.");
 					}
-					cli.print(inHours(time));
-					cli.println(" remaining.");
-				} else {
-					time -= NO_RESULT_COST;
+					case NO -> {
+						time -= NO_RESULT_COST;
+					}
+					case QUIT -> {
+						return buffer.toString().strip();
+					}
+					case EOF -> {
+						return null;
+					}
 				}
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			}

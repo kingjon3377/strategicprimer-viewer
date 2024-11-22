@@ -69,21 +69,27 @@ import static lovelace.util.Decimalize.decimalize;
 			if (Objects.isNull(chosen)) {
 				break;
 			}
-			final Boolean takeAll = cli.inputBooleanInSeries("Take it all?");
-			if (Objects.isNull(takeAll)) {
-				return; // TODO: Find a way to propagate the EOF to caller
-			} else if (takeAll) {
-				model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
-						createID);
-				resources.remove(chosen);
-			} else {
-				final BigDecimal amount = cli.inputDecimal("Amount to take (in %s):"
-						.formatted(chosen.getQuantity().units()));
-				if (!Objects.isNull(amount) && amount.signum() > 0) {
-					model.transferResource(chosen, unit, amount, createID);
-					resources.clear();
-					fortress.stream().filter(isResource).map(resourceCast)
-							.forEach(addResource);
+			switch (cli.inputBooleanInSeries("Take it all?")) {
+				case YES -> {
+					model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
+							createID);
+					resources.remove(chosen);
+				}
+				case NO -> {
+					final BigDecimal amount = cli.inputDecimal("Amount to take (in %s):"
+							.formatted(chosen.getQuantity().units()));
+					if (!Objects.isNull(amount) && amount.signum() > 0) {
+						model.transferResource(chosen, unit, amount, createID);
+						resources.clear();
+						fortress.stream().filter(isResource).map(resourceCast)
+								.forEach(addResource);
+					}
+				}
+				case QUIT -> {
+					return;
+				}
+				case EOF -> {
+					return; // TODO: Find a way to propagate the EOF to caller
 				}
 			}
 		}
@@ -113,11 +119,22 @@ import static lovelace.util.Decimalize.decimalize;
 			if (!Objects.isNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
 					.filter(isFortress).map(fortressCast)
 					.noneMatch(sameOwner)) {
-				final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
-				if (Objects.isNull(pack)) {
-					return null;
-				} else if (pack) {
-					packFood(startingFort, mover);
+				switch (cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?")) {
+					case YES -> {
+						packFood(startingFort, mover);
+					}
+					case NO -> { // Do nothing
+					}
+					case QUIT -> {
+						// We don't want to be asked about MP for any other applets
+						model.removeSelectionChangeListener(explorationCLI);
+						return buffer.toString();
+					}
+					case EOF -> {
+						// We don't want to be asked about MP for any other applets
+						model.removeSelectionChangeListener(explorationCLI);
+						return null;
+					}
 				}
 			}
 			final String addendum = cli.inputMultilineString("Add to results:");

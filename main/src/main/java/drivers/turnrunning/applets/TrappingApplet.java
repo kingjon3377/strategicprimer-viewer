@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -51,30 +52,48 @@ import org.jetbrains.annotations.Nullable;
 			return null;
 		}
 		cost = num;
-		final Boolean live = cli.inputBooleanInSeries("Is an animal captured live?");
-		if (Objects.isNull(live)) {
-			return null;
-		} else if (live && Objects.isNull(handleCapture(item))) {
-			return null;
-		}
-		final Boolean process = cli.inputBooleanInSeries("Handle processing now?");
-		if (Objects.isNull(process)) {
-			return null;
-		} else if (process) {
-			final Integer processingTime = processMeat();
-			if (Objects.isNull(processingTime)) {
+		switch (cli.inputBooleanInSeries("Is an animal captured live?")) {
+			case YES -> {
+				if (Objects.isNull(handleCapture(item))) {
+					return null;
+				}
+			}
+			case NO -> { // Do nothing
+			}
+			case QUIT -> {
+				return cost;
+			}
+			case EOF -> {
 				return null;
 			}
-			cost += processingTime;
 		}
-		final Boolean reduce = cli.inputBooleanInSeries("Reduce animal group population of %d?"
-				.formatted(item.getPopulation()));
-		if (Objects.isNull(reduce)) {
-			return null;
-		} else if (reduce) {
-			reducePopulation(loc, item, "animals", IFixture.CopyBehavior.ZERO);
-		} else {
-			model.copyToSubMaps(center, new AnimalTracks(item.getKind()), IFixture.CopyBehavior.KEEP);
+		switch (cli.inputBooleanInSeries("Handle processing now?")) {
+			case YES -> {
+				final Integer processingTime = processMeat();
+				if (Objects.isNull(processingTime)) {
+					return null;
+				}
+				cost += processingTime;
+			}
+			case NO -> { // Do nothing
+			}
+			case QUIT -> {
+				return cost;
+			}
+			case EOF -> {
+				return null;
+			}
+		}
+		switch (cli.inputBooleanInSeries("Reduce animal group population of %d?"
+				.formatted(item.getPopulation()))) {
+			case YES -> reducePopulation(loc, item, "animals", IFixture.CopyBehavior.ZERO);
+			case NO -> model.copyToSubMaps(center, new AnimalTracks(item.getKind()), IFixture.CopyBehavior.KEEP);
+			case QUIT -> {
+				return cost;
+			}
+			case EOF -> {
+				return null;
+			}
 		}
 		if (!Objects.isNull(model.getSelectedUnit())) {
 			resourceEntry(model.getSelectedUnit().owner());
@@ -86,10 +105,34 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
-		final Boolean fishing = cli.inputBooleanInSeries(
-				"Is this a fisherman trapping fish rather than a trapper?");
-		if (Objects.isNull(fishing)) {
-			return ""; // TODO: null, surely?
+		final Function<Point, Iterator<Pair<Point, TileFixture>>> encountersGenerator;
+		final String prompt;
+		final int nothingCost;
+		final int resetCost;
+		final int trapSetCost;
+		switch (cli.inputBooleanInSeries(
+				"Is this a fisherman trapping fish rather than a trapper?")) {
+			case YES -> {
+				encountersGenerator = pt -> huntingModel.fish(pt).iterator();
+				prompt = "What should the fisherman do next?";
+				nothingCost = 5;
+				resetCost = 20;
+				trapSetCost = 30;
+			}
+			case NO -> {
+				encountersGenerator = pt -> huntingModel.hunt(pt).iterator();
+				prompt = "What should the trapper do next?";
+				nothingCost = 10;
+				resetCost = 5;
+				trapSetCost = 45;
+			}
+			case QUIT -> {
+				return "";
+			}
+			case EOF -> {
+				return null;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {
@@ -99,18 +142,7 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(startingTime)) {
 			return ""; // TODO: null, surely?
 		}
-		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters;
-		final String prompt;
-		final int nothingCost;
-		if (fishing) {
-			encounters = huntingModel.fish(center).iterator();
-			prompt = "What should the fisherman do next?";
-			nothingCost = 5;
-		} else {
-			encounters = huntingModel.hunt(center).iterator();
-			prompt = "What should the trapper do next?";
-			nothingCost = 10;
-		}
+		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters = encountersGenerator.apply(center);
 		int time = startingTime;
 		while (time > 0) {
 			final TrapperCommand command = cli.chooseFromList(TRAPPER_COMMANDS, prompt,
@@ -149,23 +181,11 @@ import org.jetbrains.annotations.Nullable;
 						default -> throw new IllegalStateException("Unhandled case from HuntingModel");
 					}
 				}
-				case EasyReset -> {
-					if (fishing) {
-						time -= 20;
-					} else {
-						time -= 5;
-					}
-				}
+				case EasyReset -> time -= resetCost;
 				case Move -> time -= 2;
 
 //			case Quit -> time = 0;
-				case SetTrap -> {
-					if (fishing) {
-						time -= 30;
-					} else {
-						time -= 45;
-					}
-				}
+				case SetTrap -> time -= trapSetCost;
 				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			if (out) {

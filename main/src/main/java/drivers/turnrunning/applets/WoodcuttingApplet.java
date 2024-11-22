@@ -101,46 +101,58 @@ import org.jetbrains.annotations.Nullable;
 		} else {
 			cli.printf(" and %d into the next.%n", totalHours % 100);
 		}
-		final Boolean tCorrect = cli.inputBoolean("Is that correct?");
-		if (Objects.isNull(tCorrect)) {
-			return null;
-		} else if (tCorrect) {
-			builder.append("The %d workers cut down and process %d trees".formatted(workers, treeCount));
-			if (totalHours % 100 != 0) {
-				cli.printf(" and get %d into the next%n", totalHours % 100);
+		switch (cli.inputBoolean("Is that correct?")) {
+			case YES -> {
+				builder.append("The %d workers cut down and process %d trees".formatted(workers, treeCount));
+				if (totalHours % 100 != 0) {
+					cli.printf(" and get %d into the next%n", totalHours % 100);
+				}
 			}
-		} else {
-			final String str = cli.inputMultilineString("Description of trees cut:");
-			if (Objects.isNull(str)) {
-				return null;
-			} else {
-				builder.append(str);
+			case NO -> {
+				final String str = cli.inputMultilineString("Description of trees cut:");
+				if (Objects.isNull(str)) {
+					return null;
+				} else {
+					builder.append(str);
+				}
+				final Integer count = cli.inputNumber("Number of trees cut and processed: ");
+				if (!Objects.isNull(count) && count > 0) {
+					treeCount = count;
+				} else {
+					return null;
+				}
 			}
-			final Integer count = cli.inputNumber("Number of trees cut and processed: ");
-			if (!Objects.isNull(count) && count > 0) {
-				treeCount = count;
-			} else {
+			case QUIT -> {
+				return builder.toString();
+			}
+			case EOF -> {
 				return null;
 			}
 		}
 		int footage = treeCount * CU_FT_PER_TREE;
-		final Boolean fCorrect = cli.inputBoolean("Is %d cubic feet correct?".formatted(footage));
-		if (Objects.isNull(fCorrect)) {
-			return null;
-		} else if (fCorrect) {
-			builder.append(", producing %d cubic feet of wood".formatted(footage));
-		} else {
-			final String str = cli.inputMultilineString("Description of production:");
-			if (Objects.isNull(str)) {
-				return null;
-			} else {
-				builder.append(str);
+		switch (cli.inputBoolean("Is %d cubic feet correct?".formatted(footage))) {
+			case YES -> {
+				builder.append(", producing %d cubic feet of wood".formatted(footage));
 			}
-			final Integer count = cli.inputNumber("Cubic feet production-ready wood: ");
-			if (Objects.isNull(count)) { // TODO: or < 0? But allow 0 to skip adding resource.
+			case NO -> {
+				final String str = cli.inputMultilineString("Description of production:");
+				if (Objects.isNull(str)) {
+					return null;
+				} else {
+					builder.append(str);
+				}
+				final Integer count = cli.inputNumber("Cubic feet production-ready wood: ");
+				if (Objects.isNull(count)) { // TODO: or < 0? But allow 0 to skip adding resource.
+					return null;
+				} else {
+					footage = count;
+				}
+			}
+			case QUIT -> {
+				return builder.toString();
+			}
+			case EOF -> {
 				return null;
-			} else {
-				footage = count;
 			}
 		}
 		if (footage > 0) {
@@ -163,27 +175,33 @@ import org.jetbrains.annotations.Nullable;
 				BigDecimal acres = decimalize(treeCount * 10 / FOREST_ACRES_DIVISOR)
 						.divide(decimalize(100), RoundingMode.HALF_EVEN)
 						.min(decimalize(forest.getAcres()));
-				final Boolean aCorrect = cli.inputBoolean("Is %.2f (of %.2f) cleared correct?".formatted(
+				switch (cli.inputBoolean("Is %.2f (of %.2f) cleared correct?".formatted(
 						acres.doubleValue(),
-						forest.getAcres().doubleValue()));
-				if (Objects.isNull(aCorrect)) {
-					return null;
-				} else if (aCorrect) {
-					// TODO: Make the Decimal constant a static-final field
-					builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
-							acres, acres.multiply(decimalize(SQ_FT_PER_ACRE)).intValue()));
-				} else {
-					final String str = cli.inputMultilineString("Description of cleared land:");
-					if (Objects.isNull(str)) {
-						return null;
-					} else {
-						builder.append(str);
+						forest.getAcres().doubleValue()))) {
+					case YES -> {
+						// TODO: Make the Decimal constant a static-final field
+						builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
+								acres, acres.multiply(decimalize(SQ_FT_PER_ACRE)).intValue()));
 					}
-					final BigDecimal tAcres = cli.inputDecimal("Acres cleared:");
-					if (Objects.isNull(tAcres)) {
+					case NO -> {
+						final String str = cli.inputMultilineString("Description of cleared land:");
+						if (Objects.isNull(str)) {
+							return null;
+						} else {
+							builder.append(str);
+						}
+						final BigDecimal tAcres = cli.inputDecimal("Acres cleared:");
+						if (Objects.isNull(tAcres)) {
+							return null;
+						} else {
+							acres = tAcres;
+						}
+					}
+					case QUIT -> {
+						return builder.toString();
+					}
+					case EOF -> {
 						return null;
-					} else {
-						acres = tAcres;
 					}
 				}
 				reduceExtent(loc, forest, acres);

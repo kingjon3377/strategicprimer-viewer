@@ -27,12 +27,16 @@ import org.jetbrains.annotations.Nullable;
 
 	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (final FoodType type : values()) {
-			final Boolean resp = cli.inputBooleanInSeries("Is \"%s\" %s?".formatted(foodKind, type),
-					foodKind + type);
-			if (Objects.isNull(resp)) {
-				return null; // EOF
-			} else if (resp) {
-				return type;
+			switch (cli.inputBooleanInSeries("Is \"%s\" %s?".formatted(foodKind, type),
+					foodKind + type)) {
+				case YES -> {
+					return type;
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT, EOF -> {
+					return null;
+				}
 			}
 		}
 		return null;
@@ -103,33 +107,49 @@ import org.jetbrains.annotations.Nullable;
 		} else if (!Objects.isNull(keepsFor) && age < keepsFor) {
 			return false;
 		} else if (!Objects.isNull(keepsForIfCool) && age < keepsForIfCool) {
-			final Boolean resp = cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool");
-			if (Objects.isNull(resp)) {
-				return null;
-			} else if (resp) {
-				return false;
+			switch (cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool")) {
+				case YES -> {
+					return false;
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT, EOF -> {
+					return null;
+				}
 			}
 		}
 		if (!Objects.isNull(keepsForRefrigerated) && age < keepsForRefrigerated) {
-			final Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
-					pile.getKind() + string + "refrig");
-			if (Objects.isNull(resp)) {
-				return null;
-			} else if (resp) {
-				return false;
+			switch (cli.inputBooleanInSeries("Was this kept refrigerated?",
+					pile.getKind() + string + "refrig")) {
+				case YES -> {
+					return false;
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT, EOF -> {
+					return null;
+				}
 			}
 		}
 		if (!Objects.isNull(keepsForFrozen) && age < keepsForFrozen) {
-			final Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
-					pile.getKind() + string + "frozen");
-			if (Objects.isNull(resp)) {
-				return null;
-			} else if (resp) {
-				return false;
+			switch (cli.inputBooleanInSeries("Was this kept frozen?",
+					pile.getKind() + string + "frozen")) {
+				case YES -> {
+					return false;
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT, EOF -> {
+					return null;
+				}
 			}
 		}
 		if (Stream.of(keepsFor, keepsForIfCool, keepsForRefrigerated, keepsForFrozen).allMatch(Objects::isNull)) {
-			return cli.inputBooleanInSeries("Has this spoiled?", pile.getKind() + string + "other");
+			return switch (cli.inputBooleanInSeries("Has this spoiled?", pile.getKind() + string + "other")) {
+				case YES -> true;
+				case NO -> false;
+				case QUIT, EOF -> null;
+			};
 		} else {
 			return true;
 		}

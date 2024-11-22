@@ -185,15 +185,22 @@ public final class QueryCLI implements ReadOnlyDriver {
 	private void printDistance() {
 		final Point start = cli.inputPoint("Starting point:\t");
 		final Point end = cli.inputPoint("Destination:\t");
-		final Boolean groundTravel = cli.inputBoolean("Compute ground travel distance?");
-		if (!Objects.isNull(start) && !Objects.isNull(end) && !Objects.isNull(groundTravel)) {
-			if (groundTravel) {
-				cli.print("Distance (on the ground, in MP cost):\t");
-				cli.println(Integer.toString(pather.getTravelDistance(start, end)
-						.getValue0()));
-			} else {
-				cli.print("Distance (as the crow files, in tiles):\t");
-				cli.printf("%.0f%n", distance(start, end, map.getDimensions()));
+		final ICLIHelper.BooleanResponse groundTravel = cli.inputBoolean("Compute ground travel distance?");
+		if (!Objects.isNull(start) && !Objects.isNull(end)) {
+			switch (groundTravel) {
+				case YES -> {
+					cli.print("Distance (on the ground, in MP cost):\t");
+					cli.println(Integer.toString(pather.getTravelDistance(start, end)
+							.getValue0()));
+				}
+				case NO -> {
+					cli.print("Distance (as the crow files, in tiles):\t");
+					cli.printf("%.0f%n", distance(start, end, map.getDimensions()));
+				}
+				case QUIT -> {
+				}
+				case EOF -> {
+				}
 			}
 		}
 	}

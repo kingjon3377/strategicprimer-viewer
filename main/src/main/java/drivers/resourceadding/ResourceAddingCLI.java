@@ -55,7 +55,8 @@ import legacy.map.fixtures.Implement;
 	public void startDriver() {
 		final List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
 				false).collect(Collectors.toList());
-		while (!players.isEmpty()) {
+		boolean continuation = true;
+		while (continuation && !players.isEmpty()) {
 			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Players in the maps:",
 					"No players found.", "Player to add resources for: ",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
@@ -63,40 +64,65 @@ import legacy.map.fixtures.Implement;
 				break;
 			}
 			players.remove(chosen);
-			while (true) {
-				final Boolean resp = cli.inputBoolean("Keep going? ");
-				if (Objects.isNull(resp)) {
-					return;
-				} else if (!resp) {
-					break;
-				}
-				final Boolean res = cli.inputBooleanInSeries("Enter a (quantified) resource? ");
-				if (Objects.isNull(res)) {
-					return;
-				} else if (res) {
-					final IResourcePile resource = helper.enterResource();
-					if (Objects.isNull(resource)) {
+			boolean moreResources = true;
+			while (moreResources) {
+				switch (cli.inputBooleanInSeries("Enter a (quantified) resource? ")) {
+					case YES -> {
+						final IResourcePile resource = helper.enterResource();
+						if (Objects.isNull(resource)) {
+							return;
+						}
+						model.addResource(resource, chosen);
+						continue;
+					}
+					case NO -> { // Do nothing
+					}
+					case QUIT -> {
 						return;
 					}
-					model.addResource(resource, chosen);
-					continue;
+					case EOF -> {
+						return; // TODO: Somehow signal EOF to callers
+					}
 				}
-				final Boolean eq = cli.inputBooleanInSeries("Enter equipment etc.? ");
-				if (Objects.isNull(eq)) {
-					return;
-				} else if (eq) {
-					final Implement implement = helper.enterImplement();
-					if (Objects.isNull(implement)) {
+				switch (cli.inputBooleanInSeries("Enter equipment etc.? ")) {
+					case YES -> {
+						final Implement implement = helper.enterImplement();
+						if (Objects.isNull(implement)) {
+							return;
+						}
+						model.addResource(implement, chosen);
+					}
+					case NO -> { // Do nothing
+					}
+					case QUIT -> {
 						return;
 					}
-					model.addResource(implement, chosen);
+					case EOF -> {
+						return; // TODO: Somehow signal EOF to callers
+					}
+				}
+				switch(cli.inputBoolean("Keep going? ")) {
+					case YES -> { // Do nothing
+					}
+					case NO -> moreResources = false;
+					case QUIT -> {
+						return;
+					}
+					case EOF -> {
+						return; // TODO: Somehow signal EOF to callers
+					}
 				}
 			}
-			final Boolean continuation = cli.inputBoolean("Choose another player?");
-			if (Objects.isNull(continuation)) {
-				return;
-			} else if (!continuation) {
-				break;
+			switch (cli.inputBoolean("Choose another player?")) {
+				case YES -> { // Do nothing
+				}
+				case NO -> continuation = false;
+				case QUIT -> {
+					return;
+				}
+				case EOF -> {
+					return; // TODO: Somehow signal EOF to callers
+				}
 			}
 		}
 	}

@@ -84,18 +84,25 @@ public final class ResourceAddingCLIHelper {
 	private @Nullable String getResourceUnits(final String resource) {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			final Boolean resp = cli.inputBooleanInSeries(
+			switch (cli.inputBooleanInSeries(
 					"Is %s the correct unit for %s".formatted(unit, resource),
-					"correct;%s;%s".formatted(unit, resource));
-			if (Objects.isNull(resp)) {
-				return null;
-			} else if (resp) {
-				return unit;
+					"correct;%s;%s".formatted(unit, resource))) {
+				case YES -> {
+					return unit;
+				}
+				case NO -> { // Do nothing
+				}
+				case QUIT -> {
+					return null;
+				}
+				case EOF -> { // TODO: Somehow signal EOF to callers
+					return null;
+				}
 			}
 		}
 		// N.B. ICLIHelper trims input before returning
 		final String retval = cli.inputString("Unit to use for %s: ".formatted(resource));
-		if (Objects.isNull(retval) || retval.isEmpty()) {
+		if (Objects.isNull(retval) || retval.isEmpty()) { // TODO: isBlank()
 			return null;
 		}
 		resourceUnits.put(resource, retval);
@@ -118,20 +125,26 @@ public final class ResourceAddingCLIHelper {
 		if (Objects.isNull(units)) {
 			return null;
 		}
-		final Boolean usePrefix = cli.inputBooleanInSeries(
-				"Qualify the particular resource with a prefix?", "prefix" + origContents);
-		if (Objects.isNull(usePrefix)) {
-			return null;
-		}
 		final String contents;
-		if (usePrefix) {
-			final String prefix = cli.inputString("Prefix to use: ");
-			if (Objects.isNull(prefix) || prefix.isEmpty()) {
+		switch (cli.inputBooleanInSeries(
+				"Qualify the particular resource with a prefix?", "prefix" + origContents)) {
+			case EOF -> { // TODO: Somehow signal EOF to callers
 				return null;
 			}
-			contents = prefix + " " + origContents;
-		} else {
-			contents = origContents;
+			case QUIT -> {
+				return null;
+			}
+			case YES -> {
+				final String prefix = cli.inputString("Prefix to use: ");
+				if (Objects.isNull(prefix) || prefix.isEmpty()) {
+					return null;
+				}
+				contents = prefix + " " + origContents;
+			}
+			case NO -> {
+				contents = origContents;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		final BigDecimal quantity = cli.inputDecimal("Quantity in %s?".formatted(units));
 		if (Objects.isNull(quantity) || quantity.signum() < 0) {
@@ -139,16 +152,19 @@ public final class ResourceAddingCLIHelper {
 		}
 		final IMutableResourcePile retval = new ResourcePileImpl(idf.createID(), kind, contents,
 				new LegacyQuantity(quantity, units));
-		final Boolean setCreated = cli.inputBooleanInSeries("Set created date?", "created" + origContents);
-		if (Objects.isNull(setCreated)) {
-			return null;
-		} else if (setCreated) {
-			final Integer created = cli.inputNumber("Turn created?");
-			if (!Objects.isNull(created)) {
-				retval.setCreated(created);
-			} // IIRC we allow "EOF" here to mitigate mistyped 'y' on previous prompt
-		}
-		return retval;
+		return switch (cli.inputBooleanInSeries("Set created date?", "created" + origContents)) {
+			case YES -> {
+				final Integer created = cli.inputNumber("Turn created?");
+				// IIRC we allow "EOF" here to mitigate mistyped 'y' on previous prompt
+				if (!Objects.isNull(created)) {
+					retval.setCreated(created);
+				}
+				yield retval;
+			}
+			case NO -> retval;
+			case QUIT -> retval; // TODO: Somehow signal to callers
+			case EOF -> retval; // TODO: Somehow signal EOF to callers
+		};
 	}
 
 	/**
@@ -160,19 +176,23 @@ public final class ResourceAddingCLIHelper {
 		if (Objects.isNull(kind) || kind.isEmpty()) {
 			return null;
 		}
-		final Boolean multiple = cli.inputBooleanInSeries("Add more than one? ");
-		if (Objects.isNull(multiple)) {
-			return null;
-		}
 		final int count;
-		if (multiple) {
-			final Integer temp = cli.inputNumber("Number to add: ");
-			if (Objects.isNull(temp)) {
+		switch (cli.inputBooleanInSeries("Add more than one? ")) {
+			case YES -> {
+				final Integer temp = cli.inputNumber("Number to add: ");
+				if (Objects.isNull(temp)) {
+					return null;
+				}
+				count = temp;
+			}
+			case NO -> count = 1;
+			case QUIT -> {
 				return null;
 			}
-			count = temp;
-		} else {
-			count = 1;
+			case EOF -> { // TODO: Somehow signal EOF to callers
+				return null;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		if (count >= 1) {
 			return new Implement(kind, idf.createID(), count);

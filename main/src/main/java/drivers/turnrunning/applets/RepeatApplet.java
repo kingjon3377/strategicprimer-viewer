@@ -71,13 +71,19 @@ import org.jetbrains.annotations.Nullable;
 			} else {
 				continue;
 			}
-			final Boolean cont = cli.inputBoolean("Create more results for this unit?");
-			if (Objects.isNull(cont)) {
-				return null;
-			} else if (!cont) {
-				break;
+			switch (cli.inputBoolean("Create more results for this unit?")) {
+				case YES -> { // Do nothing
+				}
+				case NO -> {
+					return buffer.toString();
+				}
+				case QUIT -> {
+					return buffer.toString();
+				}
+				case EOF -> {
+					return null;
+				}
 			}
 		}
-		return buffer.toString();
 	}
 }

@@ -270,14 +270,18 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 
 			if (Direction.Nowhere == direction) {
 				while (true) {
-					final Boolean response = cli.inputBooleanInSeries("Take an action here?");
-					if (Objects.isNull(response)) {
-						// EOF
+					final ICLIHelper.BooleanResponse response = cli.inputBooleanInSeries("Take an action here?");
+					if (ICLIHelper.BooleanResponse.EOF == response) {
+						// TODO: Somehoww propagate the EOF to callers
 						runningTotal = BigDecimal.ZERO;
 						return;
-					} else if (!response) {
+					} else if (ICLIHelper.BooleanResponse.QUIT == response) {
+						runningTotal = BigDecimal.ZERO;
+						return;
+					} else if (ICLIHelper.BooleanResponse.NO == response) {
 						break;
 					}
+					// TODO: Should this be BooleanResponse instead of Boolean?
 					final Either<SimpleApplet, Boolean> choice = Objects.requireNonNull(appletChooser.chooseApplet());
 					final SimpleApplet applet = choice.fromLeft().orElse(null);
 					final Boolean bool = choice.fromRight().orElse(null);

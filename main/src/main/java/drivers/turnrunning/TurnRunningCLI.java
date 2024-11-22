@@ -166,10 +166,22 @@ import org.jetbrains.annotations.Nullable;
 			return "";
 		}
 		buffer.append(addendum);
-		final Boolean runAdvancement = cli.inputBooleanInSeries("Run advancement for this unit now?");
-		if (Boolean.TRUE.equals(runAdvancement)) {
-			final Boolean expertMentoring = cli.inputBooleanInSeries("Account for expert mentoring?");
-			if (!Objects.isNull(expertMentoring)) {
+		switch (cli.inputBooleanInSeries("Run advancement for this unit now?")) {
+			case YES -> {
+				final AdvancementCLIHelper.ExperienceConfig experienceConfig;
+				switch (cli.inputBooleanInSeries("Account for expert mentoring?")) {
+					case YES ->
+							experienceConfig = AdvancementCLIHelper.ExperienceConfig.ExpertMentoring;
+					case NO ->
+							experienceConfig = AdvancementCLIHelper.ExperienceConfig.SelfTeaching;
+					case QUIT -> {
+						return buffer.toString().strip();
+					}
+					case EOF -> {
+						return null;
+					}
+					default -> throw new IllegalStateException("Exhaustive switch wasn't");
+				}
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
 				final LevelGainListener levelListener =
@@ -185,39 +197,63 @@ import org.jetbrains.annotations.Nullable;
 							buffer.append(". ");
 						};
 				advancementCLI.addLevelGainListener(levelListener);
-				advancementCLI.advanceWorkersInUnit(unit, expertMentoring ?
-						AdvancementCLIHelper.ExperienceConfig.ExpertMentoring :
-						AdvancementCLIHelper.ExperienceConfig.SelfTeaching);
+				advancementCLI.advanceWorkersInUnit(unit, experienceConfig);
 				advancementCLI.removeLevelGainListener(levelListener);
 			}
-		}
-		final Boolean runFoodConsumptionAnswer = cli.inputBooleanInSeries(
-				"Run food consumption for this unit now?");
-		if (Boolean.TRUE.equals(runFoodConsumptionAnswer)) {
-			consumptionApplet.setTurn(turn);
-			consumptionApplet.setUnit(unit);
-			final String consumptionResults = consumptionApplet.run();
-			if (Objects.isNull(consumptionResults)) {
-				return "";
+			case NO -> { // Do nothing
 			}
-			if (!consumptionResults.isEmpty()) {
-				buffer.append(System.lineSeparator());
-				buffer.append(System.lineSeparator());
-				buffer.append(consumptionResults);
-				buffer.append(System.lineSeparator());
+			case QUIT -> {
+				return buffer.toString().strip();
+			}
+			case EOF -> {
+				return null;
 			}
 		}
-		final Boolean runFoodSpoilageAnswer = cli.inputBooleanInSeries(
-				"Run food spoilage and report it under this unit's results?");
-		if (Boolean.TRUE.equals(runFoodSpoilageAnswer)) {
-			spoilageApplet.setOwner(unit.owner());
-			spoilageApplet.setTurn(turn);
-			final String foodSpoilageResult = spoilageApplet.run();
-			if (!Objects.isNull(foodSpoilageResult)) {
-				buffer.append(System.lineSeparator());
-				buffer.append(System.lineSeparator());
-				buffer.append(foodSpoilageResult);
-				buffer.append(System.lineSeparator());
+		switch (cli.inputBooleanInSeries(
+				"Run food consumption for this unit now?")) {
+			case YES -> {
+				consumptionApplet.setTurn(turn);
+				consumptionApplet.setUnit(unit);
+				final String consumptionResults = consumptionApplet.run();
+				if (Objects.isNull(consumptionResults)) {
+					return "";
+				}
+				if (!consumptionResults.isEmpty()) {
+					buffer.append(System.lineSeparator());
+					buffer.append(System.lineSeparator());
+					buffer.append(consumptionResults);
+					buffer.append(System.lineSeparator());
+				}
+			}
+			case NO -> { // Do nothing
+			}
+			case QUIT -> {
+				return buffer.toString().strip();
+			}
+			case EOF -> {
+				return null;
+			}
+		}
+		switch (cli.inputBooleanInSeries(
+				"Run food spoilage and report it under this unit's results?")) {
+			case YES -> {
+				spoilageApplet.setOwner(unit.owner());
+				spoilageApplet.setTurn(turn);
+				final String foodSpoilageResult = spoilageApplet.run();
+				if (!Objects.isNull(foodSpoilageResult)) {
+					buffer.append(System.lineSeparator());
+					buffer.append(System.lineSeparator());
+					buffer.append(foodSpoilageResult);
+					buffer.append(System.lineSeparator());
+				}
+			}
+			case NO -> { // Do nothing
+			}
+			case QUIT -> {
+				return buffer.toString().strip();
+			}
+			case EOF -> {
+				return null;
 			}
 		}
 		return buffer.toString().strip();

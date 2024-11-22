@@ -50,11 +50,20 @@ import org.jetbrains.annotations.Nullable;
 	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		boolean another;
-		final Boolean respOne = cli.inputBooleanInSeries("Add resources to the map?", name + "resources");
-		if (Objects.isNull(respOne)) {
-			return null;
-		} else {
-			another = respOne;
+		switch (cli.inputBooleanInSeries("Add resources to the map?", name + "resources")) {
+			case YES -> {
+				another = true;
+			}
+			case NO -> {
+				another = false;
+			}
+			case QUIT -> {
+				return null;
+			}
+			case EOF -> { // TODO: Somehow signal EOF to callers
+				return null;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		while (another) {
 			final IResourcePile resource = raHelper.enterResource();
@@ -68,11 +77,20 @@ import org.jetbrains.annotations.Nullable;
 			} else {
 				cli.println("Failed to find a fortress to add to in any map");
 			}
-			final Boolean respTwo = cli.inputBoolean("Add another resource?");
-			if (Objects.isNull(respTwo)) {
-				return null;
-			} else {
-				another = respTwo;
+			switch (cli.inputBoolean("Add another resource?")) {
+				case YES -> {
+					another = true;
+				}
+				case NO -> {
+					another = false;
+				}
+				case QUIT -> {
+					return builder.toString();
+				}
+				case EOF -> { // TODO: Somehow signal EOF to callers
+					return null;
+				}
+				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 		}
 		final String addendum = cli.inputMultilineString("Description of results:");

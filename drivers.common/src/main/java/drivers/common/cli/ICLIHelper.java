@@ -9,6 +9,8 @@ import legacy.map.Point;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * An interface for the "CLI helper," which encapsulates input and output
@@ -87,20 +89,33 @@ public interface ICLIHelper {
 	 */
 	@Nullable String inputMultilineString(String prompt);
 
-	// TODO: Why not just use Predicate?
-	@FunctionalInterface
-	interface TrinaryPredicate<Input> {
-		@Nullable Boolean test(Input item);
-	}
-
-	/**
-	 * Returns null if "input" is "quit" and false otherwise.
-	 */
-	default @Nullable Boolean defaultQuitHandler(final String input) {
-		if ("quit".equals(input)) {
-			return null;
-		} else {
-			return false;
+	enum BooleanResponse {
+		YES, NO, QUIT, EOF;
+		public BooleanResponse and(final BooleanResponse next) {
+			return switch (this) {
+				case YES -> next;
+				case NO -> switch (next) {
+					case YES, NO -> NO;
+					case QUIT, EOF -> next;
+				};
+				case QUIT -> switch (next) {
+					case EOF -> EOF;
+					case YES, NO, QUIT -> QUIT;
+				};
+				case EOF -> EOF;
+			};
+		}
+		public BooleanResponse and(final Supplier<BooleanResponse> next) {
+			return switch (this) {
+				case YES -> next.get();
+				case NO -> switch (next.get()) {
+					case YES, NO -> NO;
+					case QUIT -> QUIT;
+					case EOF -> EOF;
+				};
+				case QUIT -> QUIT;
+				case EOF -> EOF;
+			};
 		}
 	}
 
@@ -111,55 +126,49 @@ public interface ICLIHelper {
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
-	default @Nullable Boolean inputBoolean(final String prompt) {
-		return inputBoolean(prompt, this::defaultQuitHandler);
+	default BooleanResponse inputBoolean(final String prompt) {
+		return inputBoolean(prompt, "quit"::equals);
 	}
 
 	/**
-	 * Ask the user a yes-or-no question. Returns null on EOF or if
-	 * {@link #defaultQuitHandler} returns null.
+	 * Ask the user a yes-or-no question.
 	 *
-	 * @param prompt            The prompt to prompt the user with.
-	 * @param quitResultFactory A function to produce null (to return) if
-	 *                          an input should short-circuit the loop.
+	 * @param prompt     The prompt to prompt the user with.
+	 * @param shouldQuit A function to determine if an input should short-circuit the loop.
 	 */
-	@Nullable Boolean inputBoolean(String prompt, TrinaryPredicate<String> quitResultFactory);
+	BooleanResponse inputBoolean(String prompt, Predicate<String> shouldQuit);
 
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
-	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if {@link #defaultQuitHandler} returns null.
+	 * all" to forestall further similar questions.
 	 *
 	 * @param prompt The prompt to prompt the user with, also used as the key to identify similar questions.
 	 */
-	default @Nullable Boolean inputBooleanInSeries(final String prompt) {
+	default BooleanResponse inputBooleanInSeries(final String prompt) {
 		return inputBooleanInSeries(prompt, prompt);
 	}
 
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
-	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if {@link #defaultQuitHandler} returns null.
+	 * all" to forestall further similar questions.
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 * @param key    The prompt (or other key) to compare to others to define "similar" questions.
 	 */
-	default @Nullable Boolean inputBooleanInSeries(final String prompt, final String key) {
-		return inputBooleanInSeries(prompt, key, this::defaultQuitHandler);
+	default BooleanResponse inputBooleanInSeries(final String prompt, final String key) {
+		return inputBooleanInSeries(prompt, key, "quit"::equals);
 	}
 
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
-	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if "quitResultFactory" returns null.
+	 * all" to forestall further similar questions.
 	 *
-	 * @param prompt            The prompt to prompt the user with.
-	 * @param key               The prompt (or other key) to compare to others to define "similar" questions.
-	 * @param quitResultFactory A function to produce null (to return) if
-	 *                          an input should short-circuit the loop.
+	 * @param prompt     The prompt to prompt the user with.
+	 * @param key        The prompt (or other key) to compare to others to define "similar" questions.
+	 * @param shouldQuit A function to determine if an input should short-circuit the loop.
 	 */
-	@Nullable Boolean inputBooleanInSeries(String prompt, String key,
-										   TrinaryPredicate<String> quitResultFactory);
+	BooleanResponse inputBooleanInSeries(String prompt, String key,
+										   Predicate<String> shouldQuit);
 
 	/**
 	 * Print a newline.

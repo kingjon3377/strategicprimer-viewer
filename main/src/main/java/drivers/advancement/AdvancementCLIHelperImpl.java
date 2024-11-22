@@ -126,9 +126,18 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 				fireLevelEvent(worker.getName(), job.getName(), skill.getName(), skill.getLevel() - oldLevel,
 						skill.getLevel());
 			}
-			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
-			if (!Boolean.TRUE.equals(continuation)) {
-				break;
+			switch (cli.inputBoolean("Select another Skill in this Job?")) {
+				case YES -> { // Do nothing
+				}
+				case NO -> {
+					return;
+				}
+				case QUIT -> { // TODO: Abort out of caller (but not its caller)?
+					return;
+				}
+				case EOF -> { // TODO: Signal EOF to callers
+					return;
+				}
 			}
 		}
 	}
@@ -165,9 +174,12 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 				break;
 			}
 			advanceJob(worker, job, experienceConfig);
-			final Boolean continuation = cli.inputBoolean("Select another Job in this worker?");
-			if (!Boolean.TRUE.equals(continuation)) {
-				break;
+			switch (cli.inputBoolean("Select another Job in this worker?")) {
+				case YES -> { // Do nothing
+				}
+				case NO, QUIT, EOF -> {
+					return;
+				}
 			}
 		}
 	}
@@ -190,13 +202,18 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 			if (skill.getLevel() != oldLevel) {
 				if (oldLevel == 0 && "miscellaneous".equals(skill.getName())) {
-					final Boolean chooseAnother = cli.inputBooleanInSeries(
+					switch (cli.inputBooleanInSeries(
 							"%s gained %d level(s) in miscellaneous, choose another skill?".formatted(
-							worker.getName(), skill.getLevel()), "misc-replacement");
-					if (Objects.isNull(chooseAnother)) {
-						return;
-					} else if (!chooseAnother) {
-						continue;
+							worker.getName(), skill.getLevel()), "misc-replacement")) {
+						case YES -> { // Do nothing
+						}
+						case NO -> {
+							continue;
+						}
+						case QUIT, EOF -> {
+							// TODO: Somehow signal EOF to callers
+							return;
+						}
 					}
 					final Collection<String> gains = new ArrayList<>();
 					for (int i = 0; i < skill.getLevel(); i++) {
@@ -278,9 +295,12 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			}
 			advanceWorkersInSkill(jobName, skill, unit.stream().filter(isWorker).map(workerCast)
 					.toArray(IWorker[]::new));
-			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
-			if (!Boolean.TRUE.equals(continuation)) {
-				break;
+			switch (cli.inputBoolean("Select another Skill in this Job?")) {
+				case YES -> { // Do nothing
+				}
+				case NO, QUIT, EOF -> {
+					return;
+				}
 			}
 		}
 	}
@@ -292,61 +312,71 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	public void advanceWorkersInUnit(final IUnit unit, final ExperienceConfig experienceConfig) {
 		final List<IWorker> workers = unit.stream()
 				.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
-		final Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final Predicate<Object> isWorker = IWorker.class::isInstance;
 		final Function<Object, IWorker> workerCast = IWorker.class::cast;
-		if (Objects.isNull(individualAdvancement)) {
-			return;
-		} else if (individualAdvancement) {
-			while (!workers.isEmpty()) {
-				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:",
-						"No unadvanced workers remain.", "Chosen worker: ",
-						ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-				if (Objects.isNull(chosen)) {
-					break;
-				}
-				workers.remove(chosen);
-				advanceSingleWorker(chosen, experienceConfig);
-				final Boolean continuation = cli.inputBoolean("Choose another worker?");
-				if (!Boolean.TRUE.equals(continuation)) {
-					break;
-				}
-			}
-		} else {
-			if (workers.isEmpty()) {
-				cli.println("No workers in unit.");
+		switch (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
+			case EOF, QUIT -> {
+				// TODO: Signal EOF to callers
 				return;
 			}
-			final List<String> jobs = unit.stream().filter(isWorker).map(workerCast)
-					.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
-					.collect(Collectors.toList());
-			final Consumer<String> addJob = jobs::add;
-			while (true) {
-				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:",
-						"No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-				final String job;
-				if (!Objects.isNull(chosen.getValue1())) {
-					job = chosen.getValue1();
-				} else if (chosen.getValue0() > jobs.size()) {
-					break;
-				} else {
-					final String jobName = cli.inputString("Name of new Job: ");
-					if (Objects.isNull(jobName)) {
-						return;
+			case YES -> {
+				while (!workers.isEmpty()) {
+					final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:",
+							"No unadvanced workers remain.", "Chosen worker: ",
+							ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+					if (Objects.isNull(chosen)) {
+						break;
 					}
-					for (final IWorker worker : workers) {
-						model.addJobToWorker(worker, jobName);
+					workers.remove(chosen);
+					advanceSingleWorker(chosen, experienceConfig);
+					switch (cli.inputBoolean("Choose another worker?")) {
+						case YES -> { // Do nothing
+						}
+						case NO, QUIT, EOF -> {
+							return;
+						}
 					}
-					jobs.clear();
-					job = jobName;
-					unit.stream().filter(isWorker).map(workerCast)
-							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName)
-							.distinct().forEach(addJob);
 				}
-				advanceWorkersInJob(job, unit);
-				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");
-				if (!Boolean.TRUE.equals(continuation)) {
-					break;
+			}
+			case NO -> {
+				if (workers.isEmpty()) {
+					cli.println("No workers in unit.");
+					return;
+				}
+				final List<String> jobs = unit.stream().filter(isWorker).map(workerCast)
+						.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
+						.collect(Collectors.toList());
+				final Consumer<String> addJob = jobs::add;
+				while (true) {
+					final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:",
+							"No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+					final String job;
+					if (!Objects.isNull(chosen.getValue1())) {
+						job = chosen.getValue1();
+					} else if (chosen.getValue0() > jobs.size()) {
+						break;
+					} else {
+						final String jobName = cli.inputString("Name of new Job: ");
+						if (Objects.isNull(jobName)) {
+							return;
+						}
+						for (final IWorker worker : workers) {
+							model.addJobToWorker(worker, jobName);
+						}
+						jobs.clear();
+						job = jobName;
+						unit.stream().filter(isWorker).map(workerCast)
+								.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName)
+								.distinct().forEach(addJob);
+					}
+					advanceWorkersInJob(job, unit);
+					switch (cli.inputBoolean("Select another Job in these workers?")) {
+						case YES -> { // Do nothing
+						}
+						case NO, QUIT, EOF -> {
+							return;
+						}
+					}
 				}
 			}
 		}

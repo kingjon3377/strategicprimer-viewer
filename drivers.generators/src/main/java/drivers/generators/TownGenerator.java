@@ -335,11 +335,18 @@ import java.math.BigDecimal;
 								"That would be an ocean resource worked by a town on land.");
 					}
 					// TODO: Handle EOF (here and elsewhere) more gracefully
-					final @Nullable Boolean confirmation = cli.inputBooleanInSeries("Are you sure? ", "aquatic");
-					if (Objects.isNull(confirmation)) {
-						return null;
-					} else if (!confirmation) {
-						continue;
+					switch (cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
+						case YES -> { // Do nothing
+						}
+						case NO -> {
+							continue;
+						}
+						case QUIT -> {
+							return retval;
+						}
+						case EOF -> {
+							return null;
+						}
 					}
 				}
 				if (isUnclaimedField(map, field)) {
@@ -621,13 +628,20 @@ import java.math.BigDecimal;
 					cli.println("No matching town found.");
 				} else {
 					final CommunityStats stats;
-					final @Nullable Boolean enterResult = cli.inputBooleanInSeries("Enter stats rather than generating them? ");
-					if (Objects.isNull(enterResult)) {
-						return;
-					} else if (enterResult) {
-						stats = enterStats(cli, idf, model.getMap(), location, town);
-					} else {
-						stats = generateStats(idf, location, town, model.getMap());
+					switch (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
+						case YES -> {
+							stats = enterStats(cli, idf, model.getMap(), location, town);
+						}
+						case NO -> {
+							stats = generateStats(idf, location, town, model.getMap());
+						}
+						case QUIT -> {
+							return;
+						}
+						case EOF -> {
+							return;
+						}
+						default -> throw new IllegalStateException("Exhaustive switch wasn't");
 					}
 					if (Objects.isNull(stats)) {
 						return;
@@ -653,15 +667,22 @@ import java.math.BigDecimal;
 			final ITownFixture town = pair.getValue1();
 			cli.printf("Next town is %s, at %s.%n", town.getShortDescription(), location);
 			final CommunityStats stats;
-			final Boolean resp = cli.inputBooleanInSeries(
-					"Enter stats rather than generating them?", "enter stats");
 			try {
-				if (Objects.isNull(resp)) {
-					break;
-				} else if (resp) {
-					stats = enterStats(cli, idf, model.getMap(), location, town);
-				} else {
-					stats = generateStats(idf, location, town, model.getMap());
+				switch (cli.inputBooleanInSeries(
+						"Enter stats rather than generating them?", "enter stats")) {
+					case YES -> {
+						stats = enterStats(cli, idf, model.getMap(), location, town);
+					}
+					case NO -> {
+						stats = generateStats(idf, location, town, model.getMap());
+					}
+					case QUIT -> {
+						return;
+					}
+					case EOF -> {
+						return;
+					}
+					default -> throw new IllegalStateException("Exhaustive switch wasn't");
 				}
 				if (Objects.isNull(stats)) {
 					return;

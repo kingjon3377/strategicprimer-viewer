@@ -156,13 +156,16 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(enabledConditions)) {
 			final List<Condition<? extends TileFixture>> temp = new ArrayList<>();
 			for (final Condition<? extends TileFixture> condition : conditions) {
-				final Boolean resp = cli.inputBooleanInSeries("Stop for instructions " +
-						condition.getConfigExplanation() + "?");
-				if (Objects.isNull(resp)) {
-					// EOF, so we want to abort the caller's loop
-					return true;
-				} else if (resp) {
-					temp.add(condition);
+				switch (cli.inputBooleanInSeries("Stop for instructions " +
+						condition.getConfigExplanation() + "?")) {
+					case YES -> temp.add(condition);
+					case NO -> { // Do nothing
+					}
+					case QUIT, EOF -> {
+						// We want to abort at least the caller's loop.
+						// TODO: Somehow signal EOF (in that case) to callers
+						return true;
+					}
 				}
 			}
 			localEnabledConditions = Collections.unmodifiableList(temp);

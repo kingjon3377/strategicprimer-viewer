@@ -86,12 +86,19 @@ import query.SmallAnimalModel;
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final HerdModel herdModel = chooseHerdModel(kind);
 			if (Objects.isNull(herdModel)) {
-				final Boolean cont = cli.inputBoolean("Skip?"); // TODO: Inline
-				if (Boolean.TRUE.equals(cont)) {
-					continue;
-				} else {
-					cli.println("Aborting ...");
-					return null;
+				switch (cli.inputBoolean("Skip?")) {
+					case YES -> {
+						continue;
+					}
+					case NO -> { // Do nothing
+					}
+					case QUIT -> {
+						cli.println("Aborting ...");
+						return null;
+					}
+					case EOF -> { // TODO: somehow signal EOF to callers
+						return null;
+					}
 				}
 			}
 			herdModels.put(kind, herdModel);
@@ -114,12 +121,17 @@ import query.SmallAnimalModel;
 				list.add(group);
 				continue;
 			}
-			final Boolean cont = cli.inputBoolean("No model for %s. Really skip?".formatted(group.getKind()));
-			if (!Boolean.TRUE.equals(cont)) {
-				cli.println("Aborting ...");
-				return null;
+			switch (cli.inputBoolean("No model for %s. Really skip?".formatted(group.getKind()))) {
+				case NO, QUIT -> {
+					cli.println("Aborting ...");
+					return null;
+				}
+				case EOF -> {
+					return null;
+				}
+				case YES -> { // Do nothing
+				}
 			}
-
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).count();
 		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:"
@@ -158,18 +170,25 @@ import query.SmallAnimalModel;
 			switch (herdModel) {
 				case final PoultryModel pm -> {
 					resourceProduced = combinedAnimal.getKind() + " eggs";
-					final Boolean cleaningDay = cli.inputBoolean(
-							"Is this the one turn in every %d to clean up after birds?"
-									.formatted(pm.getExtraChoresInterval() + 1));
 					addLineToOrders.accept("Gathering %s eggs took the %d workers %d min".formatted(
 							combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
 					minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
-					if (Objects.isNull(cleaningDay)) {
-						return null;
-					} else if (cleaningDay) {
-						addLineToOrders.accept("Cleaning up after them takes %.1f hours."
-								.formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / MINS_PER_HOUR));
-						minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
+					switch (cli.inputBoolean(
+							"Is this the one turn in every %d to clean up after birds?"
+									.formatted(pm.getExtraChoresInterval() + 1))) {
+						case YES -> {
+							addLineToOrders.accept("Cleaning up after them takes %.1f hours."
+									.formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / MINS_PER_HOUR));
+							minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
+						}
+						case NO -> { // Do nothing
+						}
+						case QUIT -> {
+							return buffer.toString().strip();
+						}
+						case EOF -> {
+							return null;
+						}
 					}
 				}
 				case final MammalModel mammalModel -> {
@@ -201,15 +220,22 @@ import query.SmallAnimalModel;
 					}
 					minutesSpent += baseCost;
 					addLineToOrders.accept(" took the %d workers %d min.".formatted(workerCount, baseCost));
-					final Boolean extra = cli.inputBoolean(
+					switch (cli.inputBoolean(
 							"Is this the one turn in every %d to clean up after the animals?"
-									.formatted(smm.getExtraChoresInterval() + 1));
-					if (Objects.isNull(extra)) {
-						return null;
-					} else {
-						addLineToOrders.accept("Cleaning up after them took %d minutes."
-								.formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
-						minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
+									.formatted(smm.getExtraChoresInterval() + 1))) {
+						case YES -> {
+							addLineToOrders.accept("Cleaning up after them took %d minutes."
+									.formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+							minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
+						}
+						case NO -> { // Do nothing
+						}
+						case QUIT -> {
+							return buffer.toString().strip();
+						}
+						case EOF -> {
+							return null;
+						}
 					}
 					continue;
 				}
