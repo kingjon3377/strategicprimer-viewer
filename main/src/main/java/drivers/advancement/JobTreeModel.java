@@ -51,7 +51,7 @@ import java.util.stream.StreamSupport;
 	private @Nullable IWorker localRoot = null;
 
 	// TODO: refactor so this can be provided in the constructor, if possible; it's currently provided by the tree, to
-	//  whose constructor this tree-model object is passed
+	//  whose constructor this tree-model object is passed, which is *not* the "tree" object live when this is created.
 	private TreeSelectionModel selectionModel = new DefaultTreeSelectionModel();
 
 	public void setSelectionModel(final TreeSelectionModel selectionModel) {
