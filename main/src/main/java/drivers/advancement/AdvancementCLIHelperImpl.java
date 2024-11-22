@@ -61,8 +61,6 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 
 	/**
 	 * Let the user add hours to a Skill or Skills in a Job.
-	 *
-	 * TODO: Avoid Boolean parameters
 	 */
 	private void advanceJob(final IWorker worker, final IJob job, final ExperienceConfig experienceConfig) {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
