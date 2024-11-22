@@ -1,14 +1,16 @@
 package drivers.advancement;
 
+import lovelace.util.TreeAutoExpander;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 
 import javax.swing.JTree;
 
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		setShowsRootHandles(true);
 		selectionModel.addTreeSelectionListener(this::handleTreeSelectionChange);
 
-		jtModel.addTreeModelListener(new ExpansionModelListener());
+		jtModel.addTreeModelListener(new TreeAutoExpander(super::expandPath, super::getRowCount, super::expandRow));
 	}
 
 	private final Collection<SkillSelectionListener> listeners = new ArrayList<>();
@@ -78,34 +80,6 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		for (final SkillSelectionListener listener : listeners) {
 			listener.selectJob(job);
 			listener.selectSkill(retval);
-		}
-	}
-
-	private final class ExpansionModelListener implements TreeModelListener {
-		@Override
-		public void treeStructureChanged(final TreeModelEvent event) {
-			Optional.ofNullable(event.getTreePath())
-					.map(TreePath::getParentPath)
-					.ifPresent(JobsTree.this::expandPath);
-			// FIXME: Why this loop here?
-			for (int i = 0; i < getRowCount(); i++) {
-				expandRow(i);
-			}
-		}
-
-		@Override
-		public void treeNodesRemoved(final TreeModelEvent event) {
-		}
-
-		@Override
-		public void treeNodesInserted(final TreeModelEvent event) {
-			expandPath(event.getTreePath());
-			expandPath(event.getTreePath().getParentPath());
-		}
-
-		@Override
-		public void treeNodesChanged(final TreeModelEvent event) {
-			expandPath(event.getTreePath().getParentPath());
 		}
 	}
 }
