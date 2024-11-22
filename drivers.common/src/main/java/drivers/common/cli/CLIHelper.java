@@ -32,7 +32,8 @@ import java.util.OptionalInt;
  * A helper class to help command-line apps interact with the user,
  * encapsulating input and output streams.
  *
- * TODO: Port to use java.io.Console more directly and extensively?
+ * We deliberately do *not* use a Console object for our interfaces because it breaks down
+ * when stdin, stdout, or stderr is not a tty.
  */
 public final class CLIHelper implements ICLIHelper {
 	@FunctionalInterface
@@ -49,7 +50,7 @@ public final class CLIHelper implements ICLIHelper {
 	private static IOSource stdin() {
 		final Console console = System.console();
 		if (Objects.isNull(console)) {
-			// TODO: Does this consume the newline character?
+			// N.B. this *should* consume, but not return, the trailing newline.
 			return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine;
 		} else {
 			return console::readLine;
