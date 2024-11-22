@@ -49,7 +49,7 @@ public final class RenamePlayerChangeset implements Changeset {
 	}
 
 	private @NotNull Player alteredCopy(final Player oldPlayer) {
-		return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
+		return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.portrait());
 	}
 
 	@Override

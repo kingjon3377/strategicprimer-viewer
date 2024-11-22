@@ -12,11 +12,6 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 	int playerId();
 
 	/**
-	 * Whether this is the current player. TODO: Make this a property of the collection, not the player
-	 */
-	boolean current();
-
-	/**
 	 * The (code) name of the player
 	 */
 	String name();

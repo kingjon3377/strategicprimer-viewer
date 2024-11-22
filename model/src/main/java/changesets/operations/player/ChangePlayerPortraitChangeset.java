@@ -50,7 +50,7 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 	}
 
 	private @NotNull Player alteredCopy(final Player oldPlayer) {
-		return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.country(), oldPlayer.current(), newPortrait);
+		return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.country(), newPortrait);
 	}
 
 	@Override

@@ -21,6 +21,12 @@ public interface IMutablePlayerCollection extends IPlayerCollection {
 	void remove(int obj);
 
 	/**
+	 * Set what player should be marked as current. Precondition: A player with the same ID exists in the collection.
+	 * @param player A player with the same ID as the one to be marked as current.
+	 */
+	void setCurrentPlayer(Player player);
+
+	/**
 	 * Clone the collection.
 	 */
 	@Override

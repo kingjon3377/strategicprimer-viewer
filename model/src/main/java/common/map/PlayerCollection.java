@@ -1,5 +1,7 @@
 package common.map;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,7 +25,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * The player for "independent" fixtures.
 	 */
-	private Player independentPlayer = new PlayerImpl(-1, "Independent", "", false, "");
+	private Player independentPlayer = new PlayerImpl(-1, "Independent", "", "");
 
 	/**
 	 * Get a player by ID number.
@@ -33,9 +35,9 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		if (players.containsKey(player)) {
 			return players.get(player);
 		} else if (player < 0) {
-			return new PlayerImpl(player, "", "", false, "");
+			return new PlayerImpl(player, "", "", "");
 		} else {
-			final Player retval = new PlayerImpl(player, "", "", false, "");
+			final Player retval = new PlayerImpl(player, "", "", "");
 			players.put(player, retval);
 			return retval;
 		}
@@ -59,7 +61,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		return "Player collection with %d players".formatted(players.size());
 	}
 
-	private Player currentPlayer = new PlayerImpl(-1, "", "", true, "");
+	private Player currentPlayer = new PlayerImpl(-1, "", "", "");
 
 	/**
 	 * Add a player to the collection.
@@ -71,9 +73,6 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		}
 		if (player.isIndependent()) {
 			independentPlayer = player;
-		}
-		if (player.current() && (currentPlayer.playerId() < 0 || !currentPlayer.current())) {
-			currentPlayer = player;
 		}
 		players.put(player.playerId(), player);
 	}
@@ -98,10 +97,10 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			final Player removed = players.remove(obj);
 			if (independentPlayer.equals(removed)) {
 				independentPlayer = players.values().stream().filter(Player::isIndependent)
-						.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", false, ""));
+						.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", ""));
 			}
 			if (currentPlayer.equals(removed)) {
-				currentPlayer = new PlayerImpl(-1, "", "", true, "");
+				currentPlayer = new PlayerImpl(-1, "", "", "");
 			}
 		}
 	}
@@ -133,6 +132,20 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
+	 * Set what player should be marked as current. Precondition: A player with the same ID exists in the collection.
+	 * @param player A player with the same ID as the one to be marked as current.
+	 */
+	@Override
+	public void setCurrentPlayer(final Player player) {
+		final @Nullable Player actual = players.get(player.playerId());
+		if (Objects.isNull(actual)) {
+			throw new IllegalArgumentException("Player does not exist in the collection");
+		} else {
+			currentPlayer = actual;
+		}
+	}
+
+	/**
 	 * An object is equal iff it is a player collection with exactly the
 	 * players we have.
 	 */
@@ -141,8 +154,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		final Predicate<String> unknownName = str -> str.isEmpty() || "unknown".equalsIgnoreCase(str);
 		if (obj == this) {
 			return true;
-		} else if (obj instanceof final IPlayerCollection pc) {
-			// TODO: What about "current player" flag?
+		} else if (obj instanceof final IPlayerCollection pc && currentPlayer.equals(pc.getCurrentPlayer())) {
 			for (final Player player : pc) {
 				if (players.containsValue(player)) {
 					continue;
