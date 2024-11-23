@@ -92,7 +92,7 @@ public interface MapContentsReader {
 	 */
 	default boolean getBooleanValue(final Map<String, Object> dbRow, final String key) throws SQLException {
 		if (!dbRow.containsKey(key)) {
-			throw new SQLException("Expected key not in the schema"); // TODO: specify which key
+			throw new SQLException("Expected key '%s' not in the schema".formatted(key));
 		}
 		final Object val = dbRow.get(key);
 		switch (val) {
