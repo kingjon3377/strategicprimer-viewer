@@ -38,7 +38,8 @@ public interface ICLIHelper {
 	 * Have the user choose an item from a list. Returns the index and the
 	 * item, if any. On EOF, returns an index of -2.
 	 *
-	 * TODO: rename back to chooseFromList()?
+	 * We can't rename this back to chooseFromList() because this has the same signature under erasure as the
+	 * HasName-based method.
 	 *
 	 * @param items       The list of items to choose from.
 	 * @param description The description to give before printing the list.
