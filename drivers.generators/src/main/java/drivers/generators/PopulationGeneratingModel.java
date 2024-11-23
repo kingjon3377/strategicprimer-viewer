@@ -323,7 +323,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 	 *
 	 * TODO: Move to IMultiMapModel?
 	 */
-	public Iterable<Player> getPlayerChoices() {
+	public Collection<Player> getPlayerChoices() {
 		Set<Player> set = null;
 		for (final ILegacyMap map : getAllMaps()) {
 			if (Objects.isNull(set)) {

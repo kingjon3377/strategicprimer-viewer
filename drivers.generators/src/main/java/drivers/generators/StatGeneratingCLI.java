@@ -703,9 +703,7 @@ import legacy.map.fixtures.towns.Village;
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
 				model.streamAllMaps().toArray(ILegacyMap[]::new));
 		currentTurn = model.getMap().getCurrentTurn();
-		// TODO: Make getPlayerChoices() return Collection
-		final List<Player> players = StreamSupport.stream(
-				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
+		final List<Player> players = new ArrayList<>(model.getPlayerChoices());
 		while (!players.isEmpty()) {
 			final Player chosen = cli.chooseFromList((List<? extends Player>) players,
 					"Which player owns the new worker(s)?",
