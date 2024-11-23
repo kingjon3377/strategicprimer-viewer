@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import java.awt.Toolkit;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
@@ -144,13 +145,14 @@ import java.util.stream.StreamSupport;
 	/**
 	 * Add a new Job or Skill.
 	 *
-	 * TODO: Show error dialog, or at least visual-beep, instead of just logging warnings?
+	 * TODO: Show error dialog instead of just logging warnings?
 	 */
 	@Override
 	public void add(final String category, final String addendum) {
 		final IWorker currentRoot = localRoot;
 		if ("job".equals(category)) {
 			if (Objects.isNull(currentRoot)) {
+				Toolkit.getDefaultToolkit().beep();
 				LovelaceLogger.warning("Can't add a new Job when no worker selected");
 			} else if (StreamSupport.stream(currentRoot.spliterator(), false).map(IJob::getName)
 					.anyMatch(addendum::equals)) {
@@ -162,6 +164,7 @@ import java.util.stream.StreamSupport;
 							.filter(j -> addendum.equals(j.getName()))
 							.findAny().orElse(null);
 					if (Objects.isNull(job)) {
+						Toolkit.getDefaultToolkit().beep();
 						LovelaceLogger.warning("Worker not found");
 					} else {
 						fireTreeNodesInserted(new TreeModelEvent(this,
@@ -169,6 +172,7 @@ import java.util.stream.StreamSupport;
 								new Object[]{job}));
 					}
 				} else {
+					Toolkit.getDefaultToolkit().beep();
 					LovelaceLogger.warning("Worker not found");
 				}
 			}
@@ -183,6 +187,7 @@ import java.util.stream.StreamSupport;
 							.filter(s -> addendum.equals(s.getName()))
 							.findAny().orElse(null);
 					if (Objects.isNull(skill)) {
+						Toolkit.getDefaultToolkit().beep();
 						LovelaceLogger.warning(
 								"Worker not found, or skill-adding otherwise failed");
 					} else {
@@ -191,12 +196,15 @@ import java.util.stream.StreamSupport;
 								new int[]{childCount}, new Object[]{skill}));
 					}
 				} else {
+					Toolkit.getDefaultToolkit().beep();
 					LovelaceLogger.warning("Worker not found, or skill-adding otherwise failed");
 				}
 			} else {
+				Toolkit.getDefaultToolkit().beep();
 				LovelaceLogger.warning("Can't add a new Skill when no Job selected");
 			}
 		} else {
+			Toolkit.getDefaultToolkit().beep();
 			LovelaceLogger.warning("Don't know how to add a new '%s", category);
 		}
 	}
