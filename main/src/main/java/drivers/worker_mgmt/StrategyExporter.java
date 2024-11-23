@@ -78,9 +78,9 @@ import legacy.map.fixtures.mobile.worker.IJob;
 							.collect(Collectors.toList());
 				}
 				boolean needsClosingParen = false;
-				if (Objects.nonNull(((IWorker) member).getMount())) {
+				if (Objects.nonNull(worker.getMount())) {
 					writer.write(" (on ");
-					writer.write(((IWorker) member).getMount().getKind());
+					writer.write(worker.getMount().getKind());
 					needsClosingParen = true;
 				}
 				if (!jobs.isEmpty()) {
