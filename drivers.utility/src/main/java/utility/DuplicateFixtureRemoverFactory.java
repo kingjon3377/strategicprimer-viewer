@@ -7,7 +7,6 @@ import drivers.common.cli.ICLIHelper;
 import drivers.common.SPOptions;
 import drivers.common.DriverUsage;
 import drivers.common.IDriverUsage;
-import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
 import drivers.common.DriverFactory;
 import drivers.common.ModelDriverFactory;
@@ -23,7 +22,7 @@ import java.util.EnumSet;
  * deal with it).
  */
 @AutoService(DriverFactory.class)
-public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory {
+public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory<UtilityDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "remove-duplicates",
 			ParamCount.AtLeastOne, "Remove duplicate fixtures",
 			"Remove duplicate fixtures (identical except ID# and on the same tile) from a map.",
@@ -35,16 +34,12 @@ public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory 
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final UtilityDriverModel udm) {
-			return new DuplicateFixtureRemoverCLI(cli, udm);
-		} else {
-			return createDriver(cli, options, new UtilityDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
+		return new DuplicateFixtureRemoverCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
 	}
 }

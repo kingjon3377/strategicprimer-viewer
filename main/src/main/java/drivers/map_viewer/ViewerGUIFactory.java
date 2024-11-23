@@ -29,7 +29,7 @@ import lovelace.util.LovelaceLogger;
  * A factory for a driver to start the map viewer.
  */
 @AutoService({DriverFactory.class, ViewerDriverFactory.class})
-public final class ViewerGUIFactory implements ViewerDriverFactory {
+public final class ViewerGUIFactory implements ViewerDriverFactory<IViewerModel> { // TODO: Move type param up a level?
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "view-map",
 			ParamCount.One, "Map viewer", "Look at the map visually. This is probably the app you want.",
 			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN", "--background=image.png",
@@ -53,7 +53,7 @@ public final class ViewerGUIFactory implements ViewerDriverFactory {
 	}
 
 	@Override
-	public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+	public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IViewerModel model) {
 		return ViewerGUI.createDriver(cli, options, model);
 	}
 

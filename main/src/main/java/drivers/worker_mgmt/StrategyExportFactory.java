@@ -22,7 +22,7 @@ import java.util.EnumSet;
  * A factory for a command-line program to export a proto-strategy for a player from orders in a map.
  */
 @AutoService(DriverFactory.class)
-public final class StrategyExportFactory implements ModelDriverFactory {
+public final class StrategyExportFactory implements ModelDriverFactory<IWorkerModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "export-strategy",
 			ParamCount.One, "Export a proto-strategy", "Create a proto-strategy using orders stored in the map",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN", "--print-empty",
@@ -34,16 +34,12 @@ public final class StrategyExportFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IWorkerModel wm) {
-			return new StrategyExportCLI(options, wm);
-		} else {
-			return createDriver(cli, options, new WorkerModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
+		return new StrategyExportCLI(options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
 	}
 }

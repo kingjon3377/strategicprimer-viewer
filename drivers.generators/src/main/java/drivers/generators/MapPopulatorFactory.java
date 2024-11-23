@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for a driver to add some kind of fixture to suitable tiles throughout the map.
  */
 @AutoService(DriverFactory.class)
-public final class MapPopulatorFactory implements ModelDriverFactory {
+public final class MapPopulatorFactory implements ModelDriverFactory<IPopulatorDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "populate-map",
 			ParamCount.One, "Add missing fixtures to a map",
 			"Add specified kinds of fixtures to suitable points throughout a map",
@@ -33,12 +33,8 @@ public final class MapPopulatorFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IPopulatorDriverModel pdm) {
-			return new MapPopulatorDriver(cli, options, pdm);
-		} else {
-			return createDriver(cli, options, new PopulatorDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IPopulatorDriverModel model) {
+		return new MapPopulatorDriver(cli, options, model);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ import java.util.EnumSet;
  * inclusion in a player's results.
  */
 @AutoService(DriverFactory.class)
-public final class WorkerPrinterFactory implements ModelDriverFactory {
+public final class WorkerPrinterFactory implements ModelDriverFactory<IExplorationModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "print-stats",
 			ParamCount.One, "Print stats of workers", "Print stats of workers in a unit in a brief list.",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
@@ -36,16 +36,12 @@ public final class WorkerPrinterFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IExplorationModel em) {
-			return new WorkerPrintCLI(cli, em);
-		} else {
-			return createDriver(cli, options, new ExplorationModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
+		return new WorkerPrintCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
 	}
 }

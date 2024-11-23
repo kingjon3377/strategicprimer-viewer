@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for the turn-running CLI app.
  */
 @AutoService(DriverFactory.class)
-public final class TurnRunningCLIFactory implements ModelDriverFactory {
+public final class TurnRunningCLIFactory implements ModelDriverFactory<ITurnRunningModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "run-turn",
 			ParamCount.AtLeastTwo, "Run a turn's orders and enter results",
 			"Run a player's orders for a turn and enter results.", EnumSet.of(IDriverUsage.DriverMode.CommandLine),
@@ -33,16 +33,12 @@ public final class TurnRunningCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final ITurnRunningModel trm) {
-			return new TurnRunningCLI(cli, trm);
-		} else {
-			return createDriver(cli, options, new TurnRunningModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final ITurnRunningModel model) {
+		return new TurnRunningCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public ITurnRunningModel createModel(final IMutableLegacyMap map) {
 		return new TurnRunningModel(map);
 	}
 }

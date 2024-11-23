@@ -24,7 +24,7 @@ import java.util.EnumSet;
  * A factory for the worker-advancement CLI driver.
  */
 @AutoService(DriverFactory.class)
-public final class AdvancementCLIFactory implements ModelDriverFactory {
+public final class AdvancementCLIFactory implements ModelDriverFactory<IWorkerModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "advance",
 			ParamCount.AtLeastOne, "View a player's workers and manage their advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
@@ -36,16 +36,12 @@ public final class AdvancementCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IWorkerModel wm) {
-			return new AdvancementCLI(cli, options, wm);
-		} else {
-			return createDriver(cli, options, new WorkerModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
+		return new AdvancementCLI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
 	}
 }

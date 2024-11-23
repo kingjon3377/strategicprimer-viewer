@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * copies or under version control!
  */
 @AutoService(DriverFactory.class)
-public final class SubtractFactory implements ModelDriverFactory {
+public final class SubtractFactory implements ModelDriverFactory<UtilityDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "subtract",
 			ParamCount.AtLeastTwo, "Subtract one map from another",
 			"Remove everything known in a base map from submaps for easier comparison",
@@ -33,16 +33,12 @@ public final class SubtractFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final UtilityDriverModel udm) {
-			return new SubtractCLI(udm);
-		} else {
-			return createDriver(cli, options, new UtilityDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
+		return new SubtractCLI(model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
 	}
 }

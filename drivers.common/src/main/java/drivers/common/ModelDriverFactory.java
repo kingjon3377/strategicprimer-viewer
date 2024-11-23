@@ -7,10 +7,8 @@ import drivers.common.cli.ICLIHelper;
  * An interface for factories for drivers that operate on map models rather
  * than directly on files, which must also produce the models that their
  * drivers consume.
- *
- * TODO: Take a more specific model interface as a type parameter.
  */
-public interface ModelDriverFactory extends DriverFactory {
+public interface ModelDriverFactory<ModelType extends IDriverModel> extends DriverFactory {
 	/**
 	 * Create a new instance of the driver with the given environment.
 	 *
@@ -19,7 +17,7 @@ public interface ModelDriverFactory extends DriverFactory {
 	 * @param options Any (already-processed) command-line options
 	 * @param model   The driver-model that should be used by the app.
 	 */
-	ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model);
+	ModelDriver createDriver(ICLIHelper cli, SPOptions options, ModelType model);
 
 	/**
 	 * Create a model to pass to {@link #createDriver}. The 'modified' flag is set to false.

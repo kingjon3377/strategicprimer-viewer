@@ -24,7 +24,7 @@ import java.util.EnumSet;
  * A factory for a driver to check whether player maps are subsets of the main map.
  */
 @AutoService(DriverFactory.class)
-public final class SubsetCLIFactory implements ModelDriverFactory {
+public final class SubsetCLIFactory implements ModelDriverFactory<IMultiMapModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "subset",
 			ParamCount.AtLeastTwo, "Check players' maps against master",
 			"""
@@ -38,18 +38,16 @@ public final class SubsetCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IMultiMapModel mmm && mmm.streamSubordinateMaps().anyMatch(x -> true)) {
-			return new SubsetCLI(cli, mmm);
-		} else {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IMultiMapModel model) {
+		if (model.streamSubordinateMaps().noneMatch(x -> true)) {
 			cli.println("Subset checking does nothing with no subordinate maps");
 			LovelaceLogger.warning("Subset checking does nothing with no subordinate maps");
-			return createDriver(cli, options, new SimpleMultiMapModel(model));
 		}
+		return new SubsetCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IMultiMapModel createModel(final IMutableLegacyMap map) {
 		return new SimpleMultiMapModel(map);
 	}
 }

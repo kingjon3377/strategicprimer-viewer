@@ -11,7 +11,7 @@ import java.util.List;
  * the app-chooser can detect such drivers before instantiating them (which
  * requires deserializing possibly-large maps).
  */
-public interface GUIDriverFactory extends ModelDriverFactory {
+public interface GUIDriverFactory<ModelType extends IDriverModel> extends ModelDriverFactory<ModelType> {
 	/**
 	 * Create a new instance of the driver with the given environment.
 	 *
@@ -21,7 +21,7 @@ public interface GUIDriverFactory extends ModelDriverFactory {
 	 * @param model   The driver-model that should be used by the app.
 	 */
 	@Override
-	GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model);
+	GUIDriver createDriver(ICLIHelper cli, SPOptions options, ModelType model);
 
 	/**
 	 * Ask the user to choose a file or files. (Or do something equivalent to produce a filename.)

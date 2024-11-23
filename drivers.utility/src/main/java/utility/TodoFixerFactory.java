@@ -23,7 +23,7 @@ import java.util.EnumSet;
  * races.
  */
 @AutoService(DriverFactory.class)
-public final class TodoFixerFactory implements ModelDriverFactory {
+public final class TodoFixerFactory implements ModelDriverFactory<UtilityDriverModel> {
 	private final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-todos",
 			ParamCount.AtLeastOne, "Fix TODOs in maps",
 			"Fix TODOs in unit kinds and aquatic villages with non-aquatic races",
@@ -35,16 +35,12 @@ public final class TodoFixerFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final UtilityDriverModel udm) {
-			return new TodoFixerCLI(cli, udm);
-		} else {
-			return createDriver(cli, options, new UtilityDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
+		return new TodoFixerCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
 	}
 }

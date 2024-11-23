@@ -33,7 +33,7 @@ import com.google.auto.service.AutoService;
  * A factory for the exploration GUI.
  */
 @AutoService(DriverFactory.class)
-public final class ExplorationGUIFactory implements GUIDriverFactory {
+public final class ExplorationGUIFactory implements GUIDriverFactory<IExplorationModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "explore",
 			ParamCount.AtLeastOne, "Run exploration.",
 			"Move a unit around the map, updating the player's map with what it sees.",
@@ -57,16 +57,12 @@ public final class ExplorationGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IExplorationModel em) {
-			return new ExplorationGUI(cli, options, em);
-		} else {
-			return createDriver(cli, options, new ExplorationModel(model));
-		}
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
+		return new ExplorationGUI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
 	}
 }

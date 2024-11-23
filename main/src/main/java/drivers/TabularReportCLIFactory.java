@@ -23,7 +23,7 @@ import java.util.EnumSet;
  * A factory for a driver to produce tabular (CSV) reports of the contents of a player's map.
  */
 @AutoService(DriverFactory.class)
-public final class TabularReportCLIFactory implements ModelDriverFactory {
+public final class TabularReportCLIFactory implements ModelDriverFactory<IDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "tabular-report",
 			ParamCount.AtLeastOne, "Tabular Report Generator",
 			"Produce CSV reports of the contents of a map.", EnumSet.of(IDriverUsage.DriverMode.CommandLine),

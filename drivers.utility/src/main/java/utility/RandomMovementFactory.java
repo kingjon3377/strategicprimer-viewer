@@ -26,7 +26,7 @@ import java.util.EnumSet;
  * TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
  */
 @AutoService(DriverFactory.class)
-public final class RandomMovementFactory implements ModelDriverFactory {
+public final class RandomMovementFactory implements ModelDriverFactory<IExplorationModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "random-move",
 			ParamCount.One, "Move independent units at random", "Move independent units randomly around the map.",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine));
@@ -37,16 +37,12 @@ public final class RandomMovementFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IExplorationModel em) {
-			return new RandomMovementCLI(options, em);
-		} else {
-			return createDriver(cli, options, new ExplorationModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
+		return new RandomMovementCLI(options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
 	}
 }

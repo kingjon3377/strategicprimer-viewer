@@ -27,7 +27,7 @@ import com.google.auto.service.AutoService;
  * A factory for the worker management GUI.
  */
 @AutoService(DriverFactory.class)
-public final class WorkerMgmtGUIFactory implements GUIDriverFactory {
+public final class WorkerMgmtGUIFactory implements GUIDriverFactory<IWorkerModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "worker-mgmt",
 			ParamCount.AtLeastOne, "Unit Orders and Worker Management", "Organize the members of a player's units.",
 			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN", "--print-empty",
@@ -51,16 +51,12 @@ public final class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IWorkerModel wm) {
-			return new WorkerMgmtGUI(cli, options, wm);
-		} else {
-			return createDriver(cli, options, new WorkerModel(model));
-		}
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
+		return new WorkerMgmtGUI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
 	}
 }

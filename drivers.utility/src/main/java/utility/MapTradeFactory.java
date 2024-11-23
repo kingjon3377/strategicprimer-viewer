@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A driver for an app to copy selected contents from one map to another.
  */
 @AutoService(DriverFactory.class)
-public final class MapTradeFactory implements ModelDriverFactory {
+public final class MapTradeFactory implements ModelDriverFactory<MapTradeModel> {
 	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "trade-maps",
 			ParamCount.Two, "Trade maps", "Copy contents from one map to another.",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "source.xml", "destination.xml");
@@ -32,13 +32,9 @@ public final class MapTradeFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final MapTradeModel model) {
 		// TODO: If any options, print a warning (here and in other empty-options drivers
-		if (model instanceof final MapTradeModel mtm) {
-			return new MapTradeCLI(cli, mtm);
-		} else {
-			return createDriver(cli, options, new MapTradeModel(model));
-		}
+		return new MapTradeCLI(cli, model);
 	}
 
 	@Override

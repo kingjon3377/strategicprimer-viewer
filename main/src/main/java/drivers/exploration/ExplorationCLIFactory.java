@@ -24,7 +24,7 @@ import java.util.EnumSet;
  * A factory for the CLI exploration app.
  */
 @AutoService(DriverFactory.class)
-public final class ExplorationCLIFactory implements ModelDriverFactory {
+public final class ExplorationCLIFactory implements ModelDriverFactory<IExplorationModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "explore",
 			ParamCount.AtLeastOne, "Run exploration.",
 			"Move a unit around the map, updating the player's map with what it sees.",
@@ -36,16 +36,12 @@ public final class ExplorationCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IExplorationModel em) {
-			return new ExplorationCLI(cli, em);
-		} else {
-			return createDriver(cli, options, new ExplorationModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
+		return new ExplorationCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
 	}
 }

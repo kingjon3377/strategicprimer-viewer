@@ -33,7 +33,7 @@ import com.google.auto.service.AutoService;
  * A factory for the worker-advancemnt GUI app.
  */
 @AutoService(DriverFactory.class)
-public final class AdvancementGUIFactory implements GUIDriverFactory {
+public final class AdvancementGUIFactory implements GUIDriverFactory<IWorkerModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "advance",
 			ParamCount.AtLeastOne, "Worker Skill Advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
@@ -57,16 +57,12 @@ public final class AdvancementGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final IWorkerModel wm) {
-			return new AdvancementGUI(cli, options, wm);
-		} else {
-			return createDriver(cli, options, new WorkerModel(model));
-		}
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
+		return new AdvancementGUI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
 	}
 }

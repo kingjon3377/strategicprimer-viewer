@@ -23,7 +23,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to produce a report of the contents of a map.
  */
 @AutoService(DriverFactory.class)
-public final class ReportCLIFactory implements ModelDriverFactory {
+public final class ReportCLIFactory implements ModelDriverFactory<IDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "create-report",
 			ParamCount.AtLeastOne, "Report Generator", "Produce HTML report of the contents of a map",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine),

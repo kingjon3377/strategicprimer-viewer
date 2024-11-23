@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for a driver to let the user enter a player's resources and equipment.
  */
 @AutoService(DriverFactory.class)
-public final class ResourceAddingCLIFactory implements ModelDriverFactory {
+public final class ResourceAddingCLIFactory implements ModelDriverFactory<ResourceManagementDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
 			EnumSet.of(IDriverUsage.DriverMode.CommandLine), "--current-turn=NN");
@@ -32,16 +32,13 @@ public final class ResourceAddingCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final ResourceManagementDriverModel rmdm) {
-			return new ResourceAddingCLI(cli, options, rmdm);
-		} else {
-			return createDriver(cli, options, new ResourceManagementDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options,
+	                                final ResourceManagementDriverModel model) {
+		return new ResourceAddingCLI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public ResourceManagementDriverModel createModel(final IMutableLegacyMap map) {
 		return new ResourceManagementDriverModel(map);
 	}
 }

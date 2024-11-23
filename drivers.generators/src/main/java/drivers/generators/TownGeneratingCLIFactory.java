@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for a driver to let the user enter or generate 'stats' for towns.
  */
 @AutoService(DriverFactory.class)
-public final class TownGeneratingCLIFactory implements ModelDriverFactory {
+public final class TownGeneratingCLIFactory implements ModelDriverFactory<PopulationGeneratingModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "generate-towns",
 			ParamCount.AtLeastOne,
 			"Enter or generate stats and contents for towns and villages",
@@ -34,16 +34,12 @@ public final class TownGeneratingCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final PopulationGeneratingModel pgm) {
-			return new TownGeneratingCLI(cli, pgm);
-		} else {
-			return createDriver(cli, options, new PopulationGeneratingModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final PopulationGeneratingModel model) {
+		return new TownGeneratingCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public PopulationGeneratingModel createModel(final IMutableLegacyMap map) {
 		return new PopulationGeneratingModel(map);
 	}
 }

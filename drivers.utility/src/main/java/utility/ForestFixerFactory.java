@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for a driver to fix ID mismatches between forests and Ground in the main and player maps.
  */
 @AutoService(DriverFactory.class)
-public final class ForestFixerFactory implements ModelDriverFactory {
+public final class ForestFixerFactory implements ModelDriverFactory<UtilityDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-forests",
 			ParamCount.AtLeastTwo, "Fix forest IDs",
 			"Make sure that forest IDs in submaps match the main map", EnumSet.noneOf(IDriverUsage.DriverMode.class));
@@ -32,16 +32,12 @@ public final class ForestFixerFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final UtilityDriverModel udm) {
-			return new ForestFixerDriver(cli, udm);
-		} else {
-			return createDriver(cli, options, new UtilityDriverModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
+		return new ForestFixerDriver(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
 	}
 }

@@ -30,7 +30,7 @@ import com.google.auto.service.AutoService;
  * A factory for the resource-adding GUI app.
  */
 @AutoService(DriverFactory.class)
-public final class ResourceAddingGUIFactory implements GUIDriverFactory {
+public final class ResourceAddingGUIFactory implements GUIDriverFactory<ResourceManagementDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
 			EnumSet.of(IDriverUsage.DriverMode.Graphical), "--current-turn=NN");
@@ -54,12 +54,9 @@ public final class ResourceAddingGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final ResourceManagementDriverModel rmdm) {
-			return new ResourceAddingGUI(cli, options, rmdm);
-		} else {
-			return createDriver(cli, options, new ResourceManagementDriverModel(model));
-		}
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options,
+	                              final ResourceManagementDriverModel model) {
+		return new ResourceAddingGUI(cli, options, model);
 	}
 
 	@Override

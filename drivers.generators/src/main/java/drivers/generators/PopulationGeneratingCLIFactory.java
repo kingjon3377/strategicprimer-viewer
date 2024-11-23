@@ -22,7 +22,7 @@ import java.util.EnumSet;
  * populations, meadow and grove sizes, and forest acreages.
  */
 @AutoService(DriverFactory.class)
-public final class PopulationGeneratingCLIFactory implements ModelDriverFactory {
+public final class PopulationGeneratingCLIFactory implements ModelDriverFactory<PopulationGeneratingModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine,
 			"generate-populations", ParamCount.One, "Generate animal populations, etc.",
 			"Generate animal and shrub populations, meadow and grove sizes, and forest acreages.",
@@ -34,16 +34,13 @@ public final class PopulationGeneratingCLIFactory implements ModelDriverFactory 
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof final PopulationGeneratingModel pgm) {
-			return new PopulationGeneratingCLI(cli, pgm);
-		} else {
-			return createDriver(cli, options, new PopulationGeneratingModel(model));
-		}
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options,
+	                                final PopulationGeneratingModel model) {
+		return new PopulationGeneratingCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public PopulationGeneratingModel createModel(final IMutableLegacyMap map) {
 		return new PopulationGeneratingModel(map);
 	}
 }
