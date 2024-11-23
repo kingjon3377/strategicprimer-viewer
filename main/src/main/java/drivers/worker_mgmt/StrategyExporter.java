@@ -67,16 +67,15 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		switch (member) {
 			case final IWorker worker -> {
 				writer.write(worker.getName());
-				final List<IJob> jobs;
+				final Predicate<IJob> inclusion;
 				if (options.hasOption("--include-unleveled-jobs")) {
-					jobs = StreamSupport.stream(worker.spliterator(), false)
-							.filter(j -> !j.isEmpty())
-							.collect(Collectors.toList());
+					inclusion = j -> !j.isEmpty();
 				} else {
-					jobs = StreamSupport.stream(worker.spliterator(), false)
-							.filter(j -> j.getLevel() > 0)
-							.collect(Collectors.toList());
+					inclusion = j -> j.getLevel() > 0;
 				}
+				final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
+						.filter(inclusion)
+						.collect(Collectors.toList());
 				boolean needsClosingParen = false;
 				if (Objects.nonNull(worker.getMount())) {
 					writer.write(" (on ");
