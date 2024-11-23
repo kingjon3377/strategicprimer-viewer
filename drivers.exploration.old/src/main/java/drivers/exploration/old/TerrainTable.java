@@ -2,6 +2,7 @@ package drivers.exploration.old;
 
 import java.util.HashSet;
 
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import legacy.map.TileType;
@@ -32,7 +33,10 @@ final class TerrainTable implements EncounterTable {
 				.collect(Collectors.toSet());
 		for (final Pair<String, String> pair : items) {
 			if (types.contains(pair.getValue0())) {
-				mapping.put(pair.getValue0(), pair.getValue1()); // TODO: check for dupes
+				final String existing = mapping.put(pair.getValue0(), pair.getValue1());
+				if (Objects.isNull(existing) || Objects.equals(existing, pair.getValue1())) {
+					LovelaceLogger.warning("Duplicate entry in terrain encounter table");
+				}
 			} else {
 				throw new IllegalArgumentException("Invalid key in mapping");
 			}
