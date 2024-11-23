@@ -26,6 +26,15 @@ import legacy.map.Point;
 	public enum SelectionMode {
 		Selection, Cursor
 	}
+
+	private enum ScrollOrientation {
+		HORIZONTAL, VERTICAL
+	}
+
+	private enum ScrollDirection {
+		FORWARD, BACKWARD
+	}
+
 	/**
 	 * Get the base point for the current mode (selection vs cursor).
 	 */
@@ -171,20 +180,18 @@ import legacy.map.Point;
 	 * @param horizontal Whether to scroll horizontally
 	 * @param forward    Whether to scroll forward (down/right)
 	 * @param count      How many times (tiles) to scroll
-	 *
-	 * TODO: Boolean parameters should be enums instead
 	 */
-	private void scroll(final boolean horizontal, final boolean forward, final int count) {
-		final Consumer<SelectionMode> func;
-		if (horizontal && forward) {
-			func = this::right;
-		} else if (horizontal) {
-			func = this::left;
-		} else if (forward) {
-			func = this::down;
-		} else {
-			func = this::up;
-		}
+	private void scroll(final ScrollOrientation orientation, final ScrollDirection direction, final int count) {
+		final Consumer<SelectionMode> func = switch (orientation) {
+			case HORIZONTAL -> switch (direction) {
+				case FORWARD -> this::right;
+				case BACKWARD -> this::left;
+			};
+			case VERTICAL -> switch (direction) {
+				case FORWARD -> this::down;
+				case BACKWARD -> this::up;
+			};
+		};
 		for (int i = 0; i < count; i++) {
 			func.accept(SelectionMode.Cursor);
 		}
@@ -212,18 +219,18 @@ import legacy.map.Point;
 		} else if (event.isShiftDown()) {
 			// Scroll sideways on Shift-scroll
 			if (count < 0) {
-				scroll(true, false, -count);
+				scroll(ScrollOrientation.HORIZONTAL, ScrollDirection.BACKWARD, -count);
 			} else {
-				scroll(true, true, count);
+				scroll(ScrollOrientation.HORIZONTAL, ScrollDirection.FORWARD, count);
 			}
 		} else {
 			// Otherwise, no relevant modifiers being pressed, scroll vertically.
 			// Control is ignored on Mac because it is rarely used as a modifier, and
 			// Control-clicking is the same as right-clicking.
 			if (count < 0) {
-				scroll(false, false, -count);
+				scroll(ScrollOrientation.VERTICAL, ScrollDirection.BACKWARD, -count);
 			} else {
-				scroll(false, true, count);
+				scroll(ScrollOrientation.VERTICAL, ScrollDirection.FORWARD, count);
 			}
 		}
 	}
