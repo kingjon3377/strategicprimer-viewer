@@ -74,7 +74,7 @@ import lovelace.util.LovelaceLogger;
 		view.setSize((float) width, 0.0f);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
-		component.setPreferredSize(new Dimension(wid, height)); // TODO: Use Dimension::new taking doubles instead?
+		component.setPreferredSize(new Dimension(wid, height));
 	}
 
 	private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
