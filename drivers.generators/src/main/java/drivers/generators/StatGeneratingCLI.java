@@ -468,30 +468,15 @@ import legacy.map.fixtures.towns.Village;
 				maybeAdd.accept("boots", "pair leather boots", 0.8);
 				maybeAdd.accept("satchel", "leather satchel", 0.75);
 				maybeAdd.accept("waterskin", "leather waterskin", 0.75);
-				// TODO: Accept strings until empty line instead of boolean-prompting every time
-				final Function<String, ICLIHelper.BooleanResponse> notInSeries = cli::inputBoolean;
-				ICLIHelper.BooleanResponse continueFlag = ICLIHelper.BooleanResponse.YES;
-				while (ICLIHelper.BooleanResponse.YES == continueFlag) {
-					switch (equipmentQuery.apply(equipmentPrompt)) {
-						case YES -> { // Leave flag at YES
-						}
-						case NO -> {
-							continueFlag = ICLIHelper.BooleanResponse.NO;
-						}
-						case QUIT -> {
-							return worker;
-						}
-						case EOF -> {
-							return null;
-						}
-					}
+				cli.printlnAtInterval("Enter equipment to add (blank line to finish)");
+				while (true) {
 					final String equipment = cli.inputString("Kind of equipment: ");
-					if (Objects.isNull(equipment) || equipment.isEmpty()) {
+					if (Objects.isNull(equipment)) {
+						return worker;
+					} else if (equipment.isBlank()) {
 						break;
 					}
 					worker.addEquipment(new Implement(equipment, idf.createID()));
-					equipmentPrompt = "Does the worker have any more equipment?";
-					equipmentQuery = notInSeries;
 				}
 				return worker;
 			}
