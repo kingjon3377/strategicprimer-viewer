@@ -407,7 +407,9 @@ import legacy.map.fixtures.towns.Village;
 						"mounted-" + training.getName())) {
 					case YES -> {
 						final String mountKind = cli.inputString("Kind of mount: ");
-						if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) { // TODO: return on EOF?
+						if (Objects.isNull(mountKind)) {
+							return worker;
+						} else if (!mountKind.isEmpty()) {
 							worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
 						}
 					}
