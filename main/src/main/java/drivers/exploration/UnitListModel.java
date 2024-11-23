@@ -29,10 +29,10 @@ import java.io.Serial;
 
 	@Override
 	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
-		LovelaceLogger.trace("Regenerating UnitListModel"); // TODO: move to below equality check?
 		if (newPlayer.equals(old)) {
 			return;
 		}
+		LovelaceLogger.trace("Regenerating UnitListModel");
 		clear();
 		model.getUnits(newPlayer).forEach(this::addElement);
 	}
