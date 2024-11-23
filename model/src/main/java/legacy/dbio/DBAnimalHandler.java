@@ -92,10 +92,8 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 
 	@Override
 	public void write(final Transactional db, final AnimalOrTracks obj, final Object context) throws SQLException {
-		// TODO: Extract a helper taking the context & any number of Class args to assert it is instanceof one of them
-		if (!((context instanceof Point) || (context instanceof IUnit) || (context instanceof IWorker))) {
-			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
-		}
+		assertPossibleType(context, "context must be a point, a unit, or a worker", Point.class, IUnit.class,
+				IWorker.class);
 		switch (obj) {
 			case final AnimalTracks animalTracks -> {
 				// TODO: Invert test to use type-inferring instanceof
