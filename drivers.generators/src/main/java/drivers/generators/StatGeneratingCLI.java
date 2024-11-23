@@ -668,8 +668,7 @@ import legacy.map.fixtures.towns.Village;
 	 * particular player.
 	 */
 	private void createWorkersForPlayer(final IDRegistrar idf, final Player player) throws IOException {
-		final List<IUnit> units = StreamSupport.stream(
-				model.getUnits(player).spliterator(), false).collect(Collectors.toList());
+		final List<IUnit> units = new ArrayList<>(model.getUnits(player));
 		while (true) {
 			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
 					"Which unit contains the worker in question? (Select -1 to create new.)",

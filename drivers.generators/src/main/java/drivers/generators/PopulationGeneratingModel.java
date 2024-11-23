@@ -34,6 +34,7 @@ import legacy.map.fixtures.mobile.worker.IMutableJob;
 import legacy.map.fixtures.mobile.worker.Job;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -309,10 +310,8 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 
 	/**
 	 * All the units in the main map belonging to the specified player.
-	 *
-	 * FIXME: Return List
 	 */
-	public Iterable<IUnit> getUnits(final Player player) {
+	public List<IUnit> getUnits(final Player player) {
 		return getMap().streamAllFixtures()
 				.flatMap(PopulationGeneratingModel::flattenFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
