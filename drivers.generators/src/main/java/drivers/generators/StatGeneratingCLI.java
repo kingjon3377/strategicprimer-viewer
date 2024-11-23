@@ -57,6 +57,7 @@ import exploration.common.Pathfinder;
 import exploration.common.PathfinderFactory;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.function.IntConsumer;
@@ -681,7 +682,7 @@ import legacy.map.fixtures.towns.Village;
 				final Point point = cli.inputPoint("Where to put new unit? ");
 				final String kind = Objects.isNull(point) ? null : cli.inputString("Kind of unit: ");
 				final String name = Objects.isNull(kind) ? null : cli.inputString("Unit name: ");
-				if (Objects.isNull(point) || Objects.isNull(kind) || Objects.isNull(name)) {
+				if (Stream.of(point, kind, name).anyMatch(Objects::isNull)) {
 					return;
 				} else {
 					final IUnit temp = new Unit(player, kind, name, idf.createID());
