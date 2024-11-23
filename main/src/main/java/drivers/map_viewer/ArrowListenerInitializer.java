@@ -115,7 +115,8 @@ import java.util.Arrays;
 
 		/*
 		  Strings representing arrow-key key codes and the actions
-		  that should be mapped to them.
+		  that should be mapped to them. Not inlined to avoid having to repeat the
+		  type parameters.
 		 */
 		final List<Pair<String, Runnable>> arrowActions = Arrays.asList(
 				Pair.with("up", selListener::up),
@@ -127,7 +128,7 @@ import java.util.Arrays;
 				Pair.with("down-right", join(selListener::down, selListener::right)),
 				Pair.with("down-left", join(selListener::down, selListener::left)));
 
-		for (final Pair<String, Runnable> pair : arrowActions) { // TODO: inline it here?
+		for (final Pair<String, Runnable> pair : arrowActions) {
 			final String action = pair.getValue0();
 			final Runnable consumer = pair.getValue1();
 			actionMap.put(action, new DirectionListener(consumer));
