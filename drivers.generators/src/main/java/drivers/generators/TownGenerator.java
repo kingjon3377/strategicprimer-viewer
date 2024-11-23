@@ -470,28 +470,23 @@ import java.math.BigDecimal;
 			}
 			case final Village ignored -> throw new IllegalStateException(
 					"Don't know how to handle non-small villages");
-			case final AbstractTown abstractTown -> { // TODO: Merge nested switch statements?
-				switch (town.getTownSize()) {
-					case Small -> {
-						population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
-						skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
-						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
-						resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
-					}
-					case Medium -> {
-						population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
-						skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
-						resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
-					}
-					case Large -> {
-						population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
-						skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
-						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
-						resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-					}
-					default -> throw new IllegalStateException("Non-exhaustive switch");
-				}
+			case final AbstractTown abstractTown when abstractTown.getTownSize() == TownSize.Small -> {
+				population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
+				skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
+				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
+				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
+			}
+			case final AbstractTown abstractTown when abstractTown.getTownSize() == TownSize.Medium -> {
+				population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
+				skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
+				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
+			}
+			case final AbstractTown abstractTown when abstractTown.getTownSize() == TownSize.Large -> {
+				population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
+				skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
+				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
+				resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
 			}
 			default -> throw new IllegalStateException("Unhandled town type");
 		}
