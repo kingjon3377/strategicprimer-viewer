@@ -72,14 +72,21 @@ import java.util.function.Predicate;
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
 
+		final JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) {
 			searchField.putClientProperty("JTextField.variant", "search");
 			searchField.putClientProperty("JTextField.Search.FindAction",
 					(ActionListener) ignored -> okListener());
 			searchField.putClientProperty("JTextField.Search.CancelAction",
 					(ActionListener) ignored -> clearSearchField());
+			scrollPane = new JScrollPane(filterList,
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		} else {
 			buttonPanel.addGlue();
+			scrollPane = new JScrollPane(filterList,
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		}
 
 		buttonPanel.add(cancelButton);
@@ -88,16 +95,6 @@ import java.util.function.Predicate;
 				BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
 		SwingUtilities.invokeLater(this::populateAll);
-		final JScrollPane scrollPane;
-		if (Platform.SYSTEM_IS_MAC) { // TODO: combine with above
-			scrollPane = new JScrollPane(filterList,
-					ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		} else {
-			scrollPane = new JScrollPane(filterList,
-					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		}
 
 		setContentPane(horizontalSplit(contentPanel,
 				BorderedPanel.verticalPanel(new JLabel("Find only ..."), scrollPane, null), DIVIDER_LOCATION));
