@@ -193,7 +193,7 @@ public final class CLITest {
 	@MethodSource("truePossibilities")
 	public void testInputBooleanSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBoolean("bool prompt"), Collections.singletonList(arg),
-				"bool prompt ", true, "inputBoolean returns true on " + arg,
+				"bool prompt ", ICLIHelper.BooleanResponse.YES, "inputBoolean returns true on " + arg,
 				"inputBoolean displays prompt");
 	}
 
@@ -208,7 +208,7 @@ public final class CLITest {
 	@MethodSource("falsePossibilities")
 	public void testInputBooleanSimpleFalse(final String arg) {
 		assertCLI(cli -> cli.inputBoolean("prompt two"), Collections.singletonList(arg),
-				"prompt two ", false, "inputBoolean returns false on " + arg,
+				"prompt two ", ICLIHelper.BooleanResponse.NO, "inputBoolean returns false on " + arg,
 				"inputBoolean displays prompt");
 	}
 
@@ -221,7 +221,7 @@ public final class CLITest {
 				"""
 						prompt three Please enter "yes", "no", "true", or "false",
 						or the first character of any of those.
-						prompt three\s""", false,
+						prompt three\s""", ICLIHelper.BooleanResponse.NO,
 				"inputBoolean rejects other input", "inputBoolean gives message on invalid input");
 	}
 
@@ -232,7 +232,7 @@ public final class CLITest {
 	@MethodSource("truePossibilities")
 	public void testInputBooleanInSeriesSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("bool prompt"), Collections.singletonList(arg),
-				"bool prompt ", true,
+				"bool prompt ", ICLIHelper.BooleanResponse.YES,
 				"inputBooleanInSeries returns true on '%s'".formatted(arg),
 				"inputBooleanInSeries displays prompt");
 	}
@@ -244,7 +244,7 @@ public final class CLITest {
 	@MethodSource("falsePossibilities")
 	public void testInputBooleanInSeriesSimpleFalse(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("prompt two"), Collections.singletonList(arg),
-				"prompt two ", false, "inputBooleanInSeries returns false on " + arg,
+				"prompt two ", ICLIHelper.BooleanResponse.NO, "inputBooleanInSeries returns false on " + arg,
 				"inputBooleanInSeries displays prompt");
 	}
 
@@ -260,14 +260,14 @@ public final class CLITest {
 								"the first%ncharacter of any of those, or \"all\", \"none\", \"always\", " +
 								"or%n\"never\" to use the same answer for all further questions.%nprompt " +
 								"three ").formatted(),
-				true, "inputBoolean rejects other input",
+				ICLIHelper.BooleanResponse.YES, "inputBoolean rejects other input",
 				"inputBoolean gives message on invalid input");
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("all"))::pollFirst,
 				ostream::append, NOOP);
-		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt four "),
 				"inputBooleanInSeries allows yes-to-all");
-		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt four "),
 				"inputBooleanInSeries honors yes-to-all when prompt is the same");
 		assertEquals("prompt four prompt four yes%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic yes");
@@ -287,9 +287,9 @@ public final class CLITest {
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst,
 				ostream::append, NOOP);
-		assertEquals(false, cli.inputBooleanInSeries("prompt five "),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt five "),
 				"inputBooleanInSeries allows no-to-all");
-		assertEquals(false, cli.inputBooleanInSeries("prompt five "),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt five "),
 				"inputBooleanInSeries honors no-to-all when prompt is the same");
 		assertEquals("prompt five prompt five no%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic no");
@@ -307,9 +307,9 @@ public final class CLITest {
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst,
 				ostream::append, NOOP);
-		assertEquals(true, cli.inputBooleanInSeries("prompt six ", "key"),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt six ", "key"),
 				"inputBooleanInSeries allows yes-to-all");
-		assertEquals(true, cli.inputBooleanInSeries("prompt seven ", "key"),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt seven ", "key"),
 				"inputBooleanInSeries honors yes-to-all if prompt differs, same key");
 		assertEquals("prompt six prompt seven yes%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic yes");
@@ -325,9 +325,9 @@ public final class CLITest {
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst,
 				ostream::append, NOOP);
-		assertEquals(false, cli.inputBooleanInSeries("prompt eight ", "secondKey"),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt eight ", "secondKey"),
 				"inputBooleanInSeries allows no-to-all");
-		assertEquals(false, cli.inputBooleanInSeries("prompt nine ", "secondKey"),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt nine ", "secondKey"),
 				"inputBooleanInSeries honors no-to-all if prompt differs, same key");
 		assertEquals("prompt eight prompt nine no%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic no");
@@ -343,13 +343,13 @@ public final class CLITest {
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst,
 				ostream::append, NOOP);
-		assertEquals(true, cli.inputBooleanInSeries("prompt ten ", "thirdKey"),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt ten ", "thirdKey"),
 				"inputBooleanInSeries allows yes-to-all with one key");
-		assertEquals(false, cli.inputBooleanInSeries("prompt eleven ", "fourthKey"),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt eleven ", "fourthKey"),
 				"inputBooleanInSeries allows no-to-all with second key");
-		assertEquals(true, cli.inputBooleanInSeries("prompt twelve ", "thirdKey"),
+		assertEquals(ICLIHelper.BooleanResponse.YES, cli.inputBooleanInSeries("prompt twelve ", "thirdKey"),
 				"inputBooleanInSeries then honors yes-to-all");
-		assertEquals(false, cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"),
+		assertEquals(ICLIHelper.BooleanResponse.NO, cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"),
 				"inputBooleanInSeries then honors no-to-all");
 		assertEquals("prompt ten prompt eleven prompt twelve yes%nprompt thirteen no%n".formatted(),
 				ostream.toString(), "inputBooleanInSeries shows prompts");
