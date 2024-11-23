@@ -376,14 +376,14 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 								.filter(sameName)
 								.filter(sameId)
 								.findAny();
-				if (matching.isPresent()) { // FIXME: 'worker' below should be 'matching', right?
+				if (matching.isPresent()) {
 					final Optional<IMutableJob> streamedJob =
-							StreamSupport.stream(worker.spliterator(), true)
+							StreamSupport.stream(matching.get().spliterator(), true)
 									.filter(IMutableJob.class::isInstance)
 									.map(IMutableJob.class::cast)
 									.filter(j -> jobName.equals(j.getName()))
 									.findAny();
-					final IJob queriedJob = worker.getJob(jobName);
+					final IJob queriedJob = matching.get().getJob(jobName);
 					if (streamedJob.isPresent()) {
 						streamedJob.get().setLevel(
 								streamedJob.get().getLevel() + 1);
