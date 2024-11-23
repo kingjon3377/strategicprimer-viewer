@@ -229,34 +229,19 @@ import java.math.BigDecimal;
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
 	private static boolean isReallyClaimable(final HarvestableFixture fix) {
-		switch (fix) {
-			case final MineralVein mv -> {
-				return mv.getExposure() == ExposureStatus.EXPOSED;
-			}
-			case final Meadow m -> {
-				return m.getCultivation() == CultivationStatus.CULTIVATED;
-			}
-			case final Grove g -> {
-				return g.getCultivation() == CultivationStatus.CULTIVATED;
-			}
-			case final Mine m -> {
-				return TownStatus.Active == m.getStatus();
-			}
-			case final CacheFixture cacheFixture -> {
-				return false;
-			}
-			case final Shrub shrub -> {
-				return true;
-			}
-			case final StoneDeposit stoneDeposit -> {
-				return true;
-			}
+		return switch (fix) {
+			case final MineralVein mv -> mv.getExposure() == ExposureStatus.EXPOSED;
+			case final Meadow m -> m.getCultivation() == CultivationStatus.CULTIVATED;
+			case final Grove g -> g.getCultivation() == CultivationStatus.CULTIVATED;
+			case final Mine m -> TownStatus.Active == m.getStatus();
+			case final CacheFixture _ -> false;
+			case final Shrub _ -> true;
+			case final StoneDeposit _ -> true;
 			default -> {
-				// TODO: Make a helper method that logs and then returns, so we can 'return switch'
 				LovelaceLogger.error("Unhandled harvestable type");
-				return false;
+				yield false;
 			}
-		}
+		};
 	}
 
 	/**
