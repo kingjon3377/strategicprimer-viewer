@@ -104,9 +104,8 @@ import worker.common.IFixtureEditHelper;
 
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
-			final Dimension size = new Dimension((int) keyElement(version, null)
-					.getMinimumSize().getWidth() * 4,
-					(int) getMinimumSize().getHeight());
+			final Dimension size = new Dimension(keyElement(version, null).getMinimumSize().width * 4,
+					getMinimumSize().height);
 			setMinimumSize(size);
 			setPreferredSize(size);
 		}
@@ -137,8 +136,8 @@ import worker.common.IFixtureEditHelper;
 			retval.add(panel);
 			retval.addRigidArea(7);
 			retval.addGlue();
-			retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + MIN_HORIZ_MARGIN,
-					MIN_VERTICAL_MARGIN + (int) label.getMinimumSize().getHeight()));
+			retval.setMinimumSize(new Dimension(Math.max(4, label.getMinimumSize().width) + MIN_HORIZ_MARGIN,
+					MIN_VERTICAL_MARGIN + label.getMinimumSize().height));
 			return retval;
 		}
 	}

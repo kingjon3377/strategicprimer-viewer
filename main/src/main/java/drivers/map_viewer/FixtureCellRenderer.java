@@ -115,8 +115,8 @@ import lovelace.util.LovelaceLogger;
 		} else {
 			component.setIcon(DEFAULT_FIXTURE_ICON);
 		}
-		component.setMaximumSize(new Dimension((int) component.getMaximumSize().getWidth(),
-				(int) (component.getMaximumSize().getHeight() * 2)));
+		component.setMaximumSize(new Dimension(component.getMaximumSize().width,
+				component.getMaximumSize().height * 2));
 		setComponentPreferredSize(component, list.getWidth());
 		return component;
 	}

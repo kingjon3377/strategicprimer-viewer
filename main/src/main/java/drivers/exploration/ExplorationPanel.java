@@ -144,9 +144,7 @@ import worker.common.IFixtureEditHelper;
 
 		final JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
 		final JSpinner mpField = new JSpinner(mpModel);
-		// FIXME: Here and elsewhere, 'height'/'width' is a public int field; skip double getter
-		mpField.setMaximumSize(new Dimension(Short.MAX_VALUE,
-				(int) mpField.getPreferredSize().getHeight()));
+		mpField.setMaximumSize(new Dimension(Short.MAX_VALUE, mpField.getPreferredSize().height));
 
 		final JLabel speedLabel = new JLabel("Current relative speed:");
 
