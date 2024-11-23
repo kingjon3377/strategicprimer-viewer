@@ -47,9 +47,9 @@ import org.jetbrains.annotations.Nullable;
 		if (outsideCritical && Objects.nonNull(selectedUnit)) {
 			outsideCritical = false;
 			mainList.clearSelection();
-			final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();
-			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<>();
 			final ListModel<? extends TileFixture> model = mainList.getModel();
+			final List<Pair<Integer, TileFixture>> constants = new ArrayList<>(model.getSize());
+			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<>(model.getSize());
 			for (int index = 0; index < model.getSize(); index++) {
 				final TileFixture fixture = model.getElementAt(index);
 				if (SimpleMovementModel.shouldAlwaysNotice(selectedUnit, fixture)) {
