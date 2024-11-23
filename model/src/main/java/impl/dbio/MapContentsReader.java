@@ -95,21 +95,15 @@ public interface MapContentsReader {
 			throw new SQLException("Expected key '%s' not in the schema".formatted(key));
 		}
 		final Object val = dbRow.get(key);
-		switch (val) {
+		return switch (val) {
 			case null -> throw new SQLException("No value for key " + key);
-			case final Boolean b -> {  // Can't happen in SQLite, but we can dream ...
-				return b;
-			}
-			case final Integer i when i == 0 -> {
-				return false;
-			}
-			case final Integer i when i == 1 -> {
-				return true;
-			}
-			case final Integer i -> throw new SQLException("Invalid Boolean value",
+			case final Boolean b -> b; // Can't happen in SQLite, but we can dream ...
+			case final Integer i when i == 0 -> false;
+			case final Integer i when i == 1 -> true;
+			case final Integer _ -> throw new SQLException("Invalid Boolean value",
 					new IllegalArgumentException("Outside range of Boolean"));
 			default -> throw new SQLException("Invalid Boolean value",
 					new IllegalArgumentException("Field maps to non-Boolean value"));
-		}
+		};
 	}
 }
