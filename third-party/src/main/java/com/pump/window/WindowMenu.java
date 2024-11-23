@@ -126,25 +126,20 @@ public class WindowMenu extends JMenu {
 	public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
 		super("Window");
 		myFrame = frame;
-		final ActionListener actionListener = e -> {
-			final Object src = e.getSource();
-			if (src == minimizeItem) {
-				myFrame.setExtendedState(Frame.ICONIFIED);
-			} else if (src == bringItem) {
-				final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
-						EnumSet.of(WindowList.WindowFiltering.Iconified));
-				for (final Frame w : frames) {
-					if (w.isVisible() || frame
-							.getExtendedState() == Frame.ICONIFIED) {
-						w.toFront();
-						if (w.getExtendedState() == Frame.ICONIFIED)
-							w.setExtendedState(Frame.NORMAL);
-					}
+		minimizeItem.addActionListener(ignored -> myFrame.setExtendedState(Frame.ICONIFIED));
+		final ActionListener bringToFrontListener = e -> {
+			final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
+					EnumSet.of(WindowList.WindowFiltering.Iconified));
+			for (final Frame w : frames) {
+				if (w.isVisible() || frame
+						.getExtendedState() == Frame.ICONIFIED) {
+					w.toFront();
+					if (w.getExtendedState() == Frame.ICONIFIED)
+						w.setExtendedState(Frame.NORMAL);
 				}
 			}
 		};
-		minimizeItem.addActionListener(actionListener);
-		bringItem.addActionListener(actionListener);
+		bringItem.addActionListener(bringToFrontListener);
 
 		customItems = new JMenuItem[extraItems.length];
 		System.arraycopy(extraItems, 0, customItems, 0, extraItems.length);
