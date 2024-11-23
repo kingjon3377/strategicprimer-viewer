@@ -83,16 +83,11 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		return mapModel;
 	}
 
-	@Override
-	public String getWindowName() {
-		return "Map Viewer";
-	}
-
 	private final Function<IDriverModel, ViewerDriver> driverFactory;
 
 	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ISPDriver driver,
 					   final Function<IDriverModel, ViewerDriver> driverFactory) {
-		super("Map Viewer", driver);
+		super("Map Viewer", driver, null, true);
 		mapModel = model;
 		this.driverFactory = driverFactory;
 		mapPanel = new MapComponent(mapModel, tableModel::shouldDisplay, tableModel);
@@ -165,11 +160,6 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		} else {
 			new Thread(() -> alternateAcceptDroppedFile(file)).start();
 		}
-	}
-
-	@Override
-	public boolean supportsDroppedFiles() {
-		return true;
 	}
 
 	private final MapComponent mapPanel;

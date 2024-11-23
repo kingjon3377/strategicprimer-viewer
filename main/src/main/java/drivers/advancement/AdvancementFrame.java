@@ -129,11 +129,6 @@ import drivers.gui.common.SPFrame;
 		treeModel.playerChanged(old, newPlayer);
 	}
 
-	@Override
-	public String getWindowName() {
-		return "Worker Advancement";
-	}
-
 	private static JLabel html(final String string) {
 		return new JLabel("<html><p align=\"left\">%s</p></html>".formatted(string));
 	}

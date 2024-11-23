@@ -42,9 +42,8 @@ public class SPFrame extends JFrame implements ISPWindow {
 	private final IDroppedFileHandler droppedFileHandler;
 	private final String windowName;
 
-	@SuppressWarnings("DesignForExtension") // TODO: Why doesn't one subclass pass it to constructor?
 	@Override
-	public String getWindowName() {
+	public final String getWindowName() {
 		return windowName;
 	}
 
@@ -121,8 +120,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 		setTransferHandler(new FileDropHandler(this));
 	}
 
-	@SuppressWarnings("DesignForExtension") // TODO: Why doesn't one subclass pass it to constructor?
-	public boolean supportsDroppedFiles() {
+	public final boolean supportsDroppedFiles() {
 		return supportsDroppedFiles;
 	}
 
