@@ -283,11 +283,11 @@ public final class Village implements IMutableTownFixture, HasMutableImage,
 					!it.owner().isIndependent()) {
 				report.accept("In village %s (ID #%d):\tOwners differ".formatted(
 						name, id));
-			} else if (!Objects.isNull(population)) {
+			} else if (Objects.nonNull(population)) {
 				return population.isSubset(it.getPopulation(),
 						(st) -> report.accept("In village %s (ID #%d):\t%s".formatted(
 								name, id, st)));
-			} else if (!Objects.isNull(it.getPopulation())) {
+			} else if (Objects.nonNull(it.getPopulation())) {
 				report.accept("In village %s (ID #%d):\tHas extra population details".formatted(name, id));
 			} else {
 				return true;

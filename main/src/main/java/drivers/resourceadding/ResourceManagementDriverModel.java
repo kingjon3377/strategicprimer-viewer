@@ -86,7 +86,7 @@ import java.math.BigDecimal;
 										 final @Nullable Integer created) {
 		final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
 				new LegacyQuantity(quantity, units));
-		if (!Objects.isNull(created)) {
+		if (Objects.nonNull(created)) {
 			pile.setCreated(created);
 		}
 		addResource(pile, player);

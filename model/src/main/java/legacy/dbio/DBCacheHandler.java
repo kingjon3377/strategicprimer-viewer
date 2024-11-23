@@ -61,7 +61,7 @@ public final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, P
 			final String contents = (String) dbRow.get("contents");
 			final String image = (String) dbRow.get("image");
 			final CacheFixture cache = new CacheFixture(kind, contents, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				cache.setImage(image);
 			}
 			map.addFixture(new Point(row, column), cache);

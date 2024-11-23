@@ -78,7 +78,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 							.collect(Collectors.toList());
 				}
 				boolean needsClosingParen = false;
-				if (!Objects.isNull(((IWorker) member).getMount())) {
+				if (Objects.nonNull(((IWorker) member).getMount())) {
 					writer.write(" (on ");
 					writer.write(((IWorker) member).getMount().getKind());
 					needsClosingParen = true;
@@ -215,7 +215,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			writer.write("[Player: ");
 			writer.write(playerName);
 			writer.newLine();
-			if (!Objects.isNull(currentPlayer.getCountry()) &&
+			if (Objects.nonNull(currentPlayer.getCountry()) &&
 					!currentPlayer.getCountry().isBlank()) {
 				writer.write("Country: ");
 				writer.write(currentPlayer.getCountry());

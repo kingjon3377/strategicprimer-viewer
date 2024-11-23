@@ -444,7 +444,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Point dest = getDestination(point, direction);
 		final TileType terrain = getMap().getBaseTerrain(dest);
 		final TileType startingTerrain = getMap().getBaseTerrain(point);
-		if (!Objects.isNull(terrain) && !Objects.isNull(startingTerrain) &&
+		if (Objects.nonNull(terrain) && Objects.nonNull(startingTerrain) &&
 				((SimpleMovementModel.landMovementPossible(terrain) &&
 						TileType.Ocean != startingTerrain) ||
 						(TileType.Ocean == startingTerrain &&
@@ -636,7 +636,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Pair<Point, @Nullable IUnit> localSelection = selection;
 		final Point currentPoint = localSelection.getValue0();
 		final IUnit unit = localSelection.getValue1();
-		if (!Objects.isNull(unit)) {
+		if (Objects.nonNull(unit)) {
 			final Player owner = unit.owner();
 			final List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
 					.filter(Village.class::isInstance)
@@ -805,7 +805,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				subMap.setModified(true);
 			}
 			final TileType terrain = getMap().getBaseTerrain(location);
-			if (!Objects.isNull(terrain) &&
+			if (Objects.nonNull(terrain) &&
 					terrain != subMap.getBaseTerrain(location)) {
 				subMap.setBaseTerrain(location, terrain);
 				subMap.setModified(true);

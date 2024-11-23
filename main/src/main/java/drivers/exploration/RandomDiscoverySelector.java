@@ -44,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private void selectedPointChangedImpl() {
 		final IUnit selectedUnit = driverModel.getSelectedUnit();
-		if (outsideCritical && !Objects.isNull(selectedUnit)) {
+		if (outsideCritical && Objects.nonNull(selectedUnit)) {
 			outsideCritical = false;
 			mainList.clearSelection();
 			final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();

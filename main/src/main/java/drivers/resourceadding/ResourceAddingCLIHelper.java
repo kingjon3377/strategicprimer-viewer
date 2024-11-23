@@ -45,7 +45,7 @@ public final class ResourceAddingCLIHelper {
 		final String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
 				"Possible kinds of resources:", "No resource kinds entered yet",
 				"Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-		if (!Objects.isNull(one)) {
+		if (Objects.nonNull(one)) {
 			return one;
 		}
 		final String two = cli.inputString("Resource kind to use: ");
@@ -66,7 +66,7 @@ public final class ResourceAddingCLIHelper {
 				"Possible resources in the %s category:".formatted(kind),
 				"No resources entered yet", "Choose resource: ",
 				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-		if (!Objects.isNull(one)) {
+		if (Objects.nonNull(one)) {
 			return one;
 		}
 		final String two = cli.inputString("Resource to use: ");
@@ -156,7 +156,7 @@ public final class ResourceAddingCLIHelper {
 			case YES -> {
 				final Integer created = cli.inputNumber("Turn created?");
 				// IIRC we allow "EOF" here to mitigate mistyped 'y' on previous prompt
-				if (!Objects.isNull(created)) {
+				if (Objects.nonNull(created)) {
 					retval.setCreated(created);
 				}
 				yield retval;

@@ -54,7 +54,7 @@ public final class PlayerChangeMenuListener implements ActionListener, PlayerCha
 	 */
 	private static @Nullable Frame getContainingFrame(final @Nullable Component component) {
 		Component temp = component;
-		while (!Objects.isNull(temp)) {
+		while (Objects.nonNull(temp)) {
 			switch (temp) {
 				case final Frame f -> {
 					return f;

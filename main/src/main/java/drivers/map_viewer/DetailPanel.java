@@ -182,7 +182,7 @@ import worker.common.IFixtureEditHelper;
 		@Override
 		public void paintComponent(final Graphics pen) {
 			super.paintComponent(pen);
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
 			}
 		}

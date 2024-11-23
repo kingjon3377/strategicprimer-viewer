@@ -247,7 +247,7 @@ import java.util.function.Predicate;
 					// Deliberately ignore "row"
 					continue;
 				} else if ("tile".equals(type)) {
-					if (!Objects.isNull(point)) {
+					if (Objects.nonNull(point)) {
 						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
 					expectAttributes(se, path, "row", "column", "kind",
@@ -272,7 +272,7 @@ import java.util.function.Predicate;
 						retval.setMountainous(localPoint, true);
 					}
 				} else if ("elsewhere".equals(type)) {
-					if (!Objects.isNull(point)) {
+					if (Objects.nonNull(point)) {
 						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
 					expectAttributes(se, path);
@@ -284,7 +284,7 @@ import java.util.function.Predicate;
 				} else if ("sandbar".equals(type)) {
 					tagStack.addFirst(se.getName());
 					warner.handle(UnsupportedTagException.obsolete(se, path));
-				} else if (!Objects.isNull(point)) {
+				} else if (Objects.nonNull(point)) {
 					switch (type) {
 						case "lake", "river" -> {
 							retval.addRivers(point,
@@ -430,7 +430,7 @@ import java.util.function.Predicate;
 					writeTag(ostream, "tile", tabs + 3);
 					writeProperty(ostream, "row", i);
 					writeProperty(ostream, "column", j);
-					if (!Objects.isNull(terrain)) {
+					if (Objects.nonNull(terrain)) {
 						writeProperty(ostream, "kind", terrain.getXml());
 					}
 					ostream.accept(">");
@@ -473,7 +473,7 @@ import java.util.function.Predicate;
 					final Ground ground = obj.getFixtures(loc).stream()
 							.filter(isGround).map(groundCast)
 							.findFirst().orElse(null);
-					if (!Objects.isNull(ground)) {
+					if (Objects.nonNull(ground)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
@@ -481,7 +481,7 @@ import java.util.function.Predicate;
 					final Forest forest = obj.getFixtures(loc).stream()
 							.filter(isForest).map(forestCast)
 							.findFirst().orElse(null);
-					if (!Objects.isNull(forest)) {
+					if (Objects.nonNull(forest)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeChild(ostream, forest, tabs + 4);

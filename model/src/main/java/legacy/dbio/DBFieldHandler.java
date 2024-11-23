@@ -89,7 +89,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 				acres = new BigDecimal(acresString);
 			}
 			final Meadow meadow = new Meadow(kind, type, cultivation, id, status, acres);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				meadow.setImage(image);
 			}
 			map.addFixture(new Point(row, column), meadow);

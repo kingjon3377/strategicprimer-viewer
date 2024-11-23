@@ -83,7 +83,7 @@ import org.takes.http.Exit;
 							map -> Optional.ofNullable(map.getFilename()).orElseGet(
 									() -> Paths.get("unknown.xml")),
 							Function.identity()));
-		} else if (!Objects.isNull(model.getMap().getFilename())) {
+		} else if (Objects.nonNull(model.getMap().getFilename())) {
 			mapping = Collections.singletonMap(model.getMap().getFilename(), model.getMap());
 		} else {
 			mapping = Collections.singletonMap(Paths.get("unknown.xml"), model.getMap());

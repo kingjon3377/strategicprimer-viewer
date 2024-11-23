@@ -79,7 +79,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 	private void changeSpeed() {
 		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available",
 				"Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-		if (!Objects.isNull(temp)) {
+		if (Objects.nonNull(temp)) {
 			speed = temp;
 		}
 	}
@@ -89,7 +89,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 	 */
 	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture,
 	                                     final HasOwner mover, final boolean automatic) {
-		if (!Objects.isNull(fixture)) {
+		if (Objects.nonNull(fixture)) {
 			// TODO: Print a description of the form to be copied (omitting acreage, etc.) unless already in sub-map(s).
 			cli.print("- ");
 			if (automatic) {
@@ -136,13 +136,13 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 	 */
 	@Override
 	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newSelection) {
-		if (!Objects.isNull(newSelection)) { // TODO What if old == newSelection?
+		if (Objects.nonNull(newSelection)) { // TODO What if old == newSelection?
 			cli.print("Details of the unit (apparently at ");
 			cli.print(model.getSelectedUnitLocation().toString());
 			cli.println("):");
 			cli.println(newSelection.getVerbose());
 			final Integer number = cli.inputNumber("MP the unit has: ");
-			if (!Objects.isNull(number)) {
+			if (Objects.nonNull(number)) {
 				totalMP = number;
 				runningTotal = decimalize(number);
 			}

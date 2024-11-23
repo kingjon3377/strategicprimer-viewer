@@ -144,10 +144,10 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 			final String image = (String) dbRow.get("image");
 			final String portrait = (String) dbRow.get("portrait");
 			final IMutableUnit unit = new Unit(map.getPlayers().getPlayer(ownerNum), kind, name, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				unit.setImage(image);
 			}
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				unit.setPortrait(portrait);
 			}
 			handleQueryResults(db, warner, "turns' orders", readOrders(unit),
@@ -156,7 +156,7 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 					SELECT_RESULTS, id);
 			final Integer row = (Integer) dbRow.get("row");
 			final Integer column = (Integer) dbRow.get("column");
-			if (!Objects.isNull(row) && !Objects.isNull(column)) {
+			if (Objects.nonNull(row) && Objects.nonNull(column)) {
 				map.addFixture(new Point(row, column), unit);
 			} else {
 				multimapPut(containees, (Integer) dbRow.get("parent"), unit);

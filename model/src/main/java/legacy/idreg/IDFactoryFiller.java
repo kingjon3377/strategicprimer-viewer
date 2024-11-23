@@ -53,12 +53,12 @@ public final class IDFactoryFiller {
 			if (fixture instanceof FixtureIterable) {
 				recursiveRegister(factory, (FixtureIterable<?>) fixture);
 			}
-			if (fixture instanceof final ITownFixture town && !Objects.isNull(town.getPopulation())) {
+			if (fixture instanceof final ITownFixture town && Objects.nonNull(town.getPopulation())) {
 				recursiveRegister(factory, town.getPopulation().getYearlyProduction());
 				recursiveRegister(factory, town.getPopulation().getYearlyConsumption());
 			}
 			if (fixture instanceof final IWorker w) {
-				if (!Objects.isNull(w.getMount())) {
+				if (Objects.nonNull(w.getMount())) {
 					recursiveRegister(factory, Collections.singleton(w.getMount()));
 				}
 				recursiveRegister(factory, w.getEquipment());

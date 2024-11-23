@@ -76,11 +76,11 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 		params.add(value("image", obj.getImage()));
 		params.add(value("portrait", obj.getPortrait()));
 		final CommunityStats stats = obj.getPopulation();
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			params.add(value("population", stats.getPopulation()));
 		}
 		INSERT_SQL.on(params).execute(db.connection());
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			CS_WRITER.initialize(db);
 			CS_WRITER.write(db, stats, obj);
 		}
@@ -100,13 +100,13 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 			final Integer population = (Integer) dbRow.get("population");
 			final Village village = new Village(status, name, id, map.getPlayers().getPlayer(ownerId),
 					race);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				village.setImage(image);
 			}
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				village.setPortrait(portrait);
 			}
-			if (!Objects.isNull(population)) {
+			if (Objects.nonNull(population)) {
 				village.setPopulation(new CommunityStatsImpl(population));
 			}
 			map.addFixture(new Point(row, column), village);

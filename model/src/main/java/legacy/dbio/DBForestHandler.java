@@ -71,7 +71,7 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 				acres = new BigDecimal(acresString);
 			}
 			final Forest forest = new Forest(kind, rows, id, acres);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				forest.setImage(image);
 			}
 			map.addFixture(new Point(row, column), forest);

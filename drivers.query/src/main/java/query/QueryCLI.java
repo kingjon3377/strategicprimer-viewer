@@ -135,7 +135,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 		final Player player = cli.chooseFromList((List<? extends Player>) players, "Players in the map:",
 				"Map contains no players", "Owner of workers to count: ",
 				ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-		if (!Objects.isNull(player)) {
+		if (Objects.nonNull(player)) {
 			final int count = countWorkersInIterable(player, map.streamAllFixtures()
 					.collect(Collectors.toList()));
 			cli.printf("%s has %d workers%n", player.getName(), count);
@@ -159,7 +159,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 				.filter(l -> distance(point, l, map.getDimensions()) <= distance)
 				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
 				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
-						.map(ITownFixture.class::cast).filter(t -> !Objects.isNull(t.getPopulation()))
+						.map(ITownFixture.class::cast).filter(t -> Objects.nonNull(t.getPopulation()))
 						.map(f -> Pair.with(l, f))).toList()) {
 			final Point loc = pair.getValue0();
 			final double delta = distance(point, loc, map.getDimensions());
@@ -186,7 +186,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 		final Point start = cli.inputPoint("Starting point:\t");
 		final Point end = cli.inputPoint("Destination:\t");
 		final ICLIHelper.BooleanResponse groundTravel = cli.inputBoolean("Compute ground travel distance?");
-		if (!Objects.isNull(start) && !Objects.isNull(end)) {
+		if (Objects.nonNull(start) && Objects.nonNull(end)) {
 			switch (groundTravel) {
 				case YES -> {
 					cli.print("Distance (on the ground, in MP cost):\t");
@@ -212,7 +212,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 	 * that is the parameter.
 	 */
 	private void fortressInfo(final @Nullable Point location) {
-		if (!Objects.isNull(location)) {
+		if (Objects.nonNull(location)) {
 			cli.printf("Terrain is %s%n", Optional.ofNullable(map.getBaseTerrain(location))
 					.map(TileType::toString).orElse("unknown"));
 			final List<Ground> ground = map.getFixtures(location).stream()
@@ -276,7 +276,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 					.map(ITownFixture.class::cast).toList()) {
 				final CommunityStats population = town.getPopulation();
 				if (TownStatus.Active == town.getStatus() &&
-						!Objects.isNull(population) &&
+						Objects.nonNull(population) &&
 						population.getYearlyProduction().isEmpty()) {
 					cli.print("At ", location.toString());
 					cli.print(comparator.distanceString(location, "base"), ": ");
@@ -321,7 +321,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 
 	private void findUnexploredCommand() {
 		final Point base = cli.inputPoint("Starting point? ");
-		if (!Objects.isNull(base)) {
+		if (Objects.nonNull(base)) {
 			final Point unexplored = findUnexplored(base);
 			if (Objects.isNull(unexplored)) {
 				cli.println("No unexplored tiles found.");
@@ -335,9 +335,9 @@ public final class QueryCLI implements ReadOnlyDriver {
 
 	private void tradeCommand() {
 		final Point location = cli.inputPoint("Base location? ");
-		if (!Objects.isNull(location)) {
+		if (Objects.nonNull(location)) {
 			final Integer distance = cli.inputNumber("Within how many tiles? ");
-			if (!Objects.isNull(distance)) {
+			if (Objects.nonNull(distance)) {
 				suggestTrade(location, distance);
 			}
 		}

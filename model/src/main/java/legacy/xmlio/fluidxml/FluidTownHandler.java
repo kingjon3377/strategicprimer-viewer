@@ -231,7 +231,7 @@ import java.util.function.Consumer;
 				Pair.with("race", obj.getRace()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		if (!Objects.isNull(obj.getPopulation())) {
+		if (Objects.nonNull(obj.getPopulation())) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			ostream.writeEndElement();
 		}
@@ -247,7 +247,7 @@ import java.util.function.Consumer;
 				Pair.with("owner", obj.owner().getPlayerId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		if (!Objects.isNull(obj.getPopulation())) {
+		if (Objects.nonNull(obj.getPopulation())) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			ostream.writeEndElement();
 		}

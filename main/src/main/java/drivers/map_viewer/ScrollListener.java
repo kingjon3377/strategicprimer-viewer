@@ -74,7 +74,7 @@ import legacy.map.fixtures.mobile.IUnit;
 	private ScrollListener(final IViewerModel mapModel, final BorderedPanel component, final JScrollBar horizontalBar,
 						   final JScrollBar verticalBar) {
 		this(mapModel, horizontalBar, verticalBar);
-		if (!Objects.isNull(component.getPageEnd()) || !Objects.isNull(component.getLineEnd())) {
+		if (Objects.nonNull(component.getPageEnd()) || Objects.nonNull(component.getLineEnd())) {
 			throw new IllegalArgumentException(
 					"We don't want to replace existing components with scrollbars");
 		}

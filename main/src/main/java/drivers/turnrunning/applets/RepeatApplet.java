@@ -62,7 +62,7 @@ import org.jetbrains.annotations.Nullable;
 			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (Boolean.FALSE.equals(bool)) {
 				return null;
-			} else if (!Objects.isNull(applet)) {
+			} else if (Objects.nonNull(applet)) {
 				final String results = applet.run();
 				if (Objects.isNull(results)) {
 					return null;

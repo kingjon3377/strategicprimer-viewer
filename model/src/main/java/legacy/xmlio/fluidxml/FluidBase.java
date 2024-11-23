@@ -88,7 +88,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	protected static String getAttribute(final StartElement element, final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		String retval = null;
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			retval = attr.getValue();
 		}
 		return Objects.requireNonNullElse(retval, defaultValue);
@@ -256,7 +256,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param param   The parameter we want
 	 */
 	protected static boolean hasAttribute(final StartElement element, final String param) {
-		return !Objects.isNull(getAttributeByName(element, param));
+		return Objects.nonNull(getAttributeByName(element, param));
 	}
 
 	/**

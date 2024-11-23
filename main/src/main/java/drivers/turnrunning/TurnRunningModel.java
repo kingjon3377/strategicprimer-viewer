@@ -125,7 +125,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				} else {
 					cb = zero;
 				}
-				if (!Objects.isNull(matching)) {
+				if (Objects.nonNull(matching)) {
 					if (all) {
 						map.removeFixture(location, matching);
 					} else if (matching.getPopulation() > 0) {
@@ -182,7 +182,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				} else {
 					cb = zero;
 				}
-				if (!Objects.isNull(matching)) {
+				if (Objects.nonNull(matching)) {
 					if (all) {
 						map.removeFixture(location, matching);
 					} else if (matching.getAcres().doubleValue() > 0.0) {
@@ -236,7 +236,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingRace)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 						.noneMatch(matchingJob)) {
 					map.setModified(true);
@@ -276,7 +276,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 							.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
 							.filter(matchingRace).filter(matchingName)
 							.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
 						.filter(isMutableJob).map(mutableJobCast)
 						.filter(matchingJob).findAny().orElse(null);
@@ -379,7 +379,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingRace)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				map.setModified(true);
 				any = true;
 				final IMutableJob job;
@@ -441,14 +441,14 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingRace)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				final IMutableJob matchingJob = StreamSupport.stream(matching.spliterator(), true)
 						.filter(isMutableJob).map(mutableJobCast)
 						.filter(matchingJobName).findAny().orElse(null);
-				if (!Objects.isNull(matchingJob)) {
+				if (Objects.nonNull(matchingJob)) {
 					final ISkill matchingSkill = StreamSupport.stream(matchingJob.spliterator(), true)
 							.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
-					if (!Objects.isNull(matchingSkill)) {
+					if (Objects.nonNull(matchingSkill)) {
 						map.setModified(true);
 						any = true;
 						matchingJob.removeSkill(matchingSkill);
@@ -580,7 +580,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingKind)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				matching.setOrders(turn, results);
 				map.setModified(true);
 				any = true;
@@ -611,7 +611,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingKind)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				matching.setResults(turn, results);
 				map.setModified(true);
 				any = true;
@@ -780,7 +780,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingKind)
 					.filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				matching.addMember(animal.copy(IFixture.CopyBehavior.KEEP));
 				any = true;
 				map.setModified(true);
@@ -834,7 +834,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.filter(isUnit).map(unitCast)
 						.filter(matchingUnitName)
 						.filter(matchingUnitId).findAny().orElse(null);
-				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
+				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						switch (container) {
@@ -907,7 +907,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.filter(isFortress).map(fortressCast)
 						.filter(matchingFortName)
 						.filter(matchingFortId).findAny().orElse(null);
-				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
+				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						switch (container) { // TODO: Combine cases when a supertype is added for removeMember()

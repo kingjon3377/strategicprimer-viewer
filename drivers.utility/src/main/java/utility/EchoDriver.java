@@ -83,7 +83,7 @@ public final class EchoDriver implements UtilityDriver {
 				final Forest mainForest = map.getFixtures(location).stream()
 						.filter(isForest).map(forestCast)
 						.findFirst().orElse(null);
-				if (!Objects.isNull(mainForest) && mainForest.getId() < 0) {
+				if (Objects.nonNull(mainForest) && mainForest.getId() < 0) {
 					mainForest.setId(idFactory.register(
 							FOREST_ID_SEED + location.row() * columnCount +
 									location.column()));
@@ -91,7 +91,7 @@ public final class EchoDriver implements UtilityDriver {
 				final Ground mainGround = map.getFixtures(location).stream()
 						.filter(isGround).map(groundCast)
 						.findFirst().orElse(null);
-				if (!Objects.isNull(mainGround) && mainGround.getId() < 0) {
+				if (Objects.nonNull(mainGround) && mainGround.getId() < 0) {
 					mainGround.setId(idFactory.register(
 							GROUND_ID_SEED + location.row() * columnCount +
 									location.column()));

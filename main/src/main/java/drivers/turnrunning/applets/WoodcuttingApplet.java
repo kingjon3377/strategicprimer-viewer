@@ -75,21 +75,21 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final int workers;
 		final Integer tempW = cli.inputNumber("How many workers cutting?");
-		if (!Objects.isNull(tempW) && tempW > 0) {
+		if (Objects.nonNull(tempW) && tempW > 0) {
 			workers = tempW;
 		} else {
 			return null;
 		}
 		final int baseHours;
 		final Integer tempBH = cli.inputNumber("How many hours into a tree were they before?");
-		if (!Objects.isNull(tempBH) && tempBH >= 0) {
+		if (Objects.nonNull(tempBH) && tempBH >= 0) {
 			baseHours = tempBH;
 		} else {
 			return null;
 		}
 		final int totalHours;
 		final Integer tempTH = cli.inputNumber("How many hours does each worker work?");
-		if (!Objects.isNull(tempTH) && tempTH > 0) {
+		if (Objects.nonNull(tempTH) && tempTH > 0) {
 			totalHours = tempTH * workers + baseHours;
 		} else {
 			return null;
@@ -116,7 +116,7 @@ import org.jetbrains.annotations.Nullable;
 					builder.append(str);
 				}
 				final Integer count = cli.inputNumber("Number of trees cut and processed: ");
-				if (!Objects.isNull(count) && count > 0) {
+				if (Objects.nonNull(count) && count > 0) {
 					treeCount = count;
 				} else {
 					return null;
@@ -171,7 +171,7 @@ import org.jetbrains.annotations.Nullable;
 							.collect(Collectors.toList()),
 					"Forests on tile:", "No forests on tile", "Forest being cleared: ",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-			if (!Objects.isNull(forest) && forest.getAcres().doubleValue() > 0.0) {
+			if (Objects.nonNull(forest) && forest.getAcres().doubleValue() > 0.0) {
 				BigDecimal acres = decimalize(treeCount * 10 / FOREST_ACRES_DIVISOR)
 						.divide(decimalize(100), RoundingMode.HALF_EVEN)
 						.min(decimalize(forest.getAcres()));

@@ -94,7 +94,7 @@ public final class PointIterable implements Iterable<Point> {
 			maxColumn = dimensions.columns() - 1;
 			this.forwards = forwards;
 			this.horizontal = horizontal;
-			if (!Objects.isNull(selection)) {
+			if (Objects.nonNull(selection)) {
 				startRow = wrap(selection.row(), maxRow);
 				startColumn = wrap(selection.column(), maxColumn);
 			} else if (forwards) {

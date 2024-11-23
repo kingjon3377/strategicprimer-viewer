@@ -69,13 +69,13 @@ public class SPFileChooser extends FileChooser {
 																	   final @Nullable FileFilter filter) {
 		if (Platform.SYSTEM_IS_MAC) {
 			final FileDialog retval = new FileDialog((Frame) null);
-			if (!Objects.isNull(filter)) {
+			if (Objects.nonNull(filter)) {
 				retval.setFilenameFilter((dir, name) -> filter.accept(new File(dir, name)));
 			}
 			return Either.right(retval);
 		} else {
 			final JFileChooser retval = new JFileChooser(current.toFile());
-			if (!Objects.isNull(filter)) {
+			if (Objects.nonNull(filter)) {
 				retval.setFileFilter(filter);
 			}
 			return Either.left(retval);

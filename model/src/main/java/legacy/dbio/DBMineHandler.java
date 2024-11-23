@@ -64,7 +64,7 @@ public final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> imp
 			final TownStatus status = TownStatus.parse((String) dbRow.get("status"));
 			final String image = (String) dbRow.get("image");
 			final Mine mine = new Mine(kind, status, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				mine.setImage(image);
 			}
 			map.addFixture(new Point(row, column), mine);

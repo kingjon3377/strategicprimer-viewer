@@ -139,9 +139,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	protected static String getParameter(final StartElement element, final @Nullable Path path, final String param)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				return retval;
 			}
 		}
@@ -153,9 +153,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static String getParameter(final StartElement element, final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				return retval;
 			}
 		}
@@ -173,7 +173,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Whether the given tag has the given parameter.
 	 */
 	protected static boolean hasParameter(final StartElement element, final String param) {
-		return !Objects.isNull(getAttributeByName(element, param));
+		return Objects.nonNull(getAttributeByName(element, param));
 	}
 
 	/**
@@ -280,9 +280,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	                                         final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				try {
 					return parseInt(retval, element.getLocation());
 				} catch (final ParseException except) {
@@ -300,9 +300,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	                                         final String parameter, final int defaultValue)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				try {
 					return parseInt(retval, element.getLocation());
 				} catch (final ParseException except) {
@@ -464,7 +464,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	                                             final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String val = attr.getValue();
 			if ("true".equalsIgnoreCase(val)) {
 				return true;
@@ -484,9 +484,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	protected final boolean getBooleanParameter(final StartElement element, final @Nullable Path path,
 	                                            final String parameter, final boolean defaultValue) {
 		final Attribute attr = getAttributeByName(element, parameter);
-		if (!Objects.isNull(attr)) {
+		if (Objects.nonNull(attr)) {
 			final String val = attr.getValue();
-			if (!Objects.isNull(val) && !val.isEmpty()) { // TODO: Convert (inverted) to 'else' below
+			if (Objects.nonNull(val) && !val.isEmpty()) { // TODO: Convert (inverted) to 'else' below
 				if ("true".equalsIgnoreCase(val)) {
 					return true;
 				} else if ("false".equalsIgnoreCase(val)) {
@@ -548,16 +548,16 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	                                                  final String preferred, final String deprecated)
 			throws SPFormatException {
 		final Attribute preferredProperty = getAttributeByName(element, preferred);
-		if (!Objects.isNull(preferredProperty)) {
+		if (Objects.nonNull(preferredProperty)) {
 			final String retval = preferredProperty.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				return retval;
 			}
 		}
 		final Attribute deprecatedProperty = getAttributeByName(element, deprecated);
-		if (!Objects.isNull(deprecatedProperty)) {
+		if (Objects.nonNull(deprecatedProperty)) {
 			final String retval = deprecatedProperty.getValue();
-			if (!Objects.isNull(retval)) {
+			if (Objects.nonNull(retval)) {
 				warner.handle(new DeprecatedPropertyException(element, path, deprecated,
 						preferred));
 				return retval;

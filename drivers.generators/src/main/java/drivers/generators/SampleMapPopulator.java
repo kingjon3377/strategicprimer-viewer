@@ -22,7 +22,7 @@ import java.util.Objects;
 	@Override
 	public boolean isSuitable(final ILegacyMap map, final Point location) {
 		final TileType terrain = map.getBaseTerrain(location);
-		return !Objects.isNull(terrain) && !map.isMountainous(location) &&
+		return Objects.nonNull(terrain) && !map.isMountainous(location) &&
 				TileType.Ocean != terrain &&
 				map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
 	}

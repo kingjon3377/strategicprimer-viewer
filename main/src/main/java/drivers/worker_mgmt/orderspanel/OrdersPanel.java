@@ -104,7 +104,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 		setPageStart(BorderedPanel.horizontalPanel(new JLabel(topLabel), null,
 				BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
 						new JSpinner(spinnerModel))));
-		if (!Objects.isNull(ordersConsumer)) {
+		if (Objects.nonNull(ordersConsumer)) {
 			final JButton applyButton = new ListenedButton("Apply", this::apply);
 			final JButton revertButton = new ListenedButton("Revert", this::revert);
 			Platform.makeButtonsSegmented(applyButton, revertButton);
@@ -151,7 +151,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 	public void apply() {
 		switch (selection) {
 			case final IUnit sel -> {
-				if (!Objects.isNull(ordersConsumer)) {
+				if (Objects.nonNull(ordersConsumer)) {
 					ordersConsumer.accept(sel,
 							spinnerModel.getNumber().intValue(),
 							area.getText());
@@ -160,7 +160,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 				getParent().getParent().repaint();
 			}
 			case final String sel -> {
-				if (!Objects.isNull(ordersConsumer)) {
+				if (Objects.nonNull(ordersConsumer)) {
 					final int turn = spinnerModel.getNumber().intValue();
 					for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
 						ordersConsumer.accept(unit, turn, area.getText());
@@ -215,7 +215,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 	@Override
 	public void valueChanged(final TreeSelectionEvent event) {
 		final TreePath selectedPath = event.getNewLeadSelectionPath();
-		if (!Objects.isNull(selectedPath)) {
+		if (Objects.nonNull(selectedPath)) {
 			final Object sel = selectedPath.getLastPathComponent();
 			if (sel instanceof final DefaultMutableTreeNode dmtn) {
 				selection = dmtn.getUserObject();

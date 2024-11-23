@@ -84,10 +84,10 @@ public final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, P
 			final String portrait = (String) dbRow.get("portrait");
 			final IMutableFortress fortress = new FortressImpl(map.getPlayers().getPlayer(ownerId),
 					name, id, size);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				fortress.setImage(image);
 			}
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				fortress.setPortrait(portrait);
 			}
 			map.addFixture(new Point(row, column), fortress);

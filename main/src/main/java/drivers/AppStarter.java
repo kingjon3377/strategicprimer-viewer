@@ -104,7 +104,7 @@ import org.jetbrains.annotations.Nullable;
 				// TODO: Drop StreamSupport use if driverCache is changed to specify List.
 				.map(l -> StreamSupport.stream(l.spliterator(), false).collect(Collectors.toList()))
 				.orElse(Collections.emptyList());
-		if (!Objects.isNull(command) && !drivers.isEmpty()) {
+		if (Objects.nonNull(command) && !drivers.isEmpty()) {
 			final DriverFactory first = drivers.stream().findFirst().orElse(null);
 			LovelaceLogger.trace("Found a driver or drivers");
 			if (drivers.size() == 1) {
@@ -145,7 +145,7 @@ import org.jetbrains.annotations.Nullable;
 						"true".equals(options.getArgument("--verbose")) ? AppChooserState.UsageVerbosity.Verbose :
 								AppChooserState.UsageVerbosity.Terse));
 			}
-		} else if (!Objects.isNull(currentDriver)) {
+		} else if (Objects.nonNull(currentDriver)) {
 			LovelaceLogger.trace("Starting chosen app.");
 			startChosenDriver.accept(currentDriver, currentOptions.copy());
 		} else {
@@ -168,7 +168,7 @@ import org.jetbrains.annotations.Nullable;
 									.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
 							"CLI apps available:", "No applications available", "App to start: ",
 							ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-					if (!Objects.isNull(chosenDriver)) {
+					if (Objects.nonNull(chosenDriver)) {
 						new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
 								others.toArray(String[]::new));
 					}

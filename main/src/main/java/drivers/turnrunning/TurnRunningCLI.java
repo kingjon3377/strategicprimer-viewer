@@ -144,7 +144,7 @@ import org.jetbrains.annotations.Nullable;
 					.map(Optional::get).orElse(null);
 			if (Boolean.FALSE.equals(bool)) {
 				return ""; // TODO: why not null? (making the method return type nullable) also below
-			} else if (!Objects.isNull(applet)) {
+			} else if (Objects.nonNull(applet)) {
 				if (!applet.getCommands().contains("other")) {
 					final String results = applet.run();
 					if (Objects.isNull(results)) {
@@ -240,7 +240,7 @@ import org.jetbrains.annotations.Nullable;
 				spoilageApplet.setOwner(unit.owner());
 				spoilageApplet.setTurn(turn);
 				final String foodSpoilageResult = spoilageApplet.run();
-				if (!Objects.isNull(foodSpoilageResult)) {
+				if (Objects.nonNull(foodSpoilageResult)) {
 					buffer.append(System.lineSeparator());
 					buffer.append(System.lineSeparator());
 					buffer.append(foodSpoilageResult);

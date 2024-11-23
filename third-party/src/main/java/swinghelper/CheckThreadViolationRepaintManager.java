@@ -100,7 +100,7 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 				return;
 			}
 			// ignore the last processed component
-			if (!Objects.isNull(lastComponent) && c == lastComponent.get()) {
+			if (Objects.nonNull(lastComponent) && c == lastComponent.get()) {
 				return;
 			}
 			lastComponent = new WeakReference<>(c);
@@ -115,7 +115,7 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 	 */
 	@Override
 	public synchronized void addInvalidComponent(final @Nullable JComponent component) {
-		if (!Objects.isNull(component)) {
+		if (Objects.nonNull(component)) {
 			checkThreadViolations(component);
 			super.addInvalidComponent(component);
 		}
@@ -133,7 +133,7 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 	@Override
 	public void addDirtyRegion(final @Nullable JComponent component,
 							   final int x, final int y, final int w, final int h) {
-		if (!Objects.isNull(component)) {
+		if (Objects.nonNull(component)) {
 			checkThreadViolations(component);
 			super.addDirtyRegion(component, x, y, w, h);
 		}

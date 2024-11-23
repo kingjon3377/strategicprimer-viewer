@@ -69,7 +69,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:",
 					"No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
-			if (!Objects.isNull(chosen.getValue1())) {
+			if (Objects.nonNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() <= skills.size()) {
 				final String skillName = cli.inputString("Name of new Skill: ");
@@ -150,7 +150,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:",
 					"No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
-			if (!Objects.isNull(chosen.getValue1())) {
+			if (Objects.nonNull(chosen.getValue1())) {
 				job = chosen.getValue1();
 			} else if (chosen.getValue0() <= jobs.size()) {
 				final String jobName = cli.inputString("Name of new Job: ");
@@ -222,7 +222,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 										.collect(Collectors.toList()),
 								"Skill to gain level in:", "No other skill", "Chosen skill:",
 								ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-						if (!Objects.isNull(choice.getValue1())) {
+						if (Objects.nonNull(choice.getValue1())) {
 							replacement = choice.getValue1();
 							model.replaceSkillInJob(worker, job.getName(), skill, replacement);
 							model.addHoursToSkill(worker, job.getName(), replacement.getName(),
@@ -275,7 +275,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:",
 					"No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final String skill;
-			if (!Objects.isNull(chosen.getValue1())) {
+			if (Objects.nonNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() > skills.size()) {
 				break;
@@ -349,7 +349,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 					final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:",
 							"No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 					final String job;
-					if (!Objects.isNull(chosen.getValue1())) {
+					if (Objects.nonNull(chosen.getValue1())) {
 						job = chosen.getValue1();
 					} else if (chosen.getValue0() > jobs.size()) {
 						break;

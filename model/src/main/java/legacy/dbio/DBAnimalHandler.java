@@ -141,13 +141,13 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			final String image = (String) dbRow.get("image");
 			final AnimalImpl animal = new AnimalImpl(kind, talking, status,
 					id, Objects.requireNonNullElse(born, -1), count);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				animal.setImage(image);
 			}
 			final Integer row = (Integer) dbRow.get("row");
 			final Integer column = (Integer) dbRow.get("column");
 			final Integer parentId = (Integer) dbRow.get("parent");
-			if (!Objects.isNull(row) && !Objects.isNull(column)) {
+			if (Objects.nonNull(row) && Objects.nonNull(column)) {
 				map.addFixture(new Point(row, column), animal);
 			} else {
 				multimapPut(containees, parentId, animal);
@@ -163,7 +163,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			final String kind = (String) dbRow.get("kind");
 			final String image = (String) dbRow.get("image");
 			final AnimalTracks track = new AnimalTracks(kind);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				track.setImage(image);
 			}
 			map.addFixture(new Point(row, column), track);

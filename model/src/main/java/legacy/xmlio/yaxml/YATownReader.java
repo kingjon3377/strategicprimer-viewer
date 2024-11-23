@@ -174,7 +174,7 @@ import java.util.function.Consumer;
 					final StartElement nextTop = Objects.requireNonNull(stack.peekFirst());
 					if (top.equals(element)) {
 						return retval;
-					} else if (!Objects.isNull(current) &&
+					} else if (Objects.nonNull(current) &&
 							top.getName().getLocalPart().equals(current)) {
 						if ("population".equals(nextTop.getName().getLocalPart())) {
 							current = null;

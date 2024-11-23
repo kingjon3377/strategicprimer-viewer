@@ -270,7 +270,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 			case final WorkerTreeNode<?> workerTreeNode when node.getAllowsChildren() -> {
 				for (final TreeNode child : workerTreeNode) {
 					final MutableTreeNode result = getNode(child, obj);
-					if (!Objects.isNull(result)) {
+					if (Objects.nonNull(result)) {
 						return result;
 					}
 				}
@@ -297,13 +297,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		final MutableTreeNode oldNode = getNode(playerNode, old);
 		final MutableTreeNode newNode = getNode(playerNode, newOwner);
 		final MutableTreeNode node = getNode(playerNode, member);
-		if (!Objects.isNull(newNode) && !Objects.isNull(node)) {
+		if (Objects.nonNull(newNode) && Objects.nonNull(node)) {
 			final int oldIndex = (Objects.isNull(oldNode)) ? -1 : oldNode.getIndex(node);
 			fireTreeNodesRemoved(this,
 					Stream.of(playerNode, getNode(playerNode, old.getKind()), oldNode)
 							.filter(Objects::nonNull).toArray(),
 					new int[]{oldIndex}, new Object[]{node});
-			if (!Objects.isNull(oldNode)) {
+			if (Objects.nonNull(oldNode)) {
 				oldNode.remove(node);
 			}
 			model.moveMember(member, old, newOwner);
@@ -324,7 +324,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		model.addUnit(unit);
 		final PlayerNode temp = (PlayerNode) getRoot();
 		final IUnit matchingUnit = model.getUnitByID(temp.getUserObject(), unit.getId());
-		if (!Objects.isNull(matchingUnit)) {
+		if (Objects.nonNull(matchingUnit)) {
 			final MutableTreeNode node = new UnitNode(matchingUnit);
 			final String kind = unit.getKind();
 			boolean any = false;
@@ -403,7 +403,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		final UnitNode unitNode = Optional.ofNullable(kindNode).map(WorkerTreeNode::stream)
 				.orElse(Stream.empty()).filter(UnitNode.class::isInstance).map(UnitNode.class::cast)
 				.filter(n -> unit.equals(n.getUserObject())).findAny().orElse(null);
-		if (!Objects.isNull(kindNode) && !Objects.isNull(unitNode)) {
+		if (Objects.nonNull(kindNode) && Objects.nonNull(unitNode)) {
 			model.addUnitMember(unit, member);
 			final MutableTreeNode newNode = new UnitMemberNode(member);
 			unitNode.add(newNode);
@@ -422,7 +422,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 	public void renameItem(final HasName item, final String newName) {
 		final TreeNode temp = (TreeNode) getRoot();
 		final MutableTreeNode node = getNode(temp, item);
-		if (!Objects.isNull(node) && model.renameItem(item, newName)) {
+		if (Objects.nonNull(node) && model.renameItem(item, newName)) {
 			final TreeNode[] path = getPathToRoot(node);
 			final int index = getIndexOfChild(path[path.length - 2], node);
 			fireTreeNodesChanged(this,
@@ -449,7 +449,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		switch (item) {
 			case final UnitMember unitMember -> {
 				final MutableTreeNode node = getNode(temp, item);
-				if (!Objects.isNull(node)) {
+				if (Objects.nonNull(node)) {
 					final TreeNode[] path = getPathToRoot(node);
 					final int index = getIndexOfChild(path[path.length - 1], node);
 					if (model.changeKind(item, newKind)) {
@@ -518,7 +518,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 	public void dismissUnitMember(final UnitMember member) {
 		final TreeNode temp = (TreeNode) getRoot();
 		final MutableTreeNode node = getNode(temp, member);
-		if (!Objects.isNull(node)) {
+		if (Objects.nonNull(node)) {
 			final UnitNode parentNode = (UnitNode) node.getParent();
 			// Note that getPathToRoot() returns a path that does
 			// *not* include the node itself
@@ -543,7 +543,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		final TreeNode temp = (TreeNode) getRoot();
 		final TreeNode node = getNode(temp, base);
 		final TreeNode parentNode = Optional.ofNullable(node).map(TreeNode::getParent).orElse(null);
-		if (!Objects.isNull(node) && parentNode instanceof final UnitNode un && model.addSibling(base, sibling)) {
+		if (Objects.nonNull(node) && parentNode instanceof final UnitNode un && model.addSibling(base, sibling)) {
 			boolean found = false;
 			final int index = 0;
 			for (final UnitMember child : un.getUserObject()) {

@@ -89,11 +89,11 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 		params.add(value("image", obj.getImage()));
 		params.add(value("portrait", obj.getPortrait()));
 		final CommunityStats stats = obj.getPopulation();
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			params.add(value("population", stats.getPopulation()));
 		}
 		INSERT_SQL.on(params).execute(db.connection());
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			CS_WRITER.initialize(db);
 			CS_WRITER.write(db, stats, obj);
 		}
@@ -123,13 +123,13 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 				case "town" -> new Town(status, size, dc, name, id, owner);
 				default -> throw new IllegalArgumentException("Unhandled kind of town");
 			};
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				town.setImage(image);
 			}
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				town.setPortrait(portrait);
 			}
-			if (!Objects.isNull(population)) {
+			if (Objects.nonNull(population)) {
 				// Don't add it directly because it's also read in the
 				// CommunityStats handler, which needs to get it out of the
 				// containees to avoid conflicts.

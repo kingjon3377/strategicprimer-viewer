@@ -231,7 +231,7 @@ import java.awt.image.BufferedImage;
 	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (isSelectionVisible()) {
-			if (!Objects.isNull(old) && !old.equals(newPoint)) {
+			if (Objects.nonNull(old) && !old.equals(newPoint)) {
 				repaintPoint(old);
 			}
 			repaintPoint(newPoint);

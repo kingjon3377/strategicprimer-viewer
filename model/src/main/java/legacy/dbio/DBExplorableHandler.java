@@ -79,7 +79,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final Cave cave = new Cave(dc, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				cave.setImage(image);
 			}
 			map.addFixture(new Point(row, column), cave);
@@ -95,7 +95,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final Battlefield battlefield = new Battlefield(dc, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				battlefield.setImage(image);
 			}
 			map.addFixture(new Point(row, column), battlefield);

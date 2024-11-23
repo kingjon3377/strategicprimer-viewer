@@ -85,7 +85,7 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 				case "oasis" -> fixture = new Oasis(id);
 				default -> throw new IllegalArgumentException("Unhandled simple terrain-fixture type");
 			}
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				((HasMutableImage) fixture).setImage(image);
 			}
 			map.addFixture(new Point(row, column), fixture);

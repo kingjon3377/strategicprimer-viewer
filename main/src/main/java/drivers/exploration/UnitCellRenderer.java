@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 				isSelected, cellHasFocus);
 		// This is not actually always constant, because the above statement actually accepts null!
 		//noinspection ConstantValue
-		if (!Objects.isNull(val) && retval instanceof final JLabel label) {
+		if (Objects.nonNull(val) && retval instanceof final JLabel label) {
 			label.setText("%s (%s)".formatted(val.getName(), val.getKind()));
 		}
 		return retval;

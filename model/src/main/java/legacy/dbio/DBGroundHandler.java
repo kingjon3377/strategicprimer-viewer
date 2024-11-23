@@ -65,7 +65,7 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 					ExposureStatus.HIDDEN;
 			final String image = (String) dbRow.get("image");
 			final Ground ground = new Ground(id, kind, exposed);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				ground.setImage(image);
 			}
 			map.addFixture(new Point(row, column), ground);

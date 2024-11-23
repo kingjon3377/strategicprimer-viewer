@@ -181,11 +181,11 @@ import java.util.stream.StreamSupport;
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			writeStats(ostream, stats, indentation + 1);
 		}
 		final Animal mount = obj.getMount();
-		if (!Objects.isNull(mount)) {
+		if (Objects.nonNull(mount)) {
 			writeAnimal(ostream, mount, indentation + 1);
 		}
 		for (final Implement item : obj.getEquipment()) {
@@ -197,7 +197,7 @@ import java.util.stream.StreamSupport;
 		for (final Integer player : obj.getNotesPlayers()) {
 			writeNote(ostream, player, obj.getNote(player), indentation + 1);
 		}
-		if (hasJobs || !Objects.isNull(stats) || !Objects.isNull(mount) || obj.getNotesPlayers().iterator().hasNext() ||
+		if (hasJobs || Objects.nonNull(stats) || Objects.nonNull(mount) || obj.getNotesPlayers().iterator().hasNext() ||
 				!obj.getEquipment().isEmpty()) {
 			indent(ostream, indentation);
 			ostream.writeEndElement();

@@ -250,7 +250,7 @@ public final class FixtureList extends JList<TileFixture>
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						final Transferable t = dtde.getTransferable();
-						if (!Objects.isNull(t)) {
+						if (Objects.nonNull(t)) {
 							handleDrop(t);
 						}
 						return;

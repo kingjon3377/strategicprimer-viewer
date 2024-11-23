@@ -176,7 +176,7 @@ import org.jetbrains.annotations.Nullable;
 				return null;
 			}
 		}
-		if (!Objects.isNull(model.getSelectedUnit())) {
+		if (Objects.nonNull(model.getSelectedUnit())) {
 			resourceEntry(model.getSelectedUnit().owner());
 		}
 		return cost;

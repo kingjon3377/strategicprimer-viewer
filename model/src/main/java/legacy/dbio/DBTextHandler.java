@@ -68,7 +68,7 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 			final String text = (String) dbRow.get("text");
 			final String image = (String) dbRow.get("image");
 			final TextFixture fixture = new TextFixture(text, Objects.requireNonNullElse(turn, -1));
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				fixture.setImage(image);
 			}
 			map.addFixture(new Point(row, column), fixture);

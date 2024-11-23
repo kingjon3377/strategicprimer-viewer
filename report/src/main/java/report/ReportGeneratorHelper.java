@@ -68,7 +68,7 @@ import java.util.Objects;
 					}
 				}
 				case final IWorker w -> {
-					if (!Objects.isNull(w.getMount())) {
+					if (Objects.nonNull(w.getMount())) {
 						addToMap(location, w.getMount(), idf, mapping);
 					}
 					for (final Implement inner : w.getEquipment()) {

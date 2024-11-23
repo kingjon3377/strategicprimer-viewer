@@ -479,7 +479,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		// TODO: equals() isn't ideal for finding a matching member ...
 		final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream)
 				.orElse(Stream.empty()).filter(member::equals).findAny().orElse(null);
-		if (!Objects.isNull(matchingOld) && !Objects.isNull(matchingMember) && !Objects.isNull(matchingNew)) {
+		if (Objects.nonNull(matchingOld) && Objects.nonNull(matchingMember) && Objects.nonNull(matchingNew)) {
 			matchingOld.removeMember(matchingMember);
 			matchingNew.addMember(matchingMember);
 			getRestrictedMap().setModified(true);
@@ -564,7 +564,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.filter(u -> u.getName().equals(unit.getName()))
 				.filter(u -> u.getKind().equals(unit.getKind()))
 				.filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
-		if (!Objects.isNull(matching)) {
+		if (Objects.nonNull(matching)) {
 			matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 			getRestrictedMap().setModified(true);
 		}
@@ -681,7 +681,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
 			// FIXME: equals() will really not do here ...
 			final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)).findAny().orElse(null);
-			if (!Objects.isNull(matching)) {
+			if (Objects.nonNull(matching)) {
 				unit.removeMember(matching);
 				dismissedMembers.add(member);
 				getRestrictedMap().setModified(true);
@@ -722,7 +722,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.filter(HasMutableOwner.class::isInstance).map(HasMutableOwner.class::cast)
 				.filter(item::equals) // TODO: equals() is not the best way to find it ...
 				.findAny().orElse(null);
-		if (!Objects.isNull(matching)) {
+		if (Objects.nonNull(matching)) {
 			if (StreamSupport.stream(getMap().getPlayers().spliterator(), true)
 					.noneMatch(newOwner::equals)) { // TODO: looser identification?
 				getRestrictedMap().addPlayer(newOwner);
@@ -744,7 +744,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.filter(u -> u.getKind().equals(fixture.getKind()))
 				.filter(u -> u.getId() == fixture.getId())
 				.findAny().orElse(null);
-		if (!Objects.isNull(matching)) {
+		if (Objects.nonNull(matching)) {
 			matching.sortMembers();
 			getRestrictedMap().setModified(true);
 			return true;
@@ -763,7 +763,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingOwner)
 					.findAny().orElse(null);
-			if (!Objects.isNull(fortress)) {
+			if (Objects.nonNull(fortress)) {
 				if ("HQ".equals(fortress.getName())) {
 					hqLoc = location;
 					break;

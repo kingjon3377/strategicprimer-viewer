@@ -188,12 +188,12 @@ public final class ProxyWorker implements WorkerProxy {
 		if (workers.isEmpty()) {
 			statsCache = tempStats;
 			equipmentImpl.addAll(item.getEquipment());
-		} else if (!Objects.isNull(tempStats)) {
-			if (!Objects.isNull(priorStats) && !Objects.equals(tempStats, priorStats)) {
+		} else if (Objects.nonNull(tempStats)) {
+			if (Objects.nonNull(priorStats) && !Objects.equals(tempStats, priorStats)) {
 				statsCache = null;
 			}
 			equipmentImpl.retainAll(item.getEquipment());
-		} else if (!Objects.isNull(priorStats)) {
+		} else if (Objects.nonNull(priorStats)) {
 			statsCache = null;
 			equipmentImpl.retainAll(item.getEquipment());
 		}

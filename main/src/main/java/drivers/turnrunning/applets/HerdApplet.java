@@ -136,7 +136,7 @@ import query.SmallAnimalModel;
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).count();
 		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:"
 				.formatted(workerCount));
-		if (!Objects.isNull(addendum) && addendum >= 0) {
+		if (Objects.nonNull(addendum) && addendum >= 0) {
 			workerCount += addendum;
 		} else {
 			return null;
@@ -246,7 +246,7 @@ import query.SmallAnimalModel;
 			}
 			addLineToOrders.accept("This produced %.1f %s, %.1f lbs, of %s.".formatted(
 					production.number().doubleValue(), production.units(), pounds, resourceProduced));
-			if (!Objects.isNull(home)) {
+			if (Objects.nonNull(home)) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
 				// TODO: If 'home' is null, should probably add to the unit itself ...
 				model.addResource(home, idf.createID(), "food", resourceProduced, production,

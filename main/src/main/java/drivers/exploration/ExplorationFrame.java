@@ -138,7 +138,7 @@ import org.eclipse.jdt.annotation.Nullable;
 		layoutObj.goFirst();
 		if (!playerList.isSelectionEmpty()) {
 			final @Nullable Player newPlayer = playerList.getSelectedValue();
-			if (!Objects.isNull(newPlayer)) {
+			if (Objects.nonNull(newPlayer)) {
 				unitListModel.playerChanged(null, newPlayer);
 			}
 		}
@@ -147,7 +147,7 @@ import org.eclipse.jdt.annotation.Nullable;
 	private void buttonListener() {
 		LovelaceLogger.trace("In ExplorationFrame.buttonListener");
 		final @Nullable IUnit selectedValue = unitList.getSelectedValue();
-		if (!Objects.isNull(selectedValue) && !unitList.isSelectionEmpty()) {
+		if (Objects.nonNull(selectedValue) && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
 			LovelaceLogger.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
 			layoutObj.goNext();

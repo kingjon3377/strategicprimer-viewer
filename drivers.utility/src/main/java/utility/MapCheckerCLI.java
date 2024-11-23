@@ -274,7 +274,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 				}
 				return true;
 			}
-			case final ITownFixture t when !Objects.isNull(t.getPopulation()) -> {
+			case final ITownFixture t when Objects.nonNull(t.getPopulation()) -> {
 				final CommunityStats stats = t.getPopulation();
 				boolean retval = false;
 				for (final IResourcePile resource : stats.getYearlyConsumption()) {
@@ -476,7 +476,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 		for (final Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
 				EXTRA_CHECKS.stream()).toList()) {
 			for (final Point location : map.getLocations()) {
-				if (!Objects.isNull(map.getBaseTerrain(location))) {
+				if (Objects.nonNull(map.getBaseTerrain(location))) {
 					result = contentCheck(checker, map.getBaseTerrain(location),
 							location, warner, map.getFixtures(location)) || result;
 				}
@@ -497,7 +497,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 							.map(f -> Pair.with(l, f))).toList()) {
 				final Point location = pair.getValue0();
 				final TileFixture fixture = pair.getValue1();
-				if (!Objects.isNull(map.getBaseTerrain(location))) {
+				if (Objects.nonNull(map.getBaseTerrain(location))) {
 					result = animalTracksChecker(map.getBaseTerrain(location),
 							location, fixture, warner) || result;
 				}

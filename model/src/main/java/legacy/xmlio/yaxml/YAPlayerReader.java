@@ -66,7 +66,7 @@ final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 			writeProperty(ostream, "code_name", obj.getName());
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			final String country = obj.getCountry();
-			if (!Objects.isNull(country)) {
+			if (Objects.nonNull(country)) {
 				writeNonemptyProperty(ostream, "country", country);
 			}
 			closeLeafTag(ostream);

@@ -41,12 +41,12 @@ public final class DistanceComparatorImpl implements DistanceComparator {
 		final int rowDistRaw = Math.abs(point.row() - base.row());
 		final int colDist;
 		final int rowDist;
-		if (!Objects.isNull(dimensions) && colDistRaw > dimensions.columns() / 2) {
+		if (Objects.nonNull(dimensions) && colDistRaw > dimensions.columns() / 2) {
 			colDist = dimensions.columns() - colDistRaw;
 		} else {
 			colDist = colDistRaw;
 		}
-		if (!Objects.isNull(dimensions) && rowDistRaw > dimensions.rows() / 2) {
+		if (Objects.nonNull(dimensions) && rowDistRaw > dimensions.rows() / 2) {
 			rowDist = dimensions.rows() - rowDistRaw;
 		} else {
 			rowDist = rowDistRaw;

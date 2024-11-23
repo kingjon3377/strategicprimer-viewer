@@ -49,7 +49,7 @@ public final class MapTradeModel extends SimpleMultiMapModel {
 		final ILegacyMap map = getMap();
 		for (final IMutableLegacyMap second : getRestrictedSubordinateMaps()) {
 			final TileType terrain = map.getBaseTerrain(location);
-			if (Objects.isNull(second.getBaseTerrain(location)) && !Objects.isNull(terrain)) {
+			if (Objects.isNull(second.getBaseTerrain(location)) && Objects.nonNull(terrain)) {
 				second.setBaseTerrain(location, terrain);
 				setGlobalModifiedFlag();
 			}

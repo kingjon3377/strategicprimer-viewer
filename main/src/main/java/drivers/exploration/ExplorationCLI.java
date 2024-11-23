@@ -64,9 +64,9 @@ import legacy.map.fixtures.mobile.IUnit;
 		model.addSelectionChangeListener(eCLI);
 		model.addMovementCostListener(eCLI);
 		final Player player = choosePlayer();
-		if (!Objects.isNull(player)) {
+		if (Objects.nonNull(player)) {
 			final IUnit unit = chooseUnit(player);
-			if (!Objects.isNull(unit)) {
+			if (Objects.nonNull(unit)) {
 				model.setSelectedUnit(unit);
 				while (eCLI.getMovement() > 0) {
 					eCLI.moveOneStep();

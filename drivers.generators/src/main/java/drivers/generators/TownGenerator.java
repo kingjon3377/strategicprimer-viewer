@@ -309,7 +309,7 @@ import java.math.BigDecimal;
 			final Point fieldLoc = findLocById(map, field);
 			if (isClaimedField(map, field)) {
 				cli.println("That field is already worked by another town");
-			} else if (!Objects.isNull(fieldLoc)) {
+			} else if (Objects.nonNull(fieldLoc)) {
 				if (!bothOrNeitherOcean(map.getBaseTerrain(location),
 						map.getBaseTerrain(fieldLoc))) {
 					if (TileType.Ocean == map.getBaseTerrain(location)) {

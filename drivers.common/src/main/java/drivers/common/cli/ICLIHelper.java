@@ -237,9 +237,9 @@ public interface ICLIHelper {
 			print(" ");
 		}
 		final Integer row = inputNumber("Row: ");
-		if (!Objects.isNull(row)) {
+		if (Objects.nonNull(row)) {
 			final Integer column = inputNumber("Column: ");
-			if (!Objects.isNull(column)) {
+			if (Objects.nonNull(column)) {
 				return new Point(row, column);
 			}
 		}

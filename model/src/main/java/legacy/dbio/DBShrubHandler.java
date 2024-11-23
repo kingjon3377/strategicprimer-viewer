@@ -64,7 +64,7 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 			final Integer count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
 			final Shrub shrub = new Shrub(kind, id, Objects.requireNonNullElse(count, -1));
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				shrub.setImage(image);
 			}
 			map.addFixture(new Point(row, column), shrub);

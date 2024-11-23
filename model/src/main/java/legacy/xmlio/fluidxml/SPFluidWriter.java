@@ -151,7 +151,7 @@ public final class SPFluidWriter implements SPWriter {
 			writeAttributes(ostream, Pair.with("number", obj.getPlayerId()),
 					Pair.with("code_name", obj.getName()));
 			writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-			if (!Objects.isNull(obj.getCountry())) {
+			if (Objects.nonNull(obj.getCountry())) {
 				writeNonEmptyAttributes(ostream, Pair.with("country", obj.getCountry()));
 			}
 		}
@@ -276,7 +276,7 @@ public final class SPFluidWriter implements SPWriter {
 					writeTag(ostream, "tile", indentation + 3, false);
 					writeAttributes(ostream, Pair.with("row", i),
 							Pair.with("column", j));
-					if (!Objects.isNull(terrain)) {
+					if (Objects.nonNull(terrain)) {
 						writeAttributes(ostream, Pair.with("kind",
 								terrain.getXml()));
 					}
@@ -314,14 +314,14 @@ public final class SPFluidWriter implements SPWriter {
 					final Ground ground = obj.getFixtures(loc).stream()
 							.filter(isGround).map(groundCast)
 							.findFirst().orElse(null);
-					if (!Objects.isNull(ground)) {
+					if (Objects.nonNull(ground)) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
 					final Forest forest = obj.getFixtures(loc).stream()
 							.filter(isForest).map(forestCast)
 							.findFirst().orElse(null);
-					if (!Objects.isNull(forest)) {
+					if (Objects.nonNull(forest)) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, forest, indentation + 4);
 					}

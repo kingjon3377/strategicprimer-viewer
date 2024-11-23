@@ -321,7 +321,7 @@ public final class TodoFixerCLI implements CLIDriver {
 			}
 		}
 		final String kind = cli.inputString("What's the next possible kind for %s? ".formatted(description));
-		if (!Objects.isNull(kind)) {
+		if (Objects.nonNull(kind)) {
 			unit.setKind(kind);
 			jobList.add(kind);
 		}

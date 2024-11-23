@@ -147,7 +147,7 @@ public class SimpleDriverModel implements IDriverModel {
 
 	@Override
 	public final void setMapFilename(final Path filename) {
-		if (!Objects.isNull(mainMap.getFilename())) {
+		if (Objects.nonNull(mainMap.getFilename())) {
 			LovelaceLogger.warning("Overwriting existing filename");
 		}
 		mainMap.setFilename(filename);

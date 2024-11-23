@@ -178,7 +178,7 @@ import java.util.stream.StreamSupport;
 			}
 		} else if ("skill".equals(category)) {
 			final TreePath selectionPath = selectionModel.getSelectionPath();
-			if (!Objects.isNull(currentRoot) && !Objects.isNull(selectionPath) &&
+			if (Objects.nonNull(currentRoot) && Objects.nonNull(selectionPath) &&
 					selectionPath.getLastPathComponent() instanceof final IJob job) {
 				final int childCount = getChildCount(job);
 				if (driverModel.addHoursToSkill(currentRoot, job.getName(), addendum,

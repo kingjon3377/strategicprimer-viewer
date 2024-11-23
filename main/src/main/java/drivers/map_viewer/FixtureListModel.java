@@ -152,7 +152,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 		final int oldSize = getSize();
 		cachedTerrainList = Collections.emptyList();
 		final TileType terrain = terrainSource.apply(newPoint);
-		if (!Objects.isNull(terrain)) {
+		if (Objects.nonNull(terrain)) {
 			cachedTerrainList = new ArrayList<>(Collections.singleton(
 					new TileTypeFixture(terrain)));
 		}
@@ -170,7 +170,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 		point = newPoint;
 		currentTracks.clear();
 		final AnimalTracks tracks = tracksSource.apply(newPoint);
-		if (!Objects.isNull(tracks)) {
+		if (Objects.nonNull(tracks)) {
 			currentTracks.add(tracks);
 		}
 		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
@@ -222,17 +222,17 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 	public boolean addFixture(final TileFixture fixture) {
 		if (fixture instanceof final TileTypeFixture ttf) {
 			final TileType existingTerrain = terrainSource.apply(point);
-			if (!Objects.isNull(existingTerrain)) {
+			if (Objects.nonNull(existingTerrain)) {
 				if (existingTerrain == ttf.tileType()) {
 					return true;
-				} else if (!Objects.isNull(terrainSink)) {
+				} else if (Objects.nonNull(terrainSink)) {
 					terrainSink.accept(point, ttf.tileType());
 					fireContentsChanged(new Range(0, 0));
 					return true;
 				} else {
 					return false;
 				}
-			} else if (!Objects.isNull(terrainSink)) {
+			} else if (Objects.nonNull(terrainSink)) {
 				terrainSink.accept(point, ttf.tileType());
 				fireIntervalAdded(new Range(0, 0));
 				return true;
@@ -245,7 +245,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 				final Collection<River> coll = new ArrayList<>(existingRivers);
 				if (coll.containsAll(rf.getRivers())) {
 					return true;
-				} else if (!Objects.isNull(addRivers)) {
+				} else if (Objects.nonNull(addRivers)) {
 					addRivers.accept(point,
 							rf.getRivers().toArray(River[]::new));
 					int index = -1;
@@ -262,7 +262,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 				} else {
 					return false;
 				}
-			} else if (!Objects.isNull(addRivers)) {
+			} else if (Objects.nonNull(addRivers)) {
 				addRivers.accept(point,
 						rf.getRivers().toArray(River[]::new));
 				final int index = cachedTerrainList.size();
@@ -275,7 +275,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 		} else if (fixture instanceof MountainFixture) {
 			if (mountainSource.test(point)) {
 				return true;
-			} else if (!Objects.isNull(mountainSink)) {
+			} else if (Objects.nonNull(mountainSink)) {
 				final int index = cachedTerrainList.size();
 				mountainSink.accept(point, true);
 				fireIntervalAdded(new Range(index, index));
@@ -283,7 +283,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 			} else {
 				return false;
 			}
-		} else if (!Objects.isNull(addFixtureLambda) && addFixtureLambda.test(point, fixture)) {
+		} else if (Objects.nonNull(addFixtureLambda) && addFixtureLambda.test(point, fixture)) {
 			final int index = indexOf(fixturesSource.apply(point), fixture);
 			if (index >= 0) {
 				final int adjusted = adjustedIndex(index); // FIXME: Can this be right?
@@ -292,7 +292,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 			} else {
 				return false; // TODO: This returns failure if a more-up-to-date version is already there
 			}
-		} else if (!Objects.isNull(addFixtureLambda)) {
+		} else if (Objects.nonNull(addFixtureLambda)) {
 			final int index = indexOf(fixturesSource.apply(point), fixture);
 			if (index >= 0) {
 				final int adjusted = adjustedIndex(index);
@@ -316,7 +316,7 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 		for (final TileFixture fixture : fixtures) {
 			if (fixture instanceof TileTypeFixture) {
 				final TileType currentTerrain = terrainSource.apply(point);
-				if (!Objects.isNull(currentTerrain) &&
+				if (Objects.nonNull(currentTerrain) &&
 						currentTerrain == ((TileTypeFixture) fixture)
 								.tileType()) {
 					if (Objects.isNull(terrainSink)) {

@@ -71,7 +71,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 			final String image = (String) dbRow.get("image");
 			final AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
 					brief, full, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				adventure.setImage(image);
 			}
 			map.addFixture(new Point(row, column), adventure);

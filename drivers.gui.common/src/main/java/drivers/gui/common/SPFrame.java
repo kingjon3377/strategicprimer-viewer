@@ -114,7 +114,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 			});
 		}
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		if (!Objects.isNull(minSize)) {
+		if (Objects.nonNull(minSize)) {
 			setMinimumSize(minSize);
 		}
 		setTransferHandler(new FileDropHandler(this));
@@ -145,7 +145,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 
 	private String refreshTitle() {
 		if (driver instanceof final ModelDriver md &&
-				!Objects.isNull(md.getModel().getMap().getFilename())) {
+				Objects.nonNull(md.getModel().getMap().getFilename())) {
 			final ILegacyMap map = md.getModel().getMap();
 			return "%s%s | %s".formatted(map.isModified() ? "*" : "",
 					map.getFilename(), windowTitle);

@@ -75,7 +75,7 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 			}
 			final Grove grove = new Grove(type, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 					kind, id, count);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				grove.setImage(image);
 			}
 			map.addFixture(new Point(row, column), grove);

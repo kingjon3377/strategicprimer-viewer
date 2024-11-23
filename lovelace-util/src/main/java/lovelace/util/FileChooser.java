@@ -242,7 +242,7 @@ public class FileChooser {
 				if (!retval.isEmpty()) {
 					LovelaceLogger.debug("Saving the file(s) the user chose via Swing");
 					storedFile = retval;
-				} else if (!Objects.isNull(fc.getSelectedFile())) {
+				} else if (Objects.nonNull(fc.getSelectedFile())) {
 					final File selectedFile = fc.getSelectedFile();
 					LovelaceLogger.debug("Saving the singular file the user chose via Swing");
 					storedFile = Collections.singletonList(selectedFile.toPath());
@@ -260,7 +260,7 @@ public class FileChooser {
 			if (!retval.isEmpty()) {
 				LovelaceLogger.debug("Saving the file(s) the user chose via AWT");
 				storedFile = retval;
-			} else if (!Objects.isNull(fd.getFile())) {
+			} else if (Objects.nonNull(fd.getFile())) {
 				final String selectedFile = fd.getFile();
 				LovelaceLogger.debug("Saving the singular file the user chose via AWT");
 				storedFile = Collections.singletonList(Paths.get(selectedFile));

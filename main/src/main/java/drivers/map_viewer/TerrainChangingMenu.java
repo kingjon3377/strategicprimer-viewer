@@ -130,7 +130,7 @@ import legacy.map.fixtures.terrain.Hill;
 	private void toggleMountains() {
 		final Point localPoint = point;
 		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
-		if (localPoint.isValid() && !Objects.isNull(terrain) && TileType.Ocean != terrain) {
+		if (localPoint.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
 			final boolean newValue = !model.getMap().isMountainous(localPoint); // TODO: syntax sugar
 			model.setMountainous(localPoint, newValue);
 			mountainItem.getModel().setSelected(newValue);
@@ -147,7 +147,7 @@ import legacy.map.fixtures.terrain.Hill;
 	private void toggleHill() {
 		final Point localPoint = point;
 		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
-		if (localPoint.isValid() && !Objects.isNull(terrain) && TileType.Ocean != terrain) {
+		if (localPoint.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
 			if (model.getMap().getFixtures(localPoint).stream()
 					.noneMatch(Hill.class::isInstance)) {
 				model.addFixture(localPoint, new Hill(idf.createID()));
@@ -199,7 +199,7 @@ import legacy.map.fixtures.terrain.Hill;
 		return () -> {
 			final Point localPoint = point;
 			final TileType terrain = model.getMap().getBaseTerrain(localPoint);
-			if (localPoint.isValid() && !Objects.isNull(terrain) && TileType.Ocean != terrain) {
+			if (localPoint.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
 				if (model.getMap().getRivers(localPoint).contains(river)) {
 					model.removeRiver(localPoint, river);
 					item.getModel().setSelected(false);
@@ -313,8 +313,8 @@ import legacy.map.fixtures.terrain.Hill;
 		final Point localPoint = Optional.ofNullable(model.getInteraction()).orElseGet(model::getSelection);
 		point = localPoint;
 		final TileType terrain = model.getMap().getBaseTerrain(point);
-		newUnitItem.setEnabled(point.isValid() && !Objects.isNull(terrain));
-		if (point.isValid() && !Objects.isNull(terrain) && TileType.Ocean != terrain) {
+		newUnitItem.setEnabled(point.isValid() && Objects.nonNull(terrain));
+		if (point.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
 			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()

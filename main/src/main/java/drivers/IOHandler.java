@@ -293,7 +293,7 @@ public final class IOHandler implements ActionListener {
 						for (final ILegacyMap map : mmgd.getModel().getAllMaps()) {
 							// FIXME: Doesn't MapIOHelper have a method for this?
 							final Path file = map.getFilename();
-							if (!Objects.isNull(file)) {
+							if (Objects.nonNull(file)) {
 								try {
 									MapIOHelper.writeMap(file, map);
 									mmgd.getModel().clearModifiedFlag(map);

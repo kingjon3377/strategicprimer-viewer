@@ -90,10 +90,10 @@ public final class DBResourcePileHandler
 			}
 			final IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
 					new LegacyQuantity(quantity, units));
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				pile.setImage(image);
 			}
-			if (!Objects.isNull(created)) {
+			if (Objects.nonNull(created)) {
 				pile.setCreated(created);
 			}
 			multimapPut(containees, parentId, pile);

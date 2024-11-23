@@ -337,7 +337,7 @@ import java.util.stream.Collectors;
 					.map(String.class::cast).findFirst().orElse(null);
 			final Collection<IUnit> temp = model.getUnits(player);
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
-			if (!Objects.isNull(startingUnit)) {
+			if (Objects.nonNull(startingUnit)) {
 				leading = true;
 				leadingFilter = startingUnit::equals;
 			} else if (Objects.isNull(startingKind)) {

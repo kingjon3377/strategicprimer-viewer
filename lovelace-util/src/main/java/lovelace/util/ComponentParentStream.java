@@ -26,7 +26,7 @@ public final class ComponentParentStream implements Iterable<Component> {
 
 		@Override
 		public boolean hasNext() {
-			return !Objects.isNull(current);
+			return Objects.nonNull(current);
 		}
 
 		@SuppressWarnings("ChainOfInstanceofChecks")

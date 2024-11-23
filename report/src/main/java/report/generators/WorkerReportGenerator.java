@@ -91,7 +91,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 							  final ILegacyMap map, final Consumer<String> ostream, final IWorker worker,
 							  final Point loc) {
 		final boolean details = Verbosity.Detailed == verbosity;
-		if (details && !Objects.isNull(worker.getStats())) {
+		if (details && Objects.nonNull(worker.getStats())) {
 			ostream.accept("""
 
 					%s, a %s.
@@ -115,7 +115,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			}
 			println(ostream, "</ul>");
 		}
-		if (details && !Objects.isNull(worker.getMount())) {
+		if (details && Objects.nonNull(worker.getMount())) {
 			ostream.accept("(S)he is mounted on the following animal:");
 			animalReportGenerator.produceSingle(fixtures, map, ostream, worker.getMount(), loc);
 		}

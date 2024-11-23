@@ -44,7 +44,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
 	private static boolean shouldZero(final TileFixture fixture, final @Nullable Player player) {
-		if (!Objects.isNull(player) && fixture instanceof final HasOwner owned) {
+		if (Objects.nonNull(player) && fixture instanceof final HasOwner owned) {
 			return player.equals(owned.owner());
 		} else {
 			return true;
@@ -404,7 +404,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void removeBookmark(final Point point, final Player player) {
 		modified = true; // TODO: Only if this is a change
 		final Set<Player> marks = bookmarksImpl.get(point);
-		if (!Objects.isNull(marks)) {
+		if (Objects.nonNull(marks)) {
 			marks.remove(player);
 			if (marks.isEmpty()) {
 				bookmarksImpl.remove(point);
@@ -447,7 +447,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void removeRivers(final Point location, final River... removedRivers) {
 		modified = true; // TODO: Only if this is a change
 		final Set<River> set = riversMap.get(location);
-		if (!Objects.isNull(set)) {
+		if (Objects.nonNull(set)) {
 			for (final River river : removedRivers) {
 				set.remove(river);
 			}
@@ -514,7 +514,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void removeFixture(final Point location, final TileFixture fixture) {
 		modified = true; // TODO: Only if this is a change
 		final List<TileFixture> local = fixturesMap.get(location);
-		if (!Objects.isNull(local)) {
+		if (Objects.nonNull(local)) {
 			local.remove(fixture);
 			if (local.isEmpty()) {
 				fixturesMap.remove(location);
@@ -580,7 +580,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 			}
 			builder.append("At ").append(location);
 			final TileType tileTerrain = terrain.get(location);
-			if (!Objects.isNull(tileTerrain)) {
+			if (Objects.nonNull(tileTerrain)) {
 				builder.append("terrain: ").append(tileTerrain).append(", ");
 			}
 			if (isMountainous(location)) {
@@ -594,7 +594,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 			}
 			final Collection<TileFixture> localFixtures =
 					fixturesMap.get(location);
-			if (!Objects.isNull(localFixtures)) {
+			if (Objects.nonNull(localFixtures)) {
 				builder.append("fixtures: ").append(System.lineSeparator());
 				builder.append(localFixtures.stream().map(Object::toString)
 						.collect(Collectors.joining(System.lineSeparator())));
@@ -726,7 +726,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 			// TODO: Convert to member function
 			final BiPredicate<Point, TileFixture> movedFrom = (point, fixture) -> {
 				final Point tPoint = ourLocations.get(fixture);
-				if (!Objects.isNull(tPoint) && !tPoint.equals(point)) {
+				if (Objects.nonNull(tPoint) && !tPoint.equals(point)) {
 					report.accept("%s moved from our %s to %s".formatted(
 							fixture, tPoint,
 							point));
@@ -741,7 +741,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 						str -> report.accept("At %s:\t%s".formatted(point.toString(), str));
 				final TileType theirTerrain = obj.getBaseTerrain(point);
 				final TileType ourTerrain = terrain.get(point);
-				if (!Objects.isNull(theirTerrain)) {
+				if (Objects.nonNull(theirTerrain)) {
 					if (Objects.isNull(ourTerrain)) {
 						localReport.accept("Has terrain information we don't");
 						retval = false;
@@ -783,14 +783,14 @@ public final class LegacyMap implements IMutableLegacyMap {
 						continue;
 					}
 					switch (fixture) {
-						case final IUnit unitMembers when !Objects.isNull(unitLocs) ->
+						case final IUnit unitMembers when Objects.nonNull(unitLocs) ->
 								retval = testAgainstList(unitMembers, point,
 										unitLocs, localReport, movedFrom) && retval;
-						case final AbstractTown town when !Objects.isNull(townLocs) ->
+						case final AbstractTown town when Objects.nonNull(townLocs) ->
 								retval = testAgainstList(town, point,
 										townLocs, localReport, movedFrom)
 										&& retval;
-						case final Subsettable<?> subsettable when !Objects.isNull(subsetLocs) ->
+						case final Subsettable<?> subsettable when Objects.nonNull(subsetLocs) ->
 								retval = testAgainstList(fixture, point,
 										subsetLocs,
 										localReport, movedFrom) && retval;
@@ -841,7 +841,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 				currentTurn);
 		for (final Point point : getLocations()) {
 			final TileType tileType = terrain.get(point);
-			if (!Objects.isNull(tileType)) {
+			if (Objects.nonNull(tileType)) {
 				retval.setBaseTerrain(point, tileType);
 			}
 			retval.setMountainous(point, isMountainous(point));

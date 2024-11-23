@@ -153,7 +153,7 @@ import java.util.Objects;
 
 	private static void writeStats(final ThrowingConsumer<String, IOException> ostream,
 	                               final @Nullable WorkerStats stats, final int indent) throws IOException {
-		if (!Objects.isNull(stats)) {
+		if (Objects.nonNull(stats)) {
 			writeTag(ostream, "stats", indent);
 			writeProperty(ostream, "hp", stats.getHitPoints());
 			writeProperty(ostream, "max", stats.getMaxHitPoints());
@@ -219,12 +219,12 @@ import java.util.Objects;
 		writeProperty(ostream, "id", obj.getId());
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-		if (obj.iterator().hasNext() || !Objects.isNull(obj.getStats()) ||
-				obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
+		if (obj.iterator().hasNext() || Objects.nonNull(obj.getStats()) ||
+				obj.getNotesPlayers().iterator().hasNext() || Objects.nonNull(obj.getMount()) ||
 				!obj.getEquipment().isEmpty()) {
 			finishParentTag(ostream);
 			writeStats(ostream, obj.getStats(), indent + 1);
-			if (!Objects.isNull(obj.getMount())) {
+			if (Objects.nonNull(obj.getMount())) {
 				mobileReader.write(ostream, obj.getMount(), indent + 1);
 			}
 			for (final Implement item : obj.getEquipment()) {

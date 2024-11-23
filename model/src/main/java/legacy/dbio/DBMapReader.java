@@ -156,7 +156,7 @@ public final class DBMapReader {
 				final boolean lake = tuple.getValue5();
 				final Point location = dbRow.getValue0();
 				final @Nullable TileType tileType = dbRow.getValue1();
-				if (!Objects.isNull(tileType)) {
+				if (Objects.nonNull(tileType)) {
 					retval.setBaseTerrain(location, tileType);
 				}
 				retval.setMountainous(location, mtn);
@@ -237,7 +237,7 @@ public final class DBMapReader {
 				} else if (parent instanceof final IMutableWorker p && member instanceof final Implement m) {
 					p.addEquipment(m);
 				} else if (parent instanceof final AbstractTown p && member instanceof CommunityStats &&
-						!Objects.isNull(p.getPopulation())) { // TODO: combine with earlier AbstractTown case?
+						Objects.nonNull(p.getPopulation())) { // TODO: combine with earlier AbstractTown case?
 					throw new IllegalStateException("Community stats already set");
 				} else {
 					throw new IllegalStateException("DB parent-child type invariants not met (parent %s, child %s)"

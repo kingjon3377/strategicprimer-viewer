@@ -194,11 +194,11 @@ public abstract class AbstractTown implements HasMutableImage,
 			localReport.accept("Town size differs");
 			retval = false;
 		}
-		if (!Objects.isNull(other.getPopulation()) && Objects.isNull(population)) {
+		if (Objects.nonNull(other.getPopulation()) && Objects.isNull(population)) {
 			localReport.accept("Has contents details we don't");
 			retval = false;
 		}
-		if (!Objects.isNull(population) && !population.isSubset(other.getPopulation(), localReport)) {
+		if (Objects.nonNull(population) && !population.isSubset(other.getPopulation(), localReport)) {
 			// TODO: Don't really need to report after
 			// passinglocalReport to the population isSubset call, right?
 			localReport.accept("Has different population details");

@@ -131,7 +131,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 							value("hours", skill.getHours())).execute(sql);
 				}
 			}
-			if (!Objects.isNull(obj.getMount())) {
+			if (Objects.nonNull(obj.getMount())) {
 				animalHandler.initialize(db);
 				animalHandler.write(db, obj.getMount(), obj);
 			}
@@ -161,13 +161,13 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 			final Integer wis = (Integer) dbRow.get("wis");
 			final Integer cha = (Integer) dbRow.get("cha");
 			final Worker worker = new Worker(name, race, id);
-			if (!Objects.isNull(hp)) {
+			if (Objects.nonNull(hp)) {
 				worker.setStats(new WorkerStats(hp, maxHp, str, dex, con, intel, wis, cha));
 			}
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				worker.setImage(image);
 			}
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				worker.setPortrait(portrait);
 			}
 			if (workers.containsKey(id)) {
@@ -209,7 +209,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 			final Worker worker = workers.get(id);
 			final int player = (Integer) dbRow.get("player");
 			final String note = (String) dbRow.get("note");
-			if (!Objects.isNull(worker)) {
+			if (Objects.nonNull(worker)) {
 				worker.setNote(map.getPlayers().getPlayer(player), note);
 			}
 		};

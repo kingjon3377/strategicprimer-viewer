@@ -68,7 +68,7 @@ import drivers.common.IAdvancementModel;
 		// TODO: In Ceylon we assigned all of these to local variables, as the typechecker
 		// enforced thread-safety of reading mutable nullable variables; we should really
 		// do the same here to avoid TOCTOU races
-		if (!Objects.isNull(worker) && !Objects.isNull(job) && !Objects.isNull(skill)) {
+		if (Objects.nonNull(worker) && Objects.nonNull(job) && Objects.nonNull(skill)) {
 			final int level = skill.getLevel();
 			final int number;
 			try {
@@ -128,7 +128,7 @@ import drivers.common.IAdvancementModel;
 	@Override
 	public void selectSkill(final @Nullable ISkill selectedSkill) {
 		skill = selectedSkill;
-		if (!Objects.isNull(selectedSkill)) {
+		if (Objects.nonNull(selectedSkill)) {
 			hours.requestFocusInWindow();
 		}
 	}

@@ -200,7 +200,7 @@ import org.jetbrains.annotations.Nullable;
 						EnumSet.noneOf(WindowList.WindowFiltering.class)))
 				.filter(SPFrame.class::isInstance).map(SPFrame.class::cast).reduce((first, second) -> second)
 				.orElse(null);
-		if (!Objects.isNull(topWindow)) {
+		if (Objects.nonNull(topWindow)) {
 			for (final File file : openFilesEvent.getFiles()) {
 				try {
 					topWindow.acceptDroppedFile(file.toPath());

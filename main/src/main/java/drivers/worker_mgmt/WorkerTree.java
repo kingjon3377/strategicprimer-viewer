@@ -270,7 +270,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			for (final TreePath path : paths) {
 				final Object last = path.getLastPathComponent();
 				final Object parentObj = path.getParentPath().getLastPathComponent();
-				if (!Objects.isNull(last) && !Objects.isNull(parentObj)) {
+				if (Objects.nonNull(last) && Objects.nonNull(parentObj)) {
 					final Object parent = wtModel.getModelObject(parentObj);
 					final Object selection = wtModel.getModelObject(last);
 					if (parent instanceof final IUnit unit && selection instanceof final UnitMember member) {
@@ -308,7 +308,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public boolean canImport(final TransferSupport support) {
 			if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&
-					support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
+					support.getDropLocation() instanceof final JTree.DropLocation dl && Objects.nonNull(dl.getPath())) {
 				final Object last = dl.getPath().getLastPathComponent();
 				final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
 						.orElse(null);
@@ -317,7 +317,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 			}
 			if (support.isDataFlavorSupported(UnitTransferable.FLAVOR) &&
-					support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
+					support.getDropLocation() instanceof final JTree.DropLocation dl && Objects.nonNull(dl.getPath())) {
 				final Object last = dl.getPath().getLastPathComponent();
 				return Optional.ofNullable(last).map(wtModel::getModelObject).orElse(null) instanceof String;
 			}
@@ -330,7 +330,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public boolean importData(final TransferSupport support) {
 			if (canImport(support) &&
-					support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
+					support.getDropLocation() instanceof final JTree.DropLocation dl && Objects.nonNull(dl.getPath())) {
 				final TreePath path = dl.getPath();
 				final Object pathLast = path.getLastPathComponent();
 				if (Objects.isNull(pathLast)) {
@@ -470,7 +470,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			final String image = obj.getImage();
 			if (!image.isEmpty()) {
 				final Icon icon = getIconForFile(image);
-				if (!Objects.isNull(icon)) {
+				if (Objects.nonNull(icon)) {
 					return icon;
 				}
 			}
@@ -629,9 +629,9 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			final TreePath path = event.getTreePath();
 			final TreePath parent = Optional.ofNullable(path)
 					.map(TreePath::getParentPath).orElse(null);
-			if (!Objects.isNull(parent)) {
+			if (Objects.nonNull(parent)) {
 				tree.expandPath(parent);
-			} else if (!Objects.isNull(path)) {
+			} else if (Objects.nonNull(path)) {
 				tree.expandPath(path);
 			}
 			for (int i = 0; i < tree.getRowCount(); i++) {
@@ -651,10 +651,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public void treeNodesInserted(final TreeModelEvent event) {
 			final TreePath path = event.getTreePath();
-			if (!Objects.isNull(path)) {
+			if (Objects.nonNull(path)) {
 				tree.expandPath(path);
 				final TreePath parent = path.getParentPath();
-				if (!Objects.isNull(parent)) {
+				if (Objects.nonNull(parent)) {
 					tree.expandPath(parent);
 				}
 			}

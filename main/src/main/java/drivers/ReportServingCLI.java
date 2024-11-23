@@ -83,7 +83,7 @@ import org.takes.http.Exit;
 							Optional.ofNullable(currentPlayer).orElse(map.getCurrentPlayer())));
 				}
 			}
-		} else if (!Objects.isNull(model.getMap().getFilename())) {
+		} else if (Objects.nonNull(model.getMap().getFilename())) {
 			cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
 					Optional.ofNullable(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
 		}

@@ -127,7 +127,7 @@ import java.util.Objects;
 				oldDimensions.getRows().size())) {
 			LovelaceLogger.warning("Tried to scroll too far down, skipping ...");
 			return;
-		} else if (!Objects.isNull(oldRow)) {
+		} else if (Objects.nonNull(oldRow)) {
 			if (oldRow == newValue) {
 				LovelaceLogger.trace(
 						"Vertical scroll to same value, possibly reentrant. Skipping ...");

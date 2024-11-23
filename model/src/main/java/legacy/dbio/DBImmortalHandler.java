@@ -181,13 +181,13 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 				case "troll" -> new Troll(id);
 				default -> ImmortalAnimal.parse(type).apply(id);
 			};
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				((HasMutableImage) immortal).setImage(image);
 			}
 			final Integer row = (Integer) dbRow.get("row");
 			final Integer column = (Integer) dbRow.get("column");
 			final Integer parentId = (Integer) dbRow.get("parent");
-			if (!Objects.isNull(row) && !Objects.isNull(column)) {
+			if (Objects.nonNull(row) && Objects.nonNull(column)) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
 				multimapPut(containees, parentId, immortal);
@@ -209,13 +209,13 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 				case "giant" -> new Giant(kind, id);
 				default -> throw new IllegalArgumentException("Unexpected immortal kind");
 			};
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				((HasMutableImage) immortal).setImage(image);
 			}
 			final Integer row = (Integer) dbRow.get("row");
 			final Integer column = (Integer) dbRow.get("column");
 			final Integer parentId = (Integer) dbRow.get("parent");
-			if (!Objects.isNull(row) && !Objects.isNull(column)) {
+			if (Objects.nonNull(row) && Objects.nonNull(column)) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
 				multimapPut(containees, parentId, immortal);

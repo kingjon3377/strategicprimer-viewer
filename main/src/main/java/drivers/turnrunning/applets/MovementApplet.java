@@ -78,7 +78,7 @@ import static lovelace.util.Decimalize.decimalize;
 				case NO -> {
 					final BigDecimal amount = cli.inputDecimal("Amount to take (in %s):"
 							.formatted(chosen.getQuantity().units()));
-					if (!Objects.isNull(amount) && amount.signum() > 0) {
+					if (Objects.nonNull(amount) && amount.signum() > 0) {
 						model.transferResource(chosen, unit, amount, createID);
 						resources.clear();
 						fortress.stream().filter(isResource).map(resourceCast)
@@ -116,7 +116,7 @@ import static lovelace.util.Decimalize.decimalize;
 			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
 					.filter(isFortress).map(fortressCast)
 					.filter(sameOwner).findAny().orElse(null);
-			if (!Objects.isNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
+			if (Objects.nonNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
 					.filter(isFortress).map(fortressCast)
 					.noneMatch(sameOwner)) {
 				switch (cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?")) {

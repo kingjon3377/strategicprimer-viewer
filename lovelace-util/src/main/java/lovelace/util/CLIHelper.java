@@ -35,7 +35,7 @@ public final class CLIHelper {
 			final @NotNull String prompt,
 			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
-			if (!Objects.isNull(header)) {
+			if (Objects.nonNull(header)) {
 				System.out.println(header);
 			}
 			if (choices.length == 1) { // TODO: Why print the header in this case?
@@ -47,7 +47,7 @@ public final class CLIHelper {
 			} else {
 				printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
 				final @Nullable Integer index = inputNumber(prompt);
-				if (!Objects.isNull(index) && index >= 0 && index < choices.length) {
+				if (Objects.nonNull(index) && index >= 0 && index < choices.length) {
 					return choices[index].getValue1();
 				} else {
 					return null;
@@ -73,12 +73,12 @@ public final class CLIHelper {
 			final @NotNull String prompt,
 			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
-			if (!Objects.isNull(header)) {
+			if (Objects.nonNull(header)) {
 				System.out.println(header);
 			}
 			printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
 			final @Nullable Integer index = inputNumber(prompt);
-			if (!Objects.isNull(index) && index >= 0 && index < choices.length) {
+			if (Objects.nonNull(index) && index >= 0 && index < choices.length) {
 				return choices[index].getValue1();
 			} else {
 				return null;

@@ -104,9 +104,9 @@ import org.jetbrains.annotations.Nullable;
 			return false;
 		} else if (pile.getCreated() >= turn) { // Created this turn or in the future
 			return false;
-		} else if (!Objects.isNull(keepsFor) && age < keepsFor) {
+		} else if (Objects.nonNull(keepsFor) && age < keepsFor) {
 			return false;
-		} else if (!Objects.isNull(keepsForIfCool) && age < keepsForIfCool) {
+		} else if (Objects.nonNull(keepsForIfCool) && age < keepsForIfCool) {
 			switch (cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool")) {
 				case YES -> {
 					return false;
@@ -118,7 +118,7 @@ import org.jetbrains.annotations.Nullable;
 				}
 			}
 		}
-		if (!Objects.isNull(keepsForRefrigerated) && age < keepsForRefrigerated) {
+		if (Objects.nonNull(keepsForRefrigerated) && age < keepsForRefrigerated) {
 			switch (cli.inputBooleanInSeries("Was this kept refrigerated?",
 					pile.getKind() + string + "refrig")) {
 				case YES -> {
@@ -131,7 +131,7 @@ import org.jetbrains.annotations.Nullable;
 				}
 			}
 		}
-		if (!Objects.isNull(keepsForFrozen) && age < keepsForFrozen) {
+		if (Objects.nonNull(keepsForFrozen) && age < keepsForFrozen) {
 			switch (cli.inputBooleanInSeries("Was this kept frozen?",
 					pile.getKind() + string + "frozen")) {
 				case YES -> {

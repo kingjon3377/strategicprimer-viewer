@@ -68,7 +68,7 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
 			final HasMutableImage implement = new Implement(kind, id, count);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				implement.setImage(image);
 			}
 			multimapPut(containees, parentId, implement);

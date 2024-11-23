@@ -176,7 +176,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 		@Override
 		public void paintComponent(final Graphics pen) {
 			super.paintComponent(pen);
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
 			}
 		}
@@ -201,7 +201,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 					label.setArgument(stats);
 				}
-				if (!Objects.isNull(worker.getMount())) {
+				if (Objects.nonNull(worker.getMount())) {
 					jobsPanel.add(new JLabel("Mounted on " + worker.getMount().getKind()));
 				}
 				for (final IJob job : worker) {
@@ -320,12 +320,12 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				return;
 			}
 		}
-		if (!Objects.isNull(selected)) {
+		if (Objects.nonNull(selected)) {
 			if (!Objects.equals(current, selected)) {
 				current = selected;
 				recache();
 			}
-		} else if (!Objects.isNull(current)) {
+		} else if (Objects.nonNull(current)) {
 			current = null;
 			recache();
 		}

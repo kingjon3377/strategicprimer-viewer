@@ -149,7 +149,7 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	 * rivers, no roads, no bookmarks, and no other fixtures
 	 */
 	default boolean isLocationEmpty(final Point location) {
-		if (!Objects.isNull(getBaseTerrain(location))) {
+		if (Objects.nonNull(getBaseTerrain(location))) {
 			return false;
 		} else if (isMountainous(location)) {
 			return false;

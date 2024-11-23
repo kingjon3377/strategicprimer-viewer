@@ -26,9 +26,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setCenter(final @Nullable Component center) {
-		if (!Objects.isNull(center)) {
+		if (Objects.nonNull(center)) {
 			add(center, BorderLayout.CENTER);
-		} else if (!Objects.isNull(this.center)) {
+		} else if (Objects.nonNull(this.center)) {
 			remove(this.center);
 		}
 		this.center = center;
@@ -45,9 +45,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setLineStart(final @Nullable Component lineStart) {
-		if (!Objects.isNull(lineStart)) {
+		if (Objects.nonNull(lineStart)) {
 			add(lineStart, BorderLayout.LINE_START);
-		} else if (!Objects.isNull(this.lineStart)) {
+		} else if (Objects.nonNull(this.lineStart)) {
 			remove(this.lineStart);
 		}
 		this.lineStart = lineStart;
@@ -64,9 +64,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setLineEnd(final @Nullable Component lineEnd) {
-		if (!Objects.isNull(lineEnd)) {
+		if (Objects.nonNull(lineEnd)) {
 			add(lineEnd, BorderLayout.LINE_END);
-		} else if (!Objects.isNull(this.lineEnd)) {
+		} else if (Objects.nonNull(this.lineEnd)) {
 			remove(this.lineEnd);
 		}
 		this.lineEnd = lineEnd;
@@ -83,9 +83,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setPageStart(final @Nullable Component pageStart) {
-		if (!Objects.isNull(pageStart)) {
+		if (Objects.nonNull(pageStart)) {
 			add(pageStart, BorderLayout.PAGE_START);
-		} else if (!Objects.isNull(this.pageStart)) {
+		} else if (Objects.nonNull(this.pageStart)) {
 			remove(this.pageStart);
 		}
 		this.pageStart = pageStart;
@@ -102,9 +102,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setPageEnd(final @Nullable Component pageEnd) {
-		if (!Objects.isNull(pageEnd)) {
+		if (Objects.nonNull(pageEnd)) {
 			add(pageEnd, BorderLayout.PAGE_END);
-		} else if (!Objects.isNull(this.pageEnd)) {
+		} else if (Objects.nonNull(this.pageEnd)) {
 			remove(this.pageEnd);
 		}
 		this.pageEnd = pageEnd;

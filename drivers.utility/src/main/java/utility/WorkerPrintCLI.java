@@ -66,7 +66,7 @@ import exploration.common.IExplorationModel;
 				cli.print(" (", worker.getRace(), ")");
 			}
 
-			if (!Objects.isNull(worker.getMount())) {
+			if (Objects.nonNull(worker.getMount())) {
 				cli.print(" (mounted on ", worker.getMount().getKind(), ")");
 			}
 
@@ -79,7 +79,7 @@ import exploration.common.IExplorationModel;
 			}
 
 			final WorkerStats stats = worker.getStats();
-			if (!Objects.isNull(stats)) {
+			if (Objects.nonNull(stats)) {
 				final Iterator<String> statsIterator = IntStream.of(stats.array())
 						.mapToObj(WorkerStats::getModifierString).iterator();
 				final Iterator<String> labelIterator = statLabelArray.iterator();
@@ -104,11 +104,11 @@ import exploration.common.IExplorationModel;
 		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()),
 				"Players in the map:", "No players", "Player owning the unit:",
 				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-		if (!Objects.isNull(player)) {
+		if (Objects.nonNull(player)) {
 			final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player),
 					"Units of that player:", "No units", "Unit to print:",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-			if (!Objects.isNull(unit)) {
+			if (Objects.nonNull(unit)) {
 				printWorkers(unit);
 			}
 		}

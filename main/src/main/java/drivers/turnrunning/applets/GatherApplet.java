@@ -93,7 +93,7 @@ import org.jetbrains.annotations.Nullable;
 						find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind())) {
 					case YES -> {
 						final IUnit unit = model.getSelectedUnit();
-						if (!Objects.isNull(unit)) {
+						if (Objects.nonNull(unit)) {
 							cli.println("Enter details of harvest (any empty string aborts):");
 							while (true) {
 								final IMutableResourcePile resource = resourceAddingHelper.enterResource();

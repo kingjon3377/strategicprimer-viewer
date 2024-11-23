@@ -61,7 +61,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 		if (!obj.getPortrait().isEmpty()) {
 			params.add(value("portrait", obj.getPortrait()));
 		}
-		if (!Objects.isNull(obj.getCountry()) && !obj.getPortrait().isEmpty()) {
+		if (Objects.nonNull(obj.getCountry()) && !obj.getPortrait().isEmpty()) {
 			params.add(value("country", obj.getCountry()));
 		}
 		try {
@@ -86,7 +86,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 			final String country = (String) dbRow.get("country");
 			final MutablePlayer player = new PlayerImpl(id, name, country);
 			player.setCurrent(current);
-			if (!Objects.isNull(portrait)) {
+			if (Objects.nonNull(portrait)) {
 				player.setPortrait(portrait);
 			}
 			map.addPlayer(player);

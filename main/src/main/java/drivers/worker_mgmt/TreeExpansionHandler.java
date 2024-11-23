@@ -50,7 +50,7 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 		int i = 0;
 		while (i < tree.getRowCount()) {
 			final TreePath path = tree.getPathForRow(i);
-			if (!Objects.isNull(path) && path.getPathCount() <= levels) {
+			if (Objects.nonNull(path) && path.getPathCount() <= levels) {
 				tree.expandRow(i);
 			}
 			i++;

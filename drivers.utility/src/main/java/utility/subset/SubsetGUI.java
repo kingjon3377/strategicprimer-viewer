@@ -64,7 +64,7 @@ public final class SubsetGUI implements UtilityGUI {
 
 	@Override
 	public void open(final Path path) {
-		if (!Objects.isNull(frame)) {
+		if (Objects.nonNull(frame)) {
 			frame.testFile(path);
 		}
 	}

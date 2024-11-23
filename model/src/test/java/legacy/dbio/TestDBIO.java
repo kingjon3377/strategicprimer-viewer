@@ -452,7 +452,7 @@ public final class TestDBIO {
 		private @Nullable PersistentConnection connection;
 
 		public void tearDown() throws SQLException {
-			if (!Objects.isNull(connection)) {
+			if (Objects.nonNull(connection)) {
 				connection.reallyClose();
 			}
 			connection = null;
@@ -473,7 +473,7 @@ public final class TestDBIO {
 				connection.setTransactionIsolation(
 						Connection.TRANSACTION_READ_UNCOMMITTED);
 				return connection;
-			} else if (!Objects.isNull(connection)) {
+			} else if (Objects.nonNull(connection)) {
 				return connection;
 			} else {
 				connection = new PersistentConnection(existingSource.getConnection());

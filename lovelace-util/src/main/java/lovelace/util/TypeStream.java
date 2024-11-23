@@ -60,7 +60,7 @@ public final class TypeStream implements Iterable<Class<?>> {
 				if (!classes.contains(item)) {
 					classes.add(item);
 					final Class<?> superclass = item.getSuperclass();
-					if (!Objects.isNull(superclass)) {
+					if (Objects.nonNull(superclass)) {
 						queue.add(superclass);
 					}
 					queue.addAll(Arrays.asList(item.getInterfaces()));

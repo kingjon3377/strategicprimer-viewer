@@ -92,7 +92,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final MineralVein mineral = new MineralVein(kind, exposed, dc, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				mineral.setImage(image);
 			}
 			map.addFixture(new Point(row, column), mineral);
@@ -109,7 +109,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final StoneDeposit stone = new StoneDeposit(kind, dc, id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				stone.setImage(image);
 			}
 			map.addFixture(new Point(row, column), stone);

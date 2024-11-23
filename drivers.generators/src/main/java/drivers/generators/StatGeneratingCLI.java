@@ -663,7 +663,7 @@ import legacy.map.fixtures.towns.Village;
 					"There are no units owned by that player.", "Unit selection: ",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IUnit item;
-			if (!Objects.isNull(chosen.getValue1())) {
+			if (Objects.nonNull(chosen.getValue1())) {
 				item = chosen.getValue1();
 			} else if (chosen.getValue0() <= units.size()) {
 				final Point point = cli.inputPoint("Where to put new unit? ");

@@ -81,7 +81,7 @@ public final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point>
 			final Portal portal = new Portal(Objects.requireNonNullElse(destinationWorld, "unknown"),
 					new Point(Objects.requireNonNullElse(destinationRow, -1),
 							Objects.requireNonNullElse(destinationColumn, -1)), id);
-			if (!Objects.isNull(image)) {
+			if (Objects.nonNull(image)) {
 				portal.setImage(image);
 			}
 			map.addFixture(new Point(row, column), portal);
