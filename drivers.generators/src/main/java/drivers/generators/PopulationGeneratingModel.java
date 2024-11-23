@@ -50,7 +50,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 	 * The intersection of two sets; here so it can be passed as a method
 	 * reference rather than a lambda in {@link #getPlayerChoices}.
 	 *
-	 * TODO: Move * to lovelace.util? Or is there some equivalent
+	 * TODO: Move to lovelace.util? Or is there some equivalent
 	 * method-reference logic with curry() or uncurry() or some such?
 	 */
 	private static <T> Set<T> intersection(final Set<T> one, final Collection<T> two) {
