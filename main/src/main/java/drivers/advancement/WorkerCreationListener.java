@@ -157,23 +157,22 @@ import java.util.function.Consumer;
 			final int chaValue = charisma.getNumber().intValue();
 			if (!nameText.isEmpty() && !raceText.isEmpty() && IntStream.of(hpValue, maxHPValue, strValue, dexValue,
 					conValue, intValue, wisValue, chaValue).allMatch(x -> x >= 0)) {
-				// TODO: These logging statements should probably be "trace" i.e. "finer", not "debug" i.e. "fine"
 				LovelaceLogger.debug("All worker-creation-dialog fields are acceptable");
 				final Worker retval = new Worker(nameText, raceText, factory.createID());
 				retval.setStats(new WorkerStats(hpValue, maxHPValue, strValue,
 						dexValue, conValue, intValue, wisValue, chaValue));
 				addNewWorker.accept(retval);
-				LovelaceLogger.debug("Created and added the worker; about to hide the window");
+				LovelaceLogger.trace("Created and added the worker; about to hide the window");
 				setVisible(false);
 				dispose();
 			} else {
 				final StringBuilder builder = new StringBuilder();
 				if (nameText.isEmpty()) {
-					LovelaceLogger.debug("Worker not created because name field was empty.");
+					LovelaceLogger.trace("Worker not created because name field was empty.");
 					builder.append("Worker needs a name.").append(System.lineSeparator());
 				}
 				if (raceText.isEmpty()) {
-					LovelaceLogger.debug("Worker not created because race field was empty.");
+					LovelaceLogger.trace("Worker not created because race field was empty.");
 					builder.append("Worker needs a race.").append(System.lineSeparator());
 				}
 				for (final Pair<String, Integer> pair : Arrays.asList(
@@ -187,7 +186,7 @@ import java.util.function.Consumer;
 					final String stat = pair.getValue0();
 					final int val = pair.getValue1();
 					if (val < 0) {
-						LovelaceLogger.debug(
+						LovelaceLogger.trace(
 								"Worker not created because non-positive %s provided", stat);
 						builder.append("%s must be a non-negative number.%n".formatted(stat));
 					}
