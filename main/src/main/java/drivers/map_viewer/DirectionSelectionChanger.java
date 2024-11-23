@@ -28,8 +28,6 @@ import legacy.map.Point;
 	}
 	/**
 	 * Get the base point for the current mode (selection vs cursor).
-	 *
-	 * TODO: boolean to enum
 	 */
 	private Point get(final SelectionMode mode) {
 		switch (mode) {
