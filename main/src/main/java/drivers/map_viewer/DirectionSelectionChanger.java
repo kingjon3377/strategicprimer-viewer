@@ -30,15 +30,10 @@ import legacy.map.Point;
 	 * Get the base point for the current mode (selection vs cursor).
 	 */
 	private Point get(final SelectionMode mode) {
-		switch (mode) {
-			case Selection -> {
-				return model.getSelection();
-			}
-			case Cursor -> {
-				return model.getCursor();
-			}
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (mode) {
+			case Selection -> model.getSelection();
+			case Cursor -> model.getCursor();
+		};
 	}
 
 	/**
