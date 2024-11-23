@@ -1,7 +1,7 @@
 package drivers.common;
 
 import legacy.map.HasKind;
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasOwner;
 import legacy.map.Player;
 

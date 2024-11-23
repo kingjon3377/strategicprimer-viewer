@@ -28,7 +28,7 @@ import lovelace.util.BoxPanel;
 import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
 import lovelace.util.FormattedLabel;
-import common.map.HasPortrait;
+import legacy.map.HasPortrait;
 import legacy.map.HasOwner;
 import legacy.map.TileFixture;
 import legacy.map.TileType;

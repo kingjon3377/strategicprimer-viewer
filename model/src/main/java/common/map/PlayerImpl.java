@@ -42,7 +42,7 @@ public record PlayerImpl(int playerId, String name, String country, String portr
 			return true;
 		} else if (obj instanceof final Player p) {
 			return playerId == p.playerId() &&
-					name.equals(p.getName()) &&
+					name.equals(p.name()) &&
 					country.equals(p.country());
 		} else {
 			return false;

@@ -1,6 +1,6 @@
 package utility;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.Animal;
 import legacy.map.fixtures.mobile.IUnit;

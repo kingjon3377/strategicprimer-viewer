@@ -1,6 +1,6 @@
 package worker.common;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasOwner;
 
 import java.util.Collection;

@@ -1,7 +1,5 @@
 package legacy.map;
 
-import common.map.HasName;
-
 /**
  * An interface for things that have a name that can change.
  */

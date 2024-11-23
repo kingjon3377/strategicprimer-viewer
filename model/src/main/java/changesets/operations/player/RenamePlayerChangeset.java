@@ -31,7 +31,7 @@ public final class RenamePlayerChangeset implements Changeset {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
 			if (item.playerId() == playerId) {
-				if (oldName.equals(item.getName())) {
+				if (oldName.equals(item.name())) {
 					return;
 				} else {
 					throw new PreconditionFailureException("Cannot rename player if old name doesn't match");

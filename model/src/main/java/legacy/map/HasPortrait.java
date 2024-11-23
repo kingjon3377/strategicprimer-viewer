@@ -1,4 +1,4 @@
-package common.map;
+package legacy.map;
 
 /**
  * An interface for model objects that may have a "portrait" to display in the

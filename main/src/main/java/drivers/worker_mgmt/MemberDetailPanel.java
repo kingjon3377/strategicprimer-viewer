@@ -32,7 +32,7 @@ import lovelace.util.BorderedPanel;
 import lovelace.util.Platform;
 import lovelace.util.InterpolatedLabel;
 
-import common.map.HasPortrait;
+import legacy.map.HasPortrait;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;

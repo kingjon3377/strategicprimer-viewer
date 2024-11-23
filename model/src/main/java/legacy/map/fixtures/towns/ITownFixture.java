@@ -6,8 +6,8 @@ import legacy.map.HasKind;
 import org.jetbrains.annotations.Nullable;
 
 import legacy.map.TileFixture;
-import common.map.HasPortrait;
-import common.map.HasName;
+import legacy.map.HasPortrait;
+import legacy.map.HasName;
 import legacy.map.HasOwner;
 
 /**

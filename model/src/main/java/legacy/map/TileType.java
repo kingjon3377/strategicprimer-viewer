@@ -1,7 +1,5 @@
 package legacy.map;
 
-import common.map.HasName;
-
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;

@@ -2,10 +2,8 @@ package common.map;
 
 /**
  * An interface for the representation of a player in the game.
- *
- * TODO: Maybe drop the Has* interfaces?
  */
-public interface Player extends Comparable<Player>, HasName, HasPortrait {
+public interface Player extends Comparable<Player> {
 	/**
 	 * The player's ID number.
 	 */
@@ -15,11 +13,6 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 	 * The (code) name of the player
 	 */
 	String name();
-
-	@Override
-	default String getName() {
-		return name();
-	}
 
 	/**
 	 * Whether this is the (or an) "independent" player---the "owner" of
@@ -33,11 +26,6 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 	 * The filename of a flag for the player.
 	 */
 	String portrait();
-
-	@Override
-	default String getPortrait() {
-		return portrait();
-	}
 
 	/**
 	 * The country the player is associated with. The empty string if not provided. TODO: Should this be required to be

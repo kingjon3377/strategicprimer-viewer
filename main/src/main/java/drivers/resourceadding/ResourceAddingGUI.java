@@ -1,6 +1,6 @@
 package drivers.resourceadding;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import drivers.common.DriverFailedException;
 
 import javax.xml.stream.XMLStreamException;

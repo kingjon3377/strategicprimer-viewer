@@ -2,7 +2,7 @@ package query;
 
 import common.map.fixtures.Quantity;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.fixtures.LegacyQuantity;
 
 /**

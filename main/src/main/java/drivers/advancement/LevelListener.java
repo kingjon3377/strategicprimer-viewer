@@ -3,7 +3,7 @@ package drivers.advancement;
 import drivers.common.cli.ICLIHelper;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.HasName;
+import legacy.map.HasName;
 
 import legacy.map.fixtures.UnitMember;
 

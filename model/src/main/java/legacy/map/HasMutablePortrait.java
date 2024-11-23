@@ -1,7 +1,5 @@
 package legacy.map;
 
-import common.map.HasPortrait;
-
 /**
  * An interface for model objects that may have a "portrait" to display in the
  * "fixture details" panel, where that portrait can be changed.

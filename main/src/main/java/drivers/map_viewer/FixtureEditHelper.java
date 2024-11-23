@@ -1,6 +1,6 @@
 package drivers.map_viewer;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasOwner;
 import org.jetbrains.annotations.Nullable;
 

@@ -123,7 +123,7 @@ public class SPMap implements IMutableMap {
 		if (!Objects.equals(toRemove, players.getPlayer(toRemove.playerId()))) {
 			throw new IllegalArgumentException("Player to remove must exist in the map");
 		} else if (toRemove.playerId() != toAdd.playerId() &&
-				!players.getPlayer(toAdd.playerId()).getName().isEmpty()) {
+				!players.getPlayer(toAdd.playerId()).name().isEmpty()) {
 			// TODO: Make some way to either get the player in the collection, *or nothing if none*, or else test if a
 			//  player exists in the collection
 			throw new IllegalArgumentException("Player to add must not have an ID already in use after removal");

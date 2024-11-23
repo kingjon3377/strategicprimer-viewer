@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.HasName;
+import legacy.map.HasName;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;

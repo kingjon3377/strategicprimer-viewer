@@ -5,9 +5,9 @@ import java.util.NavigableMap;
 import legacy.map.HasImage;
 import legacy.map.IFixture;
 import legacy.map.HasKind;
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasOwner;
-import common.map.HasPortrait;
+import legacy.map.HasPortrait;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.FortressMember;
 

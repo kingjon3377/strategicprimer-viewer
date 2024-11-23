@@ -1,10 +1,10 @@
 package legacy.map.fixtures.mobile;
 
 import legacy.map.HasImage;
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasNotes;
 import legacy.map.HasKind;
-import common.map.HasPortrait;
+import legacy.map.HasPortrait;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.worker.IJob;

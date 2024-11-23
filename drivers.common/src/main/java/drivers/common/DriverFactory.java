@@ -1,6 +1,6 @@
 package drivers.common;
 
-import common.map.HasName;
+import legacy.map.HasName;
 
 /**
  * An interface for factories for drivers, so one run() method can start

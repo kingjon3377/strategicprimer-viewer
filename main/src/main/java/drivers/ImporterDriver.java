@@ -36,7 +36,7 @@ import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.LegacyMap;
 import legacy.map.MapDimensionsImpl;
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.ILegacyMap;
 
 import legacy.xmlio.MapIOHelper;

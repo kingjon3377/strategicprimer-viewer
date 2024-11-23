@@ -3,7 +3,7 @@ package drivers.common.cli;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.Point;
 
 import java.math.BigDecimal;

@@ -49,7 +49,7 @@ import static lovelace.util.AssertAny.assertAny;
 
 import common.idreg.DuplicateIDException;
 import legacy.map.HasMutablePortrait;
-import common.map.HasPortrait;
+import legacy.map.HasPortrait;
 import legacy.map.Player;
 import legacy.map.MutablePlayer;
 import legacy.map.PlayerImpl;

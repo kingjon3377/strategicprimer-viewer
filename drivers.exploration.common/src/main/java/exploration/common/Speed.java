@@ -1,7 +1,7 @@
 package exploration.common;
 
 import legacy.map.Direction;
-import common.map.HasName;
+import legacy.map.HasName;
 
 /**
  * An enumeration of possible movement speeds, joining their effects on MP

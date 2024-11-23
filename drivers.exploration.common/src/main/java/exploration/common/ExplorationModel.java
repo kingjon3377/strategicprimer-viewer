@@ -1,6 +1,6 @@
 package exploration.common;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.resources.MineralVein;
 import legacy.map.fixtures.resources.StoneDeposit;

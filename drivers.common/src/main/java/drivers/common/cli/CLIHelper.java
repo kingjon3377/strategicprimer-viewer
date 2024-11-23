@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.HashMap;
 
-import common.map.HasName;
+import legacy.map.HasName;
 
 import static lovelace.util.NumParsingHelper.isNumeric;
 import static lovelace.util.NumParsingHelper.parseInt;

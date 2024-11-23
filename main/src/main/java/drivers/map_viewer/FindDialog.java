@@ -33,7 +33,7 @@ import static lovelace.util.BoxPanel.BoxAxis;
 import lovelace.util.BorderedPanel;
 
 import legacy.map.IFixture;
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.map.HasKind;
 import legacy.map.Player;
 import legacy.map.HasOwner;

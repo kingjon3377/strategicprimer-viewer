@@ -1,4 +1,4 @@
-package common.map;
+package legacy.map;
 
 /**
  * An interface for things that have a name.

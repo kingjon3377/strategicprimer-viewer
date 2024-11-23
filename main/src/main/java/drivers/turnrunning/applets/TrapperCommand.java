@@ -1,6 +1,6 @@
 package drivers.turnrunning.applets;
 
-import common.map.HasName;
+import legacy.map.HasName;
 
 /**
  * Possible actions a trapper can take. TODO: move into the class that uses

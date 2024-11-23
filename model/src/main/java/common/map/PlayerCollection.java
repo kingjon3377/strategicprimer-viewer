@@ -160,13 +160,13 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 					continue;
 				}
 				final Player ours = players.get(player.playerId());
-				if (Objects.isNull(ours) || !unknownName.test(ours.getName())) {
+				if (Objects.isNull(ours) || !unknownName.test(ours.name())) {
 					return false;
 				}
 			}
 			for (final Player player : this) {
 				final Player theirs = pc.getPlayer(player.playerId());
-				if (!theirs.getName().equals(player.getName()) && !unknownName.test(theirs.getName())) {
+				if (!theirs.name().equals(player.name()) && !unknownName.test(theirs.name())) {
 					return false;
 				}
 			}

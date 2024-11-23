@@ -2,7 +2,7 @@ package report.generators.tabular;
 
 import java.util.List;
 
-import common.map.HasName;
+import legacy.map.HasName;
 import legacy.DistanceComparatorImpl;
 import legacy.map.HasOwner;
 import org.javatuples.Pair;
