@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -84,13 +85,8 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 		// TODO: break up by owner beyond owned/independent
 		FixtureMatcher.complements(Village.class, v -> v.owner().isIndependent(),
 				"Independent Villages", "Villages With Suzerain").forEach(matchers::add);
-		// TODO: Use for-each loops and Arrays.asList() to condense stretches where we don't provide the plural
-		matchers.add(FixtureMatcher.trivialMatcher(Mine.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Troll.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Simurgh.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Ogre.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Minotaur.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Griffin.class));
+		Stream.of(Mine.class, Troll.class, Simurgh.class, Ogre.class,
+				Minotaur.class, Griffin.class).map(FixtureMatcher::trivialMatcher).forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(Sphinx.class, "Sphinxes"));
 		matchers.add(FixtureMatcher.trivialMatcher(Phoenix.class, "Phoenixes"));
 		matchers.add(FixtureMatcher.trivialMatcher(Djinn.class, "Djinni"));
@@ -99,12 +95,8 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 		matchers.add(FixtureMatcher.trivialMatcher(Giant.class));
 		matchers.add(FixtureMatcher.trivialMatcher(Dragon.class));
 		matchers.add(FixtureMatcher.trivialMatcher(Pegasus.class, "Pegasi"));
-		matchers.add(FixtureMatcher.trivialMatcher(Snowbird.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Thunderbird.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Unicorn.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Kraken.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Cave.class));
-		matchers.add(FixtureMatcher.trivialMatcher(Battlefield.class));
+		Stream.of(Snowbird.class, Thunderbird.class, Unicorn.class, Kraken.class, Cave.class, Battlefield.class)
+				.map(FixtureMatcher::trivialMatcher).forEach(matchers::add);
 		FixtureMatcher.complements(Animal.class, Animal::isTalking, "Talking Animals", "Animals")
 				.forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(AnimalTracks.class, "Animal Tracks"));
