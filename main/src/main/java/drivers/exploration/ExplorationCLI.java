@@ -60,7 +60,6 @@ import legacy.map.fixtures.mobile.IUnit;
 
 	@Override
 	public void startDriver() {
-		// TODO: Set up eCLI in constructor, surely? Or else remove it as listener at end
 		final ExplorationCLIHelper eCLI = new ExplorationCLIHelper(model, cli);
 		model.addSelectionChangeListener(eCLI);
 		model.addMovementCostListener(eCLI);
@@ -74,5 +73,7 @@ import legacy.map.fixtures.mobile.IUnit;
 				}
 			}
 		}
+		model.removeSelectionChangeListener(eCLI);
+		model.removeMovementCostListener(eCLI);
 	}
 }
