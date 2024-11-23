@@ -3,6 +3,7 @@ package drivers.exploration;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
+import java.awt.Shape;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.Serial;
@@ -86,12 +87,13 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public void paintComponent(final Graphics pen) {
 		super.paintComponent(pen);
+		final @Nullable Shape oldClip = pen.getClip();
 		final Coordinate origin = new Coordinate(0, 0);
 		final Coordinate dimensions = new Coordinate(getWidth(), getHeight());
 		pen.setClip(getLeftClip());
 		helper.drawTile(pen, master, localPoint, origin, dimensions);
 		pen.setClip(getRightClip());
 		helper.drawTile(pen, subordinate, localPoint, origin, dimensions);
-		// FIXME: clear clip
+		pen.setClip(oldClip);
 	}
 }
