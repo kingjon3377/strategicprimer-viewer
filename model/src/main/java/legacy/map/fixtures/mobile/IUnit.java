@@ -54,7 +54,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		// e.g. it maps (-1, 0, 1, 2, 3) to (3, 2, 1, 0, -1)
 		return IntStream.rangeClosed(-1, turn).map(i -> turn - i - 1)
 				.mapToObj(getAllOrders()::get).filter(Objects::nonNull)
-				.map(String::trim).filter(s -> !s.isEmpty()).findFirst()
+				.map(String::strip).filter(s -> !s.isEmpty()).findFirst()
 				.orElse("");
 	}
 
@@ -65,7 +65,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		// Reversing the order of the range as in getLatestOrders()
 		return IntStream.rangeClosed(-1, turn).map(i -> turn - i - 1)
 				.mapToObj(getAllResults()::get).filter(Objects::nonNull)
-				.map(String::trim).filter(s -> !s.isEmpty()).findFirst()
+				.map(String::strip).filter(s -> !s.isEmpty()).findFirst()
 				.orElse("");
 	}
 

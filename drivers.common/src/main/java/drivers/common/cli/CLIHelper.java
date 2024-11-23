@@ -287,7 +287,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public @Nullable String inputString(final String prompt) {
 		writePrompt(prompt);
-		return Optional.ofNullable(readLine()).map(String::trim).orElse(null); // TODO: String::strip instead of ::trim
+		return Optional.ofNullable(readLine()).map(String::strip).orElse(null);
 	}
 
 	/**
