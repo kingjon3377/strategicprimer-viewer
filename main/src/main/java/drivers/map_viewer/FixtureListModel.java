@@ -220,20 +220,20 @@ public final class FixtureListModel implements ListModel<TileFixture>, Selection
 	 */
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public boolean addFixture(final TileFixture fixture) {
-		if (fixture instanceof final TileTypeFixture ttf) {
+		if (fixture instanceof TileTypeFixture(final TileType tileType)) {
 			final TileType existingTerrain = terrainSource.apply(point);
 			if (Objects.nonNull(existingTerrain)) {
-				if (existingTerrain == ttf.tileType()) {
+				if (existingTerrain == tileType) {
 					return true;
 				} else if (Objects.nonNull(terrainSink)) {
-					terrainSink.accept(point, ttf.tileType());
+					terrainSink.accept(point, tileType);
 					fireContentsChanged(new Range(0, 0));
 					return true;
 				} else {
 					return false;
 				}
 			} else if (Objects.nonNull(terrainSink)) {
-				terrainSink.accept(point, ttf.tileType());
+				terrainSink.accept(point, tileType);
 				fireIntervalAdded(new Range(0, 0));
 				return true;
 			} else {

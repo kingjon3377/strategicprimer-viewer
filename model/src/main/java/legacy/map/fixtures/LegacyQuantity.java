@@ -70,9 +70,9 @@ public record LegacyQuantity(Number number, String units)
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof final LegacyQuantity q) {
-			return units.equals(q.units()) &&
-					NumberComparator.compareNumbers(number, q.number()) == 0;
+		} else if (obj instanceof LegacyQuantity(final Number objNumber, final String objUnits)) {
+			return units.equals(objUnits) &&
+					NumberComparator.compareNumbers(number, objNumber) == 0;
 		} else {
 			return false;
 		}

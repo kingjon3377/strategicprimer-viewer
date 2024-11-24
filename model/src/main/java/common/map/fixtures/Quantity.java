@@ -47,9 +47,9 @@ public record Quantity(Number number, String units) implements Comparable<Quanti
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof final Quantity q) {
-			return units.equals(q.units()) &&
-					NumberComparator.compareNumbers(number, q.number()) == 0;
+		} else if (obj instanceof Quantity(final Number objNumber, final String objUnits)) {
+			return units.equals(objUnits) &&
+					NumberComparator.compareNumbers(number, objNumber) == 0;
 		} else {
 			return false;
 		}
