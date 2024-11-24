@@ -53,7 +53,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final String... tags)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		if (!SP_NAMESPACE.equals(element.getName().getNamespaceURI()) &&
 				!XMLConstants.NULL_NS_URI.equals(element.getName().getNamespaceURI())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
@@ -102,7 +102,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException if the tag doesn't have that parameter
 	 */
 	protected static String getAttribute(final StartElement element, final @Nullable Path file, final String param)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.isNull(attr)) {
 			throw new MissingPropertyException(element, file, param);
@@ -172,7 +172,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
 	                                             final String param)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.isNull(attr)) {
 			throw new MissingPropertyException(element, path, param);
@@ -236,7 +236,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException on unwanted child tags
 	 */
 	protected static void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		for (final XMLEvent event : reader) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se, path);
@@ -426,7 +426,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	public static int getIntegerAttribute(final StartElement tag, final @Nullable Path path,
 	                                      final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
 			throw new MissingPropertyException(tag, path, parameter);
@@ -474,7 +474,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
 	                                            final String parameter, final Number defaultValue,
 	                                            final Warning warner)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
 			return defaultValue;
@@ -510,7 +510,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
 	                                            final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
 			throw new MissingPropertyException(tag, path, parameter);
@@ -649,7 +649,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException on unwanted intervening tags
 	 */
 	protected static String getTextUntil(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			switch (event) {

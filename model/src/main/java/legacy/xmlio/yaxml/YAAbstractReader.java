@@ -85,7 +85,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final String... tags)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		if (!isSupportedNamespace(element.getName())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
 		}
@@ -102,7 +102,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final Collection<String> tags)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		if (!isSupportedNamespace(element.getName())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, path, element);
 		}
@@ -137,7 +137,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter (aka attribute aka property) from an XML tag.
 	 */
 	protected static String getParameter(final StartElement element, final @Nullable Path path, final String param)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
@@ -278,7 +278,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static int getIntegerParameter(final StartElement element, final @Nullable Path path,
 	                                         final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
@@ -298,7 +298,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static int getIntegerParameter(final StartElement element, final @Nullable Path path,
 	                                         final String parameter, final int defaultValue)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (Objects.nonNull(attr)) {
 			final String retval = attr.getValue();
@@ -439,7 +439,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * name, but object to any start elements.
 	 */
 	protected final void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader, final String... futureTags)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		for (final XMLEvent event : reader) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (FUTURE_TAGS.stream().anyMatch(se.getName().getLocalPart()::equalsIgnoreCase)) {
@@ -462,7 +462,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static boolean getBooleanParameter(final StartElement element, final @Nullable Path path,
 	                                             final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (Objects.nonNull(attr)) {
 			final String val = attr.getValue();
@@ -546,7 +546,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected final String getParamWithDeprecatedForm(final StartElement element, final @Nullable Path path,
 	                                                  final String preferred, final String deprecated)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		final Attribute preferredProperty = getAttributeByName(element, preferred);
 		if (Objects.nonNull(preferredProperty)) {
 			final String retval = preferredProperty.getValue();

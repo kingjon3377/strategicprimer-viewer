@@ -48,7 +48,7 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
 		final IMutableMap retval = (IMutableMap) map.copy();
 		// TODO: Make a way to construct an IMap with modification to its player collection
 		applyInPlace(retval);

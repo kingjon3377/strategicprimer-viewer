@@ -177,7 +177,7 @@ public final class MapTradeCLI implements CLIDriver {
 	}
 
 	@Override
-	public void startDriver() throws DriverFailedException {
+	public void startDriver() throws IncorrectUsageException {
 		final ILegacyMap first = model.getMap();
 		if (!model.getSubordinateMaps().iterator().hasNext()) {
 			throw new IncorrectUsageException(MapTradeFactory.USAGE);

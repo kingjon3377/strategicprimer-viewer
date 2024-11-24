@@ -103,7 +103,7 @@ import java.util.function.Predicate;
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
 	private static StartElement getFirstStartElement(final @Nullable Path file, final Iterable<XMLEvent> stream, final StartElement parent)
-			throws SPFormatException {
+			throws MissingChildException {
 		for (final XMLEvent element : stream) {
 			if (element instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				return se;
