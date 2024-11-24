@@ -4,7 +4,6 @@ import legacy.map.IMutableLegacyMap;
 
 import drivers.common.DriverFactory;
 import drivers.common.DriverUsage;
-import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.ModelDriver;
 import drivers.common.ModelDriverFactory;

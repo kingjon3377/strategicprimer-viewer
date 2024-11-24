@@ -22,7 +22,6 @@ import legacy.xmlio.IMapReader;
 import impl.xmlio.ISPReader;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
-import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
 

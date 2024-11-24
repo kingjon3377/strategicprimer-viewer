@@ -6,7 +6,6 @@ import legacy.map.Point;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**

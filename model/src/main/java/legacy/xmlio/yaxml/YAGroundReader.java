@@ -13,7 +13,6 @@ import lovelace.util.ThrowingConsumer;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.Ground;
 import common.xmlio.Warning;
-import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 /**

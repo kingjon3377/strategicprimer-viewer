@@ -1,7 +1,6 @@
 package legacy.map;
 
 import java.text.ParseException;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**

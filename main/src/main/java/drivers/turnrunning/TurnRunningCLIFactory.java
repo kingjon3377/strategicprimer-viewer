@@ -7,7 +7,6 @@ import drivers.common.IDriverUsage;
 import drivers.common.ParamCount;
 import drivers.common.ModelDriver;
 import drivers.common.SPOptions;
-import drivers.common.IDriverModel;
 
 import drivers.common.cli.ICLIHelper;
 

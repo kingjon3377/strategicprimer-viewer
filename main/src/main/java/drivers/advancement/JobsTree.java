@@ -7,10 +7,7 @@ import javax.swing.event.TreeSelectionEvent;
 
 import javax.swing.JTree;
 
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import java.io.Serial;
 import java.util.ArrayList;

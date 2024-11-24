@@ -1,6 +1,5 @@
 package drivers.worker_mgmt;
 
-import drivers.common.IDriverModel;
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;

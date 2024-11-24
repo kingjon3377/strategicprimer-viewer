@@ -6,7 +6,6 @@ import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IMultiMapModel;
-import drivers.common.IDriverModel;
 import drivers.common.DriverFactory;
 import drivers.common.ModelDriverFactory;
 import drivers.common.ModelDriver;

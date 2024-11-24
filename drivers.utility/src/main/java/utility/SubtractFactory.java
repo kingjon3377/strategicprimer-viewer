@@ -7,7 +7,6 @@ import drivers.common.DriverUsage;
 import drivers.common.IDriverUsage;
 import drivers.common.ModelDriver;
 import drivers.common.SPOptions;
-import drivers.common.IDriverModel;
 import drivers.common.cli.ICLIHelper;
 import legacy.map.IMutableLegacyMap;
 

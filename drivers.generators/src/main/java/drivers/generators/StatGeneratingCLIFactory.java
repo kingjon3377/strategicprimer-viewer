@@ -2,7 +2,6 @@ package drivers.generators;
 
 import legacy.map.IMutableLegacyMap;
 
-import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;

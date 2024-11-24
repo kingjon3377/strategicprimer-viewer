@@ -10,7 +10,6 @@ import java.util.List;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.SPOptions;

@@ -7,11 +7,8 @@ import common.map.IMap;
 import common.map.IMutableMap;
 import common.map.IMutablePlayerCollection;
 import common.map.Player;
-import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 public final class SetCurrentPlayerChangeset implements Changeset {

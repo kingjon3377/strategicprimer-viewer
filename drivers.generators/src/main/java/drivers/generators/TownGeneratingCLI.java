@@ -1,7 +1,6 @@
 package drivers.generators;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import drivers.common.DriverFailedException;
 import drivers.exploration.old.MissingTableException;

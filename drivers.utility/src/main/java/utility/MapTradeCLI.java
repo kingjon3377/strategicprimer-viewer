@@ -20,7 +20,6 @@ import legacy.map.TileFixture;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.towns.AbstractTown;
