@@ -166,11 +166,6 @@ import legacy.map.Point;
 		}
 	}
 
-	@FunctionalInterface
-	private interface BooleanConsumer {
-		void accept(boolean bool);
-	}
-
 	// FIXME: A multi-tile scroll should only set the selection (or cursor) *once*, not for each tile it passes
 	//  through ... but we still need to make sure we don't go beyond bounds.
 
