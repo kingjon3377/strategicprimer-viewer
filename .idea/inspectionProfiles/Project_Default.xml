@@ -274,7 +274,7 @@
     <inspection_tool class="ExtendsUtilityClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ExternalizableWithSerializationMethods" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FallthruInSwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="FeatureEnvy" enabled="true" level="WARNING" enabled_by_default="true">
+    <inspection_tool class="FeatureEnvy" enabled="false" level="WARNING" enabled_by_default="false">
       <scope name="Tests" level="WARNING" enabled="false">
         <option name="ignoreTestCases" value="false" />
       </scope>
