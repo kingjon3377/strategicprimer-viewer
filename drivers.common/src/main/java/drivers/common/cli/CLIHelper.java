@@ -294,7 +294,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further questions.
 	 */
 	@Override
-	public @Nullable BooleanResponse inputBooleanInSeries(final String prompt, final String key,
+	public BooleanResponse inputBooleanInSeries(final String prompt, final String key,
 												  final Predicate<String> shouldQuit) {
 		if (seriesState.containsKey(key)) {
 			writePrompt(prompt);
