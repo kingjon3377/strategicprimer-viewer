@@ -5,6 +5,7 @@ import lovelace.util.ThrowingFunction;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public final class TabularReportGenerator {
 		try {
 			return Double.compare(NUM_FORMAT.parse(actualOne).doubleValue(),
 					NUM_FORMAT.parse(actualTwo).doubleValue());
-		} catch (final Exception except) {
+		} catch (final ParseException except) {
 			return actualOne.compareTo(actualTwo);
 		}
 	}

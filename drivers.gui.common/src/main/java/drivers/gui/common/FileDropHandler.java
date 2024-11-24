@@ -1,5 +1,6 @@
 package drivers.gui.common;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
@@ -44,7 +45,7 @@ import lovelace.util.LovelaceLogger;
 			//noinspection unchecked
 			payload = (List<File>) support.getTransferable().getTransferData(
 					DataFlavor.javaFileListFlavor);
-		} catch (final Exception except) {
+		} catch (final UnsupportedFlavorException|IOException except) {
 			LovelaceLogger.warning(except, "Caught an exception trying to unmarshall dropped files");
 			return false;
 		}

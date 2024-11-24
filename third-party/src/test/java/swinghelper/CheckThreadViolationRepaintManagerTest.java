@@ -48,7 +48,7 @@ public final class CheckThreadViolationRepaintManagerTest {
 				test = localTest;
 				localTest.setSize(100, 100);
 			});
-		} catch (final Exception except) {
+		} catch (final InterruptedException | InvocationTargetException except) {
 			except.printStackTrace();
 		}
 		final JButton localTest = Objects.requireNonNull(test);

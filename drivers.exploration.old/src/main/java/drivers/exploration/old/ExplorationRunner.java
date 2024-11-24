@@ -443,7 +443,7 @@ public final class ExplorationRunner {
 				} else {
 					try {
 						loadTableFromFile(child);
-					} catch (final Exception except) {
+					} catch (final IOException except) {
 						LovelaceLogger.error(
 								"Error loading %s, continuing ...",
 								child.getFileName().toString());
