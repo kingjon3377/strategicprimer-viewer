@@ -22,7 +22,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.nio.file.Path;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
-	public static AdventureFixture readAdventure(final StartElement element, final Path path,
+	public static AdventureFixture readAdventure(final StartElement element, final @Nullable Path path,
 	                                             final QName parent, final Iterable<XMLEvent> stream,
 	                                             final ILegacyPlayerCollection players, final Warning warner,
 	                                             final IDRegistrar idFactory)
