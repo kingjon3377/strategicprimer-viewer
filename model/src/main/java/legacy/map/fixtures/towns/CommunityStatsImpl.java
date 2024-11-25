@@ -224,12 +224,10 @@ public final class CommunityStatsImpl implements CommunityStats {
 				return false;
 			} else {
 				for (final IResourcePile resource : other.getYearlyProduction()) {
-					if (yearlyProduction.contains(resource) ||
-							yearlyProduction.stream().anyMatch(
+					if (!yearlyProduction.contains(resource) &&
+							yearlyProduction.stream().noneMatch(
 									r -> r.isSubset(resource, s -> {
 									}))) {
-						continue;
-					} else {
 						report.accept(
 								"Produces a resource we don't, or more than we do: " +
 										resource);
@@ -237,12 +235,10 @@ public final class CommunityStatsImpl implements CommunityStats {
 					}
 				}
 				for (final IResourcePile resource : other.getYearlyConsumption()) {
-					if (yearlyConsumption.contains(resource) ||
-							yearlyConsumption.stream().anyMatch(
+					if (!yearlyConsumption.contains(resource) &&
+							yearlyConsumption.stream().noneMatch(
 									r -> r.isSubset(resource, s -> {
 									}))) {
-						continue;
-					} else {
 						report.accept(
 								"Consumes a resource we don't, or more than we do: " +
 										resource);
