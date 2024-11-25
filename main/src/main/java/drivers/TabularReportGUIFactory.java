@@ -16,10 +16,12 @@ import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
 
+import drivers.common.SimpleDriverModel;
 import drivers.common.cli.ICLIHelper;
 
 import drivers.gui.common.SPFileChooser;
 
+import legacy.map.IMutableLegacyMap;
 import lovelace.util.FileChooser;
 
 import com.google.auto.service.AutoService;
@@ -54,6 +56,11 @@ public final class TabularReportGUIFactory implements GUIDriverFactory<IDriverMo
 	@Override
 	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return new TabularReportGUI(cli, options, model);
+	}
+
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map)  {
+		return new SimpleDriverModel(map);
 	}
 }
 

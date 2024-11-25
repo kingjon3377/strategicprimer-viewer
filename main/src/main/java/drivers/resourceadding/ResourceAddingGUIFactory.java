@@ -60,7 +60,7 @@ public final class ResourceAddingGUIFactory implements GUIDriverFactory<Resource
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
+	public ResourceManagementDriverModel createModel(final IMutableLegacyMap map) {
 		return new ResourceManagementDriverModel(map);
 	}
 }

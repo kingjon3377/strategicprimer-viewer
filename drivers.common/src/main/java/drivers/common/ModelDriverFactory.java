@@ -24,7 +24,5 @@ public interface ModelDriverFactory<ModelType extends IDriverModel> extends Driv
 	 *
 	 * @param map The map
 	 */
-	default IDriverModel createModel(final IMutableLegacyMap map) {
-		return new SimpleDriverModel(map);
-	}
+	ModelType createModel(final IMutableLegacyMap map);
 }

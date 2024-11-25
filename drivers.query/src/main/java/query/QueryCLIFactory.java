@@ -9,9 +9,11 @@ import drivers.common.ModelDriverFactory;
 import drivers.common.DriverFactory;
 import drivers.common.ModelDriver;
 
+import drivers.common.SimpleDriverModel;
 import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
+import legacy.map.IMutableLegacyMap;
 
 import java.util.EnumSet;
 
@@ -33,5 +35,10 @@ public final class QueryCLIFactory implements ModelDriverFactory {
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return new QueryCLI(cli, model);
+	}
+
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map)  {
+		return new SimpleDriverModel(map);
 	}
 }
