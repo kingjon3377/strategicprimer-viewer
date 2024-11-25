@@ -7,6 +7,7 @@ import legacy.map.fixtures.Implement;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -219,7 +220,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		// Note that workers are counted separately; while we include their equipment and mounts we don't include them.
 		return switch (item) {
 			case final IWorker w -> Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
-							w.getEquipment().stream()), Stream.of(w.getMount()))
+							w.getEquipment().stream()), Optional.ofNullable(w.getMount()).stream())
 					.filter(Objects::nonNull);
 			case final Iterable<?> iterable ->  // TODO: FixtureIterable?
 					Stream.concat(StreamSupport.stream(iterable.spliterator(), false)
