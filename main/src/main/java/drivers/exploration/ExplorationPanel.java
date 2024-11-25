@@ -148,7 +148,7 @@ import worker.common.IFixtureEditHelper;
 
 		final JLabel speedLabel = new JLabel("Current relative speed:");
 
-		final Supplier<Speed> speedSource = () -> (Speed) speedModel.getSelectedItem();
+		final Supplier<@Nullable Speed> speedSource = () -> (Speed) speedModel.getSelectedItem();
 		final ImprovedComboBox<Speed> speedBox = new ImprovedComboBox<>(speedModel);
 
 		headerPanel.add(explorerChangeButton);
