@@ -10,5 +10,5 @@ public interface LevelGainListener extends EventListener {
 	/**
 	 * Handle a gained level.
 	 */
-	void level(String workerName, String jobName, String skillName, int gains, int currentLevel);
+	void level(String workerName, String jobName, String skillName, long gains, int currentLevel);
 }

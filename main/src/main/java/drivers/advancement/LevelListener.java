@@ -76,7 +76,7 @@ import java.util.Objects;
 	 * to the shared copies throughout the method.
 	 */
 	@Override
-	public void level(final String workerName, final String jobName, final String skillName, final int gains,
+	public void level(final String workerName, final String jobName, final String skillName, final long gains,
 					  final int currentLevel) {
 		final String actualWorkerName;
 		final String actualSkillName;

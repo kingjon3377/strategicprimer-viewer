@@ -53,7 +53,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	}
 
 	private void fireLevelEvent(final String workerName, final String jobName, final String skillName,
-								final int gains, final int currentLevel) {
+								final long gains, final int currentLevel) {
 		for (final LevelGainListener listener : levelListeners) {
 			listener.level(workerName, jobName, skillName, gains, currentLevel);
 		}
@@ -249,7 +249,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 						} else {
 							cli.printf("%s gained %d levels in %s%n", worker.getName(), count, name);
 						}
-						fireLevelEvent(worker.getName(), job.getName(), name, (int) count,
+						fireLevelEvent(worker.getName(), job.getName(), name, count,
 								job.getSkill(name).getLevel());
 					}
 				} else {
