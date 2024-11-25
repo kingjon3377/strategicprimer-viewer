@@ -11,8 +11,6 @@ import java.util.stream.Stream;
 import java.util.List;
 import java.util.Optional;
 
-import org.jetbrains.annotations.Nullable;
-
 /**
  * A class to allow CLI drivers to present a menu of applets to the user.
  */

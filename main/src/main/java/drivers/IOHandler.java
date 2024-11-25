@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 import legacy.xmlio.MapIOHelper;
-import drivers.map_viewer.ViewerModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

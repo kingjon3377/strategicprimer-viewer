@@ -1,7 +1,6 @@
 package utility;
 
 import legacy.map.IFixture;
-import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 
 import java.util.Collection;
