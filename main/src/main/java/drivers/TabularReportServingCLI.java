@@ -100,16 +100,8 @@ import org.takes.http.Exit;
 		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
 				base -> {
 					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
-					return tableName -> {
-						final Pair<String, String> key = Pair.with(baseName, tableName);
-						if (builders.containsKey(key)) {
-							return builders.get(key)::append;
-						} else {
-							final StringBuilder writer = new StringBuilder();
-							builders.put(key, writer);
-							return writer::append;
-						}
-					};
+					return tableName -> builders.computeIfAbsent(Pair.with(baseName, tableName),
+							k -> new StringBuilder())::append;
 				};
 
 		@SuppressWarnings("ErrorNotRethrown") // It's IOError, and is rethrown wrapped
