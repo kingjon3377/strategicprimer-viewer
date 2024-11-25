@@ -78,8 +78,7 @@ import org.jetbrains.annotations.Nullable;
 				cli.println("Failed to find a fortress to add to in any map");
 			}
 			switch (cli.inputBoolean("Add another resource?")) {
-				case YES -> {
-					another = true;
+				case YES -> { // Do nothing, keep looping
 				}
 				case NO -> {
 					another = false;
