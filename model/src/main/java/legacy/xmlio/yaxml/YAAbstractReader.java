@@ -438,8 +438,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Advance the stream until we hit an end element matching the given
 	 * name, but object to any start elements.
 	 */
-	protected final void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader, final String... futureTags)
-			throws UnwantedChildException {
+	protected final void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader,
+	                                  final String... futureTags) throws UnwantedChildException {
 		for (final XMLEvent event : reader) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (FUTURE_TAGS.stream().anyMatch(se.getName().getLocalPart()::equalsIgnoreCase)) {
@@ -507,7 +507,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * TODO: Try to avoid Boolean parameters
 	 */
 	protected final void requireNonEmptyParameter(final StartElement element, final @Nullable Path path,
-	                                              final String parameter, final boolean mandatory) throws SPFormatException {
+	                                              final String parameter, final boolean mandatory)
+			throws SPFormatException {
 		if (getParameter(element, parameter, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element, path, parameter);
 			if (mandatory) {

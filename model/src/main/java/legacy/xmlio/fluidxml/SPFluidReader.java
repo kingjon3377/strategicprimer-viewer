@@ -150,8 +150,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private static StartElement firstStartElement(final @Nullable Path file, final Iterable<XMLEvent> stream, final StartElement parent)
-			throws MissingChildException {
+	private static StartElement firstStartElement(final @Nullable Path file, final Iterable<XMLEvent> stream,
+	                                              final StartElement parent) throws MissingChildException {
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				return se;

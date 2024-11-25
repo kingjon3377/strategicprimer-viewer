@@ -63,7 +63,8 @@ import java.util.Set;
 				getNumericParameter(element, path, "acres", -1));
 	}
 
-	private CultivationStatus getCultivvation(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	private CultivationStatus getCultivvation(final StartElement element, final @Nullable Path path)
+			throws SPFormatException {
 		if (hasParameter(element, "cultivated")) {
 			return getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
 					CultivationStatus.WILD;

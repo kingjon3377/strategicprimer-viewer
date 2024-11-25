@@ -33,7 +33,8 @@ public final class TownGeneratingCLIFactory implements ModelDriverFactory<Popula
 	}
 
 	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final PopulationGeneratingModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options,
+	                                final PopulationGeneratingModel model) {
 		return new TownGeneratingCLI(cli, model);
 	}
 

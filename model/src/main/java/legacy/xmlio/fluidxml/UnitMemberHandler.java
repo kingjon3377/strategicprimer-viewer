@@ -43,9 +43,9 @@ import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
-	public static Worker readWorker(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream,
-	                                final ILegacyPlayerCollection players, final Warning warner,
-	                                final IDRegistrar idFactory) throws SPFormatException {
+	public static Worker readWorker(final StartElement element, final @Nullable Path path, final QName parent,
+	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, path, parent, "worker");
 		expectAttributes(element, path, warner, "name", "race", "portrait", "id", "image");
 		final Worker retval = setImage(
@@ -114,8 +114,8 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static IJob readJob(final StartElement element, final @Nullable Path path, final QName parent,
-	                           final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
-	                           final IDRegistrar idFactory)
+	                           final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                           final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, path, parent, "job");
 		expectAttributes(element, path, warner, "name", "level");

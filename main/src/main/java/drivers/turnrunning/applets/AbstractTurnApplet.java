@@ -44,15 +44,17 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	private final ICLIHelper cli;
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
-												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior) {
+	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description,
+	                                                     final String none, final String prompt,
+	                                                     final ICLIHelper.ListChoiceBehavior behavior) {
 		return chooseFromList(items, description, none, prompt, behavior, Object::toString);
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
-												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior,
-												   final Function<? super Type, String> converter) {
+	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description,
+	                                                     final String none, final String prompt,
+	                                                     final ICLIHelper.ListChoiceBehavior behavior,
+	                                                     final Function<? super Type, String> converter) {
 		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
 				items.stream().map(converter).collect(Collectors.toList()), description,
 				none, prompt, behavior);

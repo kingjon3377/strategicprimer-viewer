@@ -220,7 +220,7 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 				localReport.accept("Grove vs. orchard differs");
 				retval = false;
 			}
-			if (cultivation != it.getCultivation()) { // TODO: Should a non-cultivated one be a subset of a cultivated one?
+			if (cultivation != it.getCultivation()) { // TODO: Should non-cultivated be a subset of cultivated?
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}

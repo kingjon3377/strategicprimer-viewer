@@ -30,8 +30,8 @@ import java.nio.file.Path;
 	 * Read an adventure from XML.
 	 */
 	@Override
-	public AdventureFixture read(final StartElement element, final @Nullable Path path, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+	public AdventureFixture read(final StartElement element, final @Nullable Path path, final QName parent,
+	                             final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, path, parent, "adventure");
 		expectAttributes(element, path, "owner", "brief", "full", "image", "id");
 		final Player player;

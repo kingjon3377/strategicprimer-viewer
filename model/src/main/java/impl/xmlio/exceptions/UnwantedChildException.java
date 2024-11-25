@@ -140,7 +140,8 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param expected what could have appeared here without triggering the error
 	 */
 	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child,
-	                                                         final @Nullable Path path, final Collection<String> expected) {
+	                                                         final @Nullable Path path,
+	                                                         final Collection<String> expected) {
 		return new UnwantedChildException(parent, child, path, expected);
 	}
 
@@ -181,7 +182,8 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param child   the unwanted child
 	 * @param message the additional message
 	 */
-	public UnwantedChildException(final QName parent, final @Nullable Path path, final StartElement child, final String message) {
+	public UnwantedChildException(final QName parent, final @Nullable Path path, final StartElement child,
+	                              final String message) {
 		super("Unexpected child %s in tag %s: %s".formatted(
 				child.getName().getLocalPart(), parent.getLocalPart(), message), Pair.with(path, child.getLocation()));
 		tag = parent;

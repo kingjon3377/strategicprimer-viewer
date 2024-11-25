@@ -32,7 +32,8 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 		if (map.getPlayers().getCurrentPlayer().playerId() != oldCurrent.playerId()) {
 			throw new PreconditionFailureException(
 					"Can't change current player when 'old current' player isn't current");
-		} else if (StreamSupport.stream(map.getPlayers().spliterator(), false).noneMatch(p -> p.playerId() == newCurrent.playerId())) {
+		} else if (StreamSupport.stream(map.getPlayers().spliterator(), false)
+				.noneMatch(p -> p.playerId() == newCurrent.playerId())) {
 			throw new PreconditionFailureException("Can't change current player to not-found player");
 		}
 	}

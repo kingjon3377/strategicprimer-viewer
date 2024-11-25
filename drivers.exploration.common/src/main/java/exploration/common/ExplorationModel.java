@@ -763,7 +763,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * sensitive information from the copies.
 	 */
 	@Override
-	public final boolean copyToSubMaps(final Point location, final TileFixture fixture, final IFixture.CopyBehavior zero) {
+	public final boolean copyToSubMaps(final Point location, final TileFixture fixture,
+	                                   final IFixture.CopyBehavior zero) {
 		final @Nullable TileFixture matching;
 		boolean retval = false;
 		switch (fixture) {

@@ -20,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 	                                              final @Nullable IUnit val, final int index, final boolean isSelected,
 	                                              final boolean cellHasFocus) {
 		// DefaultListCellRenderer::getListCellRendererComponent doesn't care if 'value' is null!
-		@SuppressWarnings("DataFlowIssue") final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, val, index,
-				isSelected, cellHasFocus);
+		@SuppressWarnings("DataFlowIssue") final Component retval =
+				DEFAULT_RENDERER.getListCellRendererComponent(list, val, index, isSelected, cellHasFocus);
 		// This is not actually always constant, because the above statement actually accepts null!
 		//noinspection ConstantValue
 		if (Objects.nonNull(val) && retval instanceof final JLabel label) {

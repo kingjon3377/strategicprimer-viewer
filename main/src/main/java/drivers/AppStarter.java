@@ -41,7 +41,8 @@ import org.jetbrains.annotations.Nullable;
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		IDriverUsage.DriverMode mode = GraphicsEnvironment.isHeadless() ? IDriverUsage.DriverMode.CommandLine :
 				IDriverUsage.DriverMode.Graphical;
-		@SuppressWarnings("unchecked") final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
+		@SuppressWarnings("unchecked") final SPOptionsImpl currentOptions =
+				new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
 				.toArray(Map.Entry[]::new));
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.addOption("--gui", Boolean.toString(IDriverUsage.DriverMode.Graphical == mode));

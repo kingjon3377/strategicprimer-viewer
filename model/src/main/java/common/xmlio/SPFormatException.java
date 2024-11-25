@@ -37,7 +37,8 @@ public abstract class SPFormatException extends Exception {
 	 * @deprecated Use constructor taking Location if possible
 	 */
 	@Deprecated
-	protected SPFormatException(final String errorMessage, final @Nullable Path file, final int line, final int column) {
+	protected SPFormatException(final String errorMessage, final @Nullable Path file, final int line,
+	                            final int column) {
 		super("Incorrect SP XML at line %d, column %d: %s".formatted(line, column, errorMessage));
 		this.line = line;
 		this.column = column;

@@ -239,7 +239,8 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 			throws UnwantedChildException {
 		for (final XMLEvent event : reader) {
 			switch (event) {
-				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se, path);
+				case final StartElement se when isSPStartElement(event) ->
+						throw new UnwantedChildException(tag, se, path);
 				case final EndElement ee when tag.equals(ee.getName()) -> {
 					return;
 				}

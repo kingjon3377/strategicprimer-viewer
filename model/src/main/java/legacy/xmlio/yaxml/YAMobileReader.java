@@ -144,8 +144,8 @@ import org.jetbrains.annotations.Nullable;
 		MobileFixture apply(String str, int num);
 	}
 
-	private MobileFixture twoParam(final StartElement element, final @Nullable Path path, final StringIntConstructor constr)
-			throws SPFormatException {
+	private MobileFixture twoParam(final StartElement element, final @Nullable Path path,
+	                               final StringIntConstructor constr) throws SPFormatException {
 		expectAttributes(element, path, "id", "kind", "image");
 		return constr.apply(getParameter(element, path, "kind"), getOrGenerateID(element, path));
 	}

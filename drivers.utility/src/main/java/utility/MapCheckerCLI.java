@@ -151,8 +151,8 @@ public final class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean lateriteChecker(final @Nullable TileType terrain, final Point context, final IFixture fixture,
-	                                       final Warning warner) {
+	private static boolean lateriteChecker(final @Nullable TileType terrain, final Point context,
+	                                       final IFixture fixture, final Warning warner) {
 		if (fixture instanceof final StoneDeposit sd && StoneKind.Laterite == sd.getStone() &&
 				TileType.Jungle != terrain) {
 			warner.handle(new SPContentWarning(context, "Laterite stone in non-jungle"));
@@ -204,8 +204,8 @@ public final class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean suspiciousSkillCheck(final @Nullable TileType terrain, final Point context, final IFixture fixture,
-	                                            final Warning warner) {
+	private static boolean suspiciousSkillCheck(final @Nullable TileType terrain, final Point context,
+	                                            final IFixture fixture, final Warning warner) {
 		boolean retval = false;
 		if (fixture instanceof final IWorker w) {
 			if (StreamSupport.stream(w.spliterator(), true)
@@ -229,8 +229,8 @@ public final class MapCheckerCLI implements UtilityDriver {
 		return retval;
 	}
 
-	private static boolean personalEquipmentCheck(final @Nullable TileType terrain, final Point context, final IFixture fixture,
-	                                              final Warning warner) {
+	private static boolean personalEquipmentCheck(final @Nullable TileType terrain, final Point context,
+	                                              final IFixture fixture, final Warning warner) {
 		if (fixture instanceof final IFortress f) {
 			final String matching = f.stream().filter(Implement.class::isInstance)
 					.map(Implement.class::cast).map(Implement::getKind).filter(PERSONAL_EQUIPMENT::contains)
@@ -356,8 +356,9 @@ public final class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean pointlessTracksCheck(final @Nullable TileType terrain, final Point context, final boolean mtn,
-	                                            final Warning warner, final Collection<? extends IFixture> fixtures) {
+	private static boolean pointlessTracksCheck(final @Nullable TileType terrain, final Point context,
+	                                            final boolean mtn, final Warning warner,
+	                                            final Collection<? extends IFixture> fixtures) {
 		final Predicate<IFixture> isAnimal = Animal.class::isInstance;
 		final Function<IFixture, Animal> castToAnimal = Animal.class::cast;
 		for (final IFixture fixture : fixtures) {
@@ -371,8 +372,8 @@ public final class MapCheckerCLI implements UtilityDriver {
 		return false;
 	}
 
-	private static boolean hillInOceanCheck(final @Nullable TileType terrain, final Point context, final IFixture fixture,
-	                                        final Warning warner) {
+	private static boolean hillInOceanCheck(final @Nullable TileType terrain, final Point context,
+	                                        final IFixture fixture, final Warning warner) {
 		if (terrain == TileType.Ocean && fixture instanceof Hill) {
 			warner.handle(new SPContentWarning(context, "Hill in ocean, ID #%d".formatted(fixture.getId())));
 			return true;
@@ -392,8 +393,8 @@ public final class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean nonPoundsFoodCheck(final @Nullable TileType terrain, final Point context, final IFixture fixture,
-	                                          final Warning warner) {
+	private static boolean nonPoundsFoodCheck(final @Nullable TileType terrain, final Point context,
+	                                          final IFixture fixture, final Warning warner) {
 		if (fixture instanceof final IResourcePile rp && "food".equals(rp.getKind()) &&
 				!"pounds".equals(rp.getQuantity().units())) {
 			warner.handle(new SPContentWarning(context, "Non-pounds units '%s' in food, ID #%d".formatted(

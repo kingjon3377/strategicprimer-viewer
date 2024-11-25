@@ -71,7 +71,8 @@ import java.util.function.Consumer;
 	 * If the tag has an "owner" parameter, return the player it indicates;
 	 * otherwise trigger a warning and return the "independent" player.
 	 */
-	private Player getOwnerOrIndependent(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	private Player getOwnerOrIndependent(final StartElement element, final @Nullable Path path)
+			throws SPFormatException {
 		if (hasParameter(element, "owner")) {
 			return players.getPlayer(getIntegerParameter(element, path, "owner"));
 		} else {
@@ -164,8 +165,8 @@ import java.util.function.Consumer;
 							throw UnwantedChildException.listingExpectedTags(
 									stack.isEmpty() ? element.getName() :
 											stack.peekFirst().getName(),
-									se, path, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
-											.toArray(String[]::new));
+									se, path, expectedCommunityStatsTags(Objects.requireNonNullElse(current,
+											"population")).toArray(String[]::new));
 					}
 				}
 				case final EndElement ee when !stack.isEmpty() &&

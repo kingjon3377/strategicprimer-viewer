@@ -142,7 +142,8 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(startingTime)) {
 			return ""; // TODO: null, surely?
 		}
-		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters = encountersGenerator.apply(center);
+		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters =
+				encountersGenerator.apply(center);
 		int time = startingTime;
 		while (time > 0) {
 			final TrapperCommand command = cli.chooseFromList(TRAPPER_COMMANDS, prompt,

@@ -119,7 +119,8 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
-	                   final String shortDescription, final String longDescription, final Set<DriverMode> listsToShowIn) {
+	                   final String shortDescription, final String longDescription,
+	                   final Set<DriverMode> listsToShowIn) {
 		this(mode, invocation, paramsWanted, shortDescription, longDescription,
 				listsToShowIn, "filename.xml");
 	}

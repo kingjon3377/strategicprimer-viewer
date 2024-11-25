@@ -155,9 +155,10 @@ import org.jetbrains.annotations.Nullable;
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		}
 		builder.append(mainInvocation);
+		// FIXME: -c is actually optional for apps with no GUI counterpart
 		switch (usage.getMode()) {
 			case Graphical -> builder.append(" [-g|--gui] ");
-			case CommandLine -> builder.append(" -c|--cli "); // FIXME For apps with no GUI counterpart this is actually optional
+			case CommandLine -> builder.append(" -c|--cli ");
 		}
 		builder.append(usage.getInvocation());
 		for (final String option : usage.getSupportedOptions()) {

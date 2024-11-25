@@ -1448,8 +1448,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(final Grove.GroveType type, final CultivationStatus cultivation, final String trees,
-	                                   final int id)
+	public void testGroveSerialization(final Grove.GroveType type, final CultivationStatus cultivation,
+	                                   final String trees, final int id)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Grove serialization", new Grove(type, cultivation, trees, id));
 		this.<Grove>assertUnwantedChild("""
@@ -2318,7 +2318,8 @@ public final class TestXMLIO {
 						<mineral dc="%d" kind="%s" />""".formatted(dc, kind),
 				"exposed", null);
 		assertMissingProperty("""
-						<mineral kind="%s" exposed="%b" dc="%d" />""".formatted(kind, exposure == ExposureStatus.EXPOSED, dc),
+						<mineral kind="%s" exposed="%b" dc="%d" />""".formatted(kind,
+						exposure == ExposureStatus.EXPOSED, dc),
 				"id", new MineralVein(kind, exposure, dc, 0));
 		assertImageSerialization("Mineral image property is preserved", secondVein);
 	}
