@@ -331,7 +331,7 @@ public final class Worker implements IMutableWorker {
 				}
 			}
 			if (Objects.nonNull(mount)) {
-				retval.setMount(mount.copy(zero));
+				retval.setMount(mount.copy(CopyBehavior.KEEP));
 			}
 			for (final Implement item : equipmentImpl) {
 				retval.addEquipment(item);
