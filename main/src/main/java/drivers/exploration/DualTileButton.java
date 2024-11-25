@@ -1,11 +1,13 @@
 package drivers.exploration;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Polygon;
 
 import java.awt.Shape;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.ImageObserver;
 import java.io.Serial;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -19,6 +21,7 @@ import legacy.map.Point;
 import legacy.map.ILegacyMap;
 
 import drivers.common.FixtureMatcher;
+import legacy.map.TileFixture;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -33,11 +36,18 @@ import org.jetbrains.annotations.Nullable;
 	private final ILegacyMap master;
 	private final ILegacyMap subordinate;
 
+	/**
+	 * Wrapper around {@code imageUpdate}, which is overloaded, so we can pass a method reference instead of "this"
+	 */
+	private boolean imageUpdateWrapper(Image img, int infoFlags, int x, int y, int width, int height) {
+		return imageUpdate(img, infoFlags, x, y, width, height);
+	}
+
 	public DualTileButton(final ILegacyMap master, final ILegacyMap subordinate,
 						  final Iterable<FixtureMatcher> matchers) {
 		this.master = master;
 		this.subordinate = subordinate;
-		helper = new Ver2TileDrawHelper(this, fix -> true,
+		helper = new Ver2TileDrawHelper(this::imageUpdateWrapper, fix -> true,
 				StreamSupport.stream(matchers.spliterator(), false).toArray(FixtureMatcher[]::new));
 		addComponentListener(new ComponentAdapter() {
 			@Override
