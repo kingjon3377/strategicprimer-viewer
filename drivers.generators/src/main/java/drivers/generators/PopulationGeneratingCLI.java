@@ -110,8 +110,8 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 			final int temp = (remainingCount * 2) + 2;
 			if (remainingTotal <= temp) {
 				cli.printf(
-						"With %d groups left, there is only %d left, not enough for 2 or more each%n",
-						remainingCount, remainingTotal);
+						"With %d/%d groups left, there is only %d left, not enough for 2 or more each%n",
+						remainingCount, total, remainingTotal);
 				cli.printf("Adjusting up by %d%n", remainingCount * 3);
 				remainingTotal += remainingCount * 3;
 			}
@@ -156,8 +156,8 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.printf("With %d groups left, there is only %s left%n",
-						remainingCount, remainingTotal); // TODO: adjust instead?
+				cli.printf("With %d/%d groups left, there is only %s left%n",
+						remainingCount, total, remainingTotal); // TODO: adjust instead?
 				return;
 			}
 			final int nextPopulation = (remainingCount == 1) ? remainingTotal :
@@ -193,8 +193,8 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.printf("With %d groups left, there is only %s left%n",
-						remainingCount, remainingTotal); // TODO: adjust instead?
+				cli.printf("With %d/%d groups left, there is only %s left%n",
+						remainingCount, total, remainingTotal); // TODO: adjust instead?
 				return;
 			}
 			final int nextPopulation = (remainingCount == 1) ? remainingTotal :
