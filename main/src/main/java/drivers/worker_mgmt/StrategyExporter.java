@@ -74,8 +74,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					inclusion = j -> j.getLevel() > 0;
 				}
 				final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
-						.filter(inclusion)
-						.collect(Collectors.toList());
+						.filter(inclusion).toList();
 				boolean needsClosingParen = false;
 				if (Objects.nonNull(worker.getMount())) {
 					writer.write(" (on ");
