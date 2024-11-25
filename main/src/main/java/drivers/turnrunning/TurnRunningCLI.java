@@ -126,7 +126,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private final SpoilageApplet spoilageApplet;
 
-	private String createResults(final IUnit unit, final int turn) {
+	private @Nullable String createResults(final IUnit unit, final int turn) {
 		if (unit instanceof final ProxyUnit pu) {
 			model.setSelectedUnit(pu.getProxied().iterator().next());
 		} else {
@@ -144,7 +144,7 @@ import org.jetbrains.annotations.Nullable;
 				if (!applet.getCommands().contains("other")) {
 					final String results = applet.run();
 					if (Objects.isNull(results)) {
-						return "";
+						return null;
 					}
 					buffer.append(results);
 				}
@@ -159,7 +159,7 @@ import org.jetbrains.annotations.Nullable;
 					return buffer.toString();
 				}
 				case EOF -> {
-					return ""; // TODO: why not null? (making the method return type nullable) also below
+					return null;
 				}
 			}
 		}
@@ -171,7 +171,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final String addendum = cli.inputMultilineString(prompt);
 		if (Objects.isNull(addendum)) {
-			return "";
+			return null;
 		}
 		buffer.append(addendum);
 		switch (cli.inputBooleanInSeries("Run advancement for this unit now?")) {
@@ -224,7 +224,7 @@ import org.jetbrains.annotations.Nullable;
 				consumptionApplet.setUnit(unit);
 				final String consumptionResults = consumptionApplet.run();
 				if (Objects.isNull(consumptionResults)) {
-					return "";
+					return null;
 				}
 				if (!consumptionResults.isEmpty()) {
 					buffer.append(System.lineSeparator());
@@ -288,6 +288,9 @@ import org.jetbrains.annotations.Nullable;
 				break;
 			}
 			final String results = createResults(unit, currentTurn);
+			if (Objects.isNull(results)) { // EOF
+				return;
+			}
 			model.setUnitResults(unit, currentTurn, results);
 			if (!unfinishedResults(currentTurn).test(unit)) {
 				units.remove(index);
