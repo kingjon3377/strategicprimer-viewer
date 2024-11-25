@@ -74,6 +74,12 @@ import org.takes.http.Exit;
 		return model;
 	}
 
+	@FunctionalInterface
+	private interface IOThrowingFunction<I, O> extends ThrowingFunction<I, O, IOException> {}
+
+	@FunctionalInterface
+	private interface IOThrowingConsumer<T> extends ThrowingConsumer<T, IOException> {}
+
 	@SuppressWarnings("ErrorNotRethrown")
 	private void serveReports(final int port) throws DriverFailedException {
 		final Map<Path, ILegacyMap> mapping;
@@ -91,8 +97,7 @@ import org.takes.http.Exit;
 
 		final Map<Pair<String, String>, StringBuilder> builders = new HashMap<>();
 
-		// TODO: Make local 'IOThrowingFunction' and 'IOThrowingConsumer' interfaces to condense this signature
-		final ThrowingFunction<Path, ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException>, IOException> filenameFunction =
+		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
 				base -> {
 					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
 					return tableName -> {

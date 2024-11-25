@@ -70,7 +70,7 @@ public final class TabularReportGenerator {
 	 */
 	public static void createTabularReports(
 			final ILegacyMap map,
-			final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
+			final ThrowingFunction<String, ? extends ThrowingConsumer<String, IOException>, IOException> source,
 			final ICLIHelper cli) throws IOException {
 		final Player player = map.getCurrentPlayer();
 		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
@@ -84,7 +84,7 @@ public final class TabularReportGenerator {
 	 */
 	public static void createTabularReports(
 			final ILegacyMap map,
-			final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
+			final ThrowingFunction<String, ? extends ThrowingConsumer<String, IOException>, IOException> source,
 			final ICLIHelper cli, final @Nullable Point hq) throws IOException {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				ReportGeneratorHelper.getFixtures(map);
