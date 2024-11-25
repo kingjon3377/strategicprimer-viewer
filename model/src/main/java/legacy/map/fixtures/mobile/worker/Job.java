@@ -182,13 +182,7 @@ public final class Job implements IMutableJob {
 	 */
 	@Override
 	public ISkill getSkill(final String skillName) {
-		if (skillSet.containsKey(skillName)) {
-			return skillSet.get(skillName);
-		} else {
-			final ISkill skill = new Skill(skillName, 0, 0);
-			skillSet.put(skillName, skill);
-			return skill;
-		}
+		return skillSet.computeIfAbsent(skillName, n -> new Skill(n, 0, 0));
 	}
 
 	/**

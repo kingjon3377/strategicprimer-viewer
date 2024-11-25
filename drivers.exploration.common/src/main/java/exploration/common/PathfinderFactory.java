@@ -17,12 +17,6 @@ public final class PathfinderFactory {
 	 * of an implementation of Dijkstra's shortest-path algorithm.
 	 */
 	public static Pathfinder pathfinder(final ILegacyMap map) {
-		if (pathfinderCache.containsKey(map)) {
-			return pathfinderCache.get(map);
-		} else {
-			final Pathfinder retval = new PathfinderImpl(map);
-			pathfinderCache.put(map, retval);
-			return retval;
-		}
+		return pathfinderCache.computeIfAbsent(map, PathfinderImpl::new);
 	}
 }

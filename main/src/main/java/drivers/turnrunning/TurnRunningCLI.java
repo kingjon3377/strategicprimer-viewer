@@ -104,14 +104,7 @@ import org.jetbrains.annotations.Nullable;
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 		for (final IUnit unit : temp) {
 			final int key = unit.getId();
-			final ProxyUnit proxy;
-			if (tempMap.containsKey(key)) {
-				proxy = tempMap.get(key);
-			} else {
-				final ProxyUnit newProxy = new ProxyUnit(key);
-				tempMap.put(key, newProxy);
-				proxy = newProxy;
-			}
+			final ProxyUnit proxy = tempMap.computeIfAbsent(key, ProxyUnit::new);
 			proxy.addProxied(unit);
 		}
 		return tempMap.values().stream().map(IUnit.class::cast)

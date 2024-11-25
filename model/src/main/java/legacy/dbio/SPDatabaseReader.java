@@ -33,13 +33,7 @@ public final class SPDatabaseReader implements IMapReader {
 	}
 
 	private Transactional getDB(final Path path) {
-		if (connections.containsKey(path)) {
-			return connections.get(path);
-		} else {
-			final Transactional retval = getBaseConnection(path)::getConnection;
-			connections.put(path, retval);
-			return retval;
-		}
+		return connections.computeIfAbsent(path, p -> getBaseConnection(p)::getConnection);
 	}
 
 	private final DBMapReader dbMapReader = new DBMapReader();

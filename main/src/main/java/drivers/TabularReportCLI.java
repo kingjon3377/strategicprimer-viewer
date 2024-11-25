@@ -61,6 +61,7 @@ public final class TabularReportCLI implements ReadOnlyDriver {
 		final String baseName = base.getFileName().toString();
 		return tableName -> {
 			final String key = "%s.%s.csv".formatted(baseName, tableName);
+			// n.b. can't use computeIfAbsent because the function we would pass throws IOException
 			if (writers.containsKey(key)) {
 				return writers.get(key)::write;
 			} else {

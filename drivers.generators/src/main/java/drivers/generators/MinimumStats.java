@@ -58,12 +58,7 @@ import java.util.HashMap;
 				LovelaceLogger.warning("Unexpected format (stat) in minimum-stats file");
 				continue;
 			}
-			final Map<String, Integer> innerMap;
-			if (retval.containsKey(innerKey)) {
-				innerMap = retval.get(innerKey);
-			} else {
-				innerMap = new HashMap<>();
-			}
+			final Map<String, Integer> innerMap = retval.computeIfAbsent(innerKey, _ -> new HashMap<>());
 			innerMap.put(stat, val);
 			retval.put(innerKey, innerMap);
 		}

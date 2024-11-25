@@ -182,13 +182,7 @@ public final class DrawHelperComparator implements UtilityDriver {
 
 	private LongAccumulator getResultsAccumulator(final String file, final String testee, final String test) {
 		final Triplet<String, String, String> tuple = Triplet.with(file, testee, test);
-		if (results.containsKey(tuple)) {
-			return results.get(tuple);
-		} else {
-			final LongAccumulator retval = new LongAccumulator(0);
-			results.put(tuple, retval);
-			return retval;
-		}
+		return results.computeIfAbsent(tuple, _ -> new LongAccumulator(0));
 	}
 
 	private final ICLIHelper cli;

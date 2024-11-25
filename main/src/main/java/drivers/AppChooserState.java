@@ -79,12 +79,8 @@ import org.jetbrains.annotations.Nullable;
 				if (existingList.isEmpty()) {
 					cache.remove(command);
 				}
-			} else if (cache.containsKey(command)) {
-				final List<DriverFactory> list = cache.get(command);
-				list.add(factory);
-				cache.put(command, list);
 			} else {
-				final List<DriverFactory> list = new ArrayList<>();
+				final List<DriverFactory> list = cache.computeIfAbsent(command, _ -> new ArrayList<>());
 				list.add(factory);
 				cache.put(command, list);
 			}

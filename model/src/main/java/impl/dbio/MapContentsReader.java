@@ -74,13 +74,7 @@ public interface MapContentsReader {
 	}
 
 	default void multimapPut(final Map<Integer, List<Object>> mapping, final Integer key, final Object val) {
-		if (mapping.containsKey(key)) {
-			mapping.get(key).add(val);
-		} else {
-			final List<Object> list = new ArrayList<>();
-			list.add(val);
-			mapping.put(key, list);
-		}
+		mapping.computeIfAbsent(key, _ -> new ArrayList<>()).add(val);
 	}
 
 	/**

@@ -60,14 +60,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (village.owner().isIndependent()) {
 				independents.put(village, loc);
 			} else {
-				final HeadedMap<Village, Point> mapping;
-				if (others.containsKey(village.owner())) {
-					mapping = others.get(village.owner());
-				} else {
-					mapping = new HeadedMapImpl<>("<h5>Villages sworn to %s</h5>%n"
-							.formatted(village.owner().getName()), villageComparator);
-					others.put(village.owner(), mapping);
-				}
+				final HeadedMap<Village, Point> mapping = others.computeIfAbsent(village.owner(),
+						p -> new HeadedMapImpl<>("<h5>Villages sworn to %s</h5>%n"
+								.formatted(p.getName()), villageComparator));
 				mapping.put(village, loc);
 			}
 		}

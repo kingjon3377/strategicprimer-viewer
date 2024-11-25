@@ -188,13 +188,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			for (final IUnit unit : units) {
 				if (unit.iterator().hasNext() ||
 						"true".equals(options.getArgument("--print-empty"))) {
-					final List<IUnit> list;
-					if (unitsByKind.containsKey(unit.getKind())) {
-						list = unitsByKind.get(unit.getKind());
-					} else {
-						list = new ArrayList<>();
-						unitsByKind.put(unit.getKind(), list);
-					}
+					final List<IUnit> list = unitsByKind.computeIfAbsent(unit.getKind(), _ -> new ArrayList<>());
 					list.add(unit);
 				}
 			}

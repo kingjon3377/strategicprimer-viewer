@@ -59,13 +59,7 @@ public final class CoalescedHolder<Type extends IFixture, Key> implements Iterab
 	public List<Type> get(final Type item) {
 		final Key key = extractor.apply(item);
 		plural = item.getPlural();
-		if (map.containsKey(key)) {
-			return map.get(key);
-		} else {
-			final List<Type> retval = new ArrayList<>();
-			map.put(key, retval);
-			return retval;
-		}
+		return map.computeIfAbsent(key, _ -> new ArrayList<>());
 	}
 
 	public Iterator<List<Type>> iterator() {

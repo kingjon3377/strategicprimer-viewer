@@ -131,13 +131,7 @@ import query.SmallAnimalModel;
 						"domesticated".equals(a.getStatus())).toList()) {
 			if (herdModels.containsKey(group.getKind())) {
 				final HerdModel hModel = herdModels.get(group.getKind());
-				final List<Animal> list;
-				if (modelMap.containsKey(hModel)) {
-					list = modelMap.get(hModel);
-				} else {
-					list = new ArrayList<>();
-					modelMap.put(hModel, list);
-				}
+				final List<Animal> list = modelMap.computeIfAbsent(hModel, _ -> new ArrayList<>());
 				list.add(group);
 				continue;
 			}
