@@ -281,17 +281,24 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 					} else if (ICLIHelper.BooleanResponse.NO == response) {
 						break;
 					}
-					// TODO: Should this be BooleanResponse instead of Boolean?
-					final Either<SimpleApplet, Boolean> choice = Objects.requireNonNull(appletChooser.chooseApplet());
+					final Either<SimpleApplet, ICLIHelper.BooleanResponse> choice = appletChooser.chooseApplet();
 					final SimpleApplet applet = choice.fromLeft().orElse(null);
-					final Boolean bool = choice.fromRight().orElse(null);
 					if (Objects.isNull(applet)) {
-						if (Objects.isNull(bool)) {
-							// EOF
-							runningTotal = BigDecimal.ZERO;
-							return;
-						} else if (!bool) {
+						final ICLIHelper.BooleanResponse condition = choice.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
+						if (ICLIHelper.BooleanResponse.NO == condition) { // ambiguous/non-present
 							break;
+						}
+						switch (condition) {
+							case YES -> { // "--help", handled in chooseApplet()
+							}
+							case QUIT -> {
+								runningTotal = BigDecimal.ZERO;
+								return;
+							}
+							case EOF -> { // TODO: Somehow signal EOF to caller
+								runningTotal = BigDecimal.ZERO;
+								return;
+							}
 						}
 					} else {
 						applet.invoke();

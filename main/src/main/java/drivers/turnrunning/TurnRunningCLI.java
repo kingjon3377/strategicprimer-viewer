@@ -137,14 +137,10 @@ import org.jetbrains.annotations.Nullable;
 		cli.println(unit.getLatestOrders(turn));
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
-			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			final Boolean bool = Optional.ofNullable(command).map(Either::fromRight).filter(Optional::isPresent)
-					.map(Optional::get).orElse(null);
-			final TurnApplet applet = Optional.ofNullable(command).map(Either::fromLeft).filter(Optional::isPresent)
-					.map(Optional::get).orElse(null);
-			if (Boolean.FALSE.equals(bool)) {
-				return ""; // TODO: why not null? (making the method return type nullable) also below
-			} else if (Objects.nonNull(applet)) {
+			final Either<TurnApplet, ICLIHelper.BooleanResponse> command = appletChooser.chooseApplet();
+			final ICLIHelper.BooleanResponse condition = command.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
+			final TurnApplet applet = command.fromLeft().orElse(null);
+			if (Objects.nonNull(applet)) {
 				if (!applet.getCommands().contains("other")) {
 					final String results = applet.run();
 					if (Objects.isNull(results)) {
@@ -153,6 +149,18 @@ import org.jetbrains.annotations.Nullable;
 					buffer.append(results);
 				}
 				break;
+			}
+			switch (condition) {
+				case YES -> { // "--help", handled in chooseApplet()
+				}
+				case NO -> { // ambiguous/non-present, handled in chooseApplet()
+				}
+				case QUIT -> {
+					return buffer.toString();
+				}
+				case EOF -> {
+					return ""; // TODO: why not null? (making the method return type nullable) also below
+				}
 			}
 		}
 		final String prompt;

@@ -54,22 +54,22 @@ import org.jetbrains.annotations.Nullable;
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
-			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			if (Objects.isNull(command)) {
-				return null;
-			}
-			final Boolean bool = command.fromRight().orElse(null);
-			final TurnApplet applet = command.fromLeft().orElse(null);
-			if (Boolean.FALSE.equals(bool)) {
-				return null;
-			} else if (Objects.nonNull(applet)) {
-				final String results = applet.run();
-				if (Objects.isNull(results)) {
-					return null;
-				}
-				buffer.append(results);
+			final Either<TurnApplet, ICLIHelper.BooleanResponse> command = appletChooser.chooseApplet();
+			if (command.fromLeft().isPresent()) {
+				command.fromLeft().map(TurnApplet::run).ifPresent(buffer::append);
 			} else {
-				continue;
+				switch (command.fromRight().orElse(ICLIHelper.BooleanResponse.EOF)) {
+					case YES -> { // "--help", handled in chooseApplet()
+					}
+					case NO -> { // ambiguous/non-matching, handled in chooseApplet()
+					}
+					case QUIT -> {
+						return buffer.toString();
+					}
+					case EOF -> {
+						return null;
+					}
+				}
 			}
 			switch (cli.inputBoolean("Create more results for this unit?")) {
 				case YES -> { // Do nothing

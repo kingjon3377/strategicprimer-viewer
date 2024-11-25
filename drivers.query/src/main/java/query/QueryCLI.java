@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import legacy.map.fixtures.FixtureIterable;
 
+import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
@@ -350,18 +351,23 @@ public final class QueryCLI implements ReadOnlyDriver {
 	 */
 	@Override
 	public void startDriver() {
+		final Predicate<ICLIHelper.BooleanResponse> isYes = ICLIHelper.BooleanResponse.YES::equals;
+		final Predicate<ICLIHelper.BooleanResponse> isNo = ICLIHelper.BooleanResponse.NO::equals;
 		while (true) {
-			final Either<SimpleApplet, Boolean> selection = appletChooser.chooseApplet();
-			if (Objects.isNull(selection) || (selection.fromRight().isPresent() &&
-					selection.fromRight().get())) {
-				continue;
-			} else if (selection.fromRight().isPresent() &&
-					!selection.fromRight().get()) {
-				break;
-			} else if (selection.fromLeft().isPresent()) {
+			final Either<SimpleApplet, ICLIHelper.BooleanResponse> selection = appletChooser.chooseApplet();
+			if (selection.fromLeft().isPresent()) {
 				selection.fromLeft().get().invoke();
-			} else {
-				throw new IllegalStateException("Impossible Either state");
+				continue;
+			}
+			ICLIHelper.BooleanResponse condition = selection.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
+			switch (condition) {
+				case YES -> { // "--help" etc.; handled in chooseApplet()
+				}
+				case NO -> { // ambiguous/non-matching; handled in chooseApplet()
+				}
+				case QUIT, EOF -> {
+					return;
+				}
 			}
 		}
 	}

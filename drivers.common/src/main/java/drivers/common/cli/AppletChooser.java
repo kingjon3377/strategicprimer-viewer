@@ -59,22 +59,22 @@ public final class AppletChooser<AppletClass extends Applet> {
 	/**
 	 * Ask the user to choose an applet. If the user chooses an applet,
 	 * return it (wrapped in {@link Either}). If the user chooses "quit" or
-	 * "exit", or an EOF condition occurs, return false (wrapped in {@link
-	 * Either}). If the user asks for the usage messge, print it and return
-	 * true (wrapped in {@link Either}). If the user's input is ambiguous
-	 * or does not match any applet, print the usage message and return null.
+	 * "exit", or an EOF condition occurs, return that (wrapped in {@link
+	 * Either}). If the user asks for the usage message, print it and return
+	 * "yes" (wrapped in {@link Either}). If the user's input is ambiguous
+	 * or does not match any applet, print the usage message and return "no".
 	 */
-	public @Nullable Either<AppletClass, Boolean> chooseApplet() {
+	public Either<AppletClass, ICLIHelper.BooleanResponse> chooseApplet() {
 		final String command = Optional.ofNullable(cli.inputString("Command:"))
 				.map(String::toLowerCase).orElse(null);
 		if (Objects.isNull(command)) {
-			return Either.right(false);
+			return Either.right(ICLIHelper.BooleanResponse.EOF);
 		} else {
 			final List<Map.Entry<String, AppletClass>> matches =
 					commands.entrySet().stream().filter(e -> e.getKey().startsWith(command)).toList();
 			if ("quit".startsWith(command) || "exit".startsWith(command)) {
 				if (matches.isEmpty()) {
-					return Either.right(false);
+					return Either.right(ICLIHelper.BooleanResponse.QUIT);
 				} else {
 					cli.println("That command was ambiguous between the following:");
 					cli.println(String.join(", ",
@@ -83,33 +83,33 @@ public final class AppletChooser<AppletClass extends Applet> {
 											matches.stream().map(Map.Entry::getKey))
 									.toArray(String[]::new)));
 					usageMessage();
-					return null;
+					return Either.right(ICLIHelper.BooleanResponse.NO);
 				}
 			} else if ("?".equals(command)) {
 				usageMessage();
-				return Either.right(true);
+				return Either.right(ICLIHelper.BooleanResponse.YES);
 			} else if ("help".startsWith(command)) {
 				if (matches.isEmpty()) {
 					usageMessage();
-					return Either.right(true);
+					return Either.right(ICLIHelper.BooleanResponse.YES);
 				} else {
 					cli.println("That command was ambiguous between the following:");
 					cli.print("help, ");
 					cli.println(String.join(", ", matches.stream()
 							.map(Map.Entry::getKey).toArray(String[]::new)));
 					usageMessage();
-					return null;
+					return Either.right(ICLIHelper.BooleanResponse.NO);
 				}
 			} else if (matches.isEmpty()) {
 				cli.println("Unknown command.");
 				usageMessage();
-				return null;
+				return Either.right(ICLIHelper.BooleanResponse.NO);
 			} else if (matches.size() > 1) {
 				cli.println("That command was ambiguous between the following: ");
 				cli.println(String.join(", ", matches.stream().map(Map.Entry::getKey).
 						toArray(String[]::new)));
 				usageMessage();
-				return null;
+				return Either.right(ICLIHelper.BooleanResponse.NO);
 			} else {
 				return Either.left(matches.getFirst().getValue());
 			}
