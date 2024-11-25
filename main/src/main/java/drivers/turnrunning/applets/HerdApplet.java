@@ -1,5 +1,6 @@
 package drivers.turnrunning.applets;
 
+import either.Either;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.Animal;
@@ -63,11 +64,25 @@ import query.SmallAnimalModel;
 
 	private final Map<String, HerdModel> herdModels = new HashMap<>();
 
-	private @Nullable HerdModel chooseHerdModel(final String animal) {
-		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-								Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
-						.collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
-				"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+	private Either<HerdModel, ICLIHelper.BooleanResponse> chooseHerdModel(final String animal) {
+		while (true) {
+			final @Nullable HerdModel retval = cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
+									Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+							.collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
+					"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			if (Objects.nonNull(retval)) {
+				return Either.left(retval);
+			} else {
+				final ICLIHelper.BooleanResponse resp = cli.inputBoolean("Skip?");
+				switch (resp) {
+					case YES, EOF, QUIT -> {
+						return Either.right(resp);
+					}
+					case NO -> { // Do nothing
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -84,13 +99,17 @@ import query.SmallAnimalModel;
 						"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
-			final HerdModel herdModel = chooseHerdModel(kind);
+			ICLIHelper.BooleanResponse skip = ICLIHelper.BooleanResponse.NO;
+			Either<HerdModel, ICLIHelper.BooleanResponse> herdModelEither = chooseHerdModel(kind);
+			final @Nullable HerdModel herdModel = herdModelEither.fromLeft().orElse(null);
+			final ICLIHelper.BooleanResponse herdModelResp = herdModelEither.fromRight()
+					.orElse(ICLIHelper.BooleanResponse.NO);
 			if (Objects.isNull(herdModel)) {
-				switch (cli.inputBoolean("Skip?")) {
+				switch (herdModelResp) {
 					case YES -> {
 						continue;
 					}
-					case NO -> { // Do nothing
+					case NO -> { // Do nothing; can't actually happen
 					}
 					case QUIT -> {
 						cli.println("Aborting ...");
@@ -100,8 +119,9 @@ import query.SmallAnimalModel;
 						return null;
 					}
 				}
+			} else {
+				herdModels.put(kind, herdModel);
 			}
-			herdModels.put(kind, herdModel);
 		}
 		// TODO: Use a multimap
 		final Map<HerdModel, List<Animal>> modelMap = new HashMap<>();
