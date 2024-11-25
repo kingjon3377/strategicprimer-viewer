@@ -164,7 +164,7 @@ import query.SmallAnimalModel;
 		final boolean experts = unit.stream()
 				.filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.mapToInt(w -> w.getJob("herder").getLevel()).anyMatch(l -> l > 5);
-		int minutesSpent = 0;
+		long minutesSpent = 0;
 		final Consumer<String> addToOrders = string -> {
 			cli.print(string);
 			buffer.append(string);

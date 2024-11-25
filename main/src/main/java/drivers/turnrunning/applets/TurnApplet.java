@@ -15,7 +15,7 @@ public interface TurnApplet extends Applet {
 		run();
 	}
 
-	default String inHours(final int minutes) {
+	default String inHours(final long minutes) {
 		if (minutes < 0) {
 			return "negative " + inHours(-minutes);
 		} else if (minutes == 0) {

@@ -186,7 +186,7 @@ public final class HuntingModel {
 		private final Iterator<Type> wrapped;
 		private final double nothingProportion;
 		private final Type nothingValue;
-		private int counter = 0;
+		private long counter = 0;
 		private boolean switched = false;
 
 		public FiniteResultIterator(final Iterable<Type> stream, final double nothingProportion,
@@ -215,7 +215,7 @@ public final class HuntingModel {
 				return wrapped.next();
 			} else {
 				switched = true;
-				counter *= nothingProportion;
+				counter = Math.round(counter * nothingProportion);
 				return nothingValue;
 			}
 		}
