@@ -1,6 +1,7 @@
 package utility;
 
 import drivers.common.DriverFactory;
+import drivers.common.IDriverModel;
 import drivers.common.ModelDriverFactory;
 import drivers.common.ParamCount;
 import drivers.common.DriverUsage;
@@ -39,5 +40,10 @@ public final class SubtractFactory implements ModelDriverFactory<UtilityDriverMo
 	@Override
 	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
+	}
+
+	@Override
+	public UtilityDriverModel createModel(IDriverModel model) {
+		return new UtilityDriverModel(model);
 	}
 }

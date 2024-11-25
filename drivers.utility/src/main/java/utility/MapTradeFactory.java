@@ -1,6 +1,7 @@
 package utility;
 
 import drivers.common.DriverUsage;
+import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.ParamCount;
 import drivers.common.SPOptions;
@@ -39,5 +40,10 @@ public final class MapTradeFactory implements ModelDriverFactory<MapTradeModel> 
 	@Override
 	public MapTradeModel createModel(final IMutableLegacyMap map) {
 		return new MapTradeModel(map);
+	}
+
+	@Override
+	public MapTradeModel createModel(IDriverModel model) {
+		return new MapTradeModel(model);
 	}
 }

@@ -62,5 +62,10 @@ public final class TabularReportGUIFactory implements GUIDriverFactory<IDriverMo
 	public IDriverModel createModel(final IMutableLegacyMap map)  {
 		return new SimpleDriverModel(map);
 	}
+
+	@Override
+	public IDriverModel createModel(IDriverModel model) {
+		return new SimpleDriverModel(model);
+	}
 }
 

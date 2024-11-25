@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import drivers.common.IDriverModel;
 import legacy.map.IMutableLegacyMap;
 
 import drivers.common.IDriverUsage;
@@ -40,5 +41,10 @@ public final class StatGeneratingCLIFactory implements ModelDriverFactory<Popula
 	@Override
 	public PopulationGeneratingModel createModel(final IMutableLegacyMap map) {
 		return new PopulationGeneratingModel(map);
+	}
+
+	@Override
+	public PopulationGeneratingModel createModel(IDriverModel model) {
+		return new PopulationGeneratingModel(model);
 	}
 }

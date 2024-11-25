@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.nio.file.Path;
 
+import drivers.common.IDriverModel;
 import drivers.common.cli.ICLIHelper;
 import drivers.common.IDriverUsage;
 import drivers.common.ParamCount;
@@ -57,5 +58,10 @@ public final class WorkerMgmtGUIFactory implements GUIDriverFactory<IWorkerModel
 	@Override
 	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
+	}
+
+	@Override
+	public IWorkerModel createModel(IDriverModel model) {
+		return new WorkerModel(model);
 	}
 }

@@ -1,6 +1,7 @@
 package utility.subset;
 
 import drivers.common.DriverUsage;
+import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
@@ -48,5 +49,10 @@ public final class SubsetCLIFactory implements ModelDriverFactory<IMultiMapModel
 	@Override
 	public IMultiMapModel createModel(final IMutableLegacyMap map) {
 		return new SimpleMultiMapModel(map);
+	}
+
+	@Override
+	public IMultiMapModel createModel(IDriverModel model) {
+		return new SimpleMultiMapModel(model);
 	}
 }

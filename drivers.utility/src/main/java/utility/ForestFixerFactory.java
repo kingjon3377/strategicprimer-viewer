@@ -2,6 +2,7 @@ package utility;
 
 import drivers.common.DriverFactory;
 import drivers.common.DriverUsage;
+import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.ModelDriver;
 import drivers.common.ModelDriverFactory;
@@ -38,5 +39,10 @@ public final class ForestFixerFactory implements ModelDriverFactory<UtilityDrive
 	@Override
 	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
+	}
+
+	@Override
+	public UtilityDriverModel createModel(IDriverModel model) {
+		return new UtilityDriverModel(model);
 	}
 }

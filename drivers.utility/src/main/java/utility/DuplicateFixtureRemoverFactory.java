@@ -1,5 +1,6 @@
 package utility;
 
+import drivers.common.IDriverModel;
 import legacy.map.IMutableLegacyMap;
 
 import drivers.common.cli.ICLIHelper;
@@ -41,5 +42,10 @@ public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory<
 	@Override
 	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
+	}
+
+	@Override
+	public UtilityDriverModel createModel(IDriverModel model) {
+		return new UtilityDriverModel(model);
 	}
 }

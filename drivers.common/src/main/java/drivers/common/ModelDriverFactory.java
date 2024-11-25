@@ -25,4 +25,9 @@ public interface ModelDriverFactory<ModelType extends IDriverModel> extends Driv
 	 * @param map The map
 	 */
 	ModelType createModel(final IMutableLegacyMap map);
+
+	/**
+	 * Create a model object of the type we expect that's basically a copy of the given model.
+	 */
+	ModelType createModel(IDriverModel model);
 }

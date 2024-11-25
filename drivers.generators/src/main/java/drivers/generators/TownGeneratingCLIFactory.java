@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
@@ -41,5 +42,10 @@ public final class TownGeneratingCLIFactory implements ModelDriverFactory<Popula
 	@Override
 	public PopulationGeneratingModel createModel(final IMutableLegacyMap map) {
 		return new PopulationGeneratingModel(map);
+	}
+
+	@Override
+	public PopulationGeneratingModel createModel(IDriverModel model) {
+		return new PopulationGeneratingModel(model);
 	}
 }

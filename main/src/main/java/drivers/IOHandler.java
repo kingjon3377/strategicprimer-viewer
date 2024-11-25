@@ -1,6 +1,7 @@
 package drivers;
 
 import drivers.common.DriverFailedException;
+import drivers.common.ModelDriverFactory;
 import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
 
@@ -167,7 +168,7 @@ public final class IOHandler implements ActionListener {
 	 * the EDT, i.e. using {@link SwingUtilities#invokeLater}.
 	 */
 	private void startNewViewerWindow(final ModelDriver driver) {
-		final ViewerDriverFactory vdf =
+		final ViewerDriverFactory<?> vdf =
 				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 						.findAny().orElse(null);
 		if (Objects.isNull(vdf)) {
@@ -175,8 +176,8 @@ public final class IOHandler implements ActionListener {
 			LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
 		} else {
 			try {
-				vdf.createDriver(cli, driver.getOptions().copy(),
-								new ViewerModel(new LegacyMap(driver.getModel().getMapDimensions(),
+				createDriver(vdf, cli, driver.getOptions().copy(),
+								vdf.createModel(new LegacyMap(driver.getModel().getMapDimensions(),
 										new LegacyPlayerCollection(),
 										driver.getModel().getMap().getCurrentTurn())))
 						.startDriver();
@@ -188,7 +189,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	private void openSecondaryInViewer(final IDriverModel model, final SPOptions options) {
-		final ViewerDriverFactory vdf =
+		final ViewerDriverFactory<?> vdf =
 				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 						.findAny().orElse(null);
 		if (Objects.isNull(vdf)) {
@@ -196,12 +197,18 @@ public final class IOHandler implements ActionListener {
 			LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
 		} else {
 			try {
-				vdf.createDriver(cli, options.copy(), new ViewerModel(model)).startDriver();
+				createDriver(vdf, cli, options.copy(), model).startDriver();
 			} catch (final DriverFailedException except) {
 				// FIXME: show error dialog
 				LovelaceLogger.error(except, "Driver failed");
 			}
 		}
+	}
+
+	private static <Model extends IDriverModel> ModelDriver createDriver(final ModelDriverFactory<Model> factory,
+	                                                                     final ICLIHelper cli, final SPOptions options,
+	                                                                     IDriverModel model) {
+		return factory.createDriver(cli, options, factory.createModel(model));
 	}
 
 	@Override
@@ -312,7 +319,7 @@ public final class IOHandler implements ActionListener {
 
 			case "open in map viewer":
 				if (driver instanceof final ModelDriver md) {
-					final ViewerDriverFactory vdf =
+					final ViewerDriverFactory<?> vdf =
 							StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 									.findAny().orElse(null);
 					if (Objects.isNull(vdf)) {
@@ -324,7 +331,7 @@ public final class IOHandler implements ActionListener {
 					} else {
 						SwingUtilities.invokeLater(() -> {
 							try {
-								vdf.createDriver(cli, driver.getOptions().copy(), new ViewerModel(md.getModel()))
+								createDriver(vdf, cli, driver.getOptions().copy(), md.getModel())
 										.startDriver();
 							} catch (final DriverFailedException except) {
 								LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),

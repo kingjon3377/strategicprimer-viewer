@@ -41,4 +41,9 @@ public final class QueryCLIFactory implements ModelDriverFactory {
 	public IDriverModel createModel(final IMutableLegacyMap map)  {
 		return new SimpleDriverModel(map);
 	}
+
+	@Override
+	public IDriverModel createModel(IDriverModel model) {
+		return new SimpleDriverModel(model);
+	}
 }

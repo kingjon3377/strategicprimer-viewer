@@ -1,6 +1,7 @@
 package drivers.turnrunning;
 
 import drivers.common.DriverFactory;
+import drivers.common.IDriverModel;
 import drivers.common.ModelDriverFactory;
 import drivers.common.DriverUsage;
 import drivers.common.IDriverUsage;
@@ -39,5 +40,10 @@ public final class TurnRunningCLIFactory implements ModelDriverFactory<ITurnRunn
 	@Override
 	public ITurnRunningModel createModel(final IMutableLegacyMap map) {
 		return new TurnRunningModel(map);
+	}
+
+	@Override
+	public ITurnRunningModel createModel(IDriverModel model) {
+		return new TurnRunningModel(model);
 	}
 }

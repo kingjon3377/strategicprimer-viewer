@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import drivers.common.IDriverModel;
 import drivers.common.cli.ICLIHelper;
 
 import legacy.map.IMutableLegacyMap;
@@ -39,5 +40,10 @@ public final class ResourceAddingCLIFactory implements ModelDriverFactory<Resour
 	@Override
 	public ResourceManagementDriverModel createModel(final IMutableLegacyMap map) {
 		return new ResourceManagementDriverModel(map);
+	}
+
+	@Override
+	public ResourceManagementDriverModel createModel(IDriverModel model) {
+		return new ResourceManagementDriverModel(model);
 	}
 }

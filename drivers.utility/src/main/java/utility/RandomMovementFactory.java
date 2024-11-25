@@ -1,5 +1,6 @@
 package utility;
 
+import drivers.common.IDriverModel;
 import drivers.common.SPOptions;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
@@ -43,5 +44,10 @@ public final class RandomMovementFactory implements ModelDriverFactory<IExplorat
 	@Override
 	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
+	}
+
+	@Override
+	public IExplorationModel createModel(IDriverModel model) {
+		return new ExplorationModel(model);
 	}
 }

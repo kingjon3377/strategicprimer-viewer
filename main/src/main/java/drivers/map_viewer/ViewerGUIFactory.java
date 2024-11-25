@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import drivers.common.DriverFailedException;
+import drivers.common.IDriverModel;
 import drivers.common.ViewerDriver;
 import drivers.common.ViewerDriverFactory;
 
@@ -54,6 +55,11 @@ public final class ViewerGUIFactory implements ViewerDriverFactory<IViewerModel>
 	@Override
 	public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IViewerModel model) {
 		return ViewerGUI.createDriver(cli, options, model);
+	}
+
+	@Override
+	public IViewerModel createModel(IDriverModel model) {
+		return new ViewerModel(model);
 	}
 
 	@Override

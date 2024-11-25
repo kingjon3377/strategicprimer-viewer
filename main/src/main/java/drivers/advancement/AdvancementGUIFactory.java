@@ -2,6 +2,7 @@ package drivers.advancement;
 
 import drivers.common.DriverFailedException;
 
+import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
@@ -53,6 +54,11 @@ public final class AdvancementGUIFactory implements GUIDriverFactory<IWorkerMode
 		} catch (final FileChooser.ChoiceInterruptedException except) {
 			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
+	}
+
+	@Override
+	public IWorkerModel createModel(IDriverModel model) {
+		return new WorkerModel(model);
 	}
 
 	@Override

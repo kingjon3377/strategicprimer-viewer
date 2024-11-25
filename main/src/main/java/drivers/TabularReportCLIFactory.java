@@ -47,4 +47,9 @@ public final class TabularReportCLIFactory implements ModelDriverFactory<IDriver
 	public IDriverModel createModel(final IMutableLegacyMap map) {
 		return new SimpleMultiMapModel(map);
 	}
+
+	@Override
+	public IDriverModel createModel(IDriverModel model) {
+		return new SimpleMultiMapModel(model);
+	}
 }

@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import drivers.common.IDriverModel;
 import legacy.map.IMutableLegacyMap;
 
 import drivers.common.DriverFactory;
@@ -39,5 +40,10 @@ public final class MapPopulatorFactory implements ModelDriverFactory<IPopulatorD
 	@Override
 	public IPopulatorDriverModel createModel(final IMutableLegacyMap map) {
 		return new PopulatorDriverModel(map);
+	}
+
+	@Override
+	public IPopulatorDriverModel createModel(IDriverModel model) {
+		return new PopulatorDriverModel(model);
 	}
 }

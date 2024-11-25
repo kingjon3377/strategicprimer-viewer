@@ -49,6 +49,10 @@ public class SimpleDriverModel implements IDriverModel {
 		mapDim = mainMap.getDimensions();
 	}
 
+	public SimpleDriverModel(final IDriverModel model) {
+		this(model.getRestrictedMap());
+	}
+
 	@Override
 	public final boolean isMapModified() {
 		return mainMap.isModified();

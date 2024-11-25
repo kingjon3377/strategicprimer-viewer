@@ -1,5 +1,6 @@
 package utility;
 
+import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
@@ -42,5 +43,10 @@ public final class WorkerPrinterFactory implements ModelDriverFactory<IExplorati
 	@Override
 	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
+	}
+
+	@Override
+	public IExplorationModel createModel(IDriverModel model) {
+		return new ExplorationModel(model);
 	}
 }

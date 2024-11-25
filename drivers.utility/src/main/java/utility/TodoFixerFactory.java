@@ -1,5 +1,6 @@
 package utility;
 
+import drivers.common.IDriverModel;
 import drivers.common.cli.ICLIHelper;
 
 import drivers.common.SPOptions;
@@ -41,5 +42,10 @@ public final class TodoFixerFactory implements ModelDriverFactory<UtilityDriverM
 	@Override
 	public UtilityDriverModel createModel(final IMutableLegacyMap map) {
 		return new UtilityDriverModel(map);
+	}
+
+	@Override
+	public UtilityDriverModel createModel(IDriverModel model) {
+		return new UtilityDriverModel(model);
 	}
 }

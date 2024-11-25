@@ -62,7 +62,7 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	private List<Path> extendArguments(final String... args) throws IncorrectUsageException {
-		if (factory instanceof final GUIDriverFactory gdf) {
+		if (factory instanceof final GUIDriverFactory<?> gdf) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
 				files.addAll(MapIOHelper.namesToFiles(args));
@@ -103,6 +103,12 @@ import lovelace.util.LovelaceLogger;
 		}
 	}
 
+	private static <ModelType extends IDriverModel> ModelDriver createDriver(ModelDriverFactory<ModelType> factory,
+	                                                                         ICLIHelper cli, SPOptions options,
+	                                                                         IDriverModel model) {
+		return factory.createDriver(cli, options, factory.createModel(model));
+	}
+
 	public void startCatchingErrors(final ICLIHelper cli, final SPOptions options, final String... args) {
 		try {
 			switch (factory) {
@@ -110,7 +116,7 @@ import lovelace.util.LovelaceLogger;
 					checkArguments(args);
 					udf.createDriver(cli, options).startDriver(args);
 				}
-				case final GUIDriverFactory gdf -> {
+				case final GUIDriverFactory<?> gdf -> {
 					if (ParamCount.One == gdf.getUsage().getParamsWanted() && args.length > 1) {
 						for (final String arg : args) {
 							startCatchingErrors(cli, options, arg);
@@ -122,10 +128,10 @@ import lovelace.util.LovelaceLogger;
 						final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 								files.getFirst(), files.stream().skip(1).toArray(Path[]::new));
 						fixCurrentTurn(options, model);
-						gdf.createDriver(cli, options, model).startDriver();
+						createDriver(gdf, cli, options, gdf.createModel(model)).startDriver();
 					}
 				}
-				case final ModelDriverFactory mdf -> {
+				case final ModelDriverFactory<?> mdf -> {
 					checkArguments(args);
 					// FIXME: What if a model driver had paramsWanted as None or Any, and args is empty?
 					// In Ceylon we asserted args was nonempty, but didn't address this case
@@ -133,7 +139,7 @@ import lovelace.util.LovelaceLogger;
 					final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 							files.getFirst(), files.stream().skip(1).toArray(Path[]::new));
 					fixCurrentTurn(options, model);
-					final ModelDriver driver = mdf.createDriver(cli, options, model);
+					final ModelDriver driver = createDriver(mdf, cli, options, mdf.createModel(model));
 					driver.startDriver();
 					if (driver instanceof CLIDriver) {
 						MapReaderAdapter.writeModel(model);

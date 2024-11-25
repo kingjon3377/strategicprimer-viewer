@@ -1,6 +1,7 @@
 package drivers.worker_mgmt;
 
 import drivers.common.DriverUsage;
+import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
@@ -40,5 +41,10 @@ public final class StrategyExportFactory implements ModelDriverFactory<IWorkerMo
 	@Override
 	public IWorkerModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
+	}
+
+	@Override
+	public IWorkerModel createModel(IDriverModel model) {
+		return new WorkerModel(model);
 	}
 }

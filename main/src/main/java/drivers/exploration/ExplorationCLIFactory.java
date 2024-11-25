@@ -1,6 +1,7 @@
 package drivers.exploration;
 
 import drivers.common.DriverUsage;
+import drivers.common.IDriverModel;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
@@ -42,5 +43,10 @@ public final class ExplorationCLIFactory implements ModelDriverFactory<IExplorat
 	@Override
 	public IExplorationModel createModel(final IMutableLegacyMap map) {
 		return new ExplorationModel(map);
+	}
+
+	@Override
+	public IExplorationModel createModel(IDriverModel model) {
+		return new ExplorationModel(model);
 	}
 }
