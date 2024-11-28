@@ -123,8 +123,6 @@ public final class TestWorkerModel {
 		}
 		final IWorkerModel model = new WorkerModel(map);
 
-		// TODO: Each of these assertions passed a method reference to iterableEquality<IUnit>
-		// as a fourth parameter to assertEquals(); I don't remember what that parameter did ...
 		assertTrue(iterableEquality(listOne,
 						filterProxies(model.getUnits(playerOne), ProxyUnit.class)),
 				"Got all units for player 1");
