@@ -976,7 +976,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(unit.getName());
 		final Predicate<IMutableUnit> matchingId = u -> u.getId() == unit.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			// TODO: Why not use getUnitsImpl?
+			// N.B. we don't use getUnitsImpl() because we need IMutableUnit, not just IUnit.
 			final IMutableUnit matching = map.streamAllFixtures()
 					.flatMap(WorkerModel::flatten)
 					.filter(isUnit).map(unitCast)
@@ -1009,7 +1009,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(unit.getName());
 		final Predicate<IMutableUnit> matchingId = u -> u.getId() == unit.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			// TODO: Why not use getUnitsImpl?
+			// N.B. we don't use getUnitsImpl() because we need IMutableUnit, not just IUnit.
 			final IMutableUnit matching = map.streamAllFixtures()
 					.flatMap(WorkerModel::flatten)
 					.filter(isUnit).map(unitCast)
