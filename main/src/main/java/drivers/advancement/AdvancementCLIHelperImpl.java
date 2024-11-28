@@ -27,6 +27,7 @@ import legacy.map.fixtures.mobile.worker.Skill;
 import drivers.common.IAdvancementModel;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
+import drivers.common.LevelGainListener;
 
 /**
  * Logic extracted from the advancement CLI to also use in the turn-running CLI as well.

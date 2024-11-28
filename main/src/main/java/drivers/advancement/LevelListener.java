@@ -11,6 +11,7 @@ import drivers.worker_mgmt.UnitMemberListener;
 
 import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.IJob;
+import drivers.common.LevelGainListener;
 
 import java.util.Objects;
 

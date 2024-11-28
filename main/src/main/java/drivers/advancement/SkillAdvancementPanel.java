@@ -35,6 +35,7 @@ import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.IWorker;
 
 import drivers.common.IAdvancementModel;
+import drivers.common.LevelGainListener;
 
 /**
  * A panel to let a user add hours of experience to a Skill.

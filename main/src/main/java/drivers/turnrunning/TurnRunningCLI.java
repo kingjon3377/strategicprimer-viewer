@@ -10,7 +10,7 @@ import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.ProxyUnit;
 import legacy.map.fixtures.towns.IFortress;
 import drivers.advancement.AdvancementCLIHelper;
-import drivers.advancement.LevelGainListener;
+import drivers.common.LevelGainListener;
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;

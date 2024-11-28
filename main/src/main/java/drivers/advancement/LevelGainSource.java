@@ -1,5 +1,7 @@
 package drivers.advancement;
 
+import drivers.common.LevelGainListener;
+
 /**
  * An interface for objects that can indicate a gained level.
  */
