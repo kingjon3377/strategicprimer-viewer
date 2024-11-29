@@ -22,13 +22,10 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.List;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 /**
@@ -159,56 +156,13 @@ public final class HuntingModel {
 	}
 
 	/**
-	 * A *non-infinite* iterator that returns 'nothing found' values in the
-	 * desired proportion, but should be more efficient than appending a
-	 * Singleton cycled to the desired length.
+	 * A *non-infinite* stream that returns 'nothing found' values in the
+	 * desired proportion.
 	 */
-	private static final class FiniteResultIterator<Type> implements Iterator<Type> {
-		private final Iterator<Type> wrapped;
-		private final double nothingProportion;
-		private final Type nothingValue;
-		private long counter = 0;
-		private boolean switched = false;
-
-		public FiniteResultIterator(final Iterable<Type> stream, final double nothingProportion,
-		                            final Type nothingValue) {
-			wrapped = stream.iterator();
-			this.nothingProportion = nothingProportion;
-			this.nothingValue = nothingValue;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return switched && counter <= 0;
-		}
-
-		@Override
-		public Type next() {
-			if (switched) {
-				if (counter <= 0) {
-					throw new NoSuchElementException("Ran out of items");
-				} else {
-					counter--;
-					return nothingValue;
-				}
-			}
-			if (wrapped.hasNext()) {
-				return wrapped.next();
-			} else {
-				switched = true;
-				counter = Math.round(counter * nothingProportion);
-				return nothingValue;
-			}
-		}
-	}
-
-	private record FiniteResultStream<Type>(Iterable<Type> stream, double nothingProportion,
-	                                        Type nothingValue) implements Iterable<Type> {
-
-		@Override
-		public Iterator<Type> iterator() {
-			return new FiniteResultIterator<>(stream, nothingProportion, nothingValue);
-		}
+	private static <Type> Stream<Type> finiteResultStream(Collection<Type> stream, double nothingProportion,
+	                                                      Type nothingValue) {
+		return Stream.concat(stream.stream(), Stream.generate(() -> nothingValue)
+				.limit(Math.round(stream.size() * nothingProportion)));
 	}
 
 	/**
@@ -273,9 +227,7 @@ public final class HuntingModel {
 		} else {
 			nothingProportion = 0.5;
 		}
-		// TODO: Add stream() methods to the "Stream" inner classes
-		return StreamSupport.stream(new FiniteResultStream<>(retval, nothingProportion,
-				NothingFound.INSTANCE).spliterator(), false);
+		return finiteResultStream(retval, nothingProportion, NothingFound.INSTANCE);
 	}
 
 	/**
