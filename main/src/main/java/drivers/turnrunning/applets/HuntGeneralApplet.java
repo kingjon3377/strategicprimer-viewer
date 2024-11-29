@@ -203,8 +203,7 @@ import org.jetbrains.annotations.Nullable;
 					model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 					yield NO_RESULT_COST;
 				}
-				case QUIT -> // TODO: MAX_INT or similar
-						null;
+				case QUIT -> null; // TODO: MAX_INT or similar
 				case EOF -> null; // TODO: Signal EOF to callers
 			};
 			default -> {
