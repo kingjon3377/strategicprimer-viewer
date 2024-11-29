@@ -39,7 +39,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 		super(IWorker.class, IUnit.class);
 	}
 
-	// TODO: Add a getInstance() method, taking the class to write, to MapContentsReader (or add a cache elsewhere) so
+	// TODO: Add getInstance(Class) method to MapContentsReader (or add a cache elsewhere) so
 	//  we don't have to have multiple instances
 
 	private final DatabaseWriter<AnimalOrTracks, Object> animalHandler = new DBAnimalHandler();
