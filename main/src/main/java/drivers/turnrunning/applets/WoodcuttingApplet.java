@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 	// by 10 and divide by 72 (I forget why, and the stat I have is "700 trees per
 	// acre"), then divide by 100 and round.
 	private static final int FOREST_ACRES_DIVISOR = 72;
-	private static final int SQ_FT_PER_ACRE = 43560;
+	private static final BigDecimal SQ_FT_PER_ACRE = decimalize(43560);
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
@@ -179,9 +179,8 @@ import org.jetbrains.annotations.Nullable;
 						acres.doubleValue(),
 						forest.getAcres().doubleValue()))) {
 					case YES -> {
-						// TODO: Make the Decimal constant a static-final field
 						builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
-								acres, acres.multiply(decimalize(SQ_FT_PER_ACRE)).intValue()));
+								acres, acres.multiply(SQ_FT_PER_ACRE).intValue()));
 					}
 					case NO -> {
 						final String str = cli.inputMultilineString("Description of cleared land:");
