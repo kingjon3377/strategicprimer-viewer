@@ -29,7 +29,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ final class AppStarter {
-	private final Map<String, Iterable<DriverFactory>> driverCache =
+	private final Map<String, List<DriverFactory>> driverCache =
 			AppChooserState.createCache(); // TODO: Can we, and should we, inline that into here?
 
 	private static boolean includeInCLIList(final DriverFactory driver) {
@@ -102,8 +102,6 @@ import org.jetbrains.annotations.Nullable;
 		final @Nullable DriverFactory currentDriver;
 		final @Nullable String command = others.stream().findFirst().orElse(null);
 		final List<DriverFactory> drivers = Optional.ofNullable(command).map(driverCache::get)
-				// TODO: Drop StreamSupport use if driverCache is changed to specify List.
-				.map(l -> StreamSupport.stream(l.spliterator(), false).collect(Collectors.toList()))
 				.orElse(Collections.emptyList());
 		if (Objects.nonNull(command) && !drivers.isEmpty()) {
 			final DriverFactory first = drivers.stream().findFirst().orElse(null);
