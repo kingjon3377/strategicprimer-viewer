@@ -49,7 +49,7 @@ public final class Unit implements IMutableUnit {
 	/**
 	 * The members of the unit.
 	 *
-	 * TODO: For speed of contains() operations, use LinkedHashSet instead?
+	 * We'd prefer to use LinkedHashSet, but we need the sort() operation.
 	 */
 	private final ArraySet<UnitMember> members = new ArraySet<>();
 
