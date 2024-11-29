@@ -80,14 +80,8 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			final CultivationStatus cultivation = getBooleanValue(dbRow, "cultivated") ?
 					CultivationStatus.CULTIVATED : CultivationStatus.WILD;
 			final FieldStatus status = FieldStatus.parse((String) dbRow.get("status"));
-			final String acresString = (String) dbRow.get("acres");
 			final String image = (String) dbRow.get("image");
-			Number acres;
-			try {
-				acres = Integer.parseInt(acresString);
-			} catch (final NumberFormatException except) {
-				acres = new BigDecimal(acresString);
-			}
+			final Number acres = parseNumber((String) dbRow.get("acres"));
 			final Meadow meadow = new Meadow(kind, type, cultivation, id, status, acres);
 			if (Objects.nonNull(image)) {
 				meadow.setImage(image);

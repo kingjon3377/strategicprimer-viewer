@@ -159,15 +159,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final String contents = (String) dbRow.get("contents");
-			final String qtyString = (String) dbRow.get("quantity");
 			final String units = (String) dbRow.get("units");
 			final Integer created = (Integer) dbRow.get("created");
-			Number quantity;
-			try {
-				quantity = Integer.parseInt(qtyString);
-			} catch (final NumberFormatException except) {
-				quantity = new BigDecimal(qtyString);
-			}
+			final Number quantity = parseNumber((String) dbRow.get("quantity"));
 			final IMutableResourcePile pile =
 					new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (Objects.nonNull(created)) {
@@ -187,16 +181,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final String contents = (String) dbRow.get("contents");
-			final String qtyString = (String) dbRow.get("quantity");
 			final String units = (String) dbRow.get("units");
 			final Integer created = (Integer) dbRow.get("created");
-			// TODO: Extract method so this (and the identical pattern elsewhere) can be final
-			Number quantity;
-			try {
-				quantity = Integer.parseInt(qtyString);
-			} catch (final NumberFormatException except) {
-				quantity = new BigDecimal(qtyString);
-			}
+			final Number quantity = parseNumber((String) dbRow.get("quantity"));
 			final IMutableResourcePile pile =
 					new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (Objects.nonNull(created)) {

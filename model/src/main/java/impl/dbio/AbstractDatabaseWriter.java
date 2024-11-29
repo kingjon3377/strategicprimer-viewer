@@ -3,6 +3,7 @@ package impl.dbio;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,5 +61,18 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 			}
 		}
 		throw new IllegalArgumentException(message);
+	}
+
+	/**
+	 * Parse a number as an int, if possible, and if that fails, as a BigDecimal.
+	 * @param str the string to parse
+	 * @return the number it contains
+	 */
+	protected static Number parseNumber(final String str) {
+		try {
+			return Integer.parseInt(str);
+		} catch (final NumberFormatException except) {
+			return new BigDecimal(str);
+		}
 	}
 }

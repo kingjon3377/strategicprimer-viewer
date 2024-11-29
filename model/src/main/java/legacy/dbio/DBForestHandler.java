@@ -62,14 +62,8 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final boolean rows = getBooleanValue(dbRow, "rows");
-			final String acresString = (String) dbRow.get("acres");
 			final String image = (String) dbRow.get("image");
-			Number acres;
-			try {
-				acres = Integer.parseInt(acresString);
-			} catch (final NumberFormatException except) {
-				acres = new BigDecimal(acresString);
-			}
+			final Number acres = parseNumber((String) dbRow.get("acres"));
 			final Forest forest = new Forest(kind, rows, id, acres);
 			if (Objects.nonNull(image)) {
 				forest.setImage(image);
