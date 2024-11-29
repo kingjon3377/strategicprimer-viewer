@@ -139,7 +139,7 @@ import org.jetbrains.annotations.Nullable;
 			case NO -> { // do nothing
 			}
 			case QUIT -> {
-				return null; // TODO: MAX_INT or similar
+				return Integer.MAX_VALUE;
 			}
 			case EOF -> { // TODO: somehow signal EOF to callers
 				return null;
@@ -156,7 +156,7 @@ import org.jetbrains.annotations.Nullable;
 			case NO -> { // Do nothing
 			}
 			case QUIT -> {
-				return null; // TODO: MAX_INT or similar
+				return Integer.MAX_VALUE;
 			}
 			case EOF -> { // TODO: signal EOF to callers
 				return null;
@@ -171,7 +171,7 @@ import org.jetbrains.annotations.Nullable;
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			}
 			case QUIT -> {
-				return null; // TODO: MAX_INT or similar
+				return Integer.MAX_VALUE;
 			}
 			case EOF -> { // TODO: signal EOF to callers
 				return null;
@@ -203,7 +203,7 @@ import org.jetbrains.annotations.Nullable;
 					model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 					yield NO_RESULT_COST;
 				}
-				case QUIT -> null; // TODO: MAX_INT or similar
+				case QUIT -> Integer.MAX_VALUE;
 				case EOF -> null; // TODO: Signal EOF to callers
 			};
 			default -> {
