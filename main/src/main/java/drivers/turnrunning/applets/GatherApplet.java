@@ -65,11 +65,11 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {
-			return ""; // TODO: null, surely?
+			return null;
 		}
 		final Integer startingTime = cli.inputNumber("Minutes to spend gathering: ");
 		if (Objects.isNull(startingTime)) {
-			return ""; // TODO: null, surely?
+			return null;
 		}
 		int time = startingTime;
 		final Supplier<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
