@@ -2,6 +2,7 @@ package drivers.turnrunning.applets;
 
 import legacy.idreg.IDRegistrar;
 
+import legacy.map.HasName;
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
 import drivers.common.cli.ICLIHelper;
@@ -16,7 +17,6 @@ import legacy.map.fixtures.mobile.Animal;
 import drivers.turnrunning.ITurnRunningModel;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -193,5 +193,27 @@ import org.jetbrains.annotations.Nullable;
 			buffer.append(addendum);
 		}
 		return buffer.toString().strip();
+	}
+
+	/**
+	 * Possible actions a trapper can take.
+	 */
+	private enum TrapperCommand implements HasName {
+		SetTrap("Set or reset a trap"),
+		Check("Check a trap"),
+		Move("Move to another trap"),
+		EasyReset("Reset a foothold trap, e.g."),
+		Quit("Quit");
+
+		TrapperCommand(final String name) {
+			this.name = name;
+		}
+
+		private final String name;
+
+		@Override
+		public String getName() {
+			return name;
+		}
 	}
 }
