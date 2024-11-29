@@ -52,11 +52,25 @@ public interface IAdvancementModel extends IDriverModel {
 	 * to it. The "contextValue" is passed to {@link
 	 * IMutableSkill#addHours}; it should be a
 	 * random number between 0 and 99.
-	 *
-	 * TODO: Take a level-up listener?
+	 */
+	default boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
+	                                final int contextValue) {
+		return addHoursToSkill(worker, jobName, skillName, hours, contextValue,
+				(workerName, job, skill, gains, currentLevel) -> {});
+	}
+
+	/**
+	 * Add hours to a Skill to the specified Job in the matching worker in
+	 * all maps.  Returns true if a matching worker was found in at least
+	 * one map, false otherwise. If the worker doesn't have that Skill in
+	 * that Job, it is added first; if the worker doesn't have that Job, it
+	 * is added first as in {@link #addJobToWorker}, then the skill is added
+	 * to it. The "contextValue" is passed to {@link
+	 * IMutableSkill#addHours}; it should be a
+	 * random number between 0 and 99.
 	 */
 	boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours,
-	                        int contextValue);
+	                        int contextValue, LevelGainListener levelGainListener);
 
 	/**
 	 * Add hours to a Skill to the specified Job in all workers in the
@@ -69,11 +83,9 @@ public interface IAdvancementModel extends IDriverModel {
 	 * parameter is used to calculate a new value passed to {@link
 	 * IMutableSkill#addHours} for each
 	 * worker.
-	 *
-	 * TODO: Take a level-up listener?
 	 */
 	boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
-	                             int hours, int contextValue);
+	                             int hours, int contextValue, LevelGainListener levelGainListener);
 
 	/**
 	 * Replace "delenda" with "replacement" in the specified job in the

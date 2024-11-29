@@ -1,5 +1,6 @@
 package worker.common;
 
+import drivers.common.LevelGainListener;
 import legacy.map.HasName;
 import legacy.map.HasOwner;
 
@@ -825,7 +826,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-								   final int contextValue) {
+	                               final int contextValue, final LevelGainListener levelGainListener) {
 		boolean any = false;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
@@ -872,7 +873,12 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				} else {
 					skill = tempSkill;
 				}
+				final int oldLevel = skill.getLevel();
 				skill.addHours(hours, contextValue);
+				final int newLevel = skill.getLevel();
+				if (oldLevel != newLevel) {
+					levelGainListener.level(worker.getName(), jobName, skillName, newLevel - oldLevel, newLevel);
+				}
 			}
 		}
 		return any;
@@ -889,17 +895,16 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * "contextValue" is used to calculate a new value passed to {@link
 	 * IMutableSkill#addHours} for each
 	 * worker.
-	 *
-	 * TODO: Take a level-up listener?
 	 */
 	@Override
 	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
-										final int hours, final int contextValue) {
+	                                    final int hours, final int contextValue,
+	                                    final LevelGainListener levelGainListener) {
 		boolean any = false;
 		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
-					rng.nextInt(100))) {
+					rng.nextInt(100), levelGainListener)) {
 				any = true;
 			}
 		}

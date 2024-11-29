@@ -1,5 +1,6 @@
 package drivers.turnrunning;
 
+import drivers.common.LevelGainListener;
 import legacy.map.HasExtent;
 import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
@@ -332,12 +333,13 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	 */
 	@Override
 	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
-										final int hours, final int contextValue) {
+	                                    final int hours, final int contextValue,
+	                                    final LevelGainListener levelGainListener) {
 		boolean any = false;
 		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
-					rng.nextInt(100))) {
+					rng.nextInt(100), levelGainListener)) {
 				any = true;
 			}
 		}
@@ -356,7 +358,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	 */
 	@Override
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-	                               final int contextValue) {
+	                               final int contextValue, LevelGainListener levelGainListener) {
 		boolean any = false;
 		final Predicate<Object> isUnit = IUnit.class::isInstance;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
@@ -402,7 +404,12 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				} else {
 					skill = tSkill;
 				}
+				final int oldLevel = skill.getLevel();
 				skill.addHours(hours, contextValue);
+				final int newLevel = skill.getLevel();
+				if (oldLevel != newLevel) {
+					levelGainListener.level(worker.getName(), jobName, skillName, newLevel - oldLevel, newLevel);
+				}
 			}
 		}
 		return any;
