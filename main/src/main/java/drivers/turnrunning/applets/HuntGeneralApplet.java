@@ -258,7 +258,11 @@ import org.jetbrains.annotations.Nullable;
 			if (Objects.isNull(cost)) {
 				return null;
 			}
-			time -= cost;
+			if (cost >= time) {
+				time = 0;
+			} else {
+				time -= cost;
+			}
 			final String addendum = cli.inputMultilineString("Add to results about that:");
 			if (Objects.isNull(addendum)) {
 				return null;
