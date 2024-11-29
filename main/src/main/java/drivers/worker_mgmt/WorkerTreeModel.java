@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 	public Object getChild(final Object parent, final int index) {
 		// TODO: Make IWorkerModel methods return List to simplify this?
 		return switch (parent) {
-			case final Player p -> StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
+			case final Player p -> model.getUnitKinds(p).get(index);
 			case final String kind -> new ArrayList<>(model.getUnits(player, kind)).get(index);
 			case final IUnit unit -> unit.stream().toList().get(index);
 			default -> throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
@@ -69,10 +69,8 @@ import java.util.stream.Collectors;
 	@Override
 	public int getChildCount(final Object parent) {
 		return switch (parent) {
-			case final Player p -> (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
-					false).count();
-			case final String kind when StreamSupport.stream(
-					model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals) ->
+			case final Player p -> model.getUnitKinds(p).size();
+			case final String kind when model.getUnitKinds(player).stream().anyMatch(parent::equals) ->
 					model.getUnits(player, kind).size();
 			case final IUnit unit -> (int) unit.stream().count();
 			default -> throw new IllegalArgumentException("Not a possible member of the tree");
@@ -95,7 +93,7 @@ import java.util.stream.Collectors;
 			case final Player p when child instanceof IUnit -> // FIXME: This case shouldn't be allowed, right?
 					new ArrayList<>(model.getUnits(p)).indexOf(child);
 			case final Player p when child instanceof String ->
-					StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
+					model.getUnitKinds(p).indexOf(child);
 			case final String kind when child instanceof IUnit ->
 					new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
 			case final IUnit unit -> unit.stream().toList().indexOf(child);
@@ -441,8 +439,7 @@ import java.util.stream.Collectors;
 			case final IUnit unit when newOwner.equals(player) -> {
 				final TreeModelEvent event;
 				final String kind = unit.getKind();
-				// TODO: Make getUnitKinds() return Collection
-				final boolean existingKind = StreamSupport.stream(model.getUnitKinds(player).spliterator(), false)
+				final boolean existingKind = model.getUnitKinds(player).stream()
 						.anyMatch(kind::equals);
 				if (!model.changeOwner(item, newOwner)) {
 					return;

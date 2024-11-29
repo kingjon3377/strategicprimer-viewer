@@ -1,6 +1,7 @@
 package drivers.common;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +41,7 @@ public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtur
 	 *
 	 * @param player The player whose unit kinds we want
 	 */
-	Iterable<String> getUnitKinds(Player player);
+	List<String> getUnitKinds(Player player);
 
 	/**
 	 * Get a unit by ID number.

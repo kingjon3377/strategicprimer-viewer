@@ -223,7 +223,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * All the "kinds" of units the given player has.
 	 */
 	@Override
-	public Iterable<String> getUnitKinds(final Player player) {
+	public List<String> getUnitKinds(final Player player) {
 		return getUnits(player).stream().map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
 				.collect(Collectors.toList());
 	}
