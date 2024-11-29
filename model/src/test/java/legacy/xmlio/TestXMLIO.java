@@ -1,6 +1,7 @@
 package legacy.xmlio;
 
 import static impl.xmlio.ISPReader.FUTURE_TAGS;
+import static lovelace.util.AssertAny.assertAnyType;
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
 import impl.xmlio.SPWriter;
@@ -596,12 +597,9 @@ public final class TestXMLIO {
 	 */
 	private void assertInvalid(final String xml)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Consumer<Exception> assertion = // TODO: Extract 'assert instance of any' helper method (in lovelace-util)
-				except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
-						() -> assertInstanceOf(NoSuchElementException.class, except),
-						() -> assertInstanceOf(IllegalArgumentException.class, except),
-						() -> assertInstanceOf(XMLStreamException.class, except)
-				);
+		final Consumer<Exception> assertion =
+				except -> assertAnyType("Exception should be of an expected type: was %s", except,
+						NoSuchElementException.class, IllegalArgumentException.class, XMLStreamException.class);
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, null, Exception.class,
 					assertion);
@@ -1361,10 +1359,8 @@ public final class TestXMLIO {
 						<tile row="0" column="0" kind="steppe"><xy:hill id="0" /></tile></row></xy:xyzzy></map>"""
 						.formatted(SP_NAMESPACE));
 		final Consumer<Exception> adventureAssertion =
-				except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
-						() -> assertInstanceOf(UnwantedChildException.class, except),
-						() -> assertInstanceOf(XMLStreamException.class, except)
-				);
+				except -> assertAnyType("Exception should be of expected type: was %s", except,
+						UnwantedChildException.class, XMLStreamException.class);
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.<ILegacyMap, Exception>assertFormatIssue(reader,
 					"""

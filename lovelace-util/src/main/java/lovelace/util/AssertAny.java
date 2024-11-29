@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * Verify that at least one of the given assertions passes.
@@ -75,5 +76,17 @@ public final class AssertAny {
 		}
 		throw new MultipleFailureException(failures,
 				"%d assertions failed".formatted(failures.size()));
+	}
+
+	/**
+	 * Verify that the given object is an instance of one of the provided types.
+	 * @param message a message format-string, which will be passed the name of the actual type
+	 * @param obj the object to test
+	 * @param types the types one of which it should be an instance of
+	 */
+	public static void assertAnyType(final String message, final Object obj, final Class<?>... types) {
+		if (Stream.of(types).noneMatch(t -> t.isInstance(obj))) {
+			throw new AssertionFailedError(message.formatted(obj.getClass().getName()));
+		}
 	}
 }
