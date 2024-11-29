@@ -222,11 +222,11 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {
-			return ""; // TODO: return null, surely?
+			return null;
 		}
 		final Integer startingTime = cli.inputNumber("Minutes to spend %sing: ".formatted(command));
 		if (Objects.isNull(startingTime)) {
-			return ""; // TODO: return null, surely?
+			return null;
 		}
 		int time = startingTime;
 		int noResultsTime = 0;
