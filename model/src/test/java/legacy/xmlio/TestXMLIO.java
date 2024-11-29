@@ -7,7 +7,6 @@ import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 import impl.xmlio.SPWriter;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.TileFixture;
-import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
@@ -17,7 +16,6 @@ import javax.xml.stream.XMLStreamException;
 import impl.xmlio.ISPReader;
 import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.ExposureStatus;
-import lovelace.util.AssertAny;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -35,7 +33,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -67,7 +64,6 @@ import legacy.map.LegacyMap;
 import legacy.map.Direction;
 import legacy.map.fixtures.TextFixture;
 import legacy.map.fixtures.Implement;
-import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.explorable.Portal;
@@ -570,25 +566,6 @@ public final class TestXMLIO {
 			assertFormatIssue(reader, xml, desideratum,
 					DuplicateIDException.class);
 		}
-	}
-
-	/**
-	 * @deprecated Use {@link AssertAny} and {@link Assertions#assertInstanceOf}.
-	 */
-	@Deprecated
-	@SafeVarargs
-	private static Predicate<Throwable> instanceOfAny(final Class<? extends Throwable>... types) {
-		return (except) -> {
-			for (final Class<? extends Throwable> type : types) {
-				if (type.isInstance(except)) {
-					return true;
-				}
-			}
-			if (except instanceof RuntimeException) {
-				return instanceOfAny(types).test(except.getCause());
-			}
-			return false;
-		};
 	}
 
 	/**
