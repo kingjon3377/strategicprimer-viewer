@@ -2,6 +2,7 @@ package drivers.worker_mgmt;
 
 import java.util.Collection;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -361,8 +362,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					if (!fortress.stream().allMatch(f -> f instanceof Implement ||
 							f instanceof IResourcePile ||
 							f instanceof IUnit)) {
-						System.err.printf("Unhandled members in %s%n",
-								fortress.getName()); // TODO: Take ICLIHelper to report diagnostics on
+						LovelaceLogger.warning("Unhandled members in %s%n", fortress.getName());
 					}
 				}
 				final Predicate<Object> isWorker = IWorker.class::isInstance;
