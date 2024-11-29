@@ -128,7 +128,7 @@ public final class ConsumptionApplet extends AbstractTurnApplet {
 					remainingConsumption, food.getContents()), "all-remaining")) {
 				case YES -> {
 					model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
-					remainingConsumption = decimalize(0);
+					remainingConsumption = BigDecimal.ZERO;
 				}
 				case NO -> {
 					// TODO: extract this as a function?
@@ -138,7 +138,7 @@ public final class ConsumptionApplet extends AbstractTurnApplet {
 						return null;
 					} else if (amountToConsume.compareTo(remainingConsumption) > 0) {
 						model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
-						remainingConsumption = decimalize(0);
+						remainingConsumption = BigDecimal.ZERO;
 					} else {
 						model.reduceResourceBy(food, amountToConsume, localUnit.owner());
 						remainingConsumption = remainingConsumption.subtract(amountToConsume);
