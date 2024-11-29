@@ -1,5 +1,7 @@
 package legacy.map;
 
+import lovelace.util.LovelaceLogger;
+
 import java.math.BigInteger;
 import java.math.BigDecimal;
 
@@ -12,7 +14,6 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	/**
 	 * Determine whether the given number is positive.
 	 */
-	@SuppressWarnings("DuplicateBranchesInSwitch") // TODO: log in 'default' case
 	static boolean isPositive(final Number number) {
 		return switch (number) {
 			case final Integer i -> 0 < number.intValue();
@@ -21,7 +22,10 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 			case final Double v -> 0.0 < number.doubleValue();
 			case final BigInteger bigInteger -> 0 < bigInteger.signum();
 			case final BigDecimal bigDecimal -> 0 < bigDecimal.signum();
-			default -> 0.0 < number.doubleValue();
+			default -> {
+				LovelaceLogger.warning("Unexpected type %s in HasExtent::isPositive", number.getClass().getName());
+				yield 0.0 < number.doubleValue();
+			}
 		};
 	}
 
