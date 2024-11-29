@@ -98,13 +98,13 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap,
 	public void write(final Transactional db, final IMutableLegacyMap obj, final ILegacyMap context)
 			throws SQLException {
 		final Connection conn = db.connection(); // TODO: work inside a transaction instead, surely?
+		// Assignment to static field is deliberate
+		//noinspection AssignmentToStaticFieldFromInstanceMethod
+		currentTurn = obj.getCurrentTurn();
 		INSERT_METADATA.on(value("version", obj.getDimensions().version()),
 				value("rows", obj.getDimensions().rows()),
 				value("columns", obj.getDimensions().columns()),
-				value("turn", obj.getCurrentTurn())).execute(conn);
-		// Assignment to static field is deliberate
-		//noinspection AssignmentToStaticFieldFromInstanceMethod
-		currentTurn = obj.getCurrentTurn(); // TODO: move up to reuse it in previous insertion query
+				value("turn", currentTurn)).execute(conn);
 		playerWriter.initialize(db);
 		for (final Player player : obj.getPlayers()) {
 			playerWriter.write(db, player, obj);
