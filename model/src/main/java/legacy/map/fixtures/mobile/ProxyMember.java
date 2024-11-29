@@ -2,6 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import legacy.map.IFixture;
@@ -48,7 +49,7 @@ final class ProxyMember implements UnitMemberProxy<UnitMember> {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		LovelaceLogger.warning("ProxyMember.equalsIgnoringID() called");
 		if (fixture instanceof final ProxyMember pm) {
-			return pm.proxiedMembers.equals(proxiedMembers); // TODO: Shouldn't depend on order, right?
+			return new HashSet<>(pm.proxiedMembers).equals(new HashSet<>(proxiedMembers));
 		} else {
 			return false;
 		}
