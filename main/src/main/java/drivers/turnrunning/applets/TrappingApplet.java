@@ -137,11 +137,11 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {
-			return ""; // TODO: null, surely?
+			return null;
 		}
 		final Integer startingTime = cli.inputNumber("Minutes to spend working: ");
 		if (Objects.isNull(startingTime)) {
-			return ""; // TODO: null, surely?
+			return null;
 		}
 		final Supplier<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/? extends TileFixture>> encounters =
 				encountersGenerator.apply(center);
