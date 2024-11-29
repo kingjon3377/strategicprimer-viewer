@@ -100,46 +100,42 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 	private void okListener() {
 		final String kind = kindField.getText().strip();
 		final String acresString = acresField.getText().strip();
+		final BigDecimal acres;
 		if (kind.isEmpty()) {
 			kindField.requestFocusInWindow();
 			return;
 		} else if (!acresString.isEmpty()) {
 			try {
-				new BigDecimal(acresString);
+				acres = new BigDecimal(acresString);
 			} catch (final NumberFormatException except) {
 				acresField.requestFocusInWindow();
 				return;
 			}
 		} else {
-			final String reqId = idField.getText().strip();
-			final int idNum;
-			if (isNumeric(reqId)) {
-				final OptionalInt temp = parseInt(reqId);
-				if (temp.isPresent() && temp.getAsInt() >= 0) {
-					idNum = temp.getAsInt();
-					idf.register(idNum);
-				} else {
-					LovelaceLogger.warning("Failed to parse input detected as numeric");
-					idNum = idf.createID();
-				}
+			acres = new BigDecimal(-1);
+		}
+		final String reqId = idField.getText().strip();
+		final int idNum;
+		if (isNumeric(reqId)) {
+			final OptionalInt temp = parseInt(reqId);
+			if (temp.isPresent() && temp.getAsInt() >= 0) {
+				idNum = temp.getAsInt();
+				idf.register(idNum);
 			} else {
+				LovelaceLogger.warning("Failed to parse input detected as numeric");
 				idNum = idf.createID();
 			}
-			BigDecimal acres;
-			try {
-				acres = new BigDecimal(acresString);
-			} catch (final NumberFormatException except) {
-				acres = new BigDecimal(-1);
-			}
-			final TileFixture forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
-			for (final NewFixtureListener listener : listeners) {
-				listener.addNewFixture(forest);
-			}
-//			kindField.setText("");
-			acresField.setText("-1");
-			setVisible(false);
-			dispose();
+		} else {
+			idNum = idf.createID();
 		}
+		final TileFixture forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
+		for (final NewFixtureListener listener : listeners) {
+			listener.addNewFixture(forest);
+		}
+//			kindField.setText("");
+		acresField.setText("-1");
+		setVisible(false);
+		dispose();
 	}
 
 	private void setupField(final JTextField field) {
