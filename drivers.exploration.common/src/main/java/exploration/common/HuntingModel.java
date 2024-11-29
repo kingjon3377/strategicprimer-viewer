@@ -254,43 +254,32 @@ public final class HuntingModel {
 	/**
 	 * Animals (outside fortresses and units), both aquatic and
 	 * non-aquatic, at the given location in the map.
-	 *
-	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private Collection<Animal> baseAnimals(final Point point) {
+	private Stream<Animal> baseAnimals(final Point point) {
 		return map.getFixtures(point).stream().filter(Animal.class::isInstance)
-				.map(Animal.class::cast).filter(((Predicate<Animal>) Animal::isTalking).negate())
-				.collect(Collectors.toList());
+				.map(Animal.class::cast).filter(((Predicate<Animal>) Animal::isTalking).negate());
 	}
 
 	/**
 	 * Non-aquatic animals (outside fortresses and units) at the given location in the map.
-	 *
-	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private Collection<TileFixture> animals(final Point point) {
-		return baseAnimals(point).stream().filter(a -> !fishKinds.contains(a.getKind()))
-				.collect(Collectors.toList());
+	private Stream<Animal> animals(final Point point) {
+		return baseAnimals(point).filter(a -> !fishKinds.contains(a.getKind()));
 	}
 
 	/**
 	 * Aquatic animals (outside fortresses and units) at the given location in the map.
-	 *
-	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private Collection<TileFixture> waterAnimals(final Point point) {
-		return baseAnimals(point).stream().filter(a -> fishKinds.contains(a.getKind()))
-				.collect(Collectors.toList());
+	private Stream<Animal> waterAnimals(final Point point) {
+		return baseAnimals(point).filter(a -> fishKinds.contains(a.getKind()));
 	}
 
 	/**
 	 * Plant-type harvestable fixtures in the map ({@link Grove}, {@link
 	 * Meadow}, {@link Shrub}), followed by a number of "nothing found"
 	 * sufficient to give the proportion we want for that tile type.
-	 *
-	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private Collection<TileFixture> plants(final Point point) {
+	private Stream<TileFixture> plants(final Point point) {
 		final Collection<TileFixture> retval = map.getFixtures(point).stream()
 				.filter(f -> f instanceof Grove || f instanceof Meadow || f instanceof Shrub)
 				.collect(Collectors.toList());
@@ -305,15 +294,15 @@ public final class HuntingModel {
 		}
 		// TODO: Add stream() methods to the "Stream" inner classes
 		return StreamSupport.stream(new FiniteResultStream<>(retval, nothingProportion,
-				NothingFound.INSTANCE).spliterator(), false).collect(Collectors.toList());
+				NothingFound.INSTANCE).spliterator(), false);
 	}
 
 	/**
 	 * A helper method for the helper method for hunting, fishing, etc.
 	 */
-	private static Function<Point, Stream<Pair<Point, TileFixture>>> chooseFromMapImpl(
-			final Function<Point, Collection<TileFixture>> chosenMap) {
-		return loc -> chosenMap.apply(loc).stream().map(f -> Pair.with(loc, f));
+	private static Function<Point, Stream<Pair<Point, ? extends TileFixture>>> chooseFromMapImpl(
+			final Function<Point, Stream<? extends TileFixture>> chosenMap) {
+		return loc -> chosenMap.apply(loc).map(f -> Pair.with(loc, f));
 	}
 
 	private static final double NOTHING_PROPORTION = 0.5;
@@ -324,8 +313,8 @@ public final class HuntingModel {
 	 * @param point     Whereabouts to search
 	 * @param chosenMap Filter/provider to use to find the animals.
 	 */
-	private Iterable<Pair<Point, TileFixture>> chooseFromMap(final Point point,
-	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
+	private Iterable<Pair<Point, ? extends TileFixture>> chooseFromMap(final Point point,
+	                                                         final Function<Point, Stream<? extends TileFixture>> chosenMap) {
 		return new ResultStream<>(
 				new SurroundingPointIterable(point, dimensions).stream()
 						.flatMap(chooseFromMapImpl(chosenMap)).collect(Collectors.toList()), NOTHING_PROPORTION,
@@ -344,7 +333,7 @@ public final class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> hunt(final Point point) {
+	public Iterable<Pair<Point, ? extends TileFixture>> hunt(final Point point) {
 		return chooseFromMap(point, this::animals);
 	}
 
@@ -354,15 +343,15 @@ public final class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> fish(final Point point) {
+	public Iterable<Pair<Point, ? extends TileFixture>> fish(final Point point) {
 		return chooseFromMap(point, this::waterAnimals);
 	}
 
 	/**
 	 * Given a location, return the stream of gathering results from just that tile.
 	 */
-	private Collection<Pair<Point, TileFixture>> gatherImpl(final Point point) {
-		return plants(point).stream().map(f -> Pair.with(point, f)).collect(Collectors.toList());
+	private Stream<Pair<Point, TileFixture>> gatherImpl(final Point point) {
+		return plants(point).map(f -> Pair.with(point, f));
 	}
 
 	/**
@@ -375,7 +364,7 @@ public final class HuntingModel {
 	public Supplier<Pair<Point, TileFixture>> gather(final Point point) {
 		final List<Pair<Point, TileFixture>> retval =
 				new SurroundingPointIterable(point, dimensions).stream()
-						.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());
+						.flatMap(this::gatherImpl).collect(Collectors.toList());
 		return new PairSupplier(retval);
 	}
 
