@@ -2,6 +2,7 @@ package mining;
 
 import java.util.Random;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.DoubleSupplier;
@@ -42,8 +43,6 @@ enum LodeStatus {
 	/**
 	 * Given a String, if it is the name of a {@link LodeStatus}, return
 	 * that value; otherwise, return null.
-	 *
-	 * TODO: Throw instead of returning null? Or log in default case?
 	 */
 	@SuppressWarnings({"DuplicateBranchesInSwitch", "SwitchStatementWithTooManyBranches"})
 	public static @Nullable LodeStatus parse(final String str) {
@@ -56,7 +55,10 @@ enum LodeStatus {
 			case "good" -> Good;
 			case "verygood", "very-good" -> VeryGood;
 			case "motherlode", "mother-lode" -> MotherLode;
-			default -> null;
+			default -> {
+				LovelaceLogger.warning("Unsupported lode status '%s'", str);
+				yield null;
+			}
 		};
 	}
 
