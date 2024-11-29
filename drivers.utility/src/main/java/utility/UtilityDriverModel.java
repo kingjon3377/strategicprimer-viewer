@@ -93,7 +93,6 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		super(map);
 	}
 
-	// TODO: Make protected/private and provide static copyConstructor() instead?
 	public UtilityDriverModel(final IDriverModel model) {
 		super(model);
 	}
