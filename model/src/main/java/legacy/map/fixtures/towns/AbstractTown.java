@@ -249,16 +249,18 @@ public abstract class AbstractTown implements HasMutableImage,
 	public final String toString() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
-			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "An independent %s %s %s of DC %s %s".formatted(
 					townSize, status, getKind(), dc,
 					displayName);
+		} else if (owner.isCurrent()) {
+			return "A %s %s %s of DC %d %s, owned by you".formatted(
+					townSize, status, getKind(), dc,
+					displayName);
 		} else {
-			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "A %s %s %s of DC %d %s, owned by %s".formatted(
 					townSize, status, getKind(), dc,
 					displayName,
-					owner.isCurrent() ? "you" : owner.getName());
+					owner.getName());
 		}
 	}
 
@@ -266,16 +268,18 @@ public abstract class AbstractTown implements HasMutableImage,
 	public final String getShortDescription() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
-			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "An independent %s %s %s %s".formatted(townSize,
 					status, getKind(),
 					displayName);
+		} else if (owner.isCurrent()) {
+			return "A %s %s %s %s, owned by you".formatted(townSize,
+					status, getKind(),
+					displayName);
 		} else {
-			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "A %s %s %s %s, owned by %s".formatted(townSize,
 					status, getKind(),
 					displayName,
-					owner.isCurrent() ? "you" : owner.getName());
+					owner.getName());
 		}
 	}
 }
