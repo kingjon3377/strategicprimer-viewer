@@ -191,13 +191,15 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 
 	/**
 	 * Get all the given player's units, or only those of a specified kind.
+	 *
+	 * TODO: Provide streamUnits() if any caller immediately calls stream() on result
 	 */
 	@Override
 	public Collection<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			final Iterable<IUnit> temp = streamAllMaps()
 					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures() , player))
-					.collect(Collectors.toList());
+					.collect(Collectors.toList()); // TODO: Can we avoid this Collector step?
 			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 			for (final IUnit unit : temp) {
 				final int key = unit.getId();
