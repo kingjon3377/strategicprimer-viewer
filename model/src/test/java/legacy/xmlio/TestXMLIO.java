@@ -1609,7 +1609,7 @@ public final class TestXMLIO {
 				"type", "kind", "unit", firstUnit);
 		this.<IUnit>assertMissingProperty("""
 						<unit owner="2" kind="unit" />""", "name",
-				new Unit(new PlayerImpl(2, ""), kind, "", 0));
+				new Unit(new PlayerImpl(2, ""), "unit", "", 0));
 		assertSerialization("Deserialize unit with no kind properly",
 				new Unit(new PlayerImpl(2, ""), "", name, 2), Warning.IGNORE);
 		assertMissingProperty("""
