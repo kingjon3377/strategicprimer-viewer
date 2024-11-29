@@ -196,6 +196,6 @@ import org.jetbrains.annotations.Nullable;
 			}
 			buffer.append(addendum);
 		}
-		return buffer.toString(); // TODO: trim?
+		return buffer.toString().strip();
 	}
 }
