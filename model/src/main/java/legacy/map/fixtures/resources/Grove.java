@@ -9,8 +9,6 @@ import java.util.stream.Stream;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
- *
- * TODO: Convert Boolean fields to enums.
  */
 public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	public enum GroveType {
