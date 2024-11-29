@@ -201,12 +201,6 @@ public final class DBMapReader {
 				if (!exception.getMessage().contains("no such table")) {
 					throw exception;
 				}
-			} catch (final Exception exception) {
-				if (!exception.getMessage().contains("no such table")) {
-					// TODO: declare checked exception instead?
-					throw new RuntimeException(exception);
-				}
-
 			}
 		}
 		LovelaceLogger.debug("Finished reading the map except adding members to parents");
