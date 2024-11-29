@@ -95,7 +95,7 @@ public final class SimpleMovementModel {
 	 * @param forest   Whether the location is forested
 	 * @param mountain Whether the location is mountainous
 	 * @param river    Whether the location has a river that reduces cost
-	 * @param fixtures The fixtures at the location TODO: Iterable instead of varargs?
+	 * @param fixtures The fixtures at the location
 	 */
 	public static int movementCost(final @Nullable TileType terrain, final boolean forest, final boolean mountain,
 								   final boolean river, final Iterable<TileFixture> fixtures) {
