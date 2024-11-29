@@ -43,7 +43,7 @@ import drivers.gui.common.SPMenu;
 import exploration.common.Speed;
 
 import legacy.xmlio.MapIOHelper;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The main window for the exploration GUI.
