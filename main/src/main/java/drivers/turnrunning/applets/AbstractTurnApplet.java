@@ -68,23 +68,33 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected final @Nullable Point confirmPoint(final String prompt) {
-		final Point retval = cli.inputPoint(prompt);
-		if (Objects.isNull(retval)) {
-			return null;
-		}
 		final Point selectedLocation = model.getSelectedUnitLocation();
-		if (selectedLocation.isValid()) {
-			return switch (cli.inputBoolean(
-					"%s is %.1f away. Is that right?".formatted(retval,
-							model.getMapDimensions().distance(retval, selectedLocation)))) {
-				case YES -> retval;
-				case NO -> null; // TODO: retry?
-				case QUIT -> null;
-				case EOF -> null; // TODO: signal EOF to callers
-			};
-		} else {
-			cli.println("No base location, so can't estimate distance.");
-			return retval;
+		while (true) {
+			final Point retval = cli.inputPoint(prompt);
+			if (Objects.isNull(retval)) {
+				return null;
+			}
+			if (selectedLocation.isValid()) {
+				switch (cli.inputBoolean(
+						"%s is %.1f away. Is that right?".formatted(retval,
+								model.getMapDimensions().distance(retval, selectedLocation)))) {
+					case YES -> {
+						return retval;
+					}
+					case NO -> {
+						continue;
+					}
+					case QUIT -> {
+						return null;
+					}
+					case EOF -> {
+						return null; // TODO: signal EOF to callers
+					}
+				};
+			} else {
+				cli.println("No base location, so can't estimate distance.");
+				return retval;
+			}
 		}
 	}
 
