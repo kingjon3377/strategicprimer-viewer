@@ -23,16 +23,16 @@ public class TreeAutoExpander implements TreeModelListener {
 		this.getRowCount = getRowCount;
 		this.expandRow = expandRow;
 	}
+	private void expandAllRows() {
+		for (int i = 0; i < getRowCount.getAsInt(); i++) {
+			expandRow.accept(i);
+		}
+	}
 	@Override
 	public void treeStructureChanged(final TreeModelEvent event) {
 		Optional.ofNullable(event.getTreePath())
 				.map(TreePath::getParentPath)
-				.ifPresent(expandPath);
-		// FIXME: Do we really need to expand *all* rows after expanding the node that changed and all its parents?
-		// TODO: Maybe in an ifPresentOrElse() call?
-		for (int i = 0; i < getRowCount.getAsInt(); i++) {
-			expandRow.accept(i);
-		}
+				.ifPresentOrElse(expandPath, this::expandAllRows);
 	}
 
 	@Override
