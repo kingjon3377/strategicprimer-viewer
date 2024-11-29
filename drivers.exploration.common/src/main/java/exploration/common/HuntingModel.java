@@ -310,13 +310,10 @@ public final class HuntingModel {
 
 	/**
 	 * A helper method for the helper method for hunting, fishing, etc.
-	 *
-	 * TODO: Stream instead of Collection?
 	 */
-	private static Function<Point, Collection<Pair<Point, TileFixture>>> chooseFromMapImpl(
+	private static Function<Point, Stream<Pair<Point, TileFixture>>> chooseFromMapImpl(
 			final Function<Point, Collection<TileFixture>> chosenMap) {
-		return loc -> chosenMap.apply(loc).stream().map(f -> Pair.with(loc, f))
-				.collect(Collectors.toList());
+		return loc -> chosenMap.apply(loc).stream().map(f -> Pair.with(loc, f));
 	}
 
 	private static final double NOTHING_PROPORTION = 0.5;
@@ -331,8 +328,7 @@ public final class HuntingModel {
 	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
 		return new ResultStream<>(
 				new SurroundingPointIterable(point, dimensions).stream()
-						.map(chooseFromMapImpl(chosenMap)).flatMap(Collection::stream)
-						.collect(Collectors.toList()), NOTHING_PROPORTION,
+						.flatMap(chooseFromMapImpl(chosenMap)).collect(Collectors.toList()), NOTHING_PROPORTION,
 				Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
 	}
 
