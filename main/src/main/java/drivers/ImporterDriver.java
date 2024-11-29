@@ -6,6 +6,7 @@ import drivers.common.SPOptions;
 
 import java.awt.image.BufferedImage;
 
+import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -133,16 +134,12 @@ import org.jetbrains.annotations.Nullable;
 		}
 		LovelaceLogger.debug("--size parameter is %s", size);
 		for (final String arg : args) {
-			final ResourceInputStream res; // FIXME: Probably never closed
-			try {
-				res = new ResourceInputStream(arg, ImporterDriver.class);
+			final BufferedImage image;
+			try (final InputStream res = new ResourceInputStream(arg, ImporterDriver.class);) {
+				image = ImageIO.read(res);
 			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "Image file not found");
-			}
-			final BufferedImage image;
-			try {
-				image = ImageIO.read(res);
-			} catch (final IOException except) {
+			} catch (IOException except) {
 				throw new DriverFailedException(except, "I/O error reading image");
 			}
 			final int width = image.getWidth();
