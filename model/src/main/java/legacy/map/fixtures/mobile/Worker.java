@@ -286,7 +286,7 @@ public final class Worker implements IMutableWorker {
 				}
 				final Animal theirMount = that.getMount();
 				if (Objects.nonNull(theirMount)) {
-					if (Objects.nonNull(mount) && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
+					if (Objects.nonNull(mount) && !mount.isSubset(theirMount, localReport)) {
 						localReport.accept("Mounts differ");
 						retval = false;
 					} else if (Objects.isNull(mount)) {
