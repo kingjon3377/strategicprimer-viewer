@@ -126,19 +126,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		} else {
 			description = unit.getShortDescription();
 		}
-		// TODO: Make a method for this so we can use Stream::forEach instead of using a Collector
-		for (final Point point : new SurroundingPointIterable(dest, dimensions).stream()
-				.collect(Collectors.toSet())) {
-			for (final TileFixture fixture : map.getFixtures(point)) {
-				if (fixture instanceof final HasOwner owned &&
-						owned.owner().isIndependent() &&
-						!owned.owner().equals(unit.owner())) {
-					System.out.printf( // FIXME: Make a new interface for reporting this, and write to UI in a listener
-							"Motion of %s to %s could be observed by %s at %s%n",
-							description, dest, fixture.getShortDescription(), point);
-				}
-			}
-		}
+		new SurroundingPointIterable(dest, dimensions).stream()
+				.flatMap(point -> map.getFixtures(point).stream().filter(HasOwner.class::isInstance)
+						.map(HasOwner.class::cast).filter(owned -> !owned.owner().isIndependent())
+						.filter(owned -> !owned.owner().equals(unit.owner()))
+						.map(TileFixture.class::cast).map(fix -> Pair.with(point, fix.getShortDescription())))
+				.forEach(pair ->
+						System.out.printf("Motion of %s to %s could be observed by %s at %s%n", description, dest,
+								pair.getValue1(), pair.getValue0()));
 	}
 
 	/**
