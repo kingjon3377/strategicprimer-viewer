@@ -63,7 +63,7 @@ import java.util.Set;
 				getNumericParameter(element, path, "acres", -1));
 	}
 
-	private CultivationStatus getCultivvation(final StartElement element, final @Nullable Path path)
+	private CultivationStatus getCultivation(final StartElement element, final @Nullable Path path)
 			throws SPFormatException {
 		if (hasParameter(element, "cultivated")) {
 			return getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
@@ -83,7 +83,7 @@ import java.util.Set;
 	                                       final Grove.GroveType type, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, path, "kind", "tree", "cultivated", "wild", "id", "image", "count");
-		return new Grove(type, getCultivvation(element, path),
+		return new Grove(type, getCultivation(element, path),
 				getParamWithDeprecatedForm(element, path, "kind", "tree"), idNum,
 				getIntegerParameter(element, path, "count", -1));
 	}
