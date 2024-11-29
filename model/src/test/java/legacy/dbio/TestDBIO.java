@@ -698,14 +698,6 @@ public final class TestDBIO {
 	public void testMeadowSerialization(final Meadow.MeadowType type, final CultivationStatus cultivation, final int id,
 										final FieldStatus status, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status, acres));
-	}
-
-	// TODO: Combine with testMeadowSerialization()?
-	@ParameterizedTest
-	@MethodSource("testMeadowSerialization")
-	public void testFractionalMeadowSerialization(final Meadow.MeadowType type, final CultivationStatus cultivation,
-	                                              final int id, final FieldStatus status, final int acres)
-			throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status,
 				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
