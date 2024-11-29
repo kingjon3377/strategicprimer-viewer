@@ -560,12 +560,9 @@ public final class TestDBIO {
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
 	}
 
-	private static final List<Boolean> BOOLS = List.of(true, false);
-
-	// TODO: Reformat methods using this helper and ints()
 	// TODO: Extract helper to reduce verbosity of boxed() with ints(), as in TestXMLIO?
 	private static Stream<Boolean> bools() {
-		return BOOLS.stream();
+		return Stream.of(true, false);
 	}
 
 	private static Stream<Arguments> testAnimalSerialization() {
