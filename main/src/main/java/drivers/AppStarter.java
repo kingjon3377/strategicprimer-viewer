@@ -129,13 +129,12 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println();
 				for (final DriverFactory driver : driverCache.values().stream()
 						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).collect(Collectors.toSet())) {
-					// TODO: in Java 11+ use String.lines()
-					final String[] lines = AppChooserState.usageMessage(driver.getUsage(),
+					final List<String> lines = AppChooserState.usageMessage(driver.getUsage(),
 							"true".equals(options.getArgument("--verbose")) ?
 									AppChooserState.UsageVerbosity.Verbose : AppChooserState.UsageVerbosity.Terse)
-							.split(System.lineSeparator());
-					final String invocationExample = lines[0].replace("Usage: ", "");
-					final String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
+							.lines().toList();
+					final String invocationExample = lines.getFirst().replace("Usage: ", "");
+					final String description = lines.size() > 1 ? lines.get(1).replace(".", "") : "An unknown app";
 					System.out.printf("%s: %s%n", description, invocationExample);
 				}
 			} else {
