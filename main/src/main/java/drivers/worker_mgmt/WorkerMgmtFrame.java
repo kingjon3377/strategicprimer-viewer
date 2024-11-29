@@ -91,10 +91,10 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		playerLabel = new FormattedLabel("Units belonging to %%s: (%sU)".formatted(Platform.SHORTCUT_DESCRIPTION),
 				model.getCurrentPlayer().getName());
-		ordersPanelObj = new OrdersPanel("Orders", mainMap.getCurrentTurn(),
+		ordersPanel = new OrdersPanel("Orders", mainMap.getCurrentTurn(),
 				model.getCurrentPlayer(), model::getUnits, IUnit::getLatestOrders,
 				model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
-		tree.addTreeSelectionListener(ordersPanelObj);
+		tree.addTreeSelectionListener(ordersPanel);
 
 		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
 
@@ -122,7 +122,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		final BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 				new ListenedButton("Add New Unit", newUnitFrame::showWindow),
-				ordersPanelObj,
+				ordersPanel,
 				new ListenedButton("Export a proto-strategy", this::strategyWritingListener));
 		setContentPane(horizontalSplit(verticalSplit(
 				BorderedPanel.verticalPanel(
@@ -147,13 +147,13 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			}
 		});
 
-		pcListeners = List.of(newUnitFrame, treeModel, ordersPanelObj, resultsPanel, notesPanelInstance);
+		pcListeners = List.of(newUnitFrame, treeModel, ordersPanel, resultsPanel, notesPanelInstance);
 
 		setJMenuBar(WorkerMenu.workerMenu(menuHandler, getContentPane(), driver));
 		pack();
 	}
 
-	private final OrdersPanel ordersPanelObj; // TODO: rename to ordersPanel;
+	private final OrdersPanel ordersPanel;
 	private final FormattedLabel playerLabel;
 
 	private final ILegacyMap mainMap;
@@ -165,7 +165,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 	private void selectTodoText() {
 		for (final String string : Arrays.asList("fixme", "todo", "xxx")) {
-			if (ordersPanelObj.selectText(string)) {
+			if (ordersPanel.selectText(string)) {
 				break;
 			}
 		}
