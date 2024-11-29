@@ -559,27 +559,30 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
+	 * Unselect the currently selected unit.
+	 */
+	@Override
+	public void clearSelectedUnit() {
+		LovelaceLogger.debug("Unsetting currently-selected-unit property");
+		selection = Pair.with(Point.INVALID_POINT, null);
+	}
+
+	/**
 	 * Select the given unit.
 	 */
 	@Override
-	public final void setSelectedUnit(final @Nullable IUnit selectedUnit) {
+	public final void setSelectedUnit(final IUnit selectedUnit) {
 		final Point oldLoc = selection.getValue0();
 		final IUnit oldSelection = selection.getValue1();
-		final Point loc;
-		if (Objects.isNull(selectedUnit)) {
-			LovelaceLogger.debug("Unsetting currently-selected-unit property");
-			loc = Point.INVALID_POINT;
+		if (!mapsAgreeOnLocation(selectedUnit)) {
+			LovelaceLogger.warning("Maps containing that unit don't all agree on its location");
+		}
+		LovelaceLogger.debug("Setting a newly selected unit");
+		final Point loc = find(selectedUnit);
+		if (loc.isValid()) {
+			LovelaceLogger.debug("Found at %s", loc);
 		} else {
-			if (!mapsAgreeOnLocation(selectedUnit)) {
-				LovelaceLogger.warning("Maps containing that unit don't all agree on its location");
-			}
-			LovelaceLogger.debug("Setting a newly selected unit");
-			loc = find(selectedUnit);
-			if (loc.isValid()) {
-				LovelaceLogger.debug("Found at %s", loc);
-			} else {
-				LovelaceLogger.debug("Not found using our 'find' method");
-			}
+			LovelaceLogger.debug("Not found using our 'find' method");
 		}
 		selection = Pair.with(loc, selectedUnit);
 		fireSelectionChange(oldLoc, loc);

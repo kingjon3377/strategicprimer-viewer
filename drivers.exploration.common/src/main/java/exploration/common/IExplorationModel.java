@@ -67,9 +67,14 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	IUnit getSelectedUnit();
 
 	/**
-	 * Set the currently selected unit. TODO: Do we really need to allow setting it to null?
+	 * Set the currently selected unit.
 	 */
-	void setSelectedUnit(@Nullable IUnit selectedUnit);
+	void setSelectedUnit(IUnit selectedUnit);
+
+	/**
+	 * Unset the currently selected unit.
+	 */
+	void clearSelectedUnit();
 
 	/**
 	 * The location of the currently selected unit, or "the invalid point" if none.
