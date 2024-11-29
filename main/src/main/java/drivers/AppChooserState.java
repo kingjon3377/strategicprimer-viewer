@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Create the cache of driver objects.
 	 */
-	public static Map<String, Iterable<DriverFactory>> createCache() {
+	public static Map<String, List<DriverFactory>> createCache() {
 		// TODO: Use a multimap?
 		final Map<String, List<DriverFactory>> cache = new HashMap<>();
 		final Map<String, List<DriverFactory>> conflicts = new HashMap<>();
@@ -85,7 +86,8 @@ import org.jetbrains.annotations.Nullable;
 				cache.put(command, list);
 			}
 		}
-		return new HashMap<>(cache);
+		cache.replaceAll((_, v) -> Collections.unmodifiableList(v));
+		return Collections.unmodifiableMap(cache);
 	}
 
 	private static @Nullable Path getContainingApp(final @Nullable Path path) {
