@@ -1,5 +1,6 @@
 package legacy.map.fixtures.terrain;
 
+import legacy.map.HasMutableId;
 import lovelace.util.NumberComparator;
 import legacy.map.fixtures.TerrainFixture;
 import legacy.map.IFixture;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * A forest on a tile.
  */
-public final class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExtent<Forest> {
+public final class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExtent<Forest>, HasMutableId {
 	public Forest(final String kind, final boolean rows, final int id, final Number acres) {
 		this.kind = kind;
 		this.rows = rows;
@@ -62,6 +63,7 @@ public final class Forest implements TerrainFixture, HasMutableImage, HasKind, H
 		return id;
 	}
 
+	@Override
 	public void setId(final int id) {
 		this.id = id;
 	}

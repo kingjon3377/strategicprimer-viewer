@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import javax.xml.stream.XMLStreamException;
 
+import legacy.map.HasMutableId;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 import legacy.idreg.IDRegistrar;
@@ -97,11 +98,8 @@ public final class EchoDriver implements UtilityDriver {
 									location.column()));
 				}
 				for (final TileFixture fixture : map.getFixtures(location)) {
-					switch (fixture) {
-						case final Forest f when fixture.getId() < 0 -> f.setId(idFactory.createID());
-						case final Ground g when fixture.getId() < 0 -> g.setId(idFactory.createID());
-						default -> {
-						}
+					if (fixture instanceof HasMutableId hmi && hmi.getId() < 0) {
+						hmi.setId(idFactory.createID());
 					}
 				}
 			}

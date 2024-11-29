@@ -1,5 +1,6 @@
 package legacy.map.fixtures;
 
+import legacy.map.HasMutableId;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
 import legacy.map.fixtures.resources.ExposureStatus;
@@ -8,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  */
-public final class Ground implements MineralFixture, HasMutableImage {
+public final class Ground implements MineralFixture, HasMutableImage, HasMutableId {
 	public Ground(final int id, final String kind, final ExposureStatus exposure) {
 		this.id = id;
 		this.kind = kind;
@@ -48,9 +49,7 @@ public final class Ground implements MineralFixture, HasMutableImage {
 	}
 
 	/**
-	 * The ID number.
-	 *
-	 * FIXME: Why is this variable?
+	 * The ID number. Mutable to allow fixing Ground from XML without a specified ID to a value that is deterministic.
 	 */
 	private int id;
 
@@ -64,9 +63,8 @@ public final class Ground implements MineralFixture, HasMutableImage {
 
 	/**
 	 * Set the ID number.
-	 *
-	 * TODO: Extract 'HasMutableId' interface for this and Forest
 	 */
+	@Override
 	public void setId(final int id) {
 		this.id = id;
 	}
