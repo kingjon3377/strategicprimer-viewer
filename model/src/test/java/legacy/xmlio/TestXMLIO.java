@@ -330,13 +330,11 @@ public final class TestXMLIO {
 		return SINGLETON_RANDOM.ints(count).boxed();
 	}
 
-	private static final List<Boolean> BOOLS = List.of(true, false);
-
 	private static final List<SPWriter> WRITERS = List.of(TestReaderFactory.getOldWriter(),
 			TestReaderFactory.getNewWriter());
 
 	private static Stream<Boolean> bools() {
-		return BOOLS.stream();
+		return Stream.of(true, false);
 	}
 
 	private static Stream<SPWriter> writers() {
