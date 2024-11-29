@@ -80,7 +80,6 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		super(map);
 	}
 
-	// TODO: provide copyConstructor static factory?
 	public TurnRunningModel(final IDriverModel model) {
 		super(model);
 	}
