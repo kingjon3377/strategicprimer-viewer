@@ -163,7 +163,7 @@ public final class ResourceAddingCLIHelper {
 			}
 			case NO -> retval;
 			case QUIT -> retval; // TODO: Somehow signal to callers
-			case EOF -> retval; // TODO: Somehow signal EOF to callers
+			case EOF -> retval; // TODO: Somehow signal EOF to callers: return null
 		};
 	}
 

@@ -112,12 +112,10 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 			throw new IllegalArgumentException("Can't combine an empty list");
 		}
 		final IResourcePile top = list[0];
-		final IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
+		return new ResourcePileImpl(top.getId(), top.getKind(),
 				top.getContents(), new LegacyQuantity(Stream.of(list).map(IResourcePile::getQuantity)
 				.map(LegacyQuantity::number).map(Decimalize::decimalize)
-				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().units()));
-		combined.setCreated(top.getCreated());
-		return combined;
+				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().units()), top.getCreated());
 	}
 
 	private final ICLIHelper cli;

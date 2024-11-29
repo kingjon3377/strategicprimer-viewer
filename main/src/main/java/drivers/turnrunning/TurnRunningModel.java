@@ -700,8 +700,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	public boolean addResource(final IUnit container, final int id, final String kind, final String contents,
 	                           final LegacyQuantity quantity, final int createdDate) {
 		boolean any = false;
-		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
-		resource.setCreated(createdDate);
+		final IResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity, createdDate);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
 //		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(container.owner());
@@ -736,8 +735,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	public boolean addResource(final IFortress container, final int id, final String kind, final String contents,
 	                           final LegacyQuantity quantity, final int createdDate) {
 		boolean any = false;
-		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
-		resource.setCreated(createdDate);
+		final IResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity, createdDate);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
 		final Predicate<IMutableFortress> matchingName = f -> f.getName().equals(container.getName());
@@ -852,10 +850,10 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						}
 						destination.addMember(matching);
 					} else {
-						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
+						final IResourcePile split = new ResourcePileImpl(id.getAsInt(),
 								matching.getKind(), matching.getContents(),
-								new LegacyQuantity(quantity, matching.getQuantity().units()));
-						split.setCreated(matching.getCreated());
+								new LegacyQuantity(quantity, matching.getQuantity().units()), matching.getCreated());
+						// FIXME: Add 'split' to 'to'!
 						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 								.number()).subtract(quantity), matching.getQuantity().units()));
 					}
@@ -926,8 +924,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					} else {
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 								matching.getKind(), matching.getContents(),
-								new LegacyQuantity(quantity, matching.getQuantity().units()));
-						split.setCreated(matching.getCreated());
+								new LegacyQuantity(quantity, matching.getQuantity().units()), matching.getCreated());
+						// FIXME: Add 'split' to 'to'!
 						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 								.number()).subtract(quantity), matching.getQuantity().units()));
 					}

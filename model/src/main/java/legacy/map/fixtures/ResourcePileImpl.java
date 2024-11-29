@@ -17,6 +17,12 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 		this.quantity = quantity;
 	}
 
+	public ResourcePileImpl(final int id, final String kind, final String contents, final LegacyQuantity quantity,
+	                        final int created) {
+		this(id, kind, contents, quantity);
+		createdTurn = created;
+	}
+
 	@Override
 	public @NotNull String getPlural() {
 		return "Resource Piles";

@@ -6,6 +6,7 @@ import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 import impl.xmlio.SPWriter;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.TileFixture;
+import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
@@ -1839,10 +1840,8 @@ public final class TestXMLIO {
 		firstFort.addMember(new ResourcePileImpl(3, "generalKind", "specificKind",
 				new LegacyQuantity(10, "each")));
 		assertSerialization("Fortress can have a ResourcePile as a member", firstFort);
-		final IMutableResourcePile resource = new ResourcePileImpl(4, "generalKind", "specificKind",
-				new LegacyQuantity(15, "pounds"));
-		resource.setCreated(5); // TODO: Provide constructor taking this field
-		assertSerialization("Resource pile can know what turn it was created", resource);
+		assertSerialization("Resource pile can know what turn it was created", new ResourcePileImpl(4, "generalKind",
+				"specificKind", new LegacyQuantity(15, "pounds"), 5));
 		assertSerialization("Resource pile can have non-integer quantity", new ResourcePileImpl(5,
 				"resourceKind", "specificKind2",
 				new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(2)), "cubic feet")));
