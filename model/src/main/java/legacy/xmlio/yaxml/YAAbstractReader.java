@@ -486,16 +486,14 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (Objects.nonNull(attr)) {
 			final String val = attr.getValue();
-			if (Objects.nonNull(val) && !val.isEmpty()) { // TODO: Convert (inverted) to 'else' below
-				if ("true".equalsIgnoreCase(val)) {
-					return true;
-				} else if ("false".equalsIgnoreCase(val)) {
-					return false;
-				} else {
-					warner.handle(new MissingPropertyException(element, path, parameter,
-							new IllegalArgumentException(
-									"Boolean can only be true or false")));
-				}
+			if ("true".equalsIgnoreCase(val)) {
+				return true;
+			} else if ("false".equalsIgnoreCase(val)) {
+				return false;
+			} else if (Objects.nonNull(val) && !val.isEmpty()) {
+				warner.handle(new MissingPropertyException(element, path, parameter,
+						new IllegalArgumentException(
+								"Boolean can only be true or false")));
 			}
 		}
 		return defaultValue;
