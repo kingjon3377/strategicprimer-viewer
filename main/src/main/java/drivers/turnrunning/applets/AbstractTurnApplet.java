@@ -158,14 +158,10 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					}
 					case final IUnit unit when unit.owner().equals(player) -> {
 						for (final UnitMember inner : unit) {
-							if (inner instanceof final IResourcePile pile) {
-								// TODO: Combine if statements
-								if ("food".equals(pile.getKind()) &&
-										"pounds".equals(pile.getQuantity()
-												.units()) &&
-										pile.getCreated() <= turn) {
-									retval.add(pile);
-								}
+							if (inner instanceof final IResourcePile pile && "food".equals(pile.getKind()) &&
+									"pounds".equals(pile.getQuantity().units()) &&
+									pile.getCreated() <= turn) {
+								retval.add(pile);
 							}
 						}
 					}
