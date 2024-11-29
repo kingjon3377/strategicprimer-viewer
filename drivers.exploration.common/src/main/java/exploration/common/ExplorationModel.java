@@ -301,7 +301,6 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		super(map);
 	}
 
-	// TODO: Make private and provide static copyConstructor method instead of making this public?
 	public ExplorationModel(final IDriverModel model) {
 		super(model);
 	}
