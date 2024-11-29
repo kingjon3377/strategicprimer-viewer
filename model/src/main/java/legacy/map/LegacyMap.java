@@ -326,16 +326,10 @@ public final class LegacyMap implements IMutableLegacyMap {
 		} else if (quality < 0) {
 			throw new IllegalArgumentException("Road quality must be nonnegative");
 		}
-		modified = true; // TODO: Only if this is a change
-		final Map<Direction, Integer> temp = roadsMap.get(point);
-		final Map<Direction, Integer> roadsAtPoint;
-		if (Objects.isNull(temp)) {
-			roadsAtPoint = new EnumMap<>(Direction.class);
-		} else {
-			roadsAtPoint = temp;
-		}
+		final Map<Direction, Integer> roadsAtPoint = roadsMap.computeIfAbsent(point,
+				_ -> new EnumMap<>(Direction.class));
+		modified = !Objects.equals(quality, roadsAtPoint.get(direction)) || modified;
 		roadsAtPoint.put(direction, quality);
-		roadsMap.put(point, roadsAtPoint);
 	}
 
 	/**
@@ -361,8 +355,10 @@ public final class LegacyMap implements IMutableLegacyMap {
 
 	@Override
 	public void setCurrentPlayer(final Player currentPlayer) {
-		// FIXME: Should set 'modified' flag
-		playerCollection.setCurrentPlayer(currentPlayer);
+		if (playerCollection.getCurrentPlayer().getPlayerId() != currentPlayer.getPlayerId()) {
+			modified = true;
+			playerCollection.setCurrentPlayer(currentPlayer);
+		}
 	}
 
 	@Override
@@ -388,29 +384,18 @@ public final class LegacyMap implements IMutableLegacyMap {
 
 	@Override
 	public void addBookmark(final Point point, final Player player) {
-		modified = true; // TODO: Only if this is a change
-		final Set<Player> temp = bookmarksImpl.get(point);
-		final Set<Player> marks;
-		if (Objects.isNull(temp)) {
-			marks = new HashSet<>();
-		} else {
-			marks = temp;
-		}
-		marks.add(player);
-		bookmarksImpl.put(point, marks);
+		final Set<Player> marks = bookmarksImpl.computeIfAbsent(point, _ -> new HashSet<>());
+		modified = marks.add(player) || modified;
 	}
 
 	@Override
 	public void removeBookmark(final Point point, final Player player) {
-		modified = true; // TODO: Only if this is a change
-		final Set<Player> marks = bookmarksImpl.get(point);
-		if (Objects.nonNull(marks)) {
-			marks.remove(player);
-			if (marks.isEmpty()) {
-				bookmarksImpl.remove(point);
-			} else {
-				bookmarksImpl.put(point, marks);
-			}
+		final Set<Player> marks = bookmarksImpl.getOrDefault(point, Collections.emptySet());
+		modified = marks.remove(player) || modified;
+		if (marks.isEmpty()) {
+			bookmarksImpl.remove(point);
+		} else {
+			bookmarksImpl.put(point, marks);
 		}
 	}
 
@@ -428,15 +413,9 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 */
 	@Override
 	public void addRivers(final Point location, final River... addedRivers) {
-		modified = true; // TODO: Only if this is a change
-		final Set<River> set = riversMap.get(location);
-		if (Objects.isNull(set)) {
-			if (addedRivers.length > 0) {
-				riversMap.put(location, EnumSet.of(addedRivers[0], addedRivers));
-			}
-		} else {
-			set.addAll(Arrays.asList(addedRivers));
-			riversMap.put(location, set);
+		if (addedRivers.length > 0) {
+			final Set<River> set = riversMap.computeIfAbsent(location, _ -> EnumSet.noneOf(River.class));
+			modified = set.addAll(Arrays.asList(addedRivers)) || modified;
 		}
 	}
 
@@ -445,17 +424,14 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 */
 	@Override
 	public void removeRivers(final Point location, final River... removedRivers) {
-		modified = true; // TODO: Only if this is a change
-		final Set<River> set = riversMap.get(location);
-		if (Objects.nonNull(set)) {
-			for (final River river : removedRivers) {
-				set.remove(river);
-			}
-			if (set.isEmpty()) {
-				riversMap.remove(location);
-			} else {
-				riversMap.put(location, set);
-			}
+		final Set<River> set = riversMap.getOrDefault(location, EnumSet.noneOf(River.class));
+		for (final River river : removedRivers) {
+			modified = set.remove(river) || modified;
+		}
+		if (set.isEmpty()) {
+			riversMap.remove(location);
+		} else {
+			riversMap.put(location, set);
 		}
 	}
 
@@ -471,13 +447,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 			return false;
 		}
 		modified = true; // TODO: Only if this is a change
-		final List<TileFixture> local;
-		final List<TileFixture> temp = fixturesMap.get(location);
-		if (Objects.isNull(temp)) {
-			local = new ArrayList<>();
-		} else {
-			local = temp;
-		}
+		final List<TileFixture> local = fixturesMap.computeIfAbsent(location, _ -> new ArrayList<>());
 		final Optional<TileFixture> existing = local.stream()
 				.filter(f -> f.getId() == fixture.getId()).findAny();
 		if (fixture.getId() >= 0 && existing.isPresent()) {
@@ -512,9 +482,9 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fixture) {
-		modified = true; // TODO: Only if this is a change
-		final List<TileFixture> local = fixturesMap.get(location);
-		if (Objects.nonNull(local)) {
+		final List<TileFixture> local = fixturesMap.getOrDefault(location, Collections.emptyList());
+		if (local.contains(fixture)) {
+			modified = true;
 			local.remove(fixture);
 			if (local.isEmpty()) {
 				fixturesMap.remove(location);
