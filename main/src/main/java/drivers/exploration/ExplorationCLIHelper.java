@@ -256,9 +256,9 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 			// Since not-visible terrain is impassable, by this point we know the tile is visible.
 			final TileType terrain = map.getBaseTerrain(destPoint);
 			if (TileType.Ocean == terrain) {
-				tracksAnimal = huntingModel.fish(destPoint).iterator().next().getValue1();
+				tracksAnimal = huntingModel.fish(destPoint).get().getValue1();
 			} else {
-				tracksAnimal = huntingModel.hunt(destPoint).iterator().next().getValue1();
+				tracksAnimal = huntingModel.hunt(destPoint).get().getValue1();
 			}
 
 			switch (tracksAnimal) {

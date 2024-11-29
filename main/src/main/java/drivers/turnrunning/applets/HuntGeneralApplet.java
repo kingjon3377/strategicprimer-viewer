@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
@@ -217,7 +218,7 @@ import org.jetbrains.annotations.Nullable;
 	// Note that the intended return type of encounterSrc::apply is Pair<Point, Animal|AnimalTracks|NothingFound>,
 	// but Java doesn't offer union types.
 	protected final @Nullable String impl(final String command,
-									final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
+									final Function<Point, Supplier<Pair<Point, ? extends TileFixture>>> encounterSrc) {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {
@@ -229,9 +230,9 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int time = startingTime;
 		int noResultsTime = 0;
-		final Iterator<Pair<Point, TileFixture>> encounters = encounterSrc.apply(center).iterator();
-		while (time > 0 && encounters.hasNext()) {
-			final Pair<Point, TileFixture> pair = encounters.next();
+		final Supplier<Pair<Point, ? extends TileFixture>> encounters = encounterSrc.apply(center);
+		while (time > 0) {
+			final Pair<Point, ? extends TileFixture> pair = encounters.get();
 			final Point loc = pair.getValue0();
 			final TileFixture find = pair.getValue1();
 			if (find instanceof HuntingModel.NothingFound) {

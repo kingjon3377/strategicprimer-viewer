@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -105,7 +106,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
-		final Function<Point, Iterator<Pair<Point, TileFixture>>> encountersGenerator;
+		final Function<Point, Supplier<Pair<Point, ? extends TileFixture>>> encountersGenerator;
 		final String prompt;
 		final int nothingCost;
 		final int resetCost;
@@ -113,14 +114,14 @@ import org.jetbrains.annotations.Nullable;
 		switch (cli.inputBooleanInSeries(
 				"Is this a fisherman trapping fish rather than a trapper?")) {
 			case YES -> {
-				encountersGenerator = pt -> huntingModel.fish(pt).iterator();
+				encountersGenerator = huntingModel::fish;
 				prompt = "What should the fisherman do next?";
 				nothingCost = 5;
 				resetCost = 20;
 				trapSetCost = 30;
 			}
 			case NO -> {
-				encountersGenerator = pt -> huntingModel.hunt(pt).iterator();
+				encountersGenerator = huntingModel::hunt;
 				prompt = "What should the trapper do next?";
 				nothingCost = 10;
 				resetCost = 5;
@@ -142,7 +143,7 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(startingTime)) {
 			return ""; // TODO: null, surely?
 		}
-		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters =
+		final Supplier<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/? extends TileFixture>> encounters =
 				encountersGenerator.apply(center);
 		int time = startingTime;
 		while (time > 0) {
@@ -154,12 +155,7 @@ import org.jetbrains.annotations.Nullable;
 			boolean out = false; // TODO: Just set 'time' to 0, right?
 			switch (command) {
 				case Check -> {
-					if (!encounters.hasNext()) {
-						out = true;
-						cli.println("Ran out of results!");
-						break;
-					}
-					final Pair<Point, TileFixture> find = encounters.next();
+					final Pair<Point, ? extends TileFixture> find = encounters.get();
 					final Point loc = find.getValue0();
 					final TileFixture item = find.getValue1();
 					switch (item) {

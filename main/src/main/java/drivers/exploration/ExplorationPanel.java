@@ -342,14 +342,14 @@ import worker.common.IFixtureEditHelper;
 			return null;
 		}
 		LovelaceLogger.trace("In ExplorationPanel.tracksCreator");
-		final Function<Point, Iterable<Pair<Point, TileFixture>>> source;
+		final Function<Point, Supplier<Pair<Point, ? extends TileFixture>>> source;
 		if (TileType.Ocean == terrain) {
 			source = huntingModel::fish;
 		} else {
 			source = huntingModel::hunt;
 		}
 		LovelaceLogger.trace("ExplorationPanel.tracksCreator: Determined which source to use");
-		final TileFixture animal = source.apply(point).iterator().next().getValue1();
+		final TileFixture animal = source.apply(point).get().getValue1();
 		LovelaceLogger.trace("ExplorationPanel.tracksCreator: Got first item from source");
 		return switch (animal) {
 			case final Animal a -> new AnimalTracks(a.getKind());

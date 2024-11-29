@@ -116,14 +116,11 @@ public final class HuntingModel {
 	}
 
 	/**
-	 * An infinite iterator consisting of items taken randomly, but in
-	 * proportions such that lower-discovery-DC items are found more often,
-	 * from a given stream with {@link NothingFound} interspersed in a given percentage.
-	 *
-	 * TODO: Migrate callers to use Supplier instead?
+	 * An Supplier that takes items randomly, but in proportions such that lower-discovery-DC items are found more
+	 * often, from a given stream, with {@link NothingFound} interspersed in a given percentage.
 	 */
-	private static final class ResultIterator<Type> implements Iterator<Type> {
-		public ResultIterator(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
+	private static final class ResultSupplier<Type> implements Supplier<Type> {
+		public ResultSupplier(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
 		                      final ToIntFunction<Type> dcGetter) {
 			this.stream = new ArrayList<>(stream);
 			this.nothingProportion = nothingProportion;
@@ -136,27 +133,19 @@ public final class HuntingModel {
 		private final Type nothingValue;
 		private final ToIntFunction<Type> dcGetter;
 
-		@Override
-		public boolean hasNext() {
-			return true;
-		}
-
-		private Type supplier() {
+		private Type impl() {
 			return stream.get(SingletonRandom.SINGLETON_RANDOM.nextInt(stream.size()));
 		}
 
 		/**
-		 * This never throws (and so the warning is suppressed) because it is an <em>infinite</em> iterator.
-		 *
-		 * @return an item selected randomly (see {@link ResultIterator} class documentation)
+		 * @return an item selected randomly (see {@link ResultSupplier} class documentation)
 		 */
-		@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
 		@Override
-		public Type next() {
+		public Type get() {
 			if (stream.isEmpty() || SingletonRandom.SINGLETON_RANDOM.nextDouble() < nothingProportion) {
 				return nothingValue;
 			}
-			final Optional<Type> retval = Stream.generate(this::supplier)
+			final Optional<Type> retval = Stream.generate(this::impl)
 					.filter(f -> SingletonRandom.SINGLETON_RANDOM.nextInt(20) + 15 >= dcGetter.applyAsInt(f))
 					// TODO: Do a .limit(MAX_ITERATIONS) here?
 					.findAny();
@@ -166,14 +155,6 @@ public final class HuntingModel {
 				LovelaceLogger.warning("Somehow ran out of items to encounter");
 				return nothingValue;
 			}
-		}
-	}
-
-	private record ResultStream<Type>(Collection<Type> stream, double nothingProportion, Type nothingValue,
-	                                  ToIntFunction<Type> dcGetter) implements Iterable<Type> {
-		@Override
-		public Iterator<Type> iterator() {
-			return new ResultIterator<>(stream, nothingProportion, nothingValue, dcGetter);
 		}
 	}
 
@@ -313,9 +294,9 @@ public final class HuntingModel {
 	 * @param point     Whereabouts to search
 	 * @param chosenMap Filter/provider to use to find the animals.
 	 */
-	private Iterable<Pair<Point, ? extends TileFixture>> chooseFromMap(final Point point,
+	private Supplier<Pair<Point, ? extends TileFixture>> chooseFromMap(final Point point,
 	                                                         final Function<Point, Stream<? extends TileFixture>> chosenMap) {
-		return new ResultStream<>(
+		return new ResultSupplier<>(
 				new SurroundingPointIterable(point, dimensions).stream()
 						.flatMap(chooseFromMapImpl(chosenMap)).collect(Collectors.toList()), NOTHING_PROPORTION,
 				Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
@@ -333,7 +314,7 @@ public final class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, ? extends TileFixture>> hunt(final Point point) {
+	public Supplier<Pair<Point, ? extends TileFixture>> hunt(final Point point) {
 		return chooseFromMap(point, this::animals);
 	}
 
@@ -343,7 +324,7 @@ public final class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, ? extends TileFixture>> fish(final Point point) {
+	public Supplier<Pair<Point, ? extends TileFixture>> fish(final Point point) {
 		return chooseFromMap(point, this::waterAnimals);
 	}
 
