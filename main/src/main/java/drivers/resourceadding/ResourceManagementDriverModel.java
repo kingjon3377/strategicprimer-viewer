@@ -29,9 +29,6 @@ import java.math.BigDecimal;
  * A driver model for resource-entering drivers.
  */
 /* package */ final class ResourceManagementDriverModel extends SimpleMultiMapModel {
-	// TODO: Make these private and expose them as fromMap() and
-	// fromDriverModel() static factory methods, as they were (in effect)
-	// in Ceylon?
 	public ResourceManagementDriverModel(final IMutableLegacyMap map) {
 		super(map);
 	}
