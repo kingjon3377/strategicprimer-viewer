@@ -5,6 +5,7 @@ import legacy.map.HasOwner;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.Toolkit;
 import java.io.Serial;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -677,8 +678,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 						new int[]{index}, new Object[]{node});
 				LovelaceLogger.trace("Finished updating the tree");
 			} else {
+				Toolkit.getDefaultToolkit().beep();
 				LovelaceLogger.warning("Failed to remove from the map for some reason");
-				// FIXME: Some user feedback---beep, visual beep, etc.
 			}
 		} else {
 			LovelaceLogger.error("Tree root isn't a tree node, or tree doesn't contain that unit");
@@ -701,8 +702,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 					return;
 				}
 			}
+			Toolkit.getDefaultToolkit().beep();
 			LovelaceLogger.warning("Failed to change unit's owner");
-			// FIXME: Some user feedback---beep, visual beep, etc.
 		} else { // FIXME: Also check the case where newOwner is the current player
 			// TODO: Log when preconditions other than 'is a unit'
 			// and 'the current player is involved' aren't met
