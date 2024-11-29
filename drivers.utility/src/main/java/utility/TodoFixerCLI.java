@@ -246,8 +246,7 @@ public final class TodoFixerCLI implements CLIDriver {
 									EncounterTable.TerrainModifier.Mountains : EncounterTable.TerrainModifier.None,
 							map.getFixtures(loc), map.getDimensions()),
 							resource.getQuantity());
-					production.remove(resource);
-					production.add(replacement);
+					population.replaceYearlyProduction(resource, replacement);
 				}
 			}
 		}

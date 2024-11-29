@@ -67,6 +67,10 @@ public interface CommunityStats extends Subsettable<@Nullable CommunityStats> {
 
 	void addYearlyProduction(IResourcePile resource);
 
+	void removeYearlyProduction(IResourcePile resource);
+
+	void replaceYearlyProduction(IResourcePile oldResource, IResourcePile newResource);
+
 	/**
 	 * The set of resources consumed each year. (Though substitutions of
 	 * like resources are to be expected.)
@@ -74,4 +78,8 @@ public interface CommunityStats extends Subsettable<@Nullable CommunityStats> {
 	Set<IResourcePile> getYearlyConsumption();
 
 	void addYearlyConsumption(IResourcePile resource);
+
+	void removeYearlyConsumption(IResourcePile resource);
+
+	void replaceYearlyConsumption(IResourcePile oldResource, IResourcePile newResource);
 }

@@ -127,8 +127,6 @@ public final class CommunityStatsImpl implements CommunityStats {
 
 	/**
 	 * The set of resources produced each year.
-	 *
-	 * FIXME: Provide necessary mutator methods, so getter can wrap in unmodifiableSet
 	 */
 	private final Set<IResourcePile> yearlyProduction = new HashSet<>();
 
@@ -145,11 +143,21 @@ public final class CommunityStatsImpl implements CommunityStats {
 		yearlyProduction.add(resource);
 	}
 
+	@Override
+	public void removeYearlyProduction(final IResourcePile resource) {
+		yearlyProduction.remove(resource);
+	}
+
+	@Override
+	public void replaceYearlyProduction(final IResourcePile oldResource, final IResourcePile newResource) {
+		if (yearlyProduction.remove(oldResource)) {
+			yearlyProduction.add(newResource);
+		}
+	}
+
 	/**
 	 * The set of resources consumed each year. (Though substitutions of
 	 * like resources are to be expected.)
-	 *
-	 * FIXME: Provide necessary mutator methods, so getter can wrap in unmodifiableSet
 	 */
 	private final Set<IResourcePile> yearlyConsumption = new HashSet<>();
 
@@ -165,6 +173,18 @@ public final class CommunityStatsImpl implements CommunityStats {
 	@Override
 	public void addYearlyConsumption(final IResourcePile resource) {
 		yearlyConsumption.add(resource);
+	}
+
+	@Override
+	public void removeYearlyConsumption(final IResourcePile resource) {
+		yearlyConsumption.remove(resource);
+	}
+
+	@Override
+	public void replaceYearlyConsumption(final IResourcePile oldResource, final IResourcePile newResource) {
+		if (yearlyConsumption.remove(oldResource)) {
+			yearlyConsumption.add(newResource);
+		}
 	}
 
 	@Override
