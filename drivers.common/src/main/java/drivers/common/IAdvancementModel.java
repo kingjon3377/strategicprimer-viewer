@@ -6,6 +6,8 @@ import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.IMutableSkill;
 
+import java.util.function.IntPredicate;
+
 /**
  * An interface for methods needed for worker advancement. Implementations of
  * other driver-model interfaces are expected to also satisfy this interface as
@@ -54,8 +56,8 @@ public interface IAdvancementModel extends IDriverModel {
 	 * random number between 0 and 99.
 	 */
 	default boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-	                                final int contextValue) {
-		return addHoursToSkill(worker, jobName, skillName, hours, contextValue,
+	                                final IntPredicate levelCondition) {
+		return addHoursToSkill(worker, jobName, skillName, hours, levelCondition,
 				(workerName, job, skill, gains, currentLevel) -> {});
 	}
 
@@ -65,12 +67,11 @@ public interface IAdvancementModel extends IDriverModel {
 	 * one map, false otherwise. If the worker doesn't have that Skill in
 	 * that Job, it is added first; if the worker doesn't have that Job, it
 	 * is added first as in {@link #addJobToWorker}, then the skill is added
-	 * to it. The "contextValue" is passed to {@link
-	 * IMutableSkill#addHours}; it should be a
-	 * random number between 0 and 99.
+	 * to it. The "levelCondition" is passed to {@link
+	 * IMutableSkill#addHours}.
 	 */
 	boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours,
-	                        int contextValue, LevelGainListener levelGainListener);
+	                        IntPredicate levelCondition, LevelGainListener levelGainListener);
 
 	/**
 	 * Add hours to a Skill to the specified Job in all workers in the
@@ -82,7 +83,7 @@ public interface IAdvancementModel extends IDriverModel {
 	 * #addJobToWorker}, then the skill is added to it. The contextValue
 	 * parameter is used to calculate a new value passed to {@link
 	 * IMutableSkill#addHours} for each
-	 * worker.
+	 * worker. TODO: Take IntPredicate, or {@code Supplier<IntPredicate>}, instead
 	 */
 	boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
 	                             int hours, int contextValue, LevelGainListener levelGainListener);

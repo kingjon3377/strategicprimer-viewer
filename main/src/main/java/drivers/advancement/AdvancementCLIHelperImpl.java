@@ -97,8 +97,9 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			switch (experienceConfig) {
 				case SelfTeaching -> {
 					for (int hour = 0; hour < hours; hour++) {
+						final int threshold = SingletonRandom.SINGLETON_RANDOM.nextInt(100);
 						model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
-								SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+								total -> threshold <= total);
 					}
 				}
 				case ExpertMentoring -> {
@@ -111,9 +112,10 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 						remaining = 0;
 					}
 					while (remaining > 0) {
+						final int threshold = SingletonRandom.SINGLETON_RANDOM.nextInt(100);
 						model.addHoursToSkill(worker, job.getName(), skill.getName(),
 								Math.max(remaining, hoursPerHour),
-								SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+								total -> threshold <= total);
 						remaining -= hoursPerHour;
 					}
 				}
@@ -197,8 +199,9 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			final IJob job = worker.getJob(jobName);
 			final ISkill skill = job.getSkill(skillName);
 			final int oldLevel = skill.getLevel();
+			final int threshold = SingletonRandom.SINGLETON_RANDOM.nextInt(100);
 			model.addHoursToSkill(worker, jobName, skillName, hours,
-					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+					total -> threshold <= total);
 			if (skill.getLevel() != oldLevel) {
 				if (oldLevel == 0 && "miscellaneous".equals(skill.getName())) {
 					switch (cli.inputBooleanInSeries(
@@ -227,7 +230,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 							replacement = choice.getValue1();
 							model.replaceSkillInJob(worker, job.getName(), skill, replacement);
 							model.addHoursToSkill(worker, job.getName(), replacement.getName(),
-									100, 0);
+									1, _ -> true);
 							// FIXME: Add to {@link gains}? The listener should cover that
 							// already, but in practice it doesn't.
 							continue;

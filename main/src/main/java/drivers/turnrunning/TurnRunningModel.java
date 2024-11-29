@@ -338,9 +338,10 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		boolean any = false;
 		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
-			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
-					rng.nextInt(100), levelGainListener)) {
-				any = true;
+			if (member instanceof final IWorker w) {
+				final int threshold = rng.nextInt(100);
+				any = addHoursToSkill(w, jobName, skillName, hours,
+						total -> threshold <= total, levelGainListener) || any;
 			}
 		}
 		return any;
@@ -352,13 +353,12 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	 * one map, false otherwise. If the worker doesn't have that Skill in
 	 * that Job, it is added first; if the worker doesn't have that Job, it
 	 * is added first as in {@link #addJobToWorker}, then the skill is added
-	 * to it. The "contextValue" is passed to {@link
-	 * IMutableSkill#addHours}; it should
-	 * be a random number between 0 and 99.
+	 * to it. The "levelCondition" is passed to {@link
+	 * IMutableSkill#addHours}.
 	 */
 	@Override
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-	                               final int contextValue, LevelGainListener levelGainListener) {
+	                               final IntPredicate levelCondition, LevelGainListener levelGainListener) {
 		boolean any = false;
 		final Predicate<Object> isUnit = IUnit.class::isInstance;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
@@ -405,7 +405,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					skill = tSkill;
 				}
 				final int oldLevel = skill.getLevel();
-				skill.addHours(hours, contextValue);
+				skill.addHours(hours, levelCondition);
 				final int newLevel = skill.getLevel();
 				if (oldLevel != newLevel) {
 					levelGainListener.level(worker.getName(), jobName, skillName, newLevel - oldLevel, newLevel);

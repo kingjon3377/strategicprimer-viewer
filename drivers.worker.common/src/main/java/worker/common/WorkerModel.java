@@ -14,6 +14,7 @@ import java.util.Optional;
 import legacy.map.fixtures.FixtureIterable;
 
 import java.util.function.Function;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
@@ -827,7 +828,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-	                               final int contextValue, final LevelGainListener levelGainListener) {
+	                               final IntPredicate levelCondition, final LevelGainListener levelGainListener) {
 		boolean any = false;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
@@ -875,7 +876,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					skill = tempSkill;
 				}
 				final int oldLevel = skill.getLevel();
-				skill.addHours(hours, contextValue);
+				skill.addHours(hours, levelCondition);
 				final int newLevel = skill.getLevel();
 				if (oldLevel != newLevel) {
 					levelGainListener.level(worker.getName(), jobName, skillName, newLevel - oldLevel, newLevel);
@@ -895,7 +896,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * #addJobToWorker}, then the skill is added to it. The
 	 * "contextValue" is used to calculate a new value passed to {@link
 	 * IMutableSkill#addHours} for each
-	 * worker.
+	 * worker. TODO: Take IntPredicate, or {@code Supplier<IntPredicate>}, instead?
 	 */
 	@Override
 	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
@@ -904,9 +905,10 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		boolean any = false;
 		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
-			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
-					rng.nextInt(100), levelGainListener)) {
-				any = true;
+			if (member instanceof final IWorker w) {
+				final int threshold = rng.nextInt(100);
+				any = addHoursToSkill(w, jobName, skillName, hours,
+						total -> threshold <= total, levelGainListener) || any;
 			}
 		}
 		return any;

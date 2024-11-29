@@ -1,5 +1,7 @@
 package legacy.map.fixtures.mobile.worker;
 
+import java.util.function.IntPredicate;
+
 /**
  * A skill a worker has experience or training in.
  */
@@ -80,9 +82,9 @@ public final class Skill implements IMutableSkill {
 	 * Add hours of training or experience.
 	 */
 	@Override
-	public void addHours(final int hours, final int condition) {
+	public void addHours(final int hours, final IntPredicate condition) {
 		time += hours;
-		if (condition <= time) {
+		if (condition.test(time)) {
 			skillLevel++;
 			time = 0;
 		}

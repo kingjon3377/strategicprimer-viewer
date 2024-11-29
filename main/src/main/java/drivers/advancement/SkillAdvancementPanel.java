@@ -86,8 +86,9 @@ import drivers.common.LevelGainListener;
 			// multiple "hours" per hour, and they should only check for a level with
 			// each *actual* hour.
 			for (int hour = 0; hour < number; hour++) {
+				final int threshold = SingletonRandom.SINGLETON_RANDOM.nextInt(100);
 				model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
-						SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+						total -> threshold <= total);
 			}
 			final int newLevel = skill.getLevel();
 			if (newLevel != level) {
