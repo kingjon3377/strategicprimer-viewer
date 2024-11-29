@@ -120,7 +120,6 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		super(map);
 	}
 
-	// TODO: Provide copyConstructor() static factory method?
 	public WorkerModel(final IDriverModel model) {
 		super(model);
 	}
