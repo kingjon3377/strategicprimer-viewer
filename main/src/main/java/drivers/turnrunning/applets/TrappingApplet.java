@@ -152,7 +152,6 @@ import org.jetbrains.annotations.Nullable;
 			if (Objects.isNull(command) || TrapperCommand.Quit == command) {
 				break;
 			}
-			boolean out = false; // TODO: Just set 'time' to 0, right?
 			switch (command) {
 				case Check -> {
 					final Pair<Point, ? extends TileFixture> find = encounters.get();
@@ -184,9 +183,6 @@ import org.jetbrains.annotations.Nullable;
 //			case Quit -> time = 0;
 				case SetTrap -> time -= trapSetCost;
 				default -> throw new IllegalStateException("Exhaustive switch wasn't");
-			}
-			if (out) {
-				break;
 			}
 			cli.print(inHours(time));
 			cli.println(" remaining.");
