@@ -853,7 +853,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						final IResourcePile split = new ResourcePileImpl(id.getAsInt(),
 								matching.getKind(), matching.getContents(),
 								new LegacyQuantity(quantity, matching.getQuantity().units()), matching.getCreated());
-						// FIXME: Add 'split' to 'to'!
+						destination.addMember(split);
 						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 								.number()).subtract(quantity), matching.getQuantity().units()));
 					}
@@ -925,7 +925,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 								matching.getKind(), matching.getContents(),
 								new LegacyQuantity(quantity, matching.getQuantity().units()), matching.getCreated());
-						// FIXME: Add 'split' to 'to'!
+						destination.addMember(split);
 						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 								.number()).subtract(quantity), matching.getQuantity().units()));
 					}
