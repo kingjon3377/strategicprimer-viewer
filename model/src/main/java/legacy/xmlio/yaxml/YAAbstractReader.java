@@ -501,19 +501,22 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 
 	/**
 	 * Require that a parameter be present and non-empty.
-	 *
-	 * TODO: Try to avoid Boolean parameters
 	 */
 	protected final void requireNonEmptyParameter(final StartElement element, final @Nullable Path path,
-	                                              final String parameter, final boolean mandatory)
+	                                              final String parameter)
 			throws SPFormatException {
 		if (getParameter(element, parameter, "").isEmpty()) {
-			final SPFormatException except = new MissingPropertyException(element, path, parameter);
-			if (mandatory) {
-				throw except;
-			} else {
-				warner.handle(except);
-			}
+			throw new MissingPropertyException(element, path, parameter);
+		}
+	}
+
+	/**
+	 * Warn if a parameter is not present and non-empty, but don't *require* it unless in fatal-warnings mode.
+	 */
+	protected final void expectNonEmptyParameter(final StartElement element, final @Nullable Path path,
+	                                             final String parameter) {
+		if (getParameter(element, parameter, "").isEmpty()) {
+			warner.handle(new MissingPropertyException(element, path, parameter));
 		}
 	}
 

@@ -48,7 +48,7 @@ import java.util.Set;
 	                                        final Meadow.MeadowType type, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, path, "status", "kind", "id", "cultivated", "image", "acres");
-		requireNonEmptyParameter(element, path, "status", false);
+		expectNonEmptyParameter(element, path, "status");
 		final FieldStatus status;
 		try {
 			// TODO: add FieldStatus.parse() overload taking FieldStatus as default

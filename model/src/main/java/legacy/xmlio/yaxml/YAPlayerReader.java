@@ -31,8 +31,8 @@ final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 			throws SPFormatException {
 		requireTag(element, path, parent, "player");
 		expectAttributes(element, path, "number", "code_name", "portrait", "country");
-		requireNonEmptyParameter(element, path, "number", true);
-		requireNonEmptyParameter(element, path, "code_name", true);
+		requireNonEmptyParameter(element, path, "number");
+		requireNonEmptyParameter(element, path, "code_name");
 		final String countryRaw = getParameter(element, "country", "");
 		final String country = countryRaw.isEmpty() ? null : countryRaw;
 		// We're thinking about storing "standing orders" in the XML under the <player>

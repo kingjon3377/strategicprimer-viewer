@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 		requireTag(element, path, parent, "ground");
 		expectAttributes(element, path, "kind", "ground", "exposed", "id", "image");
 		final String kind = getParamWithDeprecatedForm(element, path, "kind", "ground");
-		requireNonEmptyParameter(element, path, "exposed", true);
+		requireNonEmptyParameter(element, path, "exposed");
 		spinUntilEnd(element.getName(), path, stream);
 		final int id = getIntegerParameter(element, path, "id", -1);
 		if (id >= 0) {

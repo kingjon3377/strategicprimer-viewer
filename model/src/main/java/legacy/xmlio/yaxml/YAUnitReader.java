@@ -129,8 +129,8 @@ import java.util.Map;
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, path, parent, "unit");
 		expectAttributes(element, path, "name", "owner", "image", "portrait", "kind", "id", "type");
-		requireNonEmptyParameter(element, path, "name", false);
-		requireNonEmptyParameter(element, path, "owner", false);
+		expectNonEmptyParameter(element, path, "name");
+		expectNonEmptyParameter(element, path, "owner");
 		final IMutableUnit retval = new Unit(
 				players.getPlayer(getIntegerParameter(element, path, "owner", -1)),
 				parseKind(element, path), getParameter(element, "name", ""),

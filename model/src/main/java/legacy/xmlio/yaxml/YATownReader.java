@@ -195,7 +195,7 @@ import java.util.function.Consumer;
 	                                  final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, path, "status", "name", "race", "image", "portrait", "id", "owner");
-		requireNonEmptyParameter(element, path, "name", false);
+		expectNonEmptyParameter(element, path, "name");
 		final int idNum = getOrGenerateID(element, path);
 		final TownStatus status;
 		try {
@@ -228,7 +228,7 @@ import java.util.function.Consumer;
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, path, "name", "status", "size", "dc", "id", "image", "owner",
 				"portrait");
-		requireNonEmptyParameter(element, path, "name", false);
+		expectNonEmptyParameter(element, path, "name");
 		final String name = getParameter(element, "name", "");
 		final TownStatus status;
 		try {
@@ -272,8 +272,8 @@ import java.util.function.Consumer;
 	                                   final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, path, "owner", "name", "size", "status", "id", "portrait", "image");
-		requireNonEmptyParameter(element, path, "owner", false);
-		requireNonEmptyParameter(element, path, "name", false);
+		expectNonEmptyParameter(element, path, "owner");
+		expectNonEmptyParameter(element, path, "name");
 		final IMutableFortress retval;
 		final TownSize size;
 		try {
