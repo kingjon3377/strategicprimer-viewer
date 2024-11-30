@@ -198,16 +198,15 @@ import static java.util.function.Predicate.not;
 		return not(cls::isInstance);
 	}
 
-	@SuppressWarnings("ChainOfInstanceofChecks")
 	private static BigDecimal decimalize(final Number number) {
-		if (number instanceof Integer || number instanceof Long
-				|| number instanceof Short || number instanceof Byte) {
-			return BigDecimal.valueOf(number.longValue());
-		} else if (number instanceof final BigDecimal d) {
-			return d;
-		} else {
-			return BigDecimal.valueOf(number.doubleValue());
-		}
+		return switch (number) {
+			case final Integer _ -> BigDecimal.valueOf(number.longValue());
+			case final Long _ -> BigDecimal.valueOf(number.longValue());
+			case final Short _ -> BigDecimal.valueOf(number.longValue());
+			case final Byte _ -> BigDecimal.valueOf(number.longValue());
+			case final BigDecimal d -> d;
+			default -> BigDecimal.valueOf(number.doubleValue());
+		};
 	}
 
 	private static Stream<?> flatten(final Object item) {
