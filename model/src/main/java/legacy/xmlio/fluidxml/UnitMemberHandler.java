@@ -42,6 +42,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
+import static java.util.function.Predicate.not;
+
 /* package */ class UnitMemberHandler extends FluidBase {
 	public static Worker readWorker(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
@@ -171,7 +173,7 @@ import java.util.stream.StreamSupport;
 			throws XMLStreamException {
 		final WorkerStats stats = obj.getStats();
 		final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
-				.filter(((Predicate<IJob>) IJob::isEmpty).negate()).toList();
+				.filter(not(IJob::isEmpty)).toList();
 		final boolean hasJobs = !jobs.isEmpty();
 		writeTag(ostream, "worker", indentation, !hasJobs && Objects.isNull(stats));
 		writeAttributes(ostream, Pair.with("name", obj.getName()));

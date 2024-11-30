@@ -43,6 +43,7 @@ import impl.xmlio.exceptions.MapVersionException;
 import legacy.map.fixtures.terrain.Forest;
 import common.map.fixtures.mobile.MaturityModel;
 
+import static java.util.function.Predicate.not;
 import static legacy.map.fixtures.mobile.Immortal.IMMORTAL_ANIMALS;
 
 import legacy.map.fixtures.towns.IFortress;
@@ -505,14 +506,11 @@ import java.util.function.Predicate;
 				closeTag(ostream, tabs + 2, "row");
 			}
 		}
-		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
-				.map(obj::getFixtures)
-				.anyMatch(((Predicate<Collection<TileFixture>>) Collection::isEmpty)
-						.negate())) {
+		if (obj.streamLocations().filter(not(Point::isValid)).map(obj::getFixtures)
+				.anyMatch(not(Collection::isEmpty))) {
 			writeTag(ostream, "elsewhere", tabs + 2);
 			finishParentTag(ostream);
-			for (final TileFixture fixture : obj.streamLocations()
-					.filter(((Predicate<Point>) Point::isValid).negate())
+			for (final TileFixture fixture : obj.streamLocations().filter(not(Point::isValid))
 					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
 				writeChild(ostream, fixture, tabs + 3);
 			}

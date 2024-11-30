@@ -28,6 +28,8 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
+import static java.util.function.Predicate.not;
+
 /**
  * A class to facilitate a better hunting/fishing driver.
  */
@@ -192,7 +194,7 @@ public final class HuntingModel {
 	 */
 	private Stream<Animal> baseAnimals(final Point point) {
 		return map.getFixtures(point).stream().filter(Animal.class::isInstance)
-				.map(Animal.class::cast).filter(((Predicate<Animal>) Animal::isTalking).negate());
+				.map(Animal.class::cast).filter(not(Animal::isTalking));
 	}
 
 	/**

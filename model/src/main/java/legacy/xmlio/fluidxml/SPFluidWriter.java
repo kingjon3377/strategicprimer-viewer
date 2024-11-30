@@ -76,6 +76,7 @@ import impl.xmlio.SPWriter;
 
 import lovelace.util.TypeStream;
 
+import static java.util.function.Predicate.not;
 import static legacy.xmlio.fluidxml.FluidBase.*;
 
 import java.util.Map;
@@ -343,12 +344,11 @@ public final class SPFluidWriter implements SPWriter {
 				ostream.writeEndElement();
 			}
 		}
-		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
-				.map(obj::getFixtures).anyMatch(((Predicate<Collection<TileFixture>>)
-						Collection::isEmpty).negate())) {
+		if (obj.streamLocations().filter(not(Point::isValid)).map(obj::getFixtures).anyMatch(not(
+				Collection::isEmpty))) {
 			writeTag(ostream, "elsewhere", indentation + 2, false);
 			for (final TileFixture fixture : obj.streamLocations()
-					.filter(((Predicate<Point>) Point::isValid).negate())
+					.filter(not(Point::isValid))
 					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
 				writeSPObjectImpl(ostream, fixture, indentation + 3);
 			}
