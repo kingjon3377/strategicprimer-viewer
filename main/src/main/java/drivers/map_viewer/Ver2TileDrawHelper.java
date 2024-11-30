@@ -20,6 +20,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 
 import static drivers.map_viewer.ImageLoader.ColorHelper;
+import static java.util.function.Predicate.not;
 
 import java.awt.image.ImageObserver;
 import java.awt.image.BufferedImage;
@@ -264,7 +265,7 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 	 * The drawable fixtures at the given location.
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final ILegacyMap map, final Point location) {
-		return map.getFixtures(location).stream().filter(f -> !(f instanceof FakeFixture))
+		return map.getFixtures(location).stream().filter(not(FakeFixture.class::isInstance))
 				.filter(filter).sorted(this::compareFixtures);
 	}
 
