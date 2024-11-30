@@ -160,10 +160,6 @@ import static java.util.function.Predicate.not;
 		printSummary(counter, title);
 	}
 
-	private static <Type> Predicate<Object> exclude(final Class<Type> cls) {
-		return obj -> !cls.isInstance(obj);
-	}
-
 	private static String reportForestTotal(final BigDecimal total) {
 		return "There are %s acres of forest, including:".formatted(total);
 	}
