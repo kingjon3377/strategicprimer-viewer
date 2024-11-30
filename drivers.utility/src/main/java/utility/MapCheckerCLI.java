@@ -1,5 +1,6 @@
 package utility;
 
+import legacy.map.HasKind;
 import legacy.map.HasName;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.Animal;
@@ -49,6 +50,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 import legacy.map.fixtures.mobile.worker.IJob;
 
 import static legacy.map.fixtures.mobile.worker.IJob.SUSPICIOUS_SKILLS;
+import static lovelace.util.MatchingValue.matchingValue;
 
 import legacy.map.fixtures.mobile.worker.ISkill;
 
@@ -363,7 +365,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 		final Function<IFixture, Animal> castToAnimal = Animal.class::cast;
 		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof final AnimalTracks at && fixtures.stream().filter(isAnimal).map(castToAnimal)
-					.map(Animal::getKind).anyMatch(Predicate.isEqual(at.getKind()))) {
+					.anyMatch(matchingValue(at, HasKind::getKind))) {
 				warner.handle(new SPContentWarning(context,
 						"Tracks of %s as well as the animal population".formatted(at.getKind())));
 				return true;

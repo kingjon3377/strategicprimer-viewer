@@ -46,6 +46,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
+import static lovelace.util.MatchingValue.matchingValue;
+import static lovelace.util.MatchingValue.matchingValues;
+
 public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
 	/**
 	 * The intersection of two sets; here so it can be passed as a method
@@ -159,20 +162,13 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		boolean retval = false;
 		final Predicate<Object> isMeadow = Meadow.class::isInstance;
 		final Function<Object, Meadow> meadowCast = Meadow.class::cast;
-		final Predicate<Meadow> sameKind = m -> field.getKind().equals(m.getKind());
-		final Predicate<Meadow> sameField = m -> field.getType() == m.getType();
-		final Predicate<Meadow> sameCultivated = m -> field.getCultivation() == m.getCultivation();
-		final Predicate<Meadow> sameStatus = m -> field.getStatus() == m.getStatus();
-		final Predicate<Meadow> sameId = m -> field.getId() == m.getId();
+		final Predicate<Meadow> matchingProperties = matchingValues(field, Meadow::getKind, Meadow::getType,
+				Meadow::getCultivation, Meadow::getStatus, Meadow::getId);
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<Meadow> existing = map.getFixtures(location).stream()
 					.filter(isMeadow).map(meadowCast)
-					.filter(sameKind)
-					.filter(sameField)
-					.filter(sameCultivated)
-					.filter(sameStatus)
-					.filter(sameId)
+					.filter(matchingProperties)
 					.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {
 				final TileFixture replacement = new Meadow(field.getKind(), field.getType(),
@@ -193,16 +189,13 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		boolean retval = false;
 		final Predicate<Object> isForest = Forest.class::isInstance;
 		final Function<Object, Forest> forestCast = Forest.class::cast;
-		final Predicate<Forest> sameKind = f -> forest.getKind().equals(f.getKind());
-		final Predicate<Forest> sameRows = f -> forest.isRows() == f.isRows();
-		final Predicate<Forest> sameId = f -> forest.getId() == f.getId();
+		final Predicate<Forest> matchingFields = matchingValues(forest,
+				Forest::getKind, Forest::isRows, Forest::getId);
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<Forest> existing = map.getFixtures(location).stream()
 					.filter(isForest).map(forestCast)
-					.filter(sameKind)
-					.filter(sameRows)
-					.filter(sameId)
+					.filter(matchingFields)
 					.findAny();
 			if (existing.isPresent()) {
 				final TileFixture replacement = new Forest(forest.getKind(), forest.isRows(),
@@ -275,19 +268,14 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		}
 		final Predicate<IFixture> isUnit = IMutableUnit.class::isInstance;
 		final Function<IFixture, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> sameOwner = u -> unit.owner().equals(u.owner());
-		final Predicate<IMutableUnit> sameKind = u -> unit.getKind().equals(u.getKind());
-		final Predicate<IMutableUnit> sameName = u -> unit.getName().equals(u.getName());
-		final Predicate<IMutableUnit> sameId = u -> u.getId() == unit.getId();
+		final Predicate<IUnit> matchingFields = matchingValues(unit, IUnit::owner, IUnit::getKind,
+				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> localUnit = map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(isUnit)
 					.map(unitCast)
-					.filter(sameOwner)
-					.filter(sameKind)
-					.filter(sameName)
-					.filter(sameId)
+					.filter(matchingFields)
 					.findAny();
 			if (localUnit.isPresent()) {
 				final int turn = map.getCurrentTurn();
@@ -362,19 +350,16 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		boolean any = false;
 		final Predicate<Object> isWorker = IWorker.class::isInstance;
 		final Function<Object, IWorker> workerCast = IWorker.class::cast;
-		final Predicate<IWorker> sameRace = w -> worker.getRace().equals(w.getRace());
-		final Predicate<IWorker> sameName = w -> worker.getName().equals(w.getName());
-		final Predicate<IWorker> sameId = w -> worker.getId() == w.getId();
+		final Predicate<IWorker> matchingFields = matchingValues(worker, IWorker::getRace,
+				IWorker::getName, IWorker::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final IUnit container : map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.owner().equals(unit.owner())).toList()) {
+					.filter(matchingValue(unit, IUnit::owner)).toList()) {
 				final Optional<IWorker> matching =
 						container.stream().filter(isWorker).map(workerCast)
-								.filter(sameRace)
-								.filter(sameName)
-								.filter(sameId)
+								.filter(matchingFields)
 								.findAny();
 				if (matching.isPresent()) {
 					final Optional<IMutableJob> streamedJob =

@@ -5,6 +5,7 @@ import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.resources.MineralVein;
 import legacy.map.fixtures.resources.StoneDeposit;
 import lovelace.util.LovelaceLogger;
+import static lovelace.util.MatchingValue.matchingValues;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,6 +65,9 @@ import legacy.map.fixtures.terrain.Forest;
 import legacy.map.fixtures.towns.IMutableFortress;
 import legacy.map.fixtures.towns.Village;
 import legacy.map.fixtures.towns.IFortress;
+
+import static java.util.function.Predicate.not;
+import static lovelace.util.MatchingValue.matchingValue;
 
 // TODO: Make sure all methods are still used; at least one driver now uses a different model interface.
 
@@ -129,7 +133,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		new SurroundingPointIterable(dest, dimensions).stream()
 				.flatMap(point -> map.getFixtures(point).stream().filter(HasOwner.class::isInstance)
 						.map(HasOwner.class::cast).filter(owned -> !owned.owner().isIndependent())
-						.filter(owned -> !owned.owner().equals(unit.owner()))
+						.filter(not(matchingValue(unit, HasOwner::owner)))
 						.map(TileFixture.class::cast).map(fix -> Pair.with(point, fix.getShortDescription())))
 				.forEach(pair ->
 						System.out.printf("Motion of %s to %s could be observed by %s at %s%n", description, dest,
@@ -908,13 +912,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public final void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		final Predicate<Object> isMutableUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> mutableUnitCast = IMutableUnit.class::cast;
-		final Predicate<IUnit> matchingOldUnit = u -> u.owner().equals(old.owner()) &&
-				u.getKind().equals(old.getKind()) &&
-				u.getName().equals(old.getName()) && u.getId() == old.getId();
-		final Predicate<IUnit> matchingNewUnit = u -> u.owner().equals(newOwner.owner()) &&
-				u.getKind().equals(newOwner.getKind()) &&
-				u.getName().equals(newOwner.getName()) &&
-				u.getId() == newOwner.getId();
+		final Predicate<IUnit> matchingOldUnit = matchingValues(old, IUnit::owner, IUnit::getKind, IUnit::getName,
+				IUnit::getId);
+		final Predicate<IUnit> matchingNewUnit = matchingValues(newOwner, IUnit::owner, IUnit::getKind, IUnit::getName,
+				IUnit::getId);
 		// TODO: equals() isn't ideal for finding a matching member ...
 		final Function<IUnit, Optional<UnitMember>> searchUnit =
 				u -> u.stream().filter(Predicate.isEqual(member)).findAny();
@@ -1021,10 +1022,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public final void addUnitMember(final IUnit unit, final UnitMember member) {
 		final Predicate<Object> isMutableUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> mutableUnitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> isMatchingUnit = u -> u.owner().equals(unit.owner()) &&
-				u.getName().equals(unit.getName()) &&
-				u.getKind().equals(unit.getKind()) &&
-				u.getId() == unit.getId();
+		final Predicate<IUnit> isMatchingUnit = matchingValues(unit, IUnit::owner, IUnit::getName, IUnit::getKind,
+				IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> matching = map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
@@ -1053,20 +1052,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, HasMutableName> hmnCast = HasMutableName.class::cast;
 		switch (item) {
 			case final IUnit unit -> {
-				final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-				final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
-				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				final Predicate<IUnit> matchingUnit = matchingValues(unit, IUnit::owner, IUnit::getName, IUnit::getKind,
+						IUnit::getId);
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 					final Optional<HasMutableName> matching = map.streamAllFixtures()
 							.flatMap(ExplorationModel::unflattenNonFortresses)
 							.filter(isUnit)
 							.filter(hasMutableName)
 							.map(unitCast)
-							.filter(matchingOwner)
-							.filter(matchingName)
-							.filter(matchingKind)
-							.filter(matchingId)
+							.filter(matchingUnit)
 							.map(hmnCast).findAny();
 					if (matching.isPresent()) {
 						any = true;
@@ -1080,8 +1074,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				return any;
 			}
 			case final UnitMember member -> {
-				final Predicate<HasMutableName> matchingName = u -> u.getName().equals(item.getName());
-				final Predicate<IFixture> matchingId = u -> u.getId() == member.getId();
+				final Predicate<HasName> matchingName = matchingValue(item, HasName::getName);
+				final Predicate<IFixture> matchingId = matchingValue(member, IFixture::getId);
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 					final Optional<HasMutableName> matching = map.streamAllFixtures()
 							.flatMap(ExplorationModel::unflattenNonFortresses)
@@ -1119,18 +1113,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
 		switch (item) {
 			case final IUnit unit -> {
-				final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-				final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
-				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				final Predicate<IUnit> matchingUnit = matchingValues(unit, IUnit::owner, IUnit::getName,
+						IUnit::getKind, IUnit::getId);
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 					final Optional<HasMutableKind> matching = map.streamAllFixtures()
 							.flatMap(ExplorationModel::unflattenNonFortresses)
 							.filter(isUnit).map(unitCast)
-							.filter(matchingOwner)
-							.filter(matchingName)
-							.filter(matchingKind)
-							.filter(matchingId)
+							.filter(matchingUnit)
 							.map(hmkCast).findAny();
 					if (matching.isPresent()) {
 						any = true;
@@ -1144,7 +1133,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				return any;
 			}
 			case final UnitMember member -> {
-				final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
+				final Predicate<HasKind> matchingKind = matchingValue(item, HasKind::getKind);
 				final Predicate<HasMutableKind> matchingId = m -> ((IFixture) m).getId() == member.getId();
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 					final Optional<HasMutableKind> matching = map.streamAllFixtures()
@@ -1255,18 +1244,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		boolean any = false;
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(fixture.getName());
-		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(fixture.getKind());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == fixture.getId();
+		final Predicate<IUnit> matchingUnit = matchingValues(fixture, IUnit::getName, IUnit::getKind, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> matching = map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit)
 					.map(unitCast)
 					.filter(this::matchingPlayer)
-					.filter(matchingName)
-					.filter(matchingKind)
-					.filter(matchingId)
+					.filter(matchingUnit)
 					.findAny();
 			if (matching.isPresent()) {
 				matching.get().sortMembers();

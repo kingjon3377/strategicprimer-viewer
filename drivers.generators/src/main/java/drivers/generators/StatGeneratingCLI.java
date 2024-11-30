@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import legacy.map.HasOwner;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.AnimalImpl;
 
@@ -70,6 +71,8 @@ import lovelace.util.FileContentsReader;
 import lovelace.util.SingletonRandom;
 
 import legacy.map.fixtures.towns.Village;
+
+import static lovelace.util.MatchingValue.matchingValue;
 
 /**
  * A driver to generate new workers.
@@ -579,7 +582,7 @@ import legacy.map.fixtures.towns.Village;
 		final List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 						.filter(Village.class::isInstance).map(Village.class::cast)
-						.filter(v -> v.owner().equals(unit.owner()))
+						.filter(matchingValue(unit, HasOwner::owner))
 						.filter(filterRecentVillages(unit.owner()))
 						.map(v -> Pair.with(l, v)))
 				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))

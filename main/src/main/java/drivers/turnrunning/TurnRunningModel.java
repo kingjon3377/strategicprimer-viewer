@@ -48,6 +48,8 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
+import static lovelace.util.MatchingValue.matchingValue;
+import static lovelace.util.MatchingValue.matchingValues;
 
 public final class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
 	/**
@@ -223,9 +225,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
-		final Predicate<IMutableWorker> matchingRace = w -> w.getRace().equals(worker.getRace());
-		final Predicate<IMutableWorker> matchingName = w -> w.getName().equals(worker.getName());
-		final Predicate<IMutableWorker> matchingId = w -> w.getId() == worker.getId();
+		final Predicate<IWorker> matchingFields = matchingValues(worker, IWorker::getRace, IWorker::getName,
+				IWorker::getId);
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
@@ -233,9 +234,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isUnit).map(unitCast)
 					.flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
-					.filter(matchingRace)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields)
+					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 						.noneMatch(matchingJob)) {
@@ -263,9 +263,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
-		final Predicate<IMutableWorker> matchingRace = w -> w.getRace().equals(worker.getRace());
-		final Predicate<IMutableWorker> matchingName = w -> w.getName().equals(worker.getName());
-		final Predicate<IMutableWorker> matchingId = w -> w.getId() == worker.getId();
+		final Predicate<IWorker> matchingFields = matchingValues(worker, IWorker::getRace,
+				IWorker::getName, IWorker::getId);
 		final Predicate<IJob> isMutableJob = IMutableJob.class::isInstance;
 		final Function<IJob, IMutableJob> mutableJobCast = IMutableJob.class::cast;
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
@@ -274,8 +273,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					map.streamAllFixtures().flatMap(TurnRunningModel::unflattenNonFortresses)
 							.filter(isUnit).map(unitCast)
 							.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
-							.filter(matchingRace).filter(matchingName)
-							.filter(matchingId).findAny().orElse(null);
+							.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
 						.filter(isMutableJob).map(mutableJobCast)
@@ -363,9 +361,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
-		final Predicate<IMutableWorker> matchingRace = w -> w.getRace().equals(worker.getRace());
-		final Predicate<IMutableWorker> matchingName = w -> w.getName().equals(worker.getName());
-		final Predicate<IMutableWorker> matchingId = w -> w.getId() == worker.getId();
+		final Predicate<IWorker> matchingFields = matchingValues(worker, IWorker::getRace,
+				IWorker::getName, IWorker::getId);
 		final Predicate<IJob> isMutableJob = IMutableJob.class::isInstance;
 		final Function<IJob, IMutableJob> mutableJobCast = IMutableJob.class::cast;
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
@@ -377,9 +374,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast).flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
-					.filter(matchingRace)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				map.setModified(true);
 				any = true;
@@ -431,9 +426,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, IMutableWorker> workerCast = IMutableWorker.class::cast;
-		final Predicate<IMutableWorker> matchingRace = w -> w.getRace().equals(worker.getRace());
-		final Predicate<IMutableWorker> matchingName = w -> w.getName().equals(worker.getName());
-		final Predicate<IMutableWorker> matchingId = w -> w.getId() == worker.getId();
+		final Predicate<IWorker> matchingFields = matchingValues(worker, IWorker::getRace, IWorker::getName,
+				IWorker::getId);
 		final Predicate<IJob> isMutableJob = IMutableJob.class::isInstance;
 		final Function<IJob, IMutableJob> mutableJobCast = IMutableJob.class::cast;
 		final Predicate<IJob> matchingJobName = j -> jobName.equals(j.getName());
@@ -444,9 +438,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast).flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
-					.filter(matchingRace)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields)
+					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				final IMutableJob matchingJob = StreamSupport.stream(matching.spliterator(), true)
 						.filter(isMutableJob).map(mutableJobCast)
@@ -490,9 +483,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.map(IMutableResourcePile.class::cast).toList()) {
 					if (resource.isSubset(item, x -> {
 					}) || // TODO: is that the right way around?
-							(resource.getKind().equals(item.getKind()) &&
-									resource.getContents().equals(item.getContents()) &&
-									resource.getId() == item.getId())) {
+							(matchingValues(resource, IResourcePile::getKind, IResourcePile::getContents,
+									IResourcePile::getId).test(item))) {
 						final BigDecimal qty = decimalize(item.getQuantity().number());
 						if (qty.compareTo(amount) <= 0) {
 							switch (container) {
@@ -574,18 +566,13 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		boolean any = false;
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(unit.getName());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == unit.getId();
+		final Predicate<IUnit> matchingFields = matchingValues(unit, IUnit::owner, IUnit::getKind,
+				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
-					.filter(matchingOwner)
-					.filter(matchingKind)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setOrders(turn, results);
 				map.setModified(true);
@@ -605,18 +592,13 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		boolean any = false;
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(unit.getName());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == unit.getId();
+		final Predicate<IUnit> matchingFields = matchingValues(unit, IUnit::owner, IUnit::getKind,
+				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
-					.filter(matchingOwner)
-					.filter(matchingKind)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setResults(turn, results);
 				map.setModified(true);
@@ -638,10 +620,9 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final UnitMember resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-//		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(container.owner());
-//		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(container.getKind());
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(container.getName());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == container.getId();
+//		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::owner, IUnit::getKind,
+//				IUnit::getName, IUnit::getId);
+		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::getName, IUnit::getId);
 		final Consumer<IMutableUnit> addLambda =
 				matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
@@ -649,10 +630,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			map.streamAllFixtures()
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
-//				.filter(matchingOwner)
-//				.filter(matchingKind)
-					.filter(matchingName)
-					.filter(matchingId).findAny()
+					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
 			map.setModified(true);
 			any = true;
@@ -672,16 +650,14 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final FortressMember resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
-		final Predicate<IMutableFortress> matchingName = f -> f.getName().equals(container.getName());
-		final Predicate<IMutableFortress> matchingId = f -> f.getId() == container.getId();
+		final Predicate<IFortress> matchingFields = matchingValues(container, IFortress::getName, IFortress::getId);
 		final Consumer<IMutableFortress> addLambda =
 				matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
 			map.streamAllFixtures()
 					.filter(isFortress).map(fortressCast)
-					.filter(matchingName)
-					.filter(matchingId).findAny()
+					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
 			map.setModified(true);
 			any = true;
@@ -702,10 +678,9 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final IResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity, createdDate);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-//		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(container.owner());
-//		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(container.getKind());
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(container.getName());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == container.getId();
+//		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::owner, IUnit::getKind,
+//				IUnit::getName, IUnit::getId);
+		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::getName, IUnit::getId);
 		final Consumer<IMutableUnit> addLambda =
 				matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
@@ -713,10 +688,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			map.streamAllFixtures()
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
-//				.filter(matchingOwner)
-//				.filter(matchingKind)
-					.filter(matchingName)
-					.filter(matchingId).findAny()
+					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
 			map.setModified(true);
 			any = true;
@@ -737,16 +709,14 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final IResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity, createdDate);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
-		final Predicate<IMutableFortress> matchingName = f -> f.getName().equals(container.getName());
-		final Predicate<IMutableFortress> matchingId = f -> f.getId() == container.getId();
+		final Predicate<IFortress> matchingFields = matchingValues(container, IFortress::getName, IFortress::getId);
 		final Consumer<IMutableFortress> addLambda = matching ->
 				matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
 			map.streamAllFixtures()
 					.filter(isFortress).map(fortressCast)
-					.filter(matchingName)
-					.filter(matchingId).findAny()
+					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
 			map.setModified(true);
 			any = true;
@@ -772,18 +742,13 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		boolean any = false;
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(container.owner());
-		final Predicate<IMutableUnit> matchingKind = u -> u.getKind().equals(container.getKind());
-		final Predicate<IMutableUnit> matchingName = u -> u.getName().equals(container.getName());
-		final Predicate<IMutableUnit> matchingId = u -> u.getId() == container.getId();
+		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::owner, IUnit::getKind,
+				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
 					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
-					.filter(matchingOwner)
-					.filter(matchingKind)
-					.filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.addMember(animal.copy(IFixture.CopyBehavior.KEEP));
 				any = true;
@@ -809,16 +774,11 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final IntSupplier id = new GenerateOnce(idFactory);
 		final Predicate<Object> isResource = IMutableResourcePile.class::isInstance;
 		final Function<Object, IMutableResourcePile> mrpCast = IMutableResourcePile.class::cast;
-		final Predicate<IMutableResourcePile> matchingPileKind = r -> r.getKind().equals(from.getKind());
-		final Predicate<IMutableResourcePile> matchingPileContents = r -> r.getContents().equals(from.getContents());
-		final Predicate<IMutableResourcePile> matchingPileAge = r -> r.getCreated() == from.getCreated();
-		final Predicate<IMutableResourcePile> matchingPileUnits =
-				r -> r.getQuantity().units().equals(from.getQuantity().units());
-		final Predicate<IMutableResourcePile> matchingPileId = r -> r.getId() == from.getId();
+		final Predicate<IResourcePile> matchingPile = matchingValues(from, IResourcePile::getKind, IResourcePile::getId,
+				IResourcePile::getContents, IResourcePile::getCreated, r -> r.getQuantity().units());
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-		final Predicate<IMutableUnit> matchingUnitName = u -> u.getName().equals(to.getName());
-		final Predicate<IMutableUnit> matchingUnitId = u -> u.getId() == to.getId();
+		final Predicate<IUnit> matchingUnit = matchingValues(to, IUnit::getName, IUnit::getId);
 
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final FixtureIterable<?> container : map.streamAllFixtures()
@@ -826,18 +786,15 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
-					.filter(f -> f.owner().equals(to.owner()))
+					.filter(matchingValue(to, HasOwner::owner))
 					.map(FixtureIterable.class::cast).toList()) {
 				final IMutableResourcePile matching = container.stream()
-						.filter(isResource).map(mrpCast).filter(matchingPileKind)
-						.filter(matchingPileContents).filter(matchingPileAge).filter(matchingPileUnits)
-						.filter(matchingPileId).findAny().orElse(null);
+						.filter(isResource).map(mrpCast).filter(matchingPile).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
 				final IMutableUnit destination = map.streamAllFixtures()
 						.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 						.filter(isUnit).map(unitCast)
-						.filter(matchingUnitName)
-						.filter(matchingUnitId).findAny().orElse(null);
+						.filter(matchingUnit).findAny().orElse(null);
 				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
@@ -880,16 +837,11 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final IntSupplier id = new GenerateOnce(idFactory);
 		final Predicate<Object> isResource = IMutableResourcePile.class::isInstance;
 		final Function<Object, IMutableResourcePile> mrpCast = IMutableResourcePile.class::cast;
-		final Predicate<IMutableResourcePile> matchingPileKind = r -> r.getKind().equals(from.getKind());
-		final Predicate<IMutableResourcePile> matchingPileContents = r -> r.getContents().equals(from.getContents());
-		final Predicate<IMutableResourcePile> matchingPileAge = r -> r.getCreated() == from.getCreated();
-		final Predicate<IMutableResourcePile> matchingPileUnits =
-				r -> r.getQuantity().units().equals(from.getQuantity().units());
-		final Predicate<IMutableResourcePile> matchingPileId = r -> r.getId() == from.getId();
+		final Predicate<IResourcePile> matchingPile = matchingValues(from, IResourcePile::getKind, IResourcePile::getId,
+				IResourcePile::getContents, IResourcePile::getCreated, r -> r.getQuantity().units());
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
-		final Predicate<IMutableFortress> matchingFortName = f -> f.getName().equals(to.getName());
-		final Predicate<IMutableFortress> matchingFortId = f -> f.getId() == to.getId();
+		final Predicate<IFortress> matchingFort = matchingValues(to, IFortress::getName, IFortress::getId);
 
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final FixtureIterable<?> container : map.streamAllFixtures()
@@ -897,20 +849,15 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
-					.filter(f -> f.owner().equals(to.owner()))
+					.filter(matchingValue(to, HasOwner::owner))
 					.map(FixtureIterable.class::cast).toList()) {
 				final IMutableResourcePile matching = container.stream()
 						.filter(isResource).map(mrpCast)
-						.filter(matchingPileKind)
-						.filter(matchingPileContents)
-						.filter(matchingPileAge)
-						.filter(matchingPileUnits)
-						.filter(matchingPileId).findAny().orElse(null);
+						.filter(matchingPile).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
 				final IMutableFortress destination = map.streamAllFixtures()
 						.filter(isFortress).map(fortressCast)
-						.filter(matchingFortName)
-						.filter(matchingFortId).findAny().orElse(null);
+						.filter(matchingFort).findAny().orElse(null);
 				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {

@@ -45,6 +45,7 @@ import common.map.fixtures.mobile.MaturityModel;
 
 import static java.util.function.Predicate.not;
 import static legacy.map.fixtures.mobile.Immortal.IMMORTAL_ANIMALS;
+import static lovelace.util.MatchingValue.matchingValue;
 
 import legacy.map.fixtures.towns.IFortress;
 import org.jetbrains.annotations.Nullable;
@@ -327,8 +328,7 @@ import java.util.function.Predicate;
 									retval.getFixtures(point).stream()
 											.filter(isFortress)
 											.map(fortressCast)
-											.map(IFortress::owner)
-											.anyMatch(Predicate.isEqual(f.owner()))) {
+											.anyMatch(matchingValue(f, IFortress::owner))) {
 								warner.handle(new UnwantedChildException(top, path, se,
 										"Multiple fortresses owned by one player on a tile"));
 							}

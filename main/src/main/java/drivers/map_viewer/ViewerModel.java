@@ -50,6 +50,9 @@ import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.IMutableFortress;
 import lovelace.util.Range;
 
+import static lovelace.util.MatchingValue.matchingValue;
+import static lovelace.util.MatchingValue.matchingValues;
+
 /**
  * A class to encapsulate the various model-type things views need to do with maps.
  *
@@ -465,17 +468,13 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		final IMutableUnit matchingOld = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> old.owner().equals(u.owner()))
-				.filter(u -> old.getKind().equals(u.getKind()))
-				.filter(u -> old.getName().equals(u.getName()))
-				.filter(u -> old.getId() == u.getId()).findAny().orElse(null);
+				.filter(matchingValues(old, IUnit::owner, IUnit::getKind, IUnit::getName, IUnit::getId))
+				.findAny().orElse(null);
 		final IMutableUnit matchingNew = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> newOwner.owner().equals(u.owner()))
-				.filter(u -> newOwner.getKind().equals(u.getKind()))
-				.filter(u -> newOwner.getName().equals(u.getName()))
-				.filter(u -> newOwner.getId() == u.getId()).findAny().orElse(null);
+				.filter(matchingValues(newOwner, IUnit::owner, IUnit::getKind, IUnit::getName, IUnit::getId))
+				.findAny().orElse(null);
 		// TODO: equals() isn't ideal for finding a matching member ...
 		final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream)
 				.orElse(Stream.empty()).filter(member::equals).findAny().orElse(null);
@@ -556,14 +555,8 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		final IMutableUnit matching = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				// TODO: Implement a matchingValue-like helper method in lovelace.util,
-				// taking a base object of the same type and a *series* of accessors all of
-				// which must produce an equal value from the two objects. Wouldn't work
-				// for primitive-returning // properties, though.
-				.filter(u -> u.owner().equals(unit.owner()))
-				.filter(u -> u.getName().equals(unit.getName()))
-				.filter(u -> u.getKind().equals(unit.getKind()))
-				.filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
+				.filter(matchingValues(unit, IUnit::owner, IUnit::getName, IUnit::getKind, IUnit::getId))
+				.findAny().orElse(null);
 		if (Objects.nonNull(matching)) {
 			matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 			getRestrictedMap().setModified(true);
@@ -577,10 +570,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				final IUnit matching = getMap().streamAllFixtures()
 						.flatMap(ViewerModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-						.filter(u -> u.owner().equals(unit.owner()))
-						.filter(u -> u.getName().equals(item.getName()))
-						.filter(u -> u.getKind().equals(unit.getKind()))
-						.filter(u -> u.getId() == unit.getId())
+						.filter(matchingValues(unit, IUnit::owner, IUnit::getName, IUnit::getKind, IUnit::getId))
 						.findAny().orElse(null);
 				if (matching instanceof final HasMutableName hmn) {
 					hmn.setName(newName);
@@ -598,10 +588,10 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 						.filter(u -> getMap().getPlayers().getCurrentPlayer()
 								.equals(u.owner()))
 						.flatMap(FixtureIterable::stream)
-						.filter(m -> m.getId() == um.getId())
+						.filter(matchingValue(um, UnitMember::getId))
 						.filter(HasMutableName.class::isInstance)
 						.map(HasMutableName.class::cast)
-						.filter(m -> m.getName().equals(item.getName()))
+						.filter(matchingValue(item, HasName::getName))
 						.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
 
 				if (Objects.isNull(matching)) {
@@ -628,10 +618,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				final IUnit matching = getMap().streamAllFixtures()
 						.flatMap(ViewerModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-						.filter(u -> u.owner().equals(unit.owner()))
-						.filter(u -> u.getName().equals(unit.getName()))
-						.filter(u -> u.getKind().equals(item.getKind()))
-						.filter(u -> u.getId() == unit.getId())
+						.filter(matchingValues(unit, IUnit::owner, IUnit::getName, IUnit::getKind, IUnit::getId))
 						.findAny().orElse(null);
 				if (matching instanceof final HasMutableKind hmk) {
 					hmk.setKind(newKind);
@@ -651,10 +638,10 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 						.filter(u -> getMap().getPlayers().getCurrentPlayer()
 								.equals(u.owner()))
 						.flatMap(FixtureIterable::stream)
-						.filter(m -> m.getId() == um.getId())
+						.filter(matchingValue(um, UnitMember::getId))
 						.filter(HasMutableKind.class::isInstance)
 						.map(HasMutableKind.class::cast)
-						.filter(m -> m.getKind().equals(item.getKind()))
+						.filter(matchingValue(item, HasKind::getKind))
 						.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
 
 				if (Objects.isNull(matching)) {
@@ -739,10 +726,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		final IMutableUnit matching = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.owner().equals(fixture.owner()))
-				.filter(u -> u.getName().equals(fixture.getName()))
-				.filter(u -> u.getKind().equals(fixture.getKind()))
-				.filter(u -> u.getId() == fixture.getId())
+				.filter(matchingValues(fixture, IUnit::owner, IUnit::getName, IUnit::getKind, IUnit::getId))
 				.findAny().orElse(null);
 		if (Objects.nonNull(matching)) {
 			matching.sortMembers();
@@ -757,7 +741,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		Point hqLoc = Point.INVALID_POINT;
 		final Predicate<Object> isFortress = IFortress.class::isInstance;
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
-		final Predicate<IFortress> matchingOwner = f -> f.owner().equals(unit.owner());
+		final Predicate<HasOwner> matchingOwner = matchingValue(unit, HasOwner::owner);
 		for (final Point location : getMap().getLocations()) {
 			final IFortress fortress = getMap().getFixtures(location).stream()
 					.filter(isFortress).map(fortressCast)

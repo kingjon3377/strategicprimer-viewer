@@ -40,6 +40,8 @@ import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
+import static lovelace.util.MatchingValue.matchingValue;
+
 /* package */ final class AppChooserState {
 	private AppChooserState() {
 	}
@@ -68,8 +70,7 @@ import org.jetbrains.annotations.Nullable;
 					cache.get(command).stream().anyMatch(f -> f.getUsage().getMode() ==
 							factory.getUsage().getMode())) {
 				final DriverFactory existing = cache.get(command).stream()
-						.filter(f -> f.getUsage().getMode() ==
-								factory.getUsage().getMode()).findAny().orElse(null);
+						.filter(matchingValue(factory, f -> f.getUsage().getMode())).findAny().orElse(null);
 				LovelaceLogger.warning("Invocation command conflict for %s between %s and %s",
 						command, factory.getUsage().getShortDescription(),
 						Optional.ofNullable(existing).map(DriverFactory::getUsage)
