@@ -20,7 +20,6 @@ import legacy.map.fixtures.resources.Meadow;
 import drivers.common.FixtureMatcher;
 
 import java.io.Serial;
-import java.util.function.Predicate;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
@@ -46,10 +45,6 @@ import java.util.function.Predicate;
 		setTransferHandler(new FixtureFilterTransferHandler());
 		setDropMode(DropMode.INSERT);
 		setDragEnabled(true);
-	}
-
-	private static <T> Predicate<T> not(final Predicate<T> p) {
-		return t -> !p.test(t);
 	}
 
 	private final DefaultListModel<FixtureMatcher> matcherListModel;

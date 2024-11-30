@@ -13,6 +13,8 @@ import legacy.map.fixtures.towns.ITownFixture;
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
 
+import static java.util.function.Predicate.not;
+
 /**
  * A driver to update a player's map to include a certain minimum distance around allied villages.
  *
@@ -41,10 +43,6 @@ public final class ExpansionDriver implements CLIDriver {
 		return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast).map(HasOwner::owner)
 				.anyMatch(currentPlayer::equals);
-	}
-
-	private static <T> Predicate<T> not(final Predicate<T> pred) {
-		return t -> !pred.test(t);
 	}
 
 	@Override

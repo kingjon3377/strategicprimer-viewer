@@ -71,6 +71,8 @@ import legacy.map.fixtures.mobile.Immortal;
 import legacy.map.fixtures.mobile.Animal;
 import legacy.map.fixtures.mobile.AnimalTracks;
 
+import static java.util.function.Predicate.not;
+
 /**
  * An app to report statistics on the contents of the map.
  */
@@ -196,12 +198,8 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		return "%s %s %s".formatted(t.getStatus(), t.getTownSize(), t.getKind());
 	}
 
-	private static <T> Predicate<T> negate(final Predicate<T> pred) {
-		return t -> !pred.test(t);
-	}
-
 	private static Predicate<IFixture> notA(final Class<? extends IFixture> cls) {
-		return negate(cls::isInstance);
+		return not(cls::isInstance);
 	}
 
 	@SuppressWarnings("ChainOfInstanceofChecks")

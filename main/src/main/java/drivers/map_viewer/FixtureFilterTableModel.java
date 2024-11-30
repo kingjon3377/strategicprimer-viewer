@@ -1,7 +1,6 @@
 package drivers.map_viewer;
 
 import java.io.Serial;
-import java.util.function.Predicate;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +69,6 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final List<FixtureMatcher> matchers = new ArrayList<>();
-
-	private static <T> Predicate<T> not(final Predicate<T> p) {
-		return t -> !p.test(t);
-	}
 
 	public FixtureFilterTableModel() {
 		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),
