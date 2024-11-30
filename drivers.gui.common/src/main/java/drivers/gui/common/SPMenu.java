@@ -25,7 +25,9 @@ import javax.swing.JFrame;
 
 import lovelace.util.Platform;
 
-import static lovelace.util.MenuUtils.*;
+import static lovelace.util.MenuUtils.HotKeyModifier;
+import static lovelace.util.MenuUtils.createAccelerator;
+import static lovelace.util.MenuUtils.createMenuItem;
 
 import lovelace.util.ComponentParentStream;
 

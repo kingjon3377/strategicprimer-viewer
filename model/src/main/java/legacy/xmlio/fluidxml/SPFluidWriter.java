@@ -77,7 +77,11 @@ import impl.xmlio.SPWriter;
 import lovelace.util.TypeStream;
 
 import static java.util.function.Predicate.not;
-import static legacy.xmlio.fluidxml.FluidBase.*;
+import static legacy.xmlio.fluidxml.FluidBase.indent;
+import static legacy.xmlio.fluidxml.FluidBase.writeAttributes;
+import static legacy.xmlio.fluidxml.FluidBase.writeImage;
+import static legacy.xmlio.fluidxml.FluidBase.writeNonEmptyAttributes;
+import static legacy.xmlio.fluidxml.FluidBase.writeTag;
 
 import java.util.Map;
 import java.util.Objects;

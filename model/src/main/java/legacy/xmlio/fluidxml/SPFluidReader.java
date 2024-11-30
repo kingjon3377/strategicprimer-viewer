@@ -85,7 +85,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.IntFunction;
 
-import static legacy.xmlio.fluidxml.FluidBase.*;
+import static legacy.xmlio.fluidxml.FluidBase.expectAttributes;
+import static legacy.xmlio.fluidxml.FluidBase.getAttrWithDeprecatedForm;
+import static legacy.xmlio.fluidxml.FluidBase.getAttribute;
+import static legacy.xmlio.fluidxml.FluidBase.getBooleanAttribute;
+import static legacy.xmlio.fluidxml.FluidBase.getIntegerAttribute;
+import static legacy.xmlio.fluidxml.FluidBase.getOrGenerateID;
+import static legacy.xmlio.fluidxml.FluidBase.getPlayerOrIndependent;
+import static legacy.xmlio.fluidxml.FluidBase.getTextUntil;
+import static legacy.xmlio.fluidxml.FluidBase.hasAttribute;
+import static legacy.xmlio.fluidxml.FluidBase.isSPStartElement;
+import static legacy.xmlio.fluidxml.FluidBase.requireNonEmptyAttribute;
+import static legacy.xmlio.fluidxml.FluidBase.requireTag;
+import static legacy.xmlio.fluidxml.FluidBase.setImage;
+import static legacy.xmlio.fluidxml.FluidBase.spinUntilEnd;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
