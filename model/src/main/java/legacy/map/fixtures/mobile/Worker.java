@@ -231,7 +231,7 @@ public final class Worker implements IMutableWorker {
 	}
 
 	/**
-	 * We only use the worker's name and race for {@link #toString}
+	 * We only use the worker's name and race in the string representation.
 	 */
 	@Override
 	public String toString() {

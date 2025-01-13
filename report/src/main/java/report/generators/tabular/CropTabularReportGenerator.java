@@ -151,7 +151,7 @@ public final class CropTabularReportGenerator implements ITableGenerator</*Fores
 	/**
 	 * Compare two Point-fixture pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, TileFixture>> comparePairs() {

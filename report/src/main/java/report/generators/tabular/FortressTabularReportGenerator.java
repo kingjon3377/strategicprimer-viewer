@@ -114,7 +114,7 @@ public final class FortressTabularReportGenerator implements ITableGenerator<IFo
 	/**
 	 * Compare two Point-IFortress pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, IFortress>> comparePairs() {

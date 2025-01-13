@@ -33,7 +33,7 @@ public final class SkillTabularReportGenerator implements ITableGenerator<IWorke
 	/**
 	 * For this purpose, compare by worker name only.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, IWorker>> comparePairs() {

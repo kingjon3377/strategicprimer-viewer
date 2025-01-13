@@ -14,7 +14,7 @@ import lovelace.util.LovelaceLogger;
 	/**
 	 * Clone the object.
 	 *
-	 * @param zero
+	 * @param zero ignored
 	 * @deprecated This class should only ever be used in a
 	 * FixtureListModel, and copying a tile's terrain type should be
 	 * handled specially anyway, so this method should never be called.

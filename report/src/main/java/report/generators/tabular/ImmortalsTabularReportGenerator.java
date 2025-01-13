@@ -76,7 +76,7 @@ public final class ImmortalsTabularReportGenerator implements ITableGenerator<Im
 	/**
 	 * Compare two Point-fixture pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, Immortal>> comparePairs() {

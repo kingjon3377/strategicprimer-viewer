@@ -66,9 +66,6 @@ public final class TypesafeXMLEventReader implements Iterator<XMLEvent>, AutoClo
 		closed = true;
 	}
 
-	/**
-	 * @throws XMLStreamException on malformed XML
-	 */
 	@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException") // spurious, obviously incorrect warning
 	@Override
 	public XMLEvent next() throws NoSuchElementException {

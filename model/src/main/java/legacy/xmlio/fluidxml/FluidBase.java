@@ -49,7 +49,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element The tag to check.
 	 * @param parent  The parent tag.
 	 * @param tags    The tags we accept here
-	 * @throws SPFormatException on a tag other than one, or not in a namespace, we accept
+	 * @throws UnwantedChildException on a tag other than one, or not in a namespace, we accept
 	 */
 	protected static void requireTag(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final String... tags)
@@ -99,7 +99,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param element The current tag.
 	 * @param param   The parameter we want to get.
-	 * @throws SPFormatException if the tag doesn't have that parameter
+	 * @throws MissingPropertyException if the tag doesn't have that parameter
 	 */
 	protected static String getAttribute(final StartElement element, final @Nullable Path file, final String param)
 			throws MissingPropertyException {
@@ -233,7 +233,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param tag    The tag the caller is currently parsing, whose matching end-tag we're looking for
 	 * @param reader the stream of XML
-	 * @throws SPFormatException on unwanted child tags
+	 * @throws UnwantedChildException on unwanted child tags
 	 */
 	protected static void spinUntilEnd(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> reader)
 			throws UnwantedChildException {
@@ -422,7 +422,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param tag       The tag to get the parameter from
 	 * @param parameter The name of the desired parameter
-	 * @throws SPFormatException if the tag doesn't have that parameter, or
+	 * @throws MissingPropertyException if the tag doesn't have that parameter, or
 	 *                           if its value is non-numeric or otherwise malformed
 	 */
 	public static int getIntegerAttribute(final StartElement tag, final @Nullable Path path,
@@ -469,7 +469,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param parameter    The name of the desired parameter
 	 * @param defaultValue The number to return if the parameter doesn't exist
 	 * @param warner       The {@link Warning} instance to use if input is malformed
-	 * @throws SPFormatException if the tag's value is non-numeric or
+	 * @throws MissingPropertyException if the tag's value is non-numeric or
 	 *                           otherwise malformed
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
@@ -506,7 +506,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param tag       The tag to get the parameter from
 	 * @param parameter The name of the desired parameter
-	 * @throws SPFormatException if the tag doesn't have that parameter, or
+	 * @throws MissingPropertyException if the tag doesn't have that parameter, or
 	 *                           if its value is non-numeric or otherwise malformed
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
@@ -647,7 +647,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param tag    The name of the tag whose closing tag we're waitng for
 	 * @param stream The stream of XML elements to sift through
-	 * @throws SPFormatException on unwanted intervening tags
+	 * @throws UnwantedChildException on unwanted intervening tags
 	 */
 	protected static String getTextUntil(final QName tag, final @Nullable Path path, final Iterable<XMLEvent> stream)
 			throws UnwantedChildException {

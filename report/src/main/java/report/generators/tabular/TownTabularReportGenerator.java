@@ -82,7 +82,7 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	 * active communities together, and so on, while here we want all
 	 * fortifications together, and so on.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, AbstractTown>> comparePairs() {

@@ -147,7 +147,7 @@ public final class ResourceTabularReportGenerator
 	/**
 	 * Compare two Point-fixture pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, IFixture>> comparePairs() {

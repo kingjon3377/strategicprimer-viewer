@@ -96,7 +96,7 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	/**
 	 * Compare two location-unit pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, IUnit>> comparePairs() {

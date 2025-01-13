@@ -96,7 +96,7 @@ public final class WorkerTabularReportGenerator implements ITableGenerator<IWork
 	/**
 	 * Compare two worker-location pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, IWorker>> comparePairs() {

@@ -188,7 +188,7 @@ public final class FortressImpl implements IMutableFortress {
 	/**
 	 * Clone the fortress.
 	 *
-	 * @param zero
+	 * @param zero what to do with members
 	 */
 	@Override
 	public IMutableFortress copy(final CopyBehavior zero) {

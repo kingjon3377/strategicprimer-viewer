@@ -79,7 +79,7 @@ public final class VillageTabularReportGenerator implements ITableGenerator<Vill
 	/**
 	 * Compare two location-and-village pairs.
 	 *
-	 * @return
+	 * @return the result of the comparison
 	 */
 	@Override
 	public Comparator<Pair<Point, Village>> comparePairs() {
