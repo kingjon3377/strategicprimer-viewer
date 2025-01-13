@@ -126,7 +126,7 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println("No app specified; use one of the following invocations:");
 				System.out.println();
 				for (final DriverFactory driver : driverCache.values().stream()
-						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).collect(Collectors.toSet())) {
+						.flatMap(Collection::stream).collect(Collectors.toSet())) {
 					final List<String> lines = AppChooserState.usageMessage(driver.getUsage(),
 							"true".equals(options.getArgument("--verbose")) ?
 									AppChooserState.UsageVerbosity.Verbose : AppChooserState.UsageVerbosity.Terse)
@@ -162,7 +162,7 @@ import org.jetbrains.annotations.Nullable;
 //				}
 				case CommandLine -> {
 					final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
-									.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+									.flatMap(Collection::stream)
 									.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
 							"CLI apps available:", "No applications available", "App to start: ",
 							ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
