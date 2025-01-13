@@ -90,7 +90,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					case EOF -> {
 						return null; // TODO: signal EOF to callers
 					}
-				};
+				}
 			} else {
 				cli.println("No base location, so can't estimate distance.");
 				return retval;

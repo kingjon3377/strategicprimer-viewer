@@ -135,7 +135,7 @@ import org.jetbrains.annotations.Nullable;
 		LovelaceLogger.debug("--size parameter is %s", size);
 		for (final String arg : args) {
 			final BufferedImage image;
-			try (final InputStream res = new ResourceInputStream(arg, ImporterDriver.class);) {
+			try (final InputStream res = new ResourceInputStream(arg, ImporterDriver.class)) {
 				image = ImageIO.read(res);
 			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "Image file not found");
