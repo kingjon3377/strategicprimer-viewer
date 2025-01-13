@@ -1,5 +1,7 @@
 package legacy.map;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +12,9 @@ import org.jetbrains.annotations.Nullable;
  * @param row    The first coordinate, the point's row.
  * @param column The second coordinate, the point's column.
  */
-public record Point(int row, int column) implements Comparable<Point> {
+public record Point(int row, int column) implements Comparable<Point>, Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The first coordinate, the point's row.
 	 */
