@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import legacy.map.Point;

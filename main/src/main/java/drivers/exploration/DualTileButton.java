@@ -7,7 +7,6 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.image.ImageObserver;
 import java.io.Serial;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -21,7 +20,6 @@ import legacy.map.Point;
 import legacy.map.ILegacyMap;
 
 import drivers.common.FixtureMatcher;
-import legacy.map.TileFixture;
 import org.jetbrains.annotations.Nullable;
 
 /**

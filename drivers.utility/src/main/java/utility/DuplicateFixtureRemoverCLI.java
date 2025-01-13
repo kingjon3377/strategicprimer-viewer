@@ -28,7 +28,6 @@ import legacy.map.HasExtent;
 import legacy.map.Point;
 import legacy.map.ILegacyMap;
 
-import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;

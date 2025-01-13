@@ -26,7 +26,6 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;

@@ -39,7 +39,6 @@ import javax.xml.stream.events.XMLEvent;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
 import static java.util.function.Predicate.not;
