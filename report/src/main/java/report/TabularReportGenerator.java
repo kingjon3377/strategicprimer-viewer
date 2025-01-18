@@ -2,6 +2,7 @@ package report;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingFunction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -89,22 +90,7 @@ public final class TabularReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				ReportGeneratorHelper.getFixtures(map);
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
-		final Player player = map.getCurrentPlayer();
-		final MapDimensions dimensions = map.getDimensions();
-		final int currentTurn = map.getCurrentTurn();
-		final List<ITableGenerator<?>> generators = Arrays.asList(
-				new FortressTabularReportGenerator(player, hq, dimensions),
-				new UnitTabularReportGenerator(player, hq, dimensions),
-				new AnimalTabularReportGenerator(hq, dimensions, currentTurn),
-				new SkillTabularReportGenerator(),
-				new WorkerTabularReportGenerator(hq, dimensions),
-				new VillageTabularReportGenerator(player, hq, dimensions),
-				new TownTabularReportGenerator(player, hq, dimensions),
-				new CropTabularReportGenerator(hq, dimensions),
-				new DiggableTabularReportGenerator(hq, dimensions),
-				new ResourceTabularReportGenerator(hq, dimensions),
-				new ImmortalsTabularReportGenerator(hq, dimensions),
-				new ExplorableTabularReportGenerator(player, hq, dimensions));
+		final List<ITableGenerator<?>> generators = getTableGenerators(map, hq);
 		for (final ITableGenerator<?> generator : generators) {
 			generator.produceTable(source.apply(generator.getTableName()), fixtures, parentMap);
 		}
@@ -118,6 +104,25 @@ public final class TabularReportGenerator {
 				cli.println(fixture.toString());
 			}
 		}
+	}
+
+	private static @NotNull List<ITableGenerator<?>> getTableGenerators(ILegacyMap map, @Nullable Point hq) {
+		final Player player = map.getCurrentPlayer();
+		final MapDimensions dimensions = map.getDimensions();
+		final int currentTurn = map.getCurrentTurn();
+		return Arrays.asList(
+				new FortressTabularReportGenerator(player, hq, dimensions),
+				new UnitTabularReportGenerator(player, hq, dimensions),
+				new AnimalTabularReportGenerator(hq, dimensions, currentTurn),
+				new SkillTabularReportGenerator(),
+				new WorkerTabularReportGenerator(hq, dimensions),
+				new VillageTabularReportGenerator(player, hq, dimensions),
+				new TownTabularReportGenerator(player, hq, dimensions),
+				new CropTabularReportGenerator(hq, dimensions),
+				new DiggableTabularReportGenerator(hq, dimensions),
+				new ResourceTabularReportGenerator(hq, dimensions),
+				new ImmortalsTabularReportGenerator(hq, dimensions),
+				new ExplorableTabularReportGenerator(player, hq, dimensions));
 	}
 
 	private static final NumberFormat NUM_FORMAT = NumberFormat.getInstance();
@@ -174,22 +179,7 @@ public final class TabularReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				ReportGeneratorHelper.getFixtures(map);
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
-		final Player player = map.getCurrentPlayer();
-		final MapDimensions dimensions = map.getDimensions();
-		final int currentTurn = map.getCurrentTurn();
-		final List<ITableGenerator<?>> generators = Arrays.asList(
-				new FortressTabularReportGenerator(player, hq, dimensions),
-				new UnitTabularReportGenerator(player, hq, dimensions),
-				new AnimalTabularReportGenerator(hq, dimensions, currentTurn),
-				new SkillTabularReportGenerator(),
-				new WorkerTabularReportGenerator(hq, dimensions),
-				new VillageTabularReportGenerator(player, hq, dimensions),
-				new TownTabularReportGenerator(player, hq, dimensions),
-				new CropTabularReportGenerator(hq, dimensions),
-				new DiggableTabularReportGenerator(hq, dimensions),
-				new ResourceTabularReportGenerator(hq, dimensions),
-				new ImmortalsTabularReportGenerator(hq, dimensions),
-				new ExplorableTabularReportGenerator(player, hq, dimensions));
+		final List<ITableGenerator<?>> generators = getTableGenerators(map, hq);
 		for (final ITableGenerator<?> generator : generators) {
 			final TableModel tableModel = generator.produceTableModel(fixtures, parentMap);
 			final JTable table = new JTable(tableModel);
