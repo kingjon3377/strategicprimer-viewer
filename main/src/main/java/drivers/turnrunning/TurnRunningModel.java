@@ -620,9 +620,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final UnitMember resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-//		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::owner, IUnit::getKind,
-//				IUnit::getName, IUnit::getId);
-		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::getName, IUnit::getId);
+		final Predicate<IUnit> matchingFields = matchingValues(container, /*IUnit::owner, IUnit::getKind,*/
+				IUnit::getName, IUnit::getId);
 		final Consumer<IMutableUnit> addLambda =
 				matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
@@ -678,9 +677,8 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final IResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity, createdDate);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
-//		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::owner, IUnit::getKind,
-//				IUnit::getName, IUnit::getId);
-		final Predicate<IUnit> matchingFields = matchingValues(container, IUnit::getName, IUnit::getId);
+		final Predicate<IUnit> matchingFields = matchingValues(container, /*IUnit::owner, IUnit::getKind,*/
+				IUnit::getName, IUnit::getId);
 		final Consumer<IMutableUnit> addLambda =
 				matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
