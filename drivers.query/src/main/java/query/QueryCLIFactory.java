@@ -21,7 +21,7 @@ import java.util.EnumSet;
  * A factory for the driver to "query" the driver model about various things.
  */
 @AutoService(DriverFactory.class)
-public final class QueryCLIFactory implements ModelDriverFactory {
+public final class QueryCLIFactory implements ModelDriverFactory<IDriverModel> {
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "query",
 			ParamCount.One, "Answer questions about a map.",
 			"Answer questions about a map, such as counting workers or calculating distances.",
