@@ -26,6 +26,7 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -144,7 +145,7 @@ import legacy.map.fixtures.TerrainFixture;
  */
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
-			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new,
+			List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new,
 					Simurgh::new, Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new,
 					Kraken::new);
 
@@ -155,10 +156,10 @@ public final class TestDBIO {
 	}
 
 	private static final Collection<StringIntConstructor<Immortal>> kindedImmortalConstructors =
-			java.util.List.of(Centaur::new, Dragon::new, Fairy::new, Giant::new);
+			List.of(Centaur::new, Dragon::new, Fairy::new, Giant::new);
 
 	private static final Collection<IntFunction<TileFixture>> simpleTerrainConstructors =
-			java.util.List.of(Hill::new, Oasis::new);
+			List.of(Hill::new, Oasis::new);
 
 	private static final Collection<String> races = new HashSet<>(RaceFactory.RACES);
 

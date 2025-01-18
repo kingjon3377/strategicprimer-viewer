@@ -463,7 +463,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
-	 * legacy.map.fixtures.mobile.IUnit unit} or {@link IFortress fortress}
+	 * IUnit unit} or {@link IFortress fortress}
 	 * owned by the specified player, by the
 	 * specified amount. Returns true if any (mutable) resource piles
 	 * matched in any of the maps, false otherwise.
@@ -513,7 +513,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 
 	/**
 	 * Remove the given {@link IResourcePile resource} from a {@link
-	 * legacy.map.fixtures.mobile.IUnit unit} or {@link
+	 * IUnit unit} or {@link
 	 * IFortress fortress} owned by
 	 * the specified player in all maps. Returns true if any matched in
 	 * any of the maps, false otherwise.
@@ -728,7 +728,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	 * unit was found in at least one map, false otherwise.
 	 *
 	 * Note the last two parameters are <em>reversed</em> from the {@link
-	 * legacy.map.fixtures.mobile.AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
+	 * AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
 	 */
 	@Override
 	public boolean addAnimal(final IUnit container, final String kind, final String status, final int id,

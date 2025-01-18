@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * An enumeration of directions of possible travel. Note that the order is
- * chosen to ensure each item's {@link java.lang.Enum#ordinal() ordinal} is the
+ * chosen to ensure each item's {@link Enum#ordinal() ordinal} is the
  * same as in the Ceylon version, where it was explicit rather than based on
  * the order of cases. We use the ordinal to get a consistent sort order for UI
  * purposes.

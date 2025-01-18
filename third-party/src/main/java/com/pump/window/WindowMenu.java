@@ -37,7 +37,7 @@ import javax.swing.event.ChangeListener;
  * Their title will appear in this menu, or the text "Untitled" will be used if
  * no frame title is available.
  *
- * This uses the {@link com.pump.window.WindowList} to keep track of frames,
+ * This uses the {@link WindowList} to keep track of frames,
  * their order, and their layering.
  *
  * As of this version, this class is not a perfect replica of Apple's menu. It
