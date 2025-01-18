@@ -33,6 +33,14 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 		super.setEditable(aFlag);
 	}
 
+	private static boolean isOnlyShiftPressed(final KeyEvent event) {
+		final int modifiers = event.getModifiersEx();
+		final int knownModifiers = modifiers &
+				(InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK |
+						InputEvent.META_DOWN_MASK);
+		return knownModifiers == InputEvent.SHIFT_DOWN_MASK;
+	}
+
 	/**
 	 * Handle a key-press. If Tab is pressed when the pop-up list is
 	 * visible, treat it like Enter.
@@ -54,12 +62,10 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 				throw new IllegalStateException("Source is not a component");
 			}
 		}
-		// I *think* I deliberately chose to use == here so pressing 'shift+ctrl+tab' wouldn't
-		// have any effect on which field has the focus.
-		if (event.getModifiers() == 0) {
-			transferFocus();
-		} else if (event.getModifiers() == InputEvent.SHIFT_MASK) {
+		if (isOnlyShiftPressed(event)) {
 			transferFocusBackward();
+		} else {
+			transferFocus();
 		}
 	}
 }
