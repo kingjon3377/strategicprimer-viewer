@@ -54,8 +54,7 @@ public final class FileSplitter {
 	 */
 	public static <Type> Map<String, Type> getFileContents(final Path path, final Function<String, Type> factory)
 			throws IOException {
-		final Iterable<String> textContent = FileContentsReader.readFileContents(FileSplitter.class, path);
-		return StreamSupport.stream(textContent.spliterator(), false).map(FileSplitter::splitOnFirstTab)
+		return FileContentsReader.streamFileContents(FileSplitter.class, path).map(FileSplitter::splitOnFirstTab)
 				.map(str -> lineToEntry(str, factory)).collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 	}
 }

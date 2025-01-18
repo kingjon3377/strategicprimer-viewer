@@ -417,7 +417,7 @@ public final class ExplorationRunner {
 	}
 
 	public void loadTableFromFile(final Class<?> cls, final String file) throws IOException {
-		loadTableFromDataStream(FileContentsReader.readFileContents(
+		loadTableFromDataStream(FileContentsReader.streamFileContents(
 				cls, Paths.get("tables", file)).iterator(), file);
 	}
 

@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.swing.JEditorPane;
 import javax.swing.ScrollPaneConstants;
@@ -37,11 +38,8 @@ public final class AboutDialog extends SPDialog {
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
 		super(parentComponent instanceof final Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
-		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
-				Paths.get("about.html"));
-		final StringBuilder sb = new StringBuilder();
-		resource.forEach(sb::append);
-		final String raw = sb.toString();
+		final String raw = FileContentsReader.streamFileContents(AboutDialog.class, Paths.get("about.html"))
+				.collect(Collectors.joining());
 		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
 				.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
 		final JEditorPane pane = new JEditorPane("text/html", html);

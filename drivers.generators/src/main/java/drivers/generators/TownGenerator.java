@@ -68,9 +68,12 @@ import lovelace.util.NumParsingHelper;
 import org.javatuples.Triplet;
 import org.javatuples.Pair;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+
+import static java.util.function.Predicate.not;
 
 /**
  * A command-line app to generate population details for villages.
@@ -91,23 +94,21 @@ import java.math.BigDecimal;
 		final Map<String, List<Triplet<LegacyQuantity, String, String>>> retval = new HashMap<>();
 		for (final String terrain : Arrays.asList("mountain", "forest", "plains", "ocean")) {
 			final String file = terrain + "_consumption";
-			final Iterable<String> tableContents =
-					FileContentsReader.readFileContents(TownGenerator.class, Paths.get("tables", file));
-			final List<Triplet<LegacyQuantity, String, String>> inner = new ArrayList<>();
-			for (final String line : tableContents) {
-				if (line.isEmpty()) {
-					continue;
-				}
-				final String[] split = line.split("\t");
-				final int quantity = Integer.parseInt(split[0]);
-				final String units = split[1];
-				final String kind = split[2];
-				final String resource = split[3];
-				inner.add(Triplet.with(new LegacyQuantity(quantity, units), kind, resource));
-			}
-			retval.put(terrain, Collections.unmodifiableList(inner));
+			retval.put(terrain,
+					FileContentsReader.streamFileContents(TownGenerator.class, Paths.get("tables", file))
+							.filter(not(String::isBlank)).map(TownGenerator::parseLine).toList());
 		}
 		return Collections.unmodifiableMap(retval);
+	}
+
+	private static @NotNull Triplet<LegacyQuantity, String, String> parseLine(final String line) {
+		final String[] split = line.split("\t");
+		final int quantity = Integer.parseInt(split[0]);
+		final String units = split[1];
+		final String kind = split[2];
+		final String resource = split[3];
+		final Triplet<LegacyQuantity, String, String> addenda = Triplet.with(new LegacyQuantity(quantity, units), kind, resource);
+		return addenda;
 	}
 
 	/**

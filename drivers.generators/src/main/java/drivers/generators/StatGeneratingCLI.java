@@ -207,13 +207,9 @@ import static lovelace.util.MatchingValue.matchingValue;
 			return racialBonuses.get(race);
 		}
 		try {
-			final Iterable<String> textContent = FileContentsReader
-					.readFileContents(WorkerStats.class,
-							Paths.get("racial_stat_adjustments", race + ".txt"));
-			final List<Integer> parsed = new ArrayList<>(6);
-			for (final String line : textContent) {
-				parsed.add(Integer.parseInt(line.strip()));
-			}
+			final List<Integer> parsed = FileContentsReader.streamFileContents(WorkerStats.class,
+					Paths.get("racial_stat_adjustments", race + ".txt")).map(String::strip).map(Integer::parseInt)
+					.toList();
 			final WorkerStats retval = WorkerStats.factory(parsed.get(0), parsed.get(1), parsed.get(2), parsed.get(3),
 					parsed.get(4), parsed.get(5));
 			racialBonuses.put(race, retval);
