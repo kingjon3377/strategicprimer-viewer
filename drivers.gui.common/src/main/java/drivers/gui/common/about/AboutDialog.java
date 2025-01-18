@@ -1,5 +1,6 @@
 package drivers.gui.common.about;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -42,6 +43,14 @@ public final class AboutDialog extends SPDialog {
 				.collect(Collectors.joining());
 		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
 				.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
+		final JScrollPane scrollPane = createMainPanel(html);
+		add(scrollPane, BorderLayout.CENTER);
+		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", this::dispose)),
+				BorderLayout.PAGE_END);
+		pack();
+	}
+
+	private static @NotNull JScrollPane createMainPanel(final String html) {
 		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);
@@ -55,9 +64,6 @@ public final class AboutDialog extends SPDialog {
 		}
 		scrollPane.setMinimumSize(new Dimension(300, 400));
 		scrollPane.setPreferredSize(new Dimension(400, 500));
-		add(scrollPane, BorderLayout.CENTER);
-		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", this::dispose)),
-				BorderLayout.PAGE_END);
-		pack();
+		return scrollPane;
 	}
 }
