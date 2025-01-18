@@ -43,4 +43,11 @@ public interface IDRegistrar {
 	 * Generate and register an ID that hasn't been previously registered.
 	 */
 	int createID();
+
+	/**
+	 * Create a copy of our current state. This is primarily useful for test code, but possibly for other use cases
+	 * as well.
+	 * @return a copy of this registrar in its current state
+	 */
+	IDRegistrar copy();
 }

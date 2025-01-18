@@ -74,6 +74,7 @@ public final class IDFactory implements IDRegistrar {
 	 *
 	 * TODO: Tests should cover this method.
 	 */
+	@Override
 	public IDRegistrar copy() {
 		final IDFactory retval = new IDFactory();
 		retval.usedIDs.or(usedIDs);
