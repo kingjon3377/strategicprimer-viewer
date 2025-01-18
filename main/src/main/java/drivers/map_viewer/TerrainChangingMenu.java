@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.KeyEvent;
@@ -83,37 +84,7 @@ import legacy.map.fixtures.terrain.Hill;
 		bookmarkItem.addActionListener(ignored -> toggleBookmarked());
 
 		for (final River direction : RIVER_CHOICES) {
-			final String desc;
-			final int mnemonic;
-			// TODO: Can we get this effect w/out going one-by-one here? e.g. for non-lakes desc = direction + " river"
-			switch (direction) {
-				case Lake -> {
-					desc = "lake";
-					mnemonic = KeyEvent.VK_K;
-				}
-				case North -> {
-					desc = "north river";
-					mnemonic = KeyEvent.VK_N;
-				}
-				case South -> {
-					desc = "south river";
-					mnemonic = KeyEvent.VK_S;
-				}
-				case East -> {
-					desc = "east river";
-					mnemonic = KeyEvent.VK_E;
-				}
-				case West -> {
-					desc = "west river";
-					mnemonic = KeyEvent.VK_W;
-				}
-				default -> throw new IllegalStateException("Exhaustive switch wasn't");
-			}
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc);
-			item.setMnemonic(mnemonic);
-			final Runnable runnable = toggleRiver(direction, item);
-			item.addActionListener(ignored -> runnable.run());
-			riverItems.put(direction, item);
+			riverItems.put(direction, createRiverItem(direction));
 		}
 
 		// TODO: Make some way to manipulate roads?
@@ -125,6 +96,40 @@ import legacy.map.fixtures.terrain.Hill;
 		tnDialog.dispose();
 		nfDialog.dispose();
 		nuDialog.dispose();
+	}
+
+	private @NotNull JCheckBoxMenuItem createRiverItem(River direction) {
+		final String desc;
+		final int mnemonic;
+		// TODO: Can we get this effect w/out going one-by-one here? e.g. for non-lakes desc = direction + " river"
+		switch (direction) {
+			case Lake -> {
+				desc = "lake";
+				mnemonic = KeyEvent.VK_K;
+			}
+			case North -> {
+				desc = "north river";
+				mnemonic = KeyEvent.VK_N;
+			}
+			case South -> {
+				desc = "south river";
+				mnemonic = KeyEvent.VK_S;
+			}
+			case East -> {
+				desc = "east river";
+				mnemonic = KeyEvent.VK_E;
+			}
+			case West -> {
+				desc = "west river";
+				mnemonic = KeyEvent.VK_W;
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		final JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc);
+		item.setMnemonic(mnemonic);
+		final Runnable runnable = toggleRiver(direction, item);
+		item.addActionListener(ignored -> runnable.run());
+		return item;
 	}
 
 	private void toggleMountains() {
@@ -239,44 +244,7 @@ import legacy.map.fixtures.terrain.Hill;
 		add(removalItem);
 		removalItem.addActionListener(this::removeTerrain);
 		for (final TileType type : TileType.getValuesForVersion(version)) {
-			final String desc;
-			final int mnemonic;
-			switch (type) {
-				case Tundra -> {
-					desc = "tundra";
-					mnemonic = KeyEvent.VK_T;
-				}
-				case Desert -> {
-					desc = "desert";
-					mnemonic = KeyEvent.VK_D;
-				}
-				case Ocean -> {
-					desc = "ocean";
-					mnemonic = KeyEvent.VK_O;
-				}
-				case Plains -> {
-					desc = "plains";
-					mnemonic = KeyEvent.VK_L;
-				}
-				case Jungle -> {
-					desc = "jungle";
-					mnemonic = KeyEvent.VK_J;
-				}
-				case Steppe -> {
-					desc = "steppe";
-					mnemonic = KeyEvent.VK_P;
-				}
-				case Swamp -> {
-					desc = "swamp";
-					mnemonic = KeyEvent.VK_A;
-				}
-				default ->
-					// desc = type.toString();
-					// mnemonic = null;
-						throw new IllegalStateException("Exhaustive switch wasn't");
-			}
-			final JMenuItem item = new JMenuItem(desc);
-			item.setMnemonic(mnemonic);
+			final JMenuItem item = createTerrainItem(type);
 			add(item);
 			item.addActionListener(event -> {
 				model.setBaseTerrain(point, type);
@@ -290,6 +258,48 @@ import legacy.map.fixtures.terrain.Hill;
 		add(hillItem);
 		add(newForestItem);
 		riverItems.values().forEach(this::add);
+	}
+
+	private static @NotNull JMenuItem createTerrainItem(TileType type) {
+		final String desc;
+		final int mnemonic;
+		switch (type) {
+			case Tundra -> {
+				desc = "tundra";
+				mnemonic = KeyEvent.VK_T;
+			}
+			case Desert -> {
+				desc = "desert";
+				mnemonic = KeyEvent.VK_D;
+			}
+			case Ocean -> {
+				desc = "ocean";
+				mnemonic = KeyEvent.VK_O;
+			}
+			case Plains -> {
+				desc = "plains";
+				mnemonic = KeyEvent.VK_L;
+			}
+			case Jungle -> {
+				desc = "jungle";
+				mnemonic = KeyEvent.VK_J;
+			}
+			case Steppe -> {
+				desc = "steppe";
+				mnemonic = KeyEvent.VK_P;
+			}
+			case Swamp -> {
+				desc = "swamp";
+				mnemonic = KeyEvent.VK_A;
+			}
+			default ->
+				// desc = type.toString();
+				// mnemonic = null;
+					throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		final JMenuItem item = new JMenuItem(desc);
+		item.setMnemonic(mnemonic);
+		return item;
 	}
 
 	@Override
