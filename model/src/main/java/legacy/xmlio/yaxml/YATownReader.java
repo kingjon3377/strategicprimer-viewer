@@ -72,7 +72,7 @@ import java.util.function.Consumer;
 	 * otherwise trigger a warning and return the "independent" player.
 	 */
 	private Player getOwnerOrIndependent(final StartElement element, final @Nullable Path path)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasParameter(element, "owner")) {
 			return players.getPlayer(getIntegerParameter(element, path, "owner"));
 		} else {

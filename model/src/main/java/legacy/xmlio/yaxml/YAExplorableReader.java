@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.ExplorableFixture;
@@ -36,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public ExplorableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException, UnsupportedTagException {
 		requireTag(element, path, parent, "battlefield", "cave");
 		expectAttributes(element, path, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, path);

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.explorable.Portal;
 import common.xmlio.Warning;
@@ -25,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public Portal read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+            throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "portal");
 		expectAttributes(element, path, "world", "row", "column", "id", "image");
 		final Portal retval = new Portal(getParameter(element, path, "world"), parsePoint(element, path),

@@ -5,6 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ThrowingConsumer;
@@ -46,7 +47,7 @@ import java.util.Set;
 
 	private HarvestableFixture createMeadow(final StartElement element, final @Nullable Path path,
 	                                        final Meadow.MeadowType type, final int idNum)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		expectAttributes(element, path, "status", "kind", "id", "cultivated", "image", "acres");
 		expectNonEmptyParameter(element, path, "status");
 		final FieldStatus status;
@@ -64,7 +65,7 @@ import java.util.Set;
 	}
 
 	private CultivationStatus getCultivation(final StartElement element, final @Nullable Path path)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasParameter(element, "cultivated")) {
 			return getBooleanParameter(element, path, "cultivated") ? CultivationStatus.CULTIVATED :
 					CultivationStatus.WILD;
@@ -81,7 +82,7 @@ import java.util.Set;
 	 */
 	private HarvestableFixture createGrove(final StartElement element, final @Nullable Path path,
 	                                       final Grove.GroveType type, final int idNum)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		expectAttributes(element, path, "kind", "tree", "cultivated", "wild", "id", "image", "count");
 		return new Grove(type, getCultivation(element, path),
 				getParamWithDeprecatedForm(element, path, "kind", "tree"), idNum,
@@ -96,7 +97,7 @@ import java.util.Set;
 	@Override
 	public HarvestableFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                               final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final int idNum = getOrGenerateID(element, path);
 		final HarvestableFixture retval;

@@ -3,6 +3,7 @@ package legacy.xmlio.fluidxml;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.HasExtent;
 import legacy.map.ILegacyPlayerCollection;
@@ -26,7 +27,7 @@ import java.util.Collection;
 	public static Ground readGround(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "ground");
 		expectAttributes(element, path, warner, "id", "kind", "ground", "image", "exposed");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
@@ -42,7 +43,7 @@ import java.util.Collection;
 	public static Forest readForest(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "forest");
 		expectAttributes(element, path, warner, "id", "kind", "rows", "image", "acres");
 		final int id = getIntegerAttribute(element, "id", -1, warner);
@@ -81,7 +82,7 @@ import java.util.Collection;
 	public static River readLake(final StartElement element, final @Nullable Path path, final QName parent,
 	                             final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                             final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		requireTag(element, path, parent, "lake");
 		expectAttributes(element, path, warner);
 		spinUntilEnd(element.getName(), path, stream);
@@ -91,7 +92,7 @@ import java.util.Collection;
 	public static River readRiver(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "river");
 		expectAttributes(element, path, warner, "direction");
 		spinUntilEnd(element.getName(), path, stream);

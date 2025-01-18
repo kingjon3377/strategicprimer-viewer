@@ -318,7 +318,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static Number getNumericParameter(final StartElement element, final @Nullable Path path,
 	                                            final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasParameter(element, parameter)) {
 			final String paramString = getParameter(element, path, parameter);
 			if (paramString.contains(".")) {
@@ -344,7 +344,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static Number getNumericParameter(final StartElement element, final @Nullable Path path,
 	                                            final String parameter, final Number defaultValue)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasParameter(element, parameter)) {
 			final String paramString = getParameter(element, path, parameter);
 			if (paramString.contains(".")) {
@@ -408,7 +408,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Parse a Point from a tag's properties.
 	 */
-	protected static Point parsePoint(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	protected static Point parsePoint(final StartElement element, final @Nullable Path path) throws MissingPropertyException {
 		return new Point(getIntegerParameter(element, path, "row"),
 				getIntegerParameter(element, path, "column"));
 	}
@@ -504,7 +504,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected final void requireNonEmptyParameter(final StartElement element, final @Nullable Path path,
 	                                              final String parameter)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (getParameter(element, parameter, "").isEmpty()) {
 			throw new MissingPropertyException(element, path, parameter);
 		}
@@ -533,7 +533,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * warn about its absence and generate one.
 	 */
 	protected final int getOrGenerateID(final StartElement element, final @Nullable Path path)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasParameter(element, "id")) {
 			return registerID(getIntegerParameter(element, path, "id"), path, element.getLocation());
 		} else {

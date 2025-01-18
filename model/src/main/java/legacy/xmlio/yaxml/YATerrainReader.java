@@ -6,6 +6,8 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import lovelace.util.ThrowingConsumer;
 
 import legacy.map.HasExtent;
@@ -41,7 +43,7 @@ import java.util.Set;
 	@Override
 	public TerrainFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                           final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {

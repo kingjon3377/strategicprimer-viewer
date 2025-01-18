@@ -3,6 +3,7 @@ package legacy.xmlio.yaxml;
 import common.map.fixtures.mobile.worker.WorkerStats;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.ILegacyPlayerCollection;
@@ -102,7 +103,7 @@ import java.util.Objects;
 	}
 
 	private ISkill parseSkill(final StartElement element, final @Nullable Path path, final QName parent)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "skill");
 		expectAttributes(element, path, "name", "level", "hours");
 		// TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
@@ -112,7 +113,7 @@ import java.util.Objects;
 
 	private String readNote(final StartElement element, final @Nullable Path path, final QName parent,
 	                        final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		requireTag(element, path, parent, "note");
 		expectAttributes(element, path, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -130,7 +131,7 @@ import java.util.Objects;
 
 	private IJob parseJob(final StartElement element, final @Nullable Path path, final QName parent,
 	                      final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "job");
 		expectAttributes(element, path, "name", "level");
 		final IMutableJob retval = new Job(getParameter(element, path, "name"),

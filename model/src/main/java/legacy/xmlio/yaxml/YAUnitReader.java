@@ -62,7 +62,7 @@ import java.util.Map;
 	 * Parse orders for a unit for a specified turn.
 	 */
 	private void parseOrders(final StartElement element, final @Nullable Path path, final IMutableUnit unit,
-	                         final Iterable<XMLEvent> stream) throws SPFormatException {
+	                         final Iterable<XMLEvent> stream) throws MissingPropertyException, UnwantedChildException {
 		expectAttributes(element, path, "turn");
 		final int turn = getIntegerParameter(element, path, "turn", -1);
 		final StringBuilder builder = new StringBuilder();
@@ -86,7 +86,7 @@ import java.util.Map;
 	 */
 	private void parseResults(final StartElement element, final @Nullable Path path, final IMutableUnit unit,
 	                          final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws MissingPropertyException, UnwantedChildException {
 		expectAttributes(element, path, "turn");
 		final int turn = getIntegerParameter(element, path, "turn", -1);
 		final StringBuilder builder = new StringBuilder();

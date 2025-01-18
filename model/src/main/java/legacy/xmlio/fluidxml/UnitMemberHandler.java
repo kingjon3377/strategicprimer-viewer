@@ -4,6 +4,7 @@ import common.map.fixtures.mobile.MaturityModel;
 import common.map.fixtures.mobile.worker.WorkerStats;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnsupportedPropertyException;
 import impl.xmlio.exceptions.UnsupportedTagException;
 import impl.xmlio.exceptions.UnwantedChildException;
@@ -95,7 +96,7 @@ import static java.util.function.Predicate.not;
 	}
 
 	private static String readNote(final StartElement element, final @Nullable Path path, final QName parent,
-	                               final Iterable<XMLEvent> stream, final Warning warner) throws SPFormatException {
+	                               final Iterable<XMLEvent> stream, final Warning warner) throws UnwantedChildException {
 		requireTag(element, path, parent, "note");
 		expectAttributes(element, path, warner, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -153,7 +154,8 @@ import static java.util.function.Predicate.not;
 
 	public static WorkerStats readStats(final StartElement element, final @Nullable Path path, final QName parent,
 	                                    final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-	                                    final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+	                                    final Warning warner, final IDRegistrar idFactory)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "stats");
 		expectAttributes(element, path, warner, "hp", "max", "str", "dex", "con", "int",
 				"wis", "cha");
@@ -254,7 +256,7 @@ import static java.util.function.Predicate.not;
 	public static AnimalOrTracks readAnimal(final StartElement element, final @Nullable Path path, final QName parent,
 	                                        final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                        final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "animal");
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		final String kind;

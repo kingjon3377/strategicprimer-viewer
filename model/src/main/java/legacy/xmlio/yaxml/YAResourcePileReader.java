@@ -6,6 +6,8 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
@@ -27,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public IMutableResourcePile read(final StartElement element, final @Nullable Path path, final QName parent,
 	                                 final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "resource");
 		expectAttributes(element, path, "quantity", "kind", "contents", "unit", "created", "id", "image");
 		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element, path),

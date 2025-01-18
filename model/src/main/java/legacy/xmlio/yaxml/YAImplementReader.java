@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import lovelace.util.ThrowingConsumer;
 
 import legacy.idreg.IDRegistrar;
@@ -25,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public Implement read(final StartElement element, final @Nullable Path path, final QName parent,
 	                      final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "implement");
 		expectAttributes(element, path, "kind", "id", "image");
 		final Implement retval = new Implement(getParameter(element, path, "kind"),

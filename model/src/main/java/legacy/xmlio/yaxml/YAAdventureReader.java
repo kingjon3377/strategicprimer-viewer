@@ -2,6 +2,8 @@ package legacy.xmlio.yaxml;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.ILegacyPlayerCollection;
 import legacy.map.Player;
@@ -31,7 +33,8 @@ import java.nio.file.Path;
 	 */
 	@Override
 	public AdventureFixture read(final StartElement element, final @Nullable Path path, final QName parent,
-	                             final Iterable<XMLEvent> stream) throws SPFormatException {
+	                             final Iterable<XMLEvent> stream)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "adventure");
 		expectAttributes(element, path, "owner", "brief", "full", "image", "id");
 		final Player player;

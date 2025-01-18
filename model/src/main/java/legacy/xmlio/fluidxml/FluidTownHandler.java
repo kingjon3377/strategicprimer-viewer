@@ -150,7 +150,7 @@ import java.util.function.Consumer;
 	public static CommunityStats readCommunityStats(final StartElement element, final @Nullable Path path,
 	                                                final QName parent, final Iterable<XMLEvent> stream,
 													final ILegacyPlayerCollection players, final Warning warner,
-													final IDRegistrar idFactory) throws SPFormatException {
+													final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "population");
 		expectAttributes(element, path, warner, "size");
 		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, path, "size"));

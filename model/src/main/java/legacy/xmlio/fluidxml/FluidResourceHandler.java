@@ -40,7 +40,7 @@ import java.nio.file.Path;
 	public static IMutableResourcePile readResource(final StartElement element, final @Nullable Path path,
 	                                                final QName parent, final Iterable<XMLEvent> stream,
 	                                                final ILegacyPlayerCollection players, final Warning warner,
-	                                                final IDRegistrar idFactory) throws SPFormatException {
+	                                                final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "resource");
 		expectAttributes(element, path, warner, "quantity", "kind", "contents", "unit",
 				"created", "id", "image");
@@ -59,7 +59,7 @@ import java.nio.file.Path;
 
 	public static Implement readImplement(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-										  final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+										  final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "implement");
 		expectAttributes(element, path, warner, "kind", "id", "count", "image");
 		spinUntilEnd(element.getName(), path, stream);
@@ -71,7 +71,7 @@ import java.nio.file.Path;
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CacheFixture readCache(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-										 final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+										 final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "cache");
 		expectAttributes(element, path, warner, "kind", "contents", "id", "image");
 		// We want to transition from arbitrary-String 'contents' to sub-tags. As a first
@@ -102,7 +102,7 @@ import java.nio.file.Path;
 	public static Grove readGrove(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "grove");
 		expectAttributes(element, path, warner, "cultivated", "wild", "kind", "tree", "id",
 				"image", "count");
@@ -126,7 +126,7 @@ import java.nio.file.Path;
 	public static Grove readOrchard(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "orchard");
 		expectAttributes(element, path, warner, "cultivated", "wild", "kind", "tree", "id",
 				"image", "count");
@@ -150,7 +150,7 @@ import java.nio.file.Path;
 	public static Meadow readMeadow(final StartElement element, final @Nullable Path path, final QName parent,
 	                                final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                                final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "meadow");
 		expectAttributes(element, path, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
@@ -175,7 +175,7 @@ import java.nio.file.Path;
 	public static Meadow readField(final StartElement element, final @Nullable Path path, final QName parent,
 	                               final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                               final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "field");
 		expectAttributes(element, path, warner, "status", "kind", "cultivated", "id", "image",
 				"acres");
@@ -200,7 +200,7 @@ import java.nio.file.Path;
 	public static Mine readMine(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "mine");
 		expectAttributes(element, path, warner, "status", "kind", "product", "id", "image");
 		spinUntilEnd(element.getName(), path, stream);
@@ -219,7 +219,7 @@ import java.nio.file.Path;
 	public static MineralVein readMineral(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										  final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "mineral");
 		expectAttributes(element, path, warner, "kind", "mineral", "exposed", "dc", "id", "image");
 		spinUntilEnd(element.getName(), path, stream);
@@ -234,7 +234,7 @@ import java.nio.file.Path;
 	public static Shrub readShrub(final StartElement element, final @Nullable Path path, final QName parent,
 	                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                              final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "shrub");
 		expectAttributes(element, path, warner, "kind", "shrub", "id", "image", "count");
 		spinUntilEnd(element.getName(), path, stream);
@@ -247,7 +247,7 @@ import java.nio.file.Path;
 	public static StoneDeposit readStone(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "stone");
 		expectAttributes(element, path, warner, "kind", "stone", "dc", "id", "image");
 		spinUntilEnd(element.getName(), path, stream);

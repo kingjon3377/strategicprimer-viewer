@@ -2,6 +2,8 @@ package legacy.xmlio.fluidxml;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.ILegacyPlayerCollection;
 import legacy.map.Player;
@@ -26,7 +28,7 @@ import java.nio.file.Path;
 	                                             final QName parent, final Iterable<XMLEvent> stream,
 	                                             final ILegacyPlayerCollection players, final Warning warner,
 	                                             final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "adventure");
 		expectAttributes(element, path, warner, "owner", "brief", "full", "id", "image");
 		final Player player;
@@ -45,7 +47,7 @@ import java.nio.file.Path;
 
 	public static Portal readPortal(final StartElement element, final @Nullable Path path, final QName parent,
 									final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-									final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
+									final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "portal");
 		expectAttributes(element, path, warner, "row", "column", "world", "id", "image");
 		final Point location = new Point(getIntegerAttribute(element, path, "row"),
@@ -60,7 +62,7 @@ import java.nio.file.Path;
 	public static Cave readCave(final StartElement element, final @Nullable Path path, final QName parent,
 	                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 	                            final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "cave");
 		expectAttributes(element, path, warner, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, warner, path, idFactory);
@@ -72,7 +74,7 @@ import java.nio.file.Path;
 	public static Battlefield readBattlefield(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "battlefield");
 		expectAttributes(element, path, warner, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element, warner, path, idFactory);
@@ -84,7 +86,7 @@ import java.nio.file.Path;
 	public static TextFixture readTextFixture(final StartElement element, final @Nullable Path path, final QName parent,
 											  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 											  final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+			throws UnwantedChildException {
 		requireTag(element, path, parent, "text");
 		expectAttributes(element, path, warner, "turn", "image");
 		return setImage(new TextFixture(getTextUntil(element.getName(), path, stream),

@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.function.IntFunction;
 import java.io.IOException;
 
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -84,7 +86,7 @@ import org.jetbrains.annotations.Nullable;
 				Map.entry("kraken", Kraken::new));
 	}
 
-	private MobileFixture createAnimal(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	private MobileFixture createAnimal(final StartElement element, final @Nullable Path path) throws MissingPropertyException {
 		final String tag = element.getName().getLocalPart();
 		final String kind;
 		final boolean tracks;
@@ -145,7 +147,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private MobileFixture twoParam(final StartElement element, final @Nullable Path path,
-	                               final StringIntConstructor constr) throws SPFormatException {
+	                               final StringIntConstructor constr) throws MissingPropertyException {
 		expectAttributes(element, path, "id", "kind", "image");
 		return constr.apply(getParameter(element, path, "kind"), getOrGenerateID(element, path));
 	}
@@ -153,7 +155,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public MobileFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                          final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {

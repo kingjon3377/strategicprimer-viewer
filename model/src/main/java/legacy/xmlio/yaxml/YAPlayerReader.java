@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.Player;
 import legacy.map.PlayerImpl;
@@ -28,7 +30,7 @@ final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	@Override
 	public Player read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "player");
 		expectAttributes(element, path, "number", "code_name", "portrait", "country");
 		requireNonEmptyParameter(element, path, "number");

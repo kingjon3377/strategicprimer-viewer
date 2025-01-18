@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ThrowingConsumer;
 
@@ -26,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public Ground read(final StartElement element, final @Nullable Path path, final QName parent,
 	                   final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "ground");
 		expectAttributes(element, path, "kind", "ground", "exposed", "id", "image");
 		final String kind = getParamWithDeprecatedForm(element, path, "kind", "ground");

@@ -130,7 +130,7 @@ import java.util.function.Predicate;
 	 * the stream past the closing tag.
 	 */
 	public River parseRiver(final StartElement element, final @Nullable Path path, final QName parent)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			expectAttributes(element, path);

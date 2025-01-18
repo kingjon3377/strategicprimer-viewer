@@ -270,7 +270,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @throws SPFormatException on SP format problems reading the property
 	 */
 	protected static int getOrGenerateID(final StartElement element, final Warning warner, final @Nullable Path path,
-										 final IDRegistrar idFactory) throws SPFormatException {
+										 final IDRegistrar idFactory) throws MissingPropertyException {
 		if (hasAttribute(element, "id")) {
 			try {
 				return idFactory.register(
@@ -302,7 +302,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	protected static String getAttrWithDeprecatedForm(final StartElement element, final @Nullable Path file,
 	                                                  final String preferred, final String deprecated,
 	                                                  final Warning warner)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasAttribute(element, preferred)) {
 			return getAttribute(element, file, preferred);
 		} else if (hasAttribute(element, deprecated)) {
@@ -456,7 +456,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
 	                                            final String parameter, final Number defaultValue)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		return getNumericAttribute(tag, path, parameter, defaultValue, Warning.WARN);
 	}
 
@@ -615,7 +615,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 */
 	protected static Player getPlayerOrIndependent(final StartElement element, final @Nullable Path path,
 	                                               final Warning warner, final ILegacyPlayerCollection players)
-			throws SPFormatException {
+			throws MissingPropertyException {
 		if (hasAttribute(element, "owner")) {
 			return players.getPlayer(getIntegerAttribute(element, path, "owner"));
 		} else {

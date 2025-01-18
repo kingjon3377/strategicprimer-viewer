@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import common.xmlio.SPFormatException;
+import impl.xmlio.exceptions.MissingPropertyException;
 import lovelace.util.ThrowingConsumer;
 
 import legacy.idreg.IDRegistrar;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public TextFixture read(final StartElement element, final @Nullable Path path, final QName parent,
 	                        final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "text");
 		expectAttributes(element, path, "turn", "image");
 		final StringBuilder builder = new StringBuilder();
