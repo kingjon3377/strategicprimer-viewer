@@ -1,9 +1,11 @@
 package drivers.turnrunning.applets;
 
+import legacy.map.HasOwner;
 import legacy.map.IFixture;
 
 import java.util.ArrayList;
 
+import legacy.map.fixtures.FixtureIterable;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.ILegacyMap;
@@ -119,68 +121,17 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// TODO: Move into the model?
 	// FIXME: Stream-based version doesn't count food inside units inside fortresses
 	protected final List<IResourcePile> getFoodFor(final Player player, final int turn) {
-/*		return model.getMap().streamAllFixtures()
+		return model.getMap().streamAllFixtures()
 			.filter(f -> f instanceof IFortress || f instanceof IUnit)
-			.filter(f -> player.equals(((HasOwner) f).getOwner()))
-			.map(FixtureIterable.class::cast)
-			.flatMap(f -> f.stream())
+			.filter(f -> player.equals(((HasOwner) f).owner()))
+			.map(f -> (FixtureIterable<?>) f)
+			.flatMap(FixtureIterable::stream)
 			.filter(IResourcePile.class::isInstance)
-//			.<IResourcePile>map(IResourcePile.class::cast)
+			.<IResourcePile>map(IResourcePile.class::cast)
 			.map(x -> (IResourcePile) x)
-			.filter((IResourcePile r) -> "food".equals(r.getKind()))
-			.filter((IResourcePile r) -> "pounds".equals(r.getQuantity().getUnits()))
-			.filter((IResourcePile r) -> r.getCreated() <= turn) // TODO: add sorting in this version
-			.collect(Collectors.<IResourcePile>toList()); */ // Doesn't compile, with impossible errors
-		final List<IResourcePile> retval = new ArrayList<>();
-		final ILegacyMap map = model.getMap();
-		for (final Point loc : map.getLocations()) {
-			for (final TileFixture fix : map.getFixtures(loc)) {
-				switch (fix) {
-					case final IFortress fort -> {
-						for (final FortressMember member : fort) {
-							switch (member) {
-								case final IResourcePile pile when fort.owner().equals(player) -> {
-									if ("food".equals(pile.getKind()) &&
-											"pounds".equals(pile.getQuantity()
-													.units()) &&
-											pile.getCreated() <= turn) {
-										retval.add(pile);
-									}
-								}
-								case final IUnit unit when unit.owner().equals(player) -> {
-									for (final UnitMember inner : unit) {
-										if (inner instanceof final IResourcePile pile) {
-											if ("food".equals(pile.getKind()) &&
-													"pounds".equals(
-															pile.getQuantity()
-																	.units()) &&
-													pile.getCreated()
-															<= turn) {
-												retval.add(pile);
-											}
-										}
-									}
-								}
-								default -> {
-								}
-							}
-						}
-					}
-					case final IUnit unit when unit.owner().equals(player) -> {
-						for (final UnitMember inner : unit) {
-							if (inner instanceof final IResourcePile pile && "food".equals(pile.getKind()) &&
-									"pounds".equals(pile.getQuantity().units()) &&
-									pile.getCreated() <= turn) {
-								retval.add(pile);
-							}
-						}
-					}
-					default -> {
-					}
-				}
-			}
-		}
-		retval.sort(Comparator.comparing(IResourcePile::getCreated));
-		return retval;
+			.filter(r -> "food".equals(r.getKind()))
+			.filter(r -> "pounds".equals(r.getQuantity().units()))
+			.filter(r -> r.getCreated() <= turn) // TODO: add sorting in this version
+			.collect(Collectors.<IResourcePile>toList());
 	}
 }
