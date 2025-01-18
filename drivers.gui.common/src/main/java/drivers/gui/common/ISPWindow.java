@@ -19,6 +19,7 @@ public interface ISPWindow {
 	 */
 	String getWindowName();
 
+	boolean supportsDroppedFiles();
 	/**
 	 * Handle a dropped file.
 	 */

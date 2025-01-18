@@ -120,6 +120,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 		setTransferHandler(new FileDropHandler(this));
 	}
 
+	@Override
 	public final boolean supportsDroppedFiles() {
 		return supportsDroppedFiles;
 	}
