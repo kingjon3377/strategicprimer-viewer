@@ -12,6 +12,7 @@ import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingBiConsumer;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingFunction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -97,29 +98,8 @@ import org.takes.http.Exit;
 
 		final Map<Pair<String, String>, StringBuilder> builders = new HashMap<>();
 
-		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
-				base -> {
-					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
-					return tableName -> builders.computeIfAbsent(Pair.with(baseName, tableName),
-							k -> new StringBuilder())::append;
-				};
-
-		@SuppressWarnings("ErrorNotRethrown") // It's IOError, and is rethrown wrapped
 		final ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> createReports =
-				(map, mapFile) -> {
-					try {
-						if (Objects.isNull(mapFile)) {
-							LovelaceLogger.error("Asked to create reports from map with no filename");
-							TabularReportGenerator.createTabularReports(map,
-									filenameFunction.apply(Paths.get("unknown.xml")), cli);
-						} else {
-							TabularReportGenerator.createTabularReports(map,
-									filenameFunction.apply(mapFile), cli);
-						}
-					} catch (final IOException | IOError except) {
-						throw new DriverFailedException(except);
-					}
-				};
+				getReportCreator(mapping, builders);
 
 		if (model instanceof final IMultiMapModel mmm) {
 			for (final ILegacyMap map : mmm.getAllMaps()) {
@@ -200,6 +180,31 @@ import org.takes.http.Exit;
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while serving files");
 		}
+	}
+
+	private @NotNull ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> getReportCreator(
+			Map<Path, ILegacyMap> mapping, Map<Pair<String, String>, StringBuilder> builders) {
+		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
+				base -> {
+					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
+					return tableName -> builders.computeIfAbsent(Pair.with(baseName, tableName),
+							k -> new StringBuilder())::append;
+				};
+
+		return (map, mapFile) -> {
+					try {
+						if (Objects.isNull(mapFile)) {
+							LovelaceLogger.error("Asked to create reports from map with no filename");
+							TabularReportGenerator.createTabularReports(map,
+									filenameFunction.apply(Paths.get("unknown.xml")), cli);
+						} else {
+							TabularReportGenerator.createTabularReports(map,
+									filenameFunction.apply(mapFile), cli);
+						}
+					} catch (final IOException | IOError except) {
+						throw new DriverFailedException(except);
+					}
+				};
 	}
 
 	@Override
