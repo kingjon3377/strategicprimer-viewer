@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * A driver model for resource-entering drivers.
  */
-/* package */ final class ResourceManagementDriverModel extends SimpleMultiMapModel {
+public final class ResourceManagementDriverModel extends SimpleMultiMapModel {
 	public ResourceManagementDriverModel(final IMutableLegacyMap map) {
 		super(map);
 	}
