@@ -106,6 +106,15 @@ public class WindowMenu extends JMenu {
 	private final @Nullable JMenuItem [] customItems;
 
 	/**
+	 * @param bitField a field in which one or more bits may be set
+	 * @param bitToCheck a specific bit
+	 * @return whether the 'bitToCheck' field is set in 'bitField'
+	 */
+	private static boolean containsBit(final int bitField, final int bitToCheck) {
+		return (bitField & bitToCheck) == bitToCheck;
+	}
+
+	/**
 	 * Creates a new WindowMenu for a specific JFrame.
 	 *
 	 * @param frame
@@ -121,11 +130,11 @@ public class WindowMenu extends JMenu {
 			final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
 					EnumSet.of(WindowList.WindowFiltering.Iconified));
 			for (final Frame w : frames) {
-				if (w.isVisible() || frame
-						.getExtendedState() == Frame.ICONIFIED) {
+				if (w.isVisible() || containsBit(frame
+						.getExtendedState(), Frame.ICONIFIED)) {
 					w.toFront();
-					if (w.getExtendedState() == Frame.ICONIFIED)
-						w.setExtendedState(Frame.NORMAL);
+					if (containsBit(w.getExtendedState(), Frame.ICONIFIED))
+						w.setExtendedState(w.getExtendedState() ^ Frame.ICONIFIED);
 				}
 			}
 		};
