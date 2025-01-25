@@ -17,6 +17,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 import java.io.Serial;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -92,7 +93,7 @@ public class WindowMenu extends JMenu {
 		addSeparator();
 		add(bringItem);
 		addSeparator();
-		final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
+		final Collection<Frame> frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
 				EnumSet.of(WindowList.WindowFiltering.Iconified));
 		for (final Frame frame : frames) {
 			final JCheckBoxMenuItem item = new SummonMenuItem(frame);
@@ -135,13 +136,9 @@ public class WindowMenu extends JMenu {
 		super("Window");
 		myFrame = frame;
 		minimizeItem.addActionListener(ignored -> myFrame.setExtendedState(Frame.ICONIFIED));
-		final ActionListener bringToFrontListener = e -> {
-			final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
-					EnumSet.of(WindowList.WindowFiltering.Iconified));
-			for (final Frame w : frames) {
-				showWindow(w);
-			}
-		};
+		final ActionListener bringToFrontListener =
+				_ -> WindowList.getFrames(WindowList.WindowSorting.Origin,
+						EnumSet.of(WindowList.WindowFiltering.Iconified)).forEach(WindowMenu::showWindow);
 		bringItem.addActionListener(bringToFrontListener);
 
 		customItems = new JMenuItem[extraItems.length];

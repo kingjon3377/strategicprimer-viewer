@@ -20,6 +20,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -115,9 +116,12 @@ public final class WindowList {
 
 			Window[] newVisibleWindows = getWindows(WindowSorting.Origin, EnumSet.noneOf(WindowFiltering.class));
 			Window[] newInvisibleWindows = getWindows(WindowSorting.Origin, EnumSet.of(WindowFiltering.Invisible));
-			Frame[] newVisibleFrames = getFrames(WindowSorting.Origin, EnumSet.noneOf(WindowFiltering.class));
-			Frame[] newInvisibleFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Invisible));
-			Frame[] newIconifiedFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Iconified));
+			Frame[] newVisibleFrames = getFrames(WindowSorting.Origin, EnumSet.noneOf(WindowFiltering.class))
+					.toArray(Frame[]::new);
+			Frame[] newInvisibleFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Invisible))
+					.toArray(Frame[]::new);
+			Frame[] newIconifiedFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Iconified))
+					.toArray(Frame[]::new);
 
 			if (!arrayEquals(newVisibleWindows, visibleWindows))
 				changed = true;
@@ -256,7 +260,7 @@ public final class WindowList {
 	 *            recent).
 	 * @param filtering Which not-obviously-visible frames to include, if any
 	 */
-	public static Frame[] getFrames(final WindowSorting sorting, final Set<WindowFiltering> filtering) {
+	public static Collection<Frame> getFrames(final WindowSorting sorting, final Set<WindowFiltering> filtering) {
 		final List<WeakReference<Window>> list = switch (sorting) {
 			case Layer -> windowLayerList;
 			case Origin -> windowList;
@@ -282,7 +286,7 @@ public final class WindowList {
 				a++;
 			}
 		}
-		return returnValue.toArray(Frame[]::new);
+		return Collections.unmodifiableCollection(returnValue);
 	}
 
 	/**
