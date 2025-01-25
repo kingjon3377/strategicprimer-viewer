@@ -504,12 +504,12 @@ public final class TestDBIO {
 	}
 
 	private ILegacyMap assertDatabaseSerialization(final ILegacyMap map) throws SQLException, IOException {
-		final TestDatabase db = new TestDatabase();
-		writer.writeToDatabase(db, map);
+		final TestDatabase localDb = new TestDatabase();
+		writer.writeToDatabase(localDb, map);
 		reader.clearCache();
-		final ILegacyMap deserialized = reader.readMapFromDatabase(db, Warning.DIE);
+		final ILegacyMap deserialized = reader.readMapFromDatabase(localDb, Warning.DIE);
 		assertEquals(map, deserialized, "Deserialized form is the same as original");
-		db.tearDown();
+		localDb.tearDown();
 		return deserialized;
 	}
 

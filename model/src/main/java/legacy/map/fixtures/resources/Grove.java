@@ -159,7 +159,6 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	public String getShortDescription() {
 		final String type = this.type.name().toLowerCase();
 		final String cultivation = this.cultivation.capitalized();
-		String retval;
 		if (population < 0) {
 			return "%s %s %s".formatted(cultivation, kind, type);
 		} else {
