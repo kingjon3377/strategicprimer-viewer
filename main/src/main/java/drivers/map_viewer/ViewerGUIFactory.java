@@ -58,7 +58,7 @@ public final class ViewerGUIFactory implements ViewerDriverFactory<IViewerModel>
 	}
 
 	@Override
-	public IViewerModel createModel(IDriverModel model) {
+	public IViewerModel createModel(final IDriverModel model) {
 		return new ViewerModel(model);
 	}
 

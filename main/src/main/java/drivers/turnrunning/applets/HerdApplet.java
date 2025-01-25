@@ -99,8 +99,8 @@ import query.SmallAnimalModel;
 						"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
-			ICLIHelper.BooleanResponse skip = ICLIHelper.BooleanResponse.NO;
-			Either<HerdModel, ICLIHelper.BooleanResponse> herdModelEither = chooseHerdModel(kind);
+			final ICLIHelper.BooleanResponse skip = ICLIHelper.BooleanResponse.NO;
+			final Either<HerdModel, ICLIHelper.BooleanResponse> herdModelEither = chooseHerdModel(kind);
 			final @Nullable HerdModel herdModel = herdModelEither.fromLeft().orElse(null);
 			final ICLIHelper.BooleanResponse herdModelResp = herdModelEither.fromRight()
 					.orElse(ICLIHelper.BooleanResponse.NO);

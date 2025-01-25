@@ -395,12 +395,12 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 
 		@Serial
-		private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		private void readObject(final java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTree.WorkerTreeTransferHandler");
 		}
 
 		@Serial
-		private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		private void writeObject(final java.io.ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTree.WorkerTreeTransferHandler");
 		}
 	}

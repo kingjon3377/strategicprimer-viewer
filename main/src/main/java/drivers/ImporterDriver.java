@@ -139,7 +139,7 @@ import org.jetbrains.annotations.Nullable;
 				image = ImageIO.read(res);
 			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "Image file not found");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading image");
 			}
 			final int width = image.getWidth();

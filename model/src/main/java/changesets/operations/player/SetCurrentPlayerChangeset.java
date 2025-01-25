@@ -40,7 +40,7 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 	@Override
 	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
-		if (map.getPlayers() instanceof IMutablePlayerCollection mpc) {
+		if (map.getPlayers() instanceof final IMutablePlayerCollection mpc) {
 			mpc.setCurrentPlayer(newCurrent);
 		} else {
 			throw new IllegalArgumentException("Map with immutable player collection");

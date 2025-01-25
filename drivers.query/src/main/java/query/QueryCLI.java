@@ -357,7 +357,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 				selection.fromLeft().get().invoke();
 				continue;
 			}
-			ICLIHelper.BooleanResponse condition = selection.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
+			final ICLIHelper.BooleanResponse condition = selection.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
 			switch (condition) {
 				case YES -> { // "--help" etc.; handled in chooseApplet()
 				}

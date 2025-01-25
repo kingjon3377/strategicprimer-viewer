@@ -44,7 +44,7 @@ public final class StatGeneratingCLIFactory implements ModelDriverFactory<Popula
 	}
 
 	@Override
-	public PopulationGeneratingModel createModel(IDriverModel model) {
+	public PopulationGeneratingModel createModel(final IDriverModel model) {
 		return new PopulationGeneratingModel(model);
 	}
 }

@@ -67,7 +67,7 @@ public final class ExplorationGUIFactory implements GUIDriverFactory<IExploratio
 	}
 
 	@Override
-	public IExplorationModel createModel(IDriverModel model) {
+	public IExplorationModel createModel(final IDriverModel model) {
 		return new ExplorationModel(model);
 	}
 }

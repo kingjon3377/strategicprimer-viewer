@@ -342,7 +342,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	 */
 	@Override
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
-	                               final IntPredicate levelCondition, LevelGainListener levelGainListener) {
+	                               final IntPredicate levelCondition, final LevelGainListener levelGainListener) {
 		boolean any = false;
 		final Predicate<Object> isUnit = IUnit.class::isInstance;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;

@@ -46,7 +46,7 @@ public final class WorkerPrinterFactory implements ModelDriverFactory<IExplorati
 	}
 
 	@Override
-	public IExplorationModel createModel(IDriverModel model) {
+	public IExplorationModel createModel(final IDriverModel model) {
 		return new ExplorationModel(model);
 	}
 }

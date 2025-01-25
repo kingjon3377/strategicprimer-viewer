@@ -57,7 +57,7 @@ public final class AdvancementGUIFactory implements GUIDriverFactory<IWorkerMode
 	}
 
 	@Override
-	public IWorkerModel createModel(IDriverModel model) {
+	public IWorkerModel createModel(final IDriverModel model) {
 		return new WorkerModel(model);
 	}
 

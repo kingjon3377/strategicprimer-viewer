@@ -61,7 +61,7 @@ public final class WorkerMgmtGUIFactory implements GUIDriverFactory<IWorkerModel
 	}
 
 	@Override
-	public IWorkerModel createModel(IDriverModel model) {
+	public IWorkerModel createModel(final IDriverModel model) {
 		return new WorkerModel(model);
 	}
 }

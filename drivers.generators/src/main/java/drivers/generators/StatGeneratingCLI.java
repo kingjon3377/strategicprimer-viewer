@@ -419,8 +419,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 							training.getLevel(), training.getName());
 					worker.addEquipment(new Implement(item, idf.createID()));
 				}
-				String equipmentPrompt = "Does the worker have any equipment?";
-				Function<String, ICLIHelper.BooleanResponse> equipmentQuery = cli::inputBooleanInSeries;
+				final String equipmentPrompt = "Does the worker have any equipment?";
+				final Function<String, ICLIHelper.BooleanResponse> equipmentQuery = cli::inputBooleanInSeries;
 				final BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
 					if (standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(key))) {
 						worker.addEquipment(new Implement(arg, idf.createID()));

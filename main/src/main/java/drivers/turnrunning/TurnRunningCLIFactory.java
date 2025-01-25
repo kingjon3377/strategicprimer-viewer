@@ -43,7 +43,7 @@ public final class TurnRunningCLIFactory implements ModelDriverFactory<ITurnRunn
 	}
 
 	@Override
-	public ITurnRunningModel createModel(IDriverModel model) {
+	public ITurnRunningModel createModel(final IDriverModel model) {
 		return new TurnRunningModel(model);
 	}
 }

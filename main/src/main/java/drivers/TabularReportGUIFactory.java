@@ -64,7 +64,7 @@ public final class TabularReportGUIFactory implements GUIDriverFactory<IDriverMo
 	}
 
 	@Override
-	public IDriverModel createModel(IDriverModel model) {
+	public IDriverModel createModel(final IDriverModel model) {
 		return new SimpleDriverModel(model);
 	}
 }

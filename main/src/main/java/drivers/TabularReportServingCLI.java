@@ -183,7 +183,7 @@ import org.takes.http.Exit;
 	}
 
 	private @NotNull ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> getReportCreator(
-			Map<Path, ILegacyMap> mapping, Map<Pair<String, String>, StringBuilder> builders) {
+			final Map<Path, ILegacyMap> mapping, final Map<Pair<String, String>, StringBuilder> builders) {
 		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
 				base -> {
 					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);

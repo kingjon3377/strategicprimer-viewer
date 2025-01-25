@@ -42,7 +42,7 @@ public final class ForestFixerFactory implements ModelDriverFactory<UtilityDrive
 	}
 
 	@Override
-	public UtilityDriverModel createModel(IDriverModel model) {
+	public UtilityDriverModel createModel(final IDriverModel model) {
 		return new UtilityDriverModel(model);
 	}
 }

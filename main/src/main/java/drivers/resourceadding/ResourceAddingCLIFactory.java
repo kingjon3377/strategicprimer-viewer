@@ -43,7 +43,7 @@ public final class ResourceAddingCLIFactory implements ModelDriverFactory<Resour
 	}
 
 	@Override
-	public ResourceManagementDriverModel createModel(IDriverModel model) {
+	public ResourceManagementDriverModel createModel(final IDriverModel model) {
 		return new ResourceManagementDriverModel(model);
 	}
 }

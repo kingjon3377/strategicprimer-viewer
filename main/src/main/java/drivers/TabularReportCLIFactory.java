@@ -49,7 +49,7 @@ public final class TabularReportCLIFactory implements ModelDriverFactory<IDriver
 	}
 
 	@Override
-	public IDriverModel createModel(IDriverModel model) {
+	public IDriverModel createModel(final IDriverModel model) {
 		return new SimpleMultiMapModel(model);
 	}
 }

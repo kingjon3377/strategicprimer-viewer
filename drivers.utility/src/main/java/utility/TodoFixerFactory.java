@@ -45,7 +45,7 @@ public final class TodoFixerFactory implements ModelDriverFactory<UtilityDriverM
 	}
 
 	@Override
-	public UtilityDriverModel createModel(IDriverModel model) {
+	public UtilityDriverModel createModel(final IDriverModel model) {
 		return new UtilityDriverModel(model);
 	}
 }

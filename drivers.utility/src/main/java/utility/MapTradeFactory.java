@@ -43,7 +43,7 @@ public final class MapTradeFactory implements ModelDriverFactory<MapTradeModel> 
 	}
 
 	@Override
-	public MapTradeModel createModel(IDriverModel model) {
+	public MapTradeModel createModel(final IDriverModel model) {
 		return new MapTradeModel(model);
 	}
 }

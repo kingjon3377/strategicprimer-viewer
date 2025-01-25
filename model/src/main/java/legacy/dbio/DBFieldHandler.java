@@ -72,7 +72,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			final Meadow.MeadowType type;
 			try {
 				type = Meadow.MeadowType.parse((String) dbRow.get("type"));
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				throw new IllegalArgumentException(except);
 			}
 			final String kind = (String) dbRow.get("kind");

@@ -160,8 +160,8 @@ public final class HuntingModel {
 	 * A *non-infinite* stream that returns 'nothing found' values in the
 	 * desired proportion.
 	 */
-	private static <Type> Stream<Type> finiteResultStream(Collection<Type> stream, double nothingProportion,
-	                                                      Type nothingValue) {
+	private static <Type> Stream<Type> finiteResultStream(final Collection<Type> stream, final double nothingProportion,
+                                                          final Type nothingValue) {
 		return Stream.concat(stream.stream(), Stream.generate(() -> nothingValue)
 				.limit(Math.round(stream.size() * nothingProportion)));
 	}

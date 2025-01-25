@@ -45,7 +45,7 @@ public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory<
 	}
 
 	@Override
-	public UtilityDriverModel createModel(IDriverModel model) {
+	public UtilityDriverModel createModel(final IDriverModel model) {
 		return new UtilityDriverModel(model);
 	}
 }

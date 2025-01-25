@@ -44,7 +44,7 @@ public final class StrategyExportFactory implements ModelDriverFactory<IWorkerMo
 	}
 
 	@Override
-	public IWorkerModel createModel(IDriverModel model) {
+	public IWorkerModel createModel(final IDriverModel model) {
 		return new WorkerModel(model);
 	}
 }

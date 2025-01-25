@@ -47,7 +47,7 @@ public final class RandomMovementFactory implements ModelDriverFactory<IExplorat
 	}
 
 	@Override
-	public IExplorationModel createModel(IDriverModel model) {
+	public IExplorationModel createModel(final IDriverModel model) {
 		return new ExplorationModel(model);
 	}
 }

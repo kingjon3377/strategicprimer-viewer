@@ -43,7 +43,7 @@ public final class QueryCLIFactory implements ModelDriverFactory<IDriverModel> {
 	}
 
 	@Override
-	public IDriverModel createModel(IDriverModel model) {
+	public IDriverModel createModel(final IDriverModel model) {
 		return new SimpleDriverModel(model);
 	}
 }

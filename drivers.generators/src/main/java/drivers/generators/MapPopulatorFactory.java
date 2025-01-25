@@ -43,7 +43,7 @@ public final class MapPopulatorFactory implements ModelDriverFactory<IPopulatorD
 	}
 
 	@Override
-	public IPopulatorDriverModel createModel(IDriverModel model) {
+	public IPopulatorDriverModel createModel(final IDriverModel model) {
 		return new PopulatorDriverModel(model);
 	}
 }

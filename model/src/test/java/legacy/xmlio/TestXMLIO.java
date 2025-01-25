@@ -2153,7 +2153,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleSerializationNoChildren(String tag)
+	public void testSimpleSerializationNoChildren(final String tag)
 			throws SPFormatException, XMLStreamException, IOException {
 		final String inner;
 		if ("troll".equals(tag)) {

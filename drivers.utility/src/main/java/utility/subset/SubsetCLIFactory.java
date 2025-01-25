@@ -52,7 +52,7 @@ public final class SubsetCLIFactory implements ModelDriverFactory<IMultiMapModel
 	}
 
 	@Override
-	public IMultiMapModel createModel(IDriverModel model) {
+	public IMultiMapModel createModel(final IDriverModel model) {
 		return new SimpleMultiMapModel(model);
 	}
 }

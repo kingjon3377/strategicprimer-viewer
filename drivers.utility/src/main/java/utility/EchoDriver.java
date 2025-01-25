@@ -98,7 +98,7 @@ public final class EchoDriver implements UtilityDriver {
 									location.column()));
 				}
 				for (final TileFixture fixture : map.getFixtures(location)) {
-					if (fixture instanceof HasMutableId hmi && hmi.getId() < 0) {
+					if (fixture instanceof final HasMutableId hmi && hmi.getId() < 0) {
 						hmi.setId(idFactory.createID());
 					}
 				}

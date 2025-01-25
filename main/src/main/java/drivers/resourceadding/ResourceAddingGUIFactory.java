@@ -65,7 +65,7 @@ public final class ResourceAddingGUIFactory implements GUIDriverFactory<Resource
 	}
 
 	@Override
-	public ResourceManagementDriverModel createModel(IDriverModel model) {
+	public ResourceManagementDriverModel createModel(final IDriverModel model) {
 		return new ResourceManagementDriverModel(model);
 	}
 }

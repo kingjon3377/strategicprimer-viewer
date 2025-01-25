@@ -39,12 +39,12 @@ import java.io.Serial;
 	}
 
 	@Serial
-	private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+	private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
 		throw new NotSerializableException("drivers.exploration.UnitListModel");
 	}
 
 	@Serial
-	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+	private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
 		throw new NotSerializableException("drivers.exploration.UnitListModel");
 	}
 }

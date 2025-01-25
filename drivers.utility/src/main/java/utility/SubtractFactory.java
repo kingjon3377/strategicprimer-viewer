@@ -43,7 +43,7 @@ public final class SubtractFactory implements ModelDriverFactory<UtilityDriverMo
 	}
 
 	@Override
-	public UtilityDriverModel createModel(IDriverModel model) {
+	public UtilityDriverModel createModel(final IDriverModel model) {
 		return new UtilityDriverModel(model);
 	}
 }
