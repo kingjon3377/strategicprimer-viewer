@@ -114,6 +114,15 @@ public class WindowMenu extends JMenu {
 		return (bitField & bitToCheck) == bitToCheck;
 	}
 
+	private static void showWindow(final Frame w) {
+		if (w.isVisible() || containsBit(w
+				.getExtendedState(), Frame.ICONIFIED)) {
+			w.toFront();
+			if (containsBit(w.getExtendedState(), Frame.ICONIFIED))
+				w.setExtendedState(w.getExtendedState() ^ Frame.ICONIFIED);
+		}
+	}
+
 	/**
 	 * Creates a new WindowMenu for a specific JFrame.
 	 *
@@ -130,12 +139,7 @@ public class WindowMenu extends JMenu {
 			final Frame[] frames = WindowList.getFrames(WindowList.WindowSorting.Origin,
 					EnumSet.of(WindowList.WindowFiltering.Iconified));
 			for (final Frame w : frames) {
-				if (w.isVisible() || containsBit(frame
-						.getExtendedState(), Frame.ICONIFIED)) {
-					w.toFront();
-					if (containsBit(w.getExtendedState(), Frame.ICONIFIED))
-						w.setExtendedState(w.getExtendedState() ^ Frame.ICONIFIED);
-				}
+				showWindow(w);
 			}
 		};
 		bringItem.addActionListener(bringToFrontListener);
