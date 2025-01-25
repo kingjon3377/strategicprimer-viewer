@@ -107,8 +107,7 @@ import static java.util.function.Predicate.not;
 		final String units = split[1];
 		final String kind = split[2];
 		final String resource = split[3];
-		final Triplet<LegacyQuantity, String, String> addenda = Triplet.with(new LegacyQuantity(quantity, units), kind, resource);
-		return addenda;
+		return Triplet.with(new LegacyQuantity(quantity, units), kind, resource);
 	}
 
 	/**
