@@ -236,8 +236,7 @@ import static java.util.function.Predicate.not;
 			case final Grove g -> g.getCultivation() == CultivationStatus.CULTIVATED;
 			case final Mine m -> TownStatus.Active == m.getStatus();
 			case final CacheFixture _ -> false;
-			case final Shrub _ -> true;
-			case final StoneDeposit _ -> true;
+			case final Shrub _, final StoneDeposit _ -> true;
 			default -> {
 				LovelaceLogger.error("Unhandled harvestable type");
 				yield false;
@@ -616,10 +615,7 @@ import static java.util.function.Predicate.not;
 						case NO -> {
 							stats = generateStats(idf, location, town, model.getMap());
 						}
-						case QUIT -> {
-							return;
-						}
-						case EOF -> {
+						case QUIT, EOF -> {
 							return;
 						}
 						default -> throw new IllegalStateException("Exhaustive switch wasn't");
@@ -657,10 +653,7 @@ import static java.util.function.Predicate.not;
 					case NO -> {
 						stats = generateStats(idf, location, town, model.getMap());
 					}
-					case QUIT -> {
-						return;
-					}
-					case EOF -> {
+					case QUIT, EOF -> {
 						return;
 					}
 					default -> throw new IllegalStateException("Exhaustive switch wasn't");

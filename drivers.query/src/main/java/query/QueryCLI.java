@@ -198,9 +198,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 					cli.print("Distance (as the crow files, in tiles):\t");
 					cli.printf("%.0f%n", distance(start, end, map.getDimensions()));
 				}
-				case QUIT -> {
-				}
-				case EOF -> {
+				case QUIT, EOF -> {
 				}
 			}
 		}

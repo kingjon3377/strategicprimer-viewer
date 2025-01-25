@@ -57,9 +57,7 @@ public final class TownGeneratingCLI implements CLIDriver {
 			case NO -> {
 				generator.generateAllTowns(idf, model);
 			}
-			case QUIT -> { // Do nothing
-			}
-			case EOF -> { // Do nothing
+			case QUIT, EOF -> { // Do nothing
 			}
 		}
 	}

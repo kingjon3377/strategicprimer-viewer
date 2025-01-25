@@ -189,10 +189,7 @@ public final class MapTradeCLI implements CLIDriver {
 			case NO -> {
 				// Do nothing
 			}
-			case QUIT -> {
-				return;
-			}
-			case EOF -> {
+			case QUIT, EOF -> {
 				return;
 			}
 		}
@@ -200,10 +197,7 @@ public final class MapTradeCLI implements CLIDriver {
 		switch (cli.inputBoolean("Include rivers?")) {
 			case YES -> copyRivers = true;
 			case NO -> copyRivers = false;
-			case QUIT -> {
-				return;
-			}
-			case EOF -> {
+			case QUIT, EOF -> {
 				return;
 			}
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
@@ -212,10 +206,7 @@ public final class MapTradeCLI implements CLIDriver {
 		switch (cli.inputBoolean("Include roads?")) {
 			case YES -> copyRoads = true;
 			case NO -> copyRoads = false;
-			case QUIT -> {
-				return;
-			}
-			case EOF -> {
+			case QUIT, EOF -> {
 				return;
 			}
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");

@@ -200,10 +200,7 @@ import static java.util.function.Predicate.not;
 
 	private static BigDecimal decimalize(final Number number) {
 		return switch (number) {
-			case final Integer _ -> BigDecimal.valueOf(number.longValue());
-			case final Long _ -> BigDecimal.valueOf(number.longValue());
-			case final Short _ -> BigDecimal.valueOf(number.longValue());
-			case final Byte _ -> BigDecimal.valueOf(number.longValue());
+			case final Integer _, final Long _, final Short _, final Byte _ -> BigDecimal.valueOf(number.longValue());
 			case final BigDecimal d -> d;
 			default -> BigDecimal.valueOf(number.doubleValue());
 		};

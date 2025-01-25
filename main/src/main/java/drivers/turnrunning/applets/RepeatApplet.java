@@ -73,10 +73,7 @@ import org.jetbrains.annotations.Nullable;
 			switch (cli.inputBoolean("Create more results for this unit?")) {
 				case YES -> { // Do nothing
 				}
-				case NO -> {
-					return buffer.toString();
-				}
-				case QUIT -> {
+				case NO, QUIT -> {
 					return buffer.toString();
 				}
 				case EOF -> {
