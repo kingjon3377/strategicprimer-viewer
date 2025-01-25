@@ -2,7 +2,6 @@ package legacy.xmlio.fluidxml;
 
 import common.map.fixtures.resources.FieldStatus;
 import common.map.fixtures.towns.TownStatus;
-import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.DeprecatedPropertyException;
 import impl.xmlio.exceptions.MissingPropertyException;

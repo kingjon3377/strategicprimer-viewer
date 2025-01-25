@@ -22,7 +22,6 @@ import legacy.idreg.IDRegistrar;
 import legacy.map.Point;
 import legacy.map.HasImage;
 import common.xmlio.Warning;
-import common.xmlio.SPFormatException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.DeprecatedPropertyException;

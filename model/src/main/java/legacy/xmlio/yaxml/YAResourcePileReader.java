@@ -10,7 +10,6 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.ThrowingConsumer;
-import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;

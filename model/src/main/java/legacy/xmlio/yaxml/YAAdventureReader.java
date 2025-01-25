@@ -1,6 +1,5 @@
 package legacy.xmlio.yaxml;
 
-import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;

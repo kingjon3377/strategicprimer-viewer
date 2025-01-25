@@ -3,14 +3,8 @@ package drivers.turnrunning.applets;
 import legacy.map.HasOwner;
 import legacy.map.IFixture;
 
-import java.util.ArrayList;
-
 import legacy.map.fixtures.FixtureIterable;
-import legacy.map.fixtures.UnitMember;
-import legacy.map.fixtures.FortressMember;
-import legacy.map.ILegacyMap;
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;

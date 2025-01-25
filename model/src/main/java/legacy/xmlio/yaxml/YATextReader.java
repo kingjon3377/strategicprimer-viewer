@@ -7,7 +7,6 @@ import javax.xml.stream.events.Characters;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import common.xmlio.SPFormatException;
 import impl.xmlio.exceptions.MissingPropertyException;
 import lovelace.util.ThrowingConsumer;
 

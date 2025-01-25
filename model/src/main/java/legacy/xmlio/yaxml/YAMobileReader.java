@@ -13,7 +13,6 @@ import java.io.IOException;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import lovelace.util.ThrowingConsumer;
-import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.HasMutableImage;
 import legacy.map.HasImage;

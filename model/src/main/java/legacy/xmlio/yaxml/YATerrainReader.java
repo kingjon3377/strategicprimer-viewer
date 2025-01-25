@@ -5,7 +5,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
-import common.xmlio.SPFormatException;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import lovelace.util.ThrowingConsumer;

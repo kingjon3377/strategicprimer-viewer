@@ -9,7 +9,6 @@ import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.ThrowingConsumer;
-import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.HasExtent;
 import legacy.map.fixtures.resources.HarvestableFixture;
