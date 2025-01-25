@@ -240,6 +240,15 @@ public final class WindowList {
 	}
 
 	/**
+	 * @param bitField a field in which one or more bits may be set
+	 * @param bitToCheck a specific bit
+	 * @return whether the 'bitToCheck' field is set in 'bitField'
+	 */
+	private static boolean containsBit(final int bitField, final int bitToCheck) {
+		return (bitField & bitToCheck) == bitToCheck;
+	}
+
+	/**
 	 * Returns a list of frames.
 	 *
 	 * @param sorting
@@ -266,7 +275,7 @@ public final class WindowList {
 					if (includeInvisible || f.isVisible()) {
 						returnValue.add(f);
 					} else if (includeIconified
-							&& f.getExtendedState() == Frame.ICONIFIED) {
+							&& containsBit(f.getExtendedState(), Frame.ICONIFIED)) {
 						returnValue.add(f);
 					}
 				}
