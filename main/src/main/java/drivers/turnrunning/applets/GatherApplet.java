@@ -132,9 +132,7 @@ import org.jetbrains.annotations.Nullable;
 						cli.print(inHours(time));
 						cli.println(" remaining.");
 					}
-					case NO -> {
-						time -= NO_RESULT_COST;
-					}
+					case NO -> time -= NO_RESULT_COST;
 					case QUIT -> {
 						return buffer.toString().strip();
 					}

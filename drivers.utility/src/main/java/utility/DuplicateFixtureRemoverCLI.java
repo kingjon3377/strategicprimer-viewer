@@ -171,9 +171,7 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 				final Iterable<? extends TileFixture> duplicates = q.getValue3();
 				for (final TileFixture duplicate : duplicates) {
 					switch (approveRemoval(location, duplicate, fixture)) {
-						case YES -> {
-							deleteCallback.accept(duplicate);
-						}
+						case YES -> deleteCallback.accept(duplicate);
 						case NO -> { // Do nothing
 						}
 						case QUIT -> {
@@ -233,9 +231,7 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 			fixtures.stream().map(Object::toString).forEach(println);
 			switch (cli.inputBooleanInSeries("Combine them? ",
 					memberKind(fixtures.iterator().next()))) {
-				case YES -> {
-					callback.run();
-				}
+				case YES -> callback.run();
 				case NO -> { // Do nothing
 				}
 				case QUIT -> {

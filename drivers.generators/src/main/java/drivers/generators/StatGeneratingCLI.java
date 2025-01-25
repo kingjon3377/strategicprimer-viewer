@@ -187,9 +187,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 				case EOF -> {
 					return false; // TODO: Somehow signal EOF to caller to abort further processing
 				}
-				default -> {
-					throw new IllegalStateException("Exhaustive switch wasn't");
-				}
+				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 		}
 	}
@@ -297,12 +295,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 			cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 			cli.println(stats.getPrintable());
 			switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?")) {
-				case YES -> {
-					worker.addEquipment(new Implement("woolen tunic", idf.createID()));
-				}
-				case NO -> {
-					worker.addEquipment(new Implement("linen tunic", idf.createID()));
-				}
+				case YES -> worker.addEquipment(new Implement("woolen tunic", idf.createID()));
+				case NO -> worker.addEquipment(new Implement("linen tunic", idf.createID()));
 				case QUIT -> {
 					return worker;
 				}
@@ -355,12 +349,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 				cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 				cli.println(stats.getPrintable());
 				switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?")) {
-					case YES -> {
-						worker.addEquipment(new Implement("woolen tunic", idf.createID()));
-					}
-					case NO -> {
-						worker.addEquipment(new Implement("linen tunic", idf.createID()));
-					}
+					case YES -> worker.addEquipment(new Implement("woolen tunic", idf.createID()));
+					case NO -> worker.addEquipment(new Implement("linen tunic", idf.createID()));
 					case QUIT -> {
 						return worker;
 					}
@@ -441,12 +431,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 				if (stdOmits.test("tunic")) {
 					switch (cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
 							"tunic-" + training.getName())) {
-						case YES -> {
-							addIfStdOmits.accept("tunic", "woolen tunic");
-						}
-						case NO -> {
-							addIfStdOmits.accept("tunic", "linen tunic");
-						}
+						case YES -> addIfStdOmits.accept("tunic", "woolen tunic");
+						case NO -> addIfStdOmits.accept("tunic", "linen tunic");
 						case QUIT -> {
 							return worker;
 						}
@@ -680,12 +666,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 			}
 			switch (cli.inputBooleanInSeries(
 					"Load names from file and use randomly generated stats?")) {
-				case YES -> {
-					createWorkersFromFile(idf, item);
-				}
-				case NO -> {
-					createWorkersForUnit(idf, item);
-				}
+				case YES -> createWorkersFromFile(idf, item);
+				case NO -> createWorkersForUnit(idf, item);
 				case QUIT, EOF -> {
 					return;
 				}

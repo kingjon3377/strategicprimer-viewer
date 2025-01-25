@@ -96,9 +96,7 @@ import static lovelace.util.Decimalize.decimalize;
 			}
 			final BigDecimal subtrahend;
 			switch (cli.inputBoolean("Use all %s?".formatted(item.getQuantity()))) {
-				case YES -> {
-					subtrahend = decimalize(item.getQuantity().number());
-				}
+				case YES -> subtrahend = decimalize(item.getQuantity().number());
 				case NO -> {
 					subtrahend = cli.inputDecimal("How many %s to use?".formatted(item.getQuantity().units()));
 					if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {

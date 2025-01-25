@@ -258,9 +258,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 		for (final XMLEvent event : stream) {
 			switch (event) {
-				case final StartElement se when isSPStartElement(event) -> {
-					parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
-				}
+				case final StartElement se when isSPStartElement(event) -> parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return;
 				}

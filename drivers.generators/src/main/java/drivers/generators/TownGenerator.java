@@ -608,12 +608,8 @@ import static java.util.function.Predicate.not;
 				} else {
 					final CommunityStats stats;
 					switch (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
-						case YES -> {
-							stats = enterStats(cli, idf, model.getMap(), location, town);
-						}
-						case NO -> {
-							stats = generateStats(idf, location, town, model.getMap());
-						}
+						case YES -> stats = enterStats(cli, idf, model.getMap(), location, town);
+						case NO -> stats = generateStats(idf, location, town, model.getMap());
 						case QUIT, EOF -> {
 							return;
 						}
@@ -646,12 +642,8 @@ import static java.util.function.Predicate.not;
 			try {
 				switch (cli.inputBooleanInSeries(
 						"Enter stats rather than generating them?", "enter stats")) {
-					case YES -> {
-						stats = enterStats(cli, idf, model.getMap(), location, town);
-					}
-					case NO -> {
-						stats = generateStats(idf, location, town, model.getMap());
-					}
+					case YES -> stats = enterStats(cli, idf, model.getMap(), location, town);
+					case NO -> stats = generateStats(idf, location, town, model.getMap());
 					case QUIT, EOF -> {
 						return;
 					}

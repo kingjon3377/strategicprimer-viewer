@@ -563,14 +563,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			BackgroundState background = BackgroundState.NONE;
 			switch (internal) {
 				case final IWorker worker when component instanceof final JLabel label &&
-						"human".equals(worker.getRace()) -> {
-					label.setText("<html><p>%s%s</p></html>".formatted(
-							worker.getName(), jobCSL(worker)));
-				}
-				case final IWorker worker when component instanceof final JLabel label -> {
-					label.setText("<html><p>%s, a %s%s</p></html>".formatted(worker.getName(),
-							worker.getRace(), jobCSL(worker)));
-				}
+						"human".equals(worker.getRace()) -> label.setText("<html><p>%s%s</p></html>".formatted(
+								worker.getName(), jobCSL(worker)));
+				case final IWorker worker when component instanceof final JLabel label -> label.setText("<html><p>%s, a %s%s</p></html>".formatted(worker.getName(),
+						worker.getRace(), jobCSL(worker)));
 				case final Animal animal when component instanceof final JLabel label -> {
 					final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 					// TODO: Extract a method for this so we can split the switch-case

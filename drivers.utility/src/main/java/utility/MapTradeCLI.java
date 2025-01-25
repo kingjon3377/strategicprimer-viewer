@@ -147,18 +147,12 @@ public final class MapTradeCLI implements CLIDriver {
 
 	private void askAbout(final FixtureMatcher matcher, final String key) {
 		switch (cli.inputBooleanInSeries("Include %s items?".formatted(matcher.getDescription()), key)) {
-			case YES -> {
-				matcher.setDisplayed(true);
-			}
-			case NO -> {
-				matcher.setDisplayed(false);
-			}
+			case YES -> matcher.setDisplayed(true);
+			case NO -> matcher.setDisplayed(false);
 			case QUIT -> {
 				// TODO: We'd like to abort this operation, more gently than on EOF
 			}
-			case EOF -> {
-				throw new IllegalStateException("EOF in fixture-matcher query");
-			}
+			case EOF -> throw new IllegalStateException("EOF in fixture-matcher query");
 		}
 	}
 
@@ -183,9 +177,7 @@ public final class MapTradeCLI implements CLIDriver {
 		}
 		final ILegacyMap second = model.getSubordinateMaps().iterator().next();
 		switch (cli.inputBoolean("Copy players?")) {
-			case YES -> {
-				model.copyPlayers();
-			}
+			case YES -> model.copyPlayers();
 			case NO -> {
 				// Do nothing
 			}

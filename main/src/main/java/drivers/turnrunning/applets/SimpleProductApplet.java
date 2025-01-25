@@ -51,12 +51,8 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder builder = new StringBuilder();
 		boolean another;
 		switch (cli.inputBooleanInSeries("Add resources to the map?", name + "resources")) {
-			case YES -> {
-				another = true;
-			}
-			case NO -> {
-				another = false;
-			}
+			case YES -> another = true;
+			case NO -> another = false;
 			case QUIT -> {
 				return null;
 			}
@@ -80,9 +76,7 @@ import org.jetbrains.annotations.Nullable;
 			switch (cli.inputBoolean("Add another resource?")) {
 				case YES -> { // Do nothing, keep looping
 				}
-				case NO -> {
-					another = false;
-				}
+				case NO -> another = false;
 				case QUIT -> {
 					return builder.toString();
 				}

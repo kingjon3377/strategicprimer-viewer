@@ -141,9 +141,7 @@ public final class ResourceAddingCLIHelper {
 				}
 				contents = prefix + " " + origContents;
 			}
-			case NO -> {
-				contents = origContents;
-			}
+			case NO -> contents = origContents;
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		final BigDecimal quantity = cli.inputDecimal("Quantity in %s?".formatted(units));

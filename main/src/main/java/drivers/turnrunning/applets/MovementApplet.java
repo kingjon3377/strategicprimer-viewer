@@ -120,9 +120,7 @@ import static lovelace.util.Decimalize.decimalize;
 					.filter(isFortress).map(fortressCast)
 					.noneMatch(sameOwner)) {
 				switch (cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?")) {
-					case YES -> {
-						packFood(startingFort, mover);
-					}
+					case YES -> packFood(startingFort, mover);
 					case NO -> { // Do nothing
 					}
 					case QUIT -> {

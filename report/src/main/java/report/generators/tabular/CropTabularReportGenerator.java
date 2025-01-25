@@ -135,9 +135,7 @@ public final class CropTabularReportGenerator implements ITableGenerator</*Fores
 				size = truncatedNumberString(he.getAcres());
 				sizeUnit = "acres";
 			}
-			case final HasPopulation<?> hp when hp.getPopulation() > 0 -> {
-				size = Integer.toString(hp.getPopulation());
-			}
+			case final HasPopulation<?> hp when hp.getPopulation() > 0 -> size = Integer.toString(hp.getPopulation());
 			default -> {
 				size = "unknown";
 				sizeUnit = "---";

@@ -51,12 +51,8 @@ public final class TownGeneratingCLI implements CLIDriver {
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
 				model.streamAllMaps().toArray(ILegacyMap[]::new));
 		switch (cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
-			case YES -> {
-				generator.generateSpecificTowns(idf, model);
-			}
-			case NO -> {
-				generator.generateAllTowns(idf, model);
-			}
+			case YES -> generator.generateSpecificTowns(idf, model);
+			case NO -> generator.generateAllTowns(idf, model);
 			case QUIT, EOF -> { // Do nothing
 			}
 		}

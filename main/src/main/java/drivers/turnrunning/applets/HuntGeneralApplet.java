@@ -163,12 +163,8 @@ import org.jetbrains.annotations.Nullable;
 		}
 		switch (cli.inputBooleanInSeries("Reduce animal group population of %d?"
 				.formatted(find.getPopulation()))) {
-			case YES -> {
-				reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
-			}
-			case NO -> {
-				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-			}
+			case YES -> reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
+			case NO -> model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			case QUIT -> {
 				return Integer.MAX_VALUE;
 			}

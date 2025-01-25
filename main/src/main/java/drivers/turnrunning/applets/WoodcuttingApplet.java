@@ -131,9 +131,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int footage = treeCount * CU_FT_PER_TREE;
 		switch (cli.inputBoolean("Is %d cubic feet correct?".formatted(footage))) {
-			case YES -> {
-				builder.append(", producing %d cubic feet of wood".formatted(footage));
-			}
+			case YES -> builder.append(", producing %d cubic feet of wood".formatted(footage));
 			case NO -> {
 				final String str = cli.inputMultilineString("Description of production:");
 				if (Objects.isNull(str)) {
@@ -178,10 +176,8 @@ import org.jetbrains.annotations.Nullable;
 				switch (cli.inputBoolean("Is %.2f (of %.2f) cleared correct?".formatted(
 						acres.doubleValue(),
 						forest.getAcres().doubleValue()))) {
-					case YES -> {
-						builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
-								acres, acres.multiply(SQ_FT_PER_ACRE).intValue()));
-					}
+					case YES -> builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
+							acres, acres.multiply(SQ_FT_PER_ACRE).intValue()));
 					case NO -> {
 						final String str = cli.inputMultilineString("Description of cleared land:");
 						if (Objects.isNull(str)) {
