@@ -5,6 +5,7 @@ import legacy.map.Point;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.Objects;
 
@@ -84,5 +85,15 @@ public final class DistanceComparatorImpl implements DistanceComparator {
 		} else {
 			return " (%.1f tiles from %s)".formatted(Math.sqrt(dist), name);
 		}
+	}
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		throw new NotSerializableException("legacy.DistanceComparatorImpl");
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+		throw new NotSerializableException("legacy.DistanceComparatorImpl");
 	}
 }

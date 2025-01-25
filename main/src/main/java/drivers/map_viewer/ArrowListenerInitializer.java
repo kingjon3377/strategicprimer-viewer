@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.List;
 import java.awt.event.KeyEvent;
@@ -98,6 +99,16 @@ import java.util.Arrays;
 		@Override
 		public void actionPerformed(final ActionEvent event) {
 			repeatVoid(action, num); // TODO: inline that here?
+		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+			throw new NotSerializableException("drivers.map_viewer.ArrowListenerInitializer.DirectionListener");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+			throw new NotSerializableException("drivers.map_viewer.ArrowListenerInitializer.DirectionListener");
 		}
 	}
 

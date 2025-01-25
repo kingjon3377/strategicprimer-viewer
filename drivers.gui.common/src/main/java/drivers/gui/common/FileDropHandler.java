@@ -1,6 +1,7 @@
 package drivers.gui.common;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
@@ -67,5 +68,15 @@ import lovelace.util.LovelaceLogger;
 			}
 		}
 		return true;
+	}
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("drivers.gui.common.FileDropHandler");
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("drivers.gui.common.FileDropHandler");
 	}
 }

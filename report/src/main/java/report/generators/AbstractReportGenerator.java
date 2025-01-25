@@ -4,6 +4,7 @@ import legacy.DistanceComparatorImpl;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Map;
@@ -126,6 +127,16 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 				return builder.toString();
 			}
 		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
+		}
 	}
 
 	/**
@@ -183,6 +194,16 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			} else {
 				return "%s %s".formatted(header, commaSeparatedList(this));
 			}
+		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+			throw new NotSerializableException("report.generators.AbstractReportGenerator.PointList");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+			throw new NotSerializableException("report.generators.AbstractReportGenerator.PointList");
 		}
 	}
 

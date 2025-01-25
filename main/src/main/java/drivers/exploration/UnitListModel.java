@@ -12,6 +12,7 @@ import exploration.common.IExplorationModel;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 
 /**
@@ -35,5 +36,15 @@ import java.io.Serial;
 		LovelaceLogger.trace("Regenerating UnitListModel");
 		clear();
 		model.getUnits(newPlayer).forEach(this::addElement);
+	}
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		throw new NotSerializableException("drivers.exploration.UnitListModel");
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+		throw new NotSerializableException("drivers.exploration.UnitListModel");
 	}
 }

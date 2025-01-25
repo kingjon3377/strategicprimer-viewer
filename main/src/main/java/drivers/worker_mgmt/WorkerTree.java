@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Comparator;
@@ -391,6 +392,16 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			} else {
 				return false;
 			}
+		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTree.WorkerTreeTransferHandler");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTree.WorkerTreeTransferHandler");
 		}
 	}
 

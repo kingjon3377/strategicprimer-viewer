@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -221,5 +222,15 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 			}
 		}
 		return 0;
+	}
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		throw new NotSerializableException("drivers.map_viewer.FixtureFilterTableModel");
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+		throw new NotSerializableException("drivers.map_viewer.FixtureFilterTableModel");
 	}
 }

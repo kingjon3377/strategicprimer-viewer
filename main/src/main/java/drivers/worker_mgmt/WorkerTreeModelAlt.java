@@ -6,6 +6,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Toolkit;
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -47,6 +48,16 @@ import drivers.common.IWorkerModel;
 public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
 	@Serial
 	private static final long serialVersionUID = 1L;
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt");
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+		throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt");
+	}
 
 	/**
 	 * A base class for all nodes in the tree in this implementation of the tree model.
@@ -133,6 +144,16 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 				LovelaceLogger.info("Asked to add a non-WorkerTreeNode to a WorkerTreeNode");
 			}
 		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.WorkerTreeNode");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.WorkerTreeNode");
+		}
 	}
 
 	/**
@@ -207,6 +228,16 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 			for (final UnitMember member : unit) {
 				super.add(new UnitMemberNode(member));
 			}
+		}
+
+		@Serial
+		private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.UnitNode");
+		}
+
+		@Serial
+		private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.UnitNode");
 		}
 	}
 
