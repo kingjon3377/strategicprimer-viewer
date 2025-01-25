@@ -312,7 +312,7 @@
             <CFBundleDisplayName>Strategic Primer Helpers</CFBundleDisplayName>
             <CFBundleName>${project.artifactId}-${project.version}</CFBundleName>
             <JVMMainModuleName>main/drivers.Main</JVMMainModuleName>
-            <JVMVersion>21+</JVMVersion>
+            <JVMVersion>23+</JVMVersion>
             <JVMOptions>
               <string>java.desktop.quitStrategy=CLOSE_ALL_WINDOWS</string>
             </JVMOptions>
