@@ -40,7 +40,7 @@ import java.util.function.Consumer;
 /* package */ class FluidTownHandler extends FluidBase {
 	private static final QName NULL_QNAME = new QName("null");
 
-	private static interface TownContructor<T> {
+	private interface TownContructor<T> {
 		T construct(final TownStatus townStatus, final TownSize size, final int discoverDC,
 		                  final String townName, final int id, final Player player);
 	}
