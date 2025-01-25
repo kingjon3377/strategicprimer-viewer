@@ -13,9 +13,9 @@
     <maven.compiler.release>23</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.platform.version>1.8.0</junit.platform.version>
-    <junit.jupiter.version>5.11.0</junit.jupiter.version>
+    <junit.jupiter.version>5.11.4</junit.jupiter.version>
     <javatuples.version>1.2</javatuples.version>
-    <jetbrains.annotations.version>24.1.0</jetbrains.annotations.version>
+    <jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
     <auto-service.version>1.1.1</auto-service.version>
   </properties>
 
