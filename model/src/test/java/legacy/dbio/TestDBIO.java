@@ -626,11 +626,11 @@ public final class TestDBIO {
 		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
 		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
-				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(BigDecimal.TWO), "quarts")));
 		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
 		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
-				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(BigDecimal.valueOf(5).divide(BigDecimal.valueOf(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -650,11 +650,11 @@ public final class TestDBIO {
 		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
 		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
-				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(BigDecimal.TWO), "quarts")));
 		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
 		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
-				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(BigDecimal.valueOf(5).divide(BigDecimal.valueOf(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -674,11 +674,11 @@ public final class TestDBIO {
 		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
 		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
-				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(BigDecimal.TWO), "quarts")));
 		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
 		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
-				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(BigDecimal.valueOf(5).divide(BigDecimal.valueOf(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -696,7 +696,7 @@ public final class TestDBIO {
 										final FieldStatus status, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status, acres));
 		assertFixtureSerialization(new Meadow("kind", type, cultivation, id, status,
-				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
+				BigDecimal.valueOf(acres).add(BigDecimal.ONE.divide(BigDecimal.TWO))));
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
@@ -716,7 +716,7 @@ public final class TestDBIO {
 	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres)
 			throws SQLException, IOException {
 		assertFixtureSerialization(new Forest("kind", rows, id,
-				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(4)))));
+				BigDecimal.valueOf(acres).add(BigDecimal.ONE.divide(BigDecimal.valueOf(4)))));
 	}
 
 	private static Stream<Arguments> testFortressSerialization() {
@@ -737,7 +737,7 @@ public final class TestDBIO {
 		fortress.addMember(unit);
 		fortress.addMember(new Implement("equipment", id + 4, 2));
 		fortress.addMember(new ResourcePileImpl(id + 7, "second resource", "second contents",
-				new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(4)), "gallon")));
+				new LegacyQuantity(BigDecimal.valueOf(3).divide(BigDecimal.valueOf(4)), "gallon")));
 		assertFixtureSerialization(fortress);
 	}
 

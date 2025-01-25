@@ -151,10 +151,10 @@ public final class CLITest {
 				"test prompt ", BigDecimal.TEN, "inputDecimal works with integers",
 				"inputDecimal uses given prompt");
 		assertCLI(cli -> cli.inputDecimal("test prompt two"), Collections.singletonList("2.5"),
-				"test prompt two ", new BigDecimal(5).divide(new BigDecimal(2)),
+				"test prompt two ", BigDecimal.valueOf(5).divide(BigDecimal.TWO),
 				"inputDecimal works with decimals", "inputDecimal uses given prompt");
 		assertCLI(cli -> cli.inputDecimal("test prompt three "), Arrays.asList("-2.5", "0.5"),
-				"test prompt three test prompt three ", BigDecimal.ONE.divide(new BigDecimal(2)),
+				"test prompt three test prompt three ", BigDecimal.ONE.divide(BigDecimal.TWO),
 				"inputDecimal asks again on negative input",
 				"inputDecimal asks again on negative input");
 		assertCLI(cli -> cli.inputDecimal("test prompt four "), Arrays.asList("non-number", ".1"),

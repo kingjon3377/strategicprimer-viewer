@@ -1479,10 +1479,10 @@ public final class TestXMLIO {
 				new Meadow(kind, type, cultivation, id, status));
 		assertSerialization("Meadows can have acreage numbers",
 				new Meadow(kind, type, cultivation, id, status,
-						new BigDecimal(5).divide(new BigDecimal(4))));
+						BigDecimal.valueOf(5).divide(BigDecimal.valueOf(4))));
 		assertSerialization("Meadows can have acreage numbers",
 				new Meadow(kind, type, cultivation, id, status,
-						new BigDecimal(3).divide(new BigDecimal(4))));
+						BigDecimal.valueOf(3).divide(BigDecimal.valueOf(4))));
 	}
 
 	private static Stream<Arguments> testMineSerialization() {
@@ -1800,7 +1800,7 @@ public final class TestXMLIO {
 				"specificKind", new LegacyQuantity(15, "pounds"), 5));
 		assertSerialization("Resource pile can have non-integer quantity", new ResourcePileImpl(5,
 				"resourceKind", "specificKind2",
-				new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(2)), "cubic feet")));
+				new LegacyQuantity(BigDecimal.valueOf(3).divide(BigDecimal.TWO), "cubic feet")));
 	}
 
 	private static Stream<Arguments> testAnimalTracksSerialization() {
@@ -2036,7 +2036,7 @@ public final class TestXMLIO {
 						<forest kind="trees" rows="false" id="%d" />""".formatted(id)),
 				Warning.IGNORE);
 		assertSerialization("Forests can have acreage numbers", new Forest(kind,
-				rows, id, new BigDecimal(3).divide(new BigDecimal(2))));
+				rows, id, BigDecimal.valueOf(3).divide(BigDecimal.TWO)));
 	}
 
 	private static Stream<Arguments> testFortressSerialization() {

@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 public final class NewForestDialog extends SPDialog implements NewFixtureSource {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final BigDecimal NO_ACRES = BigDecimal.valueOf(-1);
 
 	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");
@@ -112,7 +113,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 				return;
 			}
 		} else {
-			acres = new BigDecimal(-1);
+			acres = NO_ACRES;
 		}
 		final String reqId = idField.getText().strip();
 		final int idNum;

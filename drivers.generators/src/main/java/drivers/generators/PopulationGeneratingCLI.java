@@ -244,7 +244,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	}
 
 	private static BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
-		return ACRES_PER_TILE.subtract(reserved).divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
+		return ACRES_PER_TILE.subtract(reserved).divide(BigDecimal.valueOf(otherForests), RoundingMode.HALF_EVEN);
 	}
 
 	private static Number acreageExtent(final HasExtent<?> item) {
@@ -267,13 +267,13 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final Function<Object, Grove> groveCast = Grove.class::cast;
 		final Predicate<Object> hasExtent = HasExtent.class::isInstance;
 		final Function<Object, HasExtent<?>> heCast = HasExtent.class::cast;
-		final BigDecimal fifteen = new BigDecimal(15);
-		final BigDecimal forty = new BigDecimal(40);
-		final BigDecimal eighty = new BigDecimal(80);
-		final BigDecimal fiveHundred = new BigDecimal(500);
+		final BigDecimal fifteen = BigDecimal.valueOf(15);
+		final BigDecimal forty = BigDecimal.valueOf(40);
+		final BigDecimal eighty = BigDecimal.valueOf(80);
+		final BigDecimal fiveHundred = BigDecimal.valueOf(500);
 		final BigDecimal two = BigDecimal.TWO;
-		final BigDecimal four = new BigDecimal(4);
-		final BigDecimal five = new BigDecimal(5);
+		final BigDecimal four = BigDecimal.valueOf(4);
+		final BigDecimal five = BigDecimal.valueOf(5);
 		for (final Point location : locations) {
 			final Forest primaryForest = map.getFixtures(location).stream()
 					.filter(isForest).map(forestCast)
@@ -301,7 +301,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 					case Large -> eighty;
 				});
 			}
-			reserved = reserved.add(new BigDecimal(map.getFixtures(location).stream()
+			reserved = reserved.add(BigDecimal.valueOf(map.getFixtures(location).stream()
 					.filter(isGrove).map(groveCast)
 					.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum())
 					.divide(fiveHundred));
