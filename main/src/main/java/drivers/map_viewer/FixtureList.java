@@ -70,7 +70,7 @@ public final class FixtureList extends JList<TileFixture>
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		addMouseListener(new FixtureMouseListener(listModel, this::locationToIndex, players, feh, idf));
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-				DnDConstants.ACTION_COPY, this);
+				DnDConstants.ACTION_COPY, this::dragGestureRecognized);
 
 		setDropTarget(new DropTarget(this, new DropListener(parentComponent, listModel)));
 
