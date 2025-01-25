@@ -1,6 +1,9 @@
 package drivers.map_viewer;
 
+import java.io.IOException;
 import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.List;
 import java.awt.event.KeyEvent;
@@ -102,12 +105,12 @@ import java.util.Arrays;
 		}
 
 		@Serial
-		private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("drivers.map_viewer.ArrowListenerInitializer.DirectionListener");
 		}
 
 		@Serial
-		private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.map_viewer.ArrowListenerInitializer.DirectionListener");
 		}
 	}

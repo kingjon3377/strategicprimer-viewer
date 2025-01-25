@@ -6,7 +6,10 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -50,12 +53,12 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 	private static final long serialVersionUID = 1L;
 
 	@Serial
-	private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+	private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt");
 	}
 
 	@Serial
-	private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt");
 	}
 
@@ -146,12 +149,12 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		}
 
 		@Serial
-		private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.WorkerTreeNode");
 		}
 
 		@Serial
-		private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.WorkerTreeNode");
 		}
 	}
@@ -231,12 +234,12 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		}
 
 		@Serial
-		private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.UnitNode");
 		}
 
 		@Serial
-		private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.UnitNode");
 		}
 	}

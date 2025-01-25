@@ -4,7 +4,10 @@ import legacy.DistanceComparatorImpl;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.io.IOException;
 import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Map;
@@ -129,12 +132,12 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Serial
-		private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
 		}
 
 		@Serial
-		private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
 		}
 	}
@@ -197,12 +200,12 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Serial
-		private void readObject(final java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.PointList");
 		}
 
 		@Serial
-		private void writeObject(final java.io.ObjectOutputStream out) throws java.io.IOException {
+		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.PointList");
 		}
 	}
