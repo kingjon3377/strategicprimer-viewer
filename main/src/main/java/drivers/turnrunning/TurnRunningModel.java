@@ -54,19 +54,6 @@ import static lovelace.util.MatchingValue.matchingValues;
 public final class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
 	/**
 	 * If "fixture" is a {@link IFortress fortress}, return a stream
-	 * of its contents; otherwise, return stream containing only it. This
-	 * is intended to be used in {@link Stream#flatMap}.
-	 */
-	private static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
-		if (fixture instanceof final IFortress f) {
-			return f.stream().map(IFixture.class::cast);
-		} else {
-			return Stream.of(fixture);
-		}
-	}
-
-	/**
-	 * If "fixture" is a {@link IFortress fortress}, return a stream
 	 * of it and its contents; otherwise, return a stream of only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */

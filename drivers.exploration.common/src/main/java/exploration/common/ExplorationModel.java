@@ -279,7 +279,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * otherwise, return a stream containing only it. This is intended to
 	 * be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
+	protected static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
 		if (fixture instanceof final IFortress fort) {
 			return fort.stream().map(IFixture.class::cast);
 		} else {
