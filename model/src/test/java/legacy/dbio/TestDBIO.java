@@ -151,7 +151,7 @@ public final class TestDBIO {
 
 
 	@FunctionalInterface
-	private interface StringIntConstructor<Type> {
+	public interface StringIntConstructor<Type> {
 		Type apply(String str, int num);
 	}
 
