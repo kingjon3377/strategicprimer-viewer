@@ -110,16 +110,6 @@ public class WindowMenu extends JMenu {
 	 *
 	 * @param frame
 	 *            the frame that this menu belongs to.
-	 */
-	public WindowMenu(final JFrame frame) {
-		this(frame, new JMenuItem[]{});
-	}
-
-	/**
-	 * Creates a new WindowMenu for a specific JFrame.
-	 *
-	 * @param frame
-	 *            the frame that this menu belongs to.
 	 * @param extraItems
 	 *            an optional array of extra items to put in this menu.
 	 */
