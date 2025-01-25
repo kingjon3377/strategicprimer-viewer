@@ -117,7 +117,7 @@ public class SPFileChooser extends FileChooser {
 		if (fc.fromLeft().isPresent()) {
 			return open(loc, fc.fromLeft().get());
 		} else {
-			return open(loc, fc.fromRight().get());
+			return open(loc, fc.fromRight().orElseThrow());
 		}
 	}
 
@@ -149,7 +149,7 @@ public class SPFileChooser extends FileChooser {
 		if (fileChooser.fromLeft().isPresent()) {
 			return save(loc, fileChooser.fromLeft().get());
 		} else {
-			return save(loc, fileChooser.fromRight().get());
+			return save(loc, fileChooser.fromRight().orElseThrow());
 		}
 	}
 
@@ -179,7 +179,7 @@ public class SPFileChooser extends FileChooser {
 		if (fc.fromLeft().isPresent()) {
 			return custom(loc, approveText, fc.fromLeft().get());
 		} else {
-			return save(loc, fc.fromRight().get());
+			return save(loc, fc.fromRight().orElseThrow());
 		}
 	}
 }

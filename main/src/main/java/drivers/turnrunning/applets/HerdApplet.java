@@ -175,7 +175,7 @@ import query.SmallAnimalModel;
 			}
 			final HerdModel herdModel = entry.getKey();
 			final List<Animal> animals = entry.getValue();
-			final Animal combinedAnimal = animals.stream().reduce(Animal::combined).get();
+			final Animal combinedAnimal = animals.stream().reduce(Animal::combined).orElseThrow();
 			final long flockPerHerder =
 					(combinedAnimal.getPopulation() + workerCount - 1) / workerCount;
 			final LegacyQuantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());

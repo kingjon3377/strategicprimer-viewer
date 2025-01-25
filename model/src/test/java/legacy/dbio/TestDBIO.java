@@ -530,7 +530,7 @@ public final class TestDBIO {
 		assertNotEquals(deserializedFirst, deserializedSecond,
 				"DB round-trip preserves not-equality of with and without fixture");
 		return (FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
-				.stream().findFirst().get();
+				.stream().findFirst().orElseThrow();
 	}
 
 	private static Stream<Arguments> fewIntegers() {
