@@ -172,8 +172,8 @@ import legacy.map.Point;
 	/**
 	 * Scroll.
 	 *
-	 * @param horizontal Whether to scroll horizontally
-	 * @param forward    Whether to scroll forward (down/right)
+	 * @param orientation Whether to scroll horizontally
+	 * @param direction    Whether to scroll forward (down/right)
 	 * @param count      How many times (tiles) to scroll
 	 */
 	private void scroll(final ScrollOrientation orientation, final ScrollDirection direction, final int count) {

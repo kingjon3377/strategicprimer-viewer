@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * differences in workers, but without hard-coding {@link
  * legacy.map.fixtures.mobile.Worker} in the Unit implementation. Most
  * implementations of this will essentially delegate {@link #isSubset} to
- * {@link #equals}.
+ * {@link Object#equals}.
  *
  * TODO: Members?
  */

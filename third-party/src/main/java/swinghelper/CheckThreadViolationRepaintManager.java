@@ -58,7 +58,7 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 	private @Nullable WeakReference<JComponent> lastComponent;
 
 	/**
-	 * @param shouldCompleteCheck Whether to run the complete check (recommended)
+	 * @param checkType Whether to run the complete check (recommended)
 	 */
 	public CheckThreadViolationRepaintManager(final CheckType checkType) {
 		this.checkType = checkType;

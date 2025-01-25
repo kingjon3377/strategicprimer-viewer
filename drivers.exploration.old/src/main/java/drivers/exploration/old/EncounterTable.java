@@ -27,7 +27,7 @@ public interface EncounterTable {
 	 *
 	 * @param point         The location of the tile in question.
 	 * @param terrain       The terrain there. Null if unknown.
-	 * @param mountainous   Whether the tile is mountainous.
+	 * @param terrainMod   Whether the tile is mountainous.
 	 * @param fixtures      The fixtures on the tile, if any.
 	 * @param mapDimensions The dimensions of the map.
 	 */

@@ -204,7 +204,7 @@ public final class ExplorationRunner {
 	 * @param table         The name of the table to consult
 	 * @param location      The location of the tile
 	 * @param terrain       The terrain there. Null if unknown.
-	 * @param mountainous   Whether the tile is mountainous.
+	 * @param terrainMod   Whether the tile is mountainous.
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
@@ -221,7 +221,7 @@ public final class ExplorationRunner {
 	 *
 	 * @param location      The location of the tile
 	 * @param terrain       The terrain there.
-	 * @param mountainous   Whether the tile is mountainous.
+	 * @param terrainMod   Whether the tile is mountainous.
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
@@ -236,7 +236,7 @@ public final class ExplorationRunner {
 	 *
 	 * @param location      The location of the tile
 	 * @param terrain       The terrain there.
-	 * @param mountainous   Whether the tile is mountainous.
+	 * @param terrainMod   Whether the tile is mountainous.
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
@@ -267,7 +267,7 @@ public final class ExplorationRunner {
 	 *
 	 * @param location      The location of the tile
 	 * @param terrain       The terrain there.
-	 * @param mountainous   Whether the tile is mountainous.
+	 * @param terrainMod   Whether the tile is mountainous.
 	 * @param fixtures      Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */

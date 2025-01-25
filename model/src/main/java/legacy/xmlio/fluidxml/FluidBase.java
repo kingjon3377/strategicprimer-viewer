@@ -123,7 +123,6 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element      The current tag.
 	 * @param param        The parameter we want to get
 	 * @param defaultValue The value to return if the tag doesn't have that parameter
-	 * @throws SPFormatException if the tag doesn't have that parameter and no default was provided
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
 	                                             final String param, final boolean defaultValue) {
@@ -168,7 +167,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *
 	 * @param element The current tag.
 	 * @param param   The parameter we want to get
-	 * @throws SPFormatException if the tag doesn't have that parameter and no default was provided
+	 * @throws MissingPropertyException if the tag doesn't have that parameter and no default was provided
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final @Nullable Path path,
 	                                             final String param)
@@ -267,7 +266,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element   The tag we're working with
 	 * @param warner    The Warning instance to use if hte tag doesn't specify an ID
 	 * @param idFactory The factory to use to register an existing ID or get a new one
-	 * @throws SPFormatException on SP format problems reading the property
+	 * @throws MissingPropertyException on SP format problems reading the property
 	 */
 	protected static int getOrGenerateID(final StartElement element, final Warning warner, final @Nullable Path path,
 										 final IDRegistrar idFactory) throws MissingPropertyException {
@@ -295,7 +294,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param preferred  The preferred name of the parameter
 	 * @param deprecated The deprecated name of the parameter
 	 * @param warner     The Warning instance to use
-	 * @throws SPFormatException if the tag has neither parameter
+	 * @throws MissingPropertyException if the tag has neither parameter
 	 *
 	 * TODO: Accept a default-value parameter and/or a type-conversion parameter
 	 */
@@ -451,7 +450,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param tag          The tag to get the parameter from
 	 * @param parameter    The name of the desired parameter
 	 * @param defaultValue The number to return if the parameter doesn't exist
-	 * @throws SPFormatException if the tag's value is non-numeric or
+	 * @throws MissingPropertyException if the tag's value is non-numeric or
 	 *                           otherwise malformed
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final @Nullable Path path,
@@ -611,7 +610,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element The tag we're working with
 	 * @param warner  The Warning instance to use
 	 * @param players The collection of players to refer to
-	 * @throws SPFormatException on SP format problems reading the attribute
+	 * @throws MissingPropertyException on SP format problems reading the attribute
 	 */
 	protected static Player getPlayerOrIndependent(final StartElement element, final @Nullable Path path,
 	                                               final Warning warner, final ILegacyPlayerCollection players)

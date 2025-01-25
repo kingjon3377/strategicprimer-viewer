@@ -246,12 +246,6 @@ public final class WindowList {
 	 *            how to sort: by layer or origin (furthest behind to highest) or origin (first frame activated to most
 	 *            recent).
 	 * @param filtering Which not-obviously-visible frames to include, if any
-	 * @param includeInvisible
-	 *            if this is false then visible Frames will be returned. If this
-	 *            is true then all Frames will be returned, so the next argument
-	 *            is meaningless.
-	 * @param includeIconified
-	 *            if this is true then iconified Frames will be returned.
 	 */
 	public static Frame[] getFrames(final WindowSorting sorting, final Set<WindowFiltering> filtering) {
 		final List<WeakReference<Window>> list = switch (sorting) {
