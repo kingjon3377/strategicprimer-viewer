@@ -13,6 +13,7 @@ import lovelace.util.LovelaceLogger;
 
 public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
 	private static final Pattern LINEBREAK = Pattern.compile("\\R");
+	public static final String LOG_INITIALIZER = "Executed initializer beginning %s";
 
 	protected AbstractDatabaseWriter(final Class<Item> itemClass, final Class<Context> contextClass) {
 		this.itemClass = itemClass;
@@ -40,7 +41,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 			sql.transaction().accept(db -> {
 				for (final Query initializer : getInitializers()) {
 					initializer.execute(db);
-					LovelaceLogger.debug("Executed initializer beginning %s",
+					LovelaceLogger.debug(LOG_INITIALIZER,
 							LINEBREAK.split(initializer.rawSql())[0]);
 				}
 			});

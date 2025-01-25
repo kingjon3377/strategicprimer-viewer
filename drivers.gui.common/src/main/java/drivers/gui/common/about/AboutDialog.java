@@ -35,17 +35,20 @@ public final class AboutDialog extends SPDialog {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private static final Pattern APP_NAME = Pattern.compile("App Name Here");
+	private static final String DIALOG_TITLE = "About";
+	public static final String APP_SUITE_TITLE = "Strategic Primer Assistive Programs";
+	public static final String CLOSE_BUTTON = "Close";
 
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
-		super(parentComponent instanceof final Frame f ? f : null, "About");
+		super(parentComponent instanceof final Frame f ? f : null, DIALOG_TITLE);
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final String raw = FileContentsReader.streamFileContents(AboutDialog.class, Paths.get("about.html"))
 				.collect(Collectors.joining());
 		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
-				.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
+				.filter(Predicate.not(String::isEmpty)).orElse(APP_SUITE_TITLE));
 		final JScrollPane scrollPane = createMainPanel(html);
 		add(scrollPane, BorderLayout.CENTER);
-		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", this::dispose)),
+		add(BoxPanel.centeredHorizontalBox(new ListenedButton(CLOSE_BUTTON, this::dispose)),
 				BorderLayout.PAGE_END);
 		pack();
 	}

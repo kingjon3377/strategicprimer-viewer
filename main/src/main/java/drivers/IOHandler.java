@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import javax.xml.stream.XMLStreamException;
 
+import drivers.gui.common.about.AboutDialog;
 import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
@@ -220,7 +221,7 @@ public final class IOHandler implements ActionListener {
 				.findFirst().orElse(null);
 		final String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)
 				.map(ISPWindow.class::cast).map(ISPWindow::getWindowName)
-				.orElse("Strategic Primer Assistive Programs");
+				.orElse(AboutDialog.APP_SUITE_TITLE);
 
 		LovelaceLogger.trace("Menu item invoked: %s", event.getActionCommand());
 
@@ -324,7 +325,7 @@ public final class IOHandler implements ActionListener {
 					if (Objects.isNull(vdf)) {
 						JOptionPane.showMessageDialog(null,
 								"Either the map viewer was not included in this package, or loading it failed.",
-								"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+                                AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
 						LovelaceLogger.error(
 								"Map viewer was not included in this assembly, or service discovery failed");
 					} else {
@@ -337,7 +338,7 @@ public final class IOHandler implements ActionListener {
 										"Error thrown from viewer driver");
 								JOptionPane.showMessageDialog(null,
 										"Error starting map viewer:%n%s".formatted(except.getMessage()),
-										"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+                                        AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
 							}
 						});
 					}
