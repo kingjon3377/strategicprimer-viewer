@@ -1,6 +1,7 @@
 package drivers.exploration.old;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.util.stream.Stream;
@@ -67,16 +68,18 @@ public final class TableDebugger implements UtilityDriver {
 		}
 	}
 
+	private static final Path TABLES_PATH = Paths.get("tables");
+
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length > 0) {
 			throw new IncorrectUsageException(TableDebuggerFactory.USAGE);
-		} else if (!Files.isDirectory(Paths.get("tables"))) {
+		} else if (!Files.isDirectory(TABLES_PATH)) {
 			throw new DriverFailedException(new IllegalStateException("Table debugger requires a tables directory"));
 		}
 		final ExplorationRunner runner = new ExplorationRunner();
 		try {
-			runner.loadAllTables(Paths.get("tables"));
+			runner.loadAllTables(TABLES_PATH);
 			runner.verboseGlobalRecursiveCheck(ostream);
 			final EncounterTable mainTable = runner.getTable("main");
 			debugSingleTable(runner, "", "", mainTable, "main", Collections.emptyList());
