@@ -45,7 +45,7 @@ import java.math.RoundingMode;
  * grove sizes, and forest acreages.
  */
 public final class PopulationGeneratingCLI implements CLIDriver {
-	private static final int ACRES_PER_TILE = 160;
+	private static final BigDecimal ACRES_PER_TILE = BigDecimal.valueOf(160);
 
 	/**
 	 * Whether the given number is positive.
@@ -244,8 +244,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	}
 
 	private static BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
-		return new BigDecimal(ACRES_PER_TILE).subtract(reserved)
-				.divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
+		return ACRES_PER_TILE.subtract(reserved).divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
 	}
 
 	private static Number acreageExtent(final HasExtent<?> item) {
@@ -271,7 +270,6 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final BigDecimal fifteen = new BigDecimal(15);
 		final BigDecimal forty = new BigDecimal(40);
 		final BigDecimal eighty = new BigDecimal(80);
-		final BigDecimal oneSixty = new BigDecimal(ACRES_PER_TILE);
 		final BigDecimal fiveHundred = new BigDecimal(500);
 		final BigDecimal two = BigDecimal.TWO;
 		final BigDecimal four = new BigDecimal(4);
@@ -312,7 +310,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 					.map(heCast).map(HasExtent::getAcres)
 					.filter(n -> n.doubleValue() > 0.0).map(Decimalize::decimalize)
 					.reduce(reserved, BigDecimal::add);
-			final BigDecimal fullTile = oneSixty;
+			final BigDecimal fullTile = ACRES_PER_TILE;
 			if (reserved.compareTo(fullTile) >= 0) {
 				cli.println("The whole tile or more was reserved, despite forests, at " + location);
 				continue;
