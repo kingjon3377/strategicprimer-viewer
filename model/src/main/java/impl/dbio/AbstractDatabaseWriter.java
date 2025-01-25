@@ -54,7 +54,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 	 * @param message the message to give the exception to throw if the object is not any of the specified types
 	 * @param types a list of types that the object is allowed to be
 	 */
-	protected void assertPossibleType(final Object obj, final String message, final Class<?>... types) {
+	protected final void assertPossibleType(final Object obj, final String message, final Class<?>... types) {
 		for (final Class<?> type : types) {
 			if (type.isInstance(obj)) {
 				return;

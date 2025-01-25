@@ -560,7 +560,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Unselect the currently selected unit.
 	 */
 	@Override
-	public void clearSelectedUnit() {
+	public final void clearSelectedUnit() {
 		LovelaceLogger.debug("Unsetting currently-selected-unit property");
 		selection = Pair.with(Point.INVALID_POINT, null);
 	}

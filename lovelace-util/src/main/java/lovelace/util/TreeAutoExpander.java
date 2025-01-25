@@ -29,7 +29,7 @@ public class TreeAutoExpander implements TreeModelListener {
 		}
 	}
 	@Override
-	public void treeStructureChanged(final TreeModelEvent event) {
+	public final void treeStructureChanged(final TreeModelEvent event) {
 		Optional.ofNullable(event.getTreePath())
 				.map(TreePath::getParentPath)
 				.ifPresentOrElse(expandPath, this::expandAllRows);
@@ -40,13 +40,13 @@ public class TreeAutoExpander implements TreeModelListener {
 	}
 
 	@Override
-	public void treeNodesInserted(final TreeModelEvent event) {
+	public final void treeNodesInserted(final TreeModelEvent event) {
 		expandPath.accept(event.getTreePath());
 		expandPath.accept(event.getTreePath().getParentPath());
 	}
 
 	@Override
-	public void treeNodesChanged(final TreeModelEvent event) {
+	public final void treeNodesChanged(final TreeModelEvent event) {
 		expandPath.accept(event.getTreePath().getParentPath());
 	}
 }
