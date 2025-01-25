@@ -1,9 +1,11 @@
 package legacy.map.fixtures.mobile;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NavigableMap;
+import java.util.OptionalInt;
 import java.util.TreeMap;
 
 import lovelace.util.ArraySet;
@@ -14,6 +16,7 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.UnitMember;
 
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -392,58 +395,55 @@ public final class Unit implements IMutableUnit {
 				IntStream.of(25 - members.size())).min().orElse(25 - members.size());
 	}
 
-	@SuppressWarnings("ChainOfInstanceofChecks")
+	// FIXME: Extract this to a more general place, probably lovelace-util
+	private record TestingComparator<T>(Class<T> cls, Comparator<? super T> wrapped)
+			implements Comparator<T>, Serializable {
+		@SuppressWarnings("QuestionableName")
+		@Override
+		public int compare(final T one, final T two) {
+			return wrapped.compare(one, two);
+		}
+
+		@SuppressWarnings("QuestionableName")
+		public OptionalInt maybeCompare(final Object one, final Object two) {
+			if (cls.isInstance(one) && cls.isInstance(two)) {
+				return OptionalInt.of(compare(cls.cast(one), cls.cast(two)));
+			} else {
+				return OptionalInt.empty();
+			}
+		}
+	}
+
+	@SuppressWarnings({"MethodWithMultipleReturnPoints", "QuestionableName"})
+	private static OptionalInt simpleComparison(final Object one, final Object two,
+	                                            final TestingComparator<?>... comparators) {
+		for (final TestingComparator<?> comparator : comparators) {
+			final OptionalInt result = comparator.maybeCompare(one, two);
+			if (result.isPresent()) {
+				return result;
+			} else if (comparator.cls().isInstance(one)) {
+				return OptionalInt.of(-1);
+			} else if (comparator.cls().isInstance(two)) {
+				return OptionalInt.of(1);
+			}
+		}
+		return OptionalInt.empty();
+	}
+
+	@SuppressWarnings("QuestionableName")
 	private static int memberComparison(final UnitMember one, final UnitMember two) {
-		if (one instanceof final IWorker first) {
-			if (two instanceof final IWorker second) {
-				return first.getName().compareTo(second.getName());
-			} else {
-				return -1;
-			}
-		} else if (two instanceof IWorker) {
-			return 1;
-		} else if (one instanceof Immortal) {
-			if (two instanceof Immortal) {
-				return one.toString().compareTo(two.toString());
-			} else {
-				return -1;
-			}
-		} else if (two instanceof Immortal) {
-			return 1;
-		} else if (one instanceof final Animal first) {
-			if (two instanceof final Animal second) {
-				return Comparator.comparing(Animal::getKind)
-						.thenComparing(Comparator.comparingInt(Animal::getPopulation)
-								.reversed())
-						.compare(first, second);
-			} else {
-				return -1;
-			}
-		} else if (two instanceof Animal) {
-			return 1;
-		} else if (one instanceof final Implement first) {
-			if (two instanceof final Implement second) {
-				return Comparator.comparing(Implement::getKind)
-						.thenComparing(Comparator.comparingInt(Implement::getPopulation)
-								.reversed())
-						.compare(first, second);
-			} else {
-				return -1;
-			}
-		} else if (two instanceof Implement) {
-			return 1;
-		} else if (one instanceof final IResourcePile first) {
-			if (two instanceof final IResourcePile second) {
-				return Comparator.comparing(IResourcePile::getKind)
+		final OptionalInt initialComparison = simpleComparison(one, two,
+				new TestingComparator<>(IWorker.class, Comparator.comparing(IWorker::getName)),
+				new TestingComparator<>(Immortal.class, Comparator.comparing(Object::toString)),
+				new TestingComparator<>(Animal.class, Comparator.comparing(Animal::getKind)
+						.thenComparing(Comparator.comparingInt(Animal::getPopulation).reversed())),
+				new TestingComparator<>(Implement.class, Comparator.comparing(Implement::getKind)
+						.thenComparing(Comparator.comparingInt(Implement::getPopulation).reversed())),
+				new TestingComparator<>(IResourcePile.class, Comparator.comparing(IResourcePile::getKind)
 						.thenComparing(IResourcePile::getContents)
-						.thenComparing(Comparator.comparing(IResourcePile::getQuantity)
-								.reversed())
-						.compare(first, second);
-			} else {
-				return -1;
-			}
-		} else if (two instanceof IResourcePile) {
-			return 1;
+						.thenComparing(Comparator.comparing(IResourcePile::getQuantity).reversed())));
+		if (initialComparison.isPresent()) {
+			return initialComparison.getAsInt();
 		} else {
 			LovelaceLogger.error("Unhandled unit-member in sorting");
 			return one.toString().compareTo(two.toString());
