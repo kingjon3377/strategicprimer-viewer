@@ -121,8 +121,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			.map(f -> (FixtureIterable<?>) f)
 			.flatMap(FixtureIterable::stream)
 			.filter(IResourcePile.class::isInstance)
-			.<IResourcePile>map(IResourcePile.class::cast)
-			.map(x -> (IResourcePile) x)
+			.map(IResourcePile.class::cast)
+			.map(x -> x)
 			.filter(r -> "food".equals(r.getKind()))
 			.filter(r -> "pounds".equals(r.getQuantity().units()))
 			.filter(r -> r.getCreated() <= turn) // TODO: add sorting in this version
