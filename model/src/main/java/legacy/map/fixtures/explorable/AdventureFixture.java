@@ -3,10 +3,14 @@ package legacy.map.fixtures.explorable;
 import legacy.map.SubsettableFixture;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import legacy.map.IFixture;
 import legacy.map.HasMutableOwner;
 import legacy.map.Player;
+import org.javatuples.Pair;
+
+import static lovelace.util.MatchingValue.matchingValue;
 
 /**
  * A Fixture representing an adventure hook. Satisfies Subsettable because
@@ -181,25 +185,23 @@ public final class AdventureFixture implements ExplorableFixture, HasMutableOwne
 		return 30;
 	}
 
+	private static final Function<IFixture, AdventureFixture> cast = AdventureFixture.class::cast;
+
+	private boolean ownerSubset(AdventureFixture fix) {
+		return fix.owner().isIndependent() || fix.owner().getPlayerId() == owner.getPlayerId();
+	}
+
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof final AdventureFixture af) {
 				final Consumer<String> localReport =
 						(str) -> report.accept("In adventure with ID #%d: %s".formatted(id, str));
-				if (!briefDescription.equals(af.getBriefDescription())) {
-					localReport.accept("Brief descriptions differ");
-					return false;
-				} else if (!fullDescription.equals(af.getFullDescription())) {
-					localReport.accept("Full descriptions differ");
-					return false;
-				} else if (owner.getPlayerId() != af.owner().getPlayerId() &&
-						af.owner().isIndependent()) {
-					localReport.accept("Owners differ");
-					return false;
-				} else {
-					return true;
-				}
+				return passesAllPredicates(localReport, af, Pair.with("Brief descriptions differ", matchingValue(this,
+								cast.andThen(AdventureFixture::getBriefDescription))),
+						Pair.with("Full descriptions differ", matchingValue(this,
+								cast.andThen(AdventureFixture::getFullDescription))),
+						Pair.with("Owners differ", matchingValue(this, cast.andThen(this::ownerSubset))));
 			} else {
 				report.accept("Different kinds of fixtures for ID #" + id);
 				return false;
