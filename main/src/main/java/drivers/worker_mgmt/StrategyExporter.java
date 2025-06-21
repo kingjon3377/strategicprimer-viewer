@@ -127,9 +127,9 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			if (member instanceof final IWorker w) {
 				if (StreamSupport.stream(w.spliterator(), false)
 						.mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
-					leveledWorkers.add((IWorker) member);
+					leveledWorkers.add(w);
 				} else {
-					unleveledWorkers.add((IWorker) member);
+					unleveledWorkers.add(w);
 				}
 			} else {
 				nonWorkers.add(member);

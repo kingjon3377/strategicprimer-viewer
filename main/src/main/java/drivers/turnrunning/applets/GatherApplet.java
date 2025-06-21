@@ -114,7 +114,7 @@ import org.jetbrains.annotations.Nullable;
 						if (find instanceof final Shrub s && s.getPopulation() > 0) {
 							switch (cli.inputBooleanInSeries("Reduce shrub population here?")) {
 								case YES -> {
-									reducePopulation(loc, (Shrub) find, "plants", IFixture.CopyBehavior.ZERO);
+									reducePopulation(loc, s, "plants", IFixture.CopyBehavior.ZERO);
 									cli.print(inHours(time));
 									cli.println("remaining.");
 									continue;

@@ -485,10 +485,10 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
-					parseOrders((StartElement) event, path, retval, stream, warner);
+					parseOrders(se, path, retval, stream, warner);
 					continue;
 				} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
-					parseResults((StartElement) event, path, retval, stream, warner);
+					parseResults(se, path, retval, stream, warner);
 					continue;
 				}
 				final Object child = readSPObject(se, path, element.getName(), stream,

@@ -153,7 +153,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				final Optional<FortressMember> item = fort.stream()
 						.filter(Predicate.isEqual(unit)).findAny();
 				if (item.isPresent()) {
-					((IMutableFortress) fixture).removeMember(item.get());
+					fort.removeMember(item.get());
 					return;
 				}
 			}
