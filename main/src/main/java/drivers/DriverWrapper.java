@@ -103,9 +103,9 @@ import lovelace.util.LovelaceLogger;
 		}
 	}
 
-	private static <ModelType extends IDriverModel> ModelDriver createDriver(final ModelDriverFactory<ModelType> factory,
-                                                                             final ICLIHelper cli, final SPOptions options,
-                                                                             final IDriverModel model) {
+	private static <Model extends IDriverModel> ModelDriver createDriver(final ModelDriverFactory<Model> factory,
+	                                                                     final ICLIHelper cli, final SPOptions options,
+	                                                                     final IDriverModel model) {
 		return factory.createDriver(cli, options, factory.createModel(model));
 	}
 

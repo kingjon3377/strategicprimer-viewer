@@ -245,13 +245,13 @@ public final class HuntingModel {
 	 * A helper method for hunting or fishing.
 	 *
 	 * @param point     Whereabouts to search
-	 * @param chosenMap Filter/provider to use to find the animals.
+	 * @param map Filter/provider to use to find the animals.
 	 */
 	private Supplier<Pair<Point, ? extends TileFixture>> chooseFromMap(final Point point,
-	                                                         final Function<Point, Stream<? extends TileFixture>> chosenMap) {
+	                                                         final Function<Point, Stream<? extends TileFixture>> map) {
 		return new ResultSupplier<>(
 				new SurroundingPointIterable(point, dimensions).stream()
-						.flatMap(chooseFromMapImpl(chosenMap)).collect(Collectors.toList()), NOTHING_PROPORTION,
+						.flatMap(chooseFromMapImpl(map)).collect(Collectors.toList()), NOTHING_PROPORTION,
 				Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
 	}
 

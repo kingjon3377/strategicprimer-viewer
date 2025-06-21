@@ -175,18 +175,18 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Implementation of {@link #chooseFromList} and {@link #chooseStringFromList}.
 	 */
-	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
-																		  final String description, final String none,
-																		  final String prompt,
-																		  final ListChoiceBehavior behavior,
-																		  final Function<? super Element, String> func) {
+	private <Item> Pair<Integer, @Nullable Item> chooseFromListImpl(final List<@NonNull ? extends Item> items,
+	                                                                final String description, final String none,
+	                                                                final String prompt,
+	                                                                final ListChoiceBehavior behavior,
+	                                                                final Function<? super Item, String> func) {
 		if (items.isEmpty()) {
 			println(none);
 			return Pair.with(-1, null);
 		}
 		println(description);
 		if (behavior == ListChoiceBehavior.AUTO_CHOOSE_ONLY && items.size() == 1) {
-			final Element first = items.getFirst();
+			final Item first = items.getFirst();
 			printf("Automatically choosing only item, %s.%n", func.apply(first));
 			return Pair.with(0, first);
 		} else {
