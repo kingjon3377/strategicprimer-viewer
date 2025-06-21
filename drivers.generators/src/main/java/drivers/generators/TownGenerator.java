@@ -652,7 +652,7 @@ import static java.util.function.Predicate.not;
 				if (Objects.isNull(stats)) {
 					return;
 				}
-				model.setMapModified(true);
+				model.setMapStatus(ILegacyMap.ModificationStatus.Modified);
 				model.assignTownStats(location, town.getId(), town.getName(), stats);
 			} catch (final MissingTableException except) {
 				LovelaceLogger.error(except, "Missing table file");

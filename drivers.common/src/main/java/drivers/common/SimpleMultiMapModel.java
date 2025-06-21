@@ -84,21 +84,21 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	public final void setCurrentTurn(final int currentTurn) {
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			map.setCurrentTurn(currentTurn);
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
 	@Override
-	public final void setMapModified(final ILegacyMap map, final boolean flag) {
+	public final void setMapStatus(final ILegacyMap map, final ILegacyMap.ModificationStatus flag) {
 		for (final IMutableLegacyMap subMap : getRestrictedAllMaps()) {
 			if (subMap == map) {
-				subMap.setModified(flag);
+				subMap.setStatus(flag);
 				return;
 			}
 		}
 		for (final IMutableLegacyMap subMap : getRestrictedAllMaps()) {
 			if (subMap.equals(map)) {
-				subMap.setModified(flag);
+				subMap.setStatus(flag);
 				return;
 			}
 		}
@@ -106,6 +106,6 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 
 	@Override
 	public final void clearModifiedFlag(final ILegacyMap map) {
-		setMapModified(map, false);
+		setMapStatus(map, ILegacyMap.ModificationStatus.Unmodified);
 	}
 }

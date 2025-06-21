@@ -14,6 +14,7 @@ import legacy.idreg.IDFactory;
 import legacy.idreg.IDRegistrar;
 import legacy.map.Direction;
 import legacy.map.HasKind;
+import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.IMutableLegacyPlayerCollection;
 import legacy.map.LegacyMap;
@@ -394,7 +395,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		} else {
 			warner.handle(new MissingPropertyException(mapTag, path, "current_player"));
 		}
-		retval.setModified(false);
+		retval.setStatus(ILegacyMap.ModificationStatus.Unmodified);
 		return retval;
 	}
 

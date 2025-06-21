@@ -8,6 +8,7 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
+import legacy.map.ILegacyMap;
 import lovelace.util.SingletonRandom;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public final class MapPopulatorDriver implements CLIDriver {
 		populate();
 		cli.printf("%d/%d suitable locations were changed%n", changedCount, suitableCount);
 		if (changedCount > 0) {
-			model.setMapModified(true);
+			model.setMapStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 }

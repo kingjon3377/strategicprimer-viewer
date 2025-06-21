@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
@@ -70,7 +71,7 @@ public final class ResourceManagementDriverModel extends SimpleMultiMapModel {
 					LovelaceLogger.warning("Didn't find HQ for %s", mapPlayer);
 				} else {
 					fortress.addMember(resource);
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				}
 			} else {
 				LovelaceLogger.debug("Skipping map because current player isn't independent and doesn't match");

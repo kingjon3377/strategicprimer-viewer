@@ -3,6 +3,7 @@ package drivers.generators;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleDriverModel;
 
+import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.Point;
 import legacy.map.TileFixture;
@@ -20,7 +21,7 @@ public final class PopulatorDriverModel extends SimpleDriverModel implements IPo
 	@Override
 	public void addFixture(final Point location, final TileFixture fixture) {
 		if (getRestrictedMap().addFixture(location, fixture)) {
-			setMapModified(true);
+			setMapStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 }

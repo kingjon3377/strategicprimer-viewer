@@ -108,11 +108,14 @@ public final class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void open(final IMutableLegacyMap map) {
-		if (model.isMapModified()) {
-			SwingUtilities.invokeLater(() -> new AdvancementGUI(cli, options,
-					new WorkerModel(map)).startDriver());
-		} else {
-			model.setMap(map);
+		switch (model.getMapStatus()) {
+			case Modified -> {
+				SwingUtilities.invokeLater(() -> new AdvancementGUI(cli, options,
+						new WorkerModel(map)).startDriver());
+			}
+			case Unmodified -> {
+				model.setMap(map);
+			}
 		}
 	}
 }

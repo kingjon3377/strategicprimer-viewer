@@ -92,11 +92,14 @@ import lovelace.util.LovelaceLogger;
 
 	@Override
 	public void open(final IMutableLegacyMap map) {
-		if (model.isMapModified()) {
-			SwingUtilities.invokeLater(() -> new ExplorationGUI(cli, options,
-					new ExplorationModel(map)).startDriver());
-		} else {
-			model.setMap(map);
+		switch (model.getMapStatus()) {
+			case Modified -> {
+				SwingUtilities.invokeLater(() -> new ExplorationGUI(cli, options,
+						new ExplorationModel(map)).startDriver());
+			}
+			case Unmodified -> {
+				model.setMap(map);
+			}
 		}
 	}
 }

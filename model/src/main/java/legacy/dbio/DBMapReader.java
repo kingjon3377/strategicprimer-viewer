@@ -9,6 +9,7 @@ import io.jenetics.facilejdbc.RowParser;
 import io.jenetics.facilejdbc.Transactional;
 import legacy.map.Direction;
 import legacy.map.IFixture;
+import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.IMutableLegacyPlayerCollection;
 import legacy.map.LegacyMap;
@@ -239,7 +240,7 @@ public final class DBMapReader {
 				}
 			}
 		}
-		retval.setModified(false);
+		retval.setStatus(ILegacyMap.ModificationStatus.Unmodified);
 		LovelaceLogger.debug("Finished adding members to parents");
 		return retval;
 	}

@@ -40,15 +40,12 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 		return getMap().getDimensions();
 	}
 
-	/**
-	 * Whether the map has been changed since it was loaded or last saved.
-	 */
-	default boolean isMapModified() {
-		return getMap().isModified();
+	default ILegacyMap.ModificationStatus getMapStatus() {
+		return getMap().getStatus();
 	}
 
-	default void setMapModified(final boolean mapModified) {
-		getRestrictedMap().setModified(mapModified);
+	default void setMapStatus(final ILegacyMap.ModificationStatus status) {
+		getRestrictedMap().setStatus(status);
 	}
 
 	/**

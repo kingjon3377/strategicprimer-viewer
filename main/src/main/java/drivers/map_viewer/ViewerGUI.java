@@ -223,11 +223,10 @@ public final class ViewerGUI implements ViewerDriver {
 
 	@Override
 	public void open(final IMutableLegacyMap map) {
-		if (model.isMapModified()) {
-			SwingUtilities.invokeLater(() -> new ViewerGUI(new ViewerModel(map),
+		switch (model.getMapStatus()) {
+			case Modified -> SwingUtilities.invokeLater(() -> new ViewerGUI(new ViewerModel(map),
 					options.copy(), cli).startDriver());
-		} else {
-			model.setMap(map);
+			case Unmodified -> model.setMap(map);
 		}
 	}
 }

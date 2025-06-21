@@ -407,7 +407,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 									!getMap().getFixtures(innerPoint)
 											.contains(match)) {
 								submap.removeFixture(innerPoint, match);
-								submap.setModified(true);
+								submap.setStatus(ILegacyMap.ModificationStatus.Modified);
 							}
 						}
 					}
@@ -463,13 +463,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final double retval = base * speed.getMpMultiplier();
 			removeImpl(getRestrictedMap(), point, unit);
 			getRestrictedMap().addFixture(dest, unit);
-			setMapModified(true);
+			setMapStatus(ILegacyMap.ModificationStatus.Modified);
 			for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 				if (doesLocationHaveFixture(subMap, point, unit)) {
 					ensureTerrain(getMap(), subMap, dest);
 					removeImpl(subMap, point, unit);
 					subMap.addFixture(dest, unit);
-					subMap.setModified(true);
+					subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 				}
 			}
 			selection = Pair.with(dest, unit);
@@ -500,7 +500,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 				ensureTerrain(getMap(), subMap, dest);
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			fireMovementCost(1);
 			throw new TraversalImpossibleException();
@@ -650,7 +650,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					for (final IMutableLegacyMap subMap : getRestrictedAllMaps()) {
 						subMap.addFixture(currentPoint, village.copy(subordinate));
 						subordinate = IFixture.CopyBehavior.ZERO;
-						subMap.setModified(true);
+						subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				final ILegacyMap mainMap = getMap();
@@ -739,7 +739,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			for (final IMutableLegacyMap subMap : getRestrictedAllMaps()) {
 				addToMap.accept(subMap, subsequent);
 				subsequent = IFixture.CopyBehavior.ZERO;
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			fireMovementCost(4);
 		}
@@ -753,7 +753,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public final void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
-			indivMap.setModified(true);
+			indivMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -782,15 +782,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 				retval = subMap.addFixture(location, matching.copy(zero)) || retval;
 				// We do *not* use the return value because it returns false if an existing fixture was *replaced*
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 
 			if (matching instanceof CacheFixture) {
 				// TODO: make removeFixture() return Boolean, true if anything was removed
 				getRestrictedMap().removeFixture(location, matching);
 				retval = true;
-				// TODO: Here and elsewhere, don't bother to setModified() if an earlier mutator method already does so
-				getRestrictedMap().setModified(true);
+				// TODO: Here and elsewhere, don't bother to set to 'modified' if an earlier mutator method already does so
+				getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 		return retval;
@@ -804,17 +804,17 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			if (getMap().isMountainous(location) && !subMap.isMountainous(location)) {
 				subMap.setMountainous(location, true);
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			final TileType terrain = getMap().getBaseTerrain(location);
 			if (Objects.nonNull(terrain) &&
 					terrain != subMap.getBaseTerrain(location)) {
 				subMap.setBaseTerrain(location, terrain);
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			if (!getMap().getRivers(location).containsAll(subMap.getRivers(location))) {
 				subMap.addRivers(location, getMap().getRivers(location).toArray(River[]::new));
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			final Map<Direction, Integer> subRoads = subMap.getRoads(location);
 			if (!getMap().getRoads(location).isEmpty()) { // TODO: Just omit this check?
@@ -823,7 +823,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					if (subRoads.getOrDefault(entry.getKey(), -1) < entry.getValue()) {
 						subMap.setRoadLevel(location, entry.getKey(),
 								entry.getValue());
-						subMap.setModified(true);
+						subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 			}
@@ -840,7 +840,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public final void setSubMapTerrain(final Point location, final @Nullable TileType terrain) {
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			subMap.setBaseTerrain(location, terrain);
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -855,7 +855,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			// TODO: Make addRivers() return Boolean if this was a change, and only set modified flag in that case
 			subMap.addRivers(location, actualRivers.toArray(River[]::new));
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -870,7 +870,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			// TODO: Make removeRivers() return Boolean if this was a change, and only set modified flag in that case
 			subMap.removeRivers(location, rivers);
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -885,7 +885,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			// TODO: Make removeFixture() return Boolean if this was a change, and only set modified flag in that case
 			subMap.removeFixture(location, fixture);
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -900,7 +900,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			if (subMap.isMountainous(location) != mountainous) {
 				subMap.setMountainous(location, mountainous);
-				subMap.setModified(true);
+				subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 	}
@@ -936,7 +936,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					matchingNew.isPresent()) {
 				matchingOld.get().removeMember(matchingMember.get());
 				matchingNew.get().addMember(matchingMember.get());
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 	}
@@ -1033,7 +1033,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.findAny();
 			if (matching.isPresent()) {
 				matching.get().addMember(member.copy(IFixture.CopyBehavior.KEEP));
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 	}
@@ -1065,7 +1065,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					if (matching.isPresent()) {
 						any = true;
 						matching.get().setName(newName);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -1089,7 +1089,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					if (matching.isPresent()) {
 						any = true;
 						matching.get().setName(newName);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -1124,7 +1124,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					if (matching.isPresent()) {
 						any = true;
 						matching.get().setKind(newKind);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -1149,7 +1149,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					if (matching.isPresent()) {
 						any = true;
 						matching.get().setKind(newKind);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -1177,7 +1177,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				if (matching.isPresent()) { // FIXME: equals() will really not do here ...
 					unit.removeMember(matching.get());
 					dismissedMembers.add(member);
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					break;
 				}
 			}
@@ -1202,7 +1202,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				if (unit.stream().anyMatch(Predicate.isEqual(existing))) {
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					break;
 				}
 			}
@@ -1232,7 +1232,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					map.addPlayer(newOwner);
 				}
 				matching.get().setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -1255,7 +1255,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.findAny();
 			if (matching.isPresent()) {
 				matching.get().sortMembers();
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}

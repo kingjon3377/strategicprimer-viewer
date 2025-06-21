@@ -80,7 +80,7 @@ public interface IMutableLegacyMap extends ILegacyMap {
 	 *
 	 * FIXME: Notify map metadata listeners when changed
 	 */
-	void setModified(boolean modified);
+	void setStatus(ModificationStatus status);
 
 	/**
 	 * Add a bookmark.

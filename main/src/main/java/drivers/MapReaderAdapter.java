@@ -129,7 +129,7 @@ public final class MapReaderAdapter {
 		} else {
 			try {
 				MapIOHelper.writeMap(mainFile, model.getMap());
-				model.setMapModified(false);
+				model.setMapStatus(ILegacyMap.ModificationStatus.Unmodified);
 			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 						"Malformed XML while writing " + mainFile);

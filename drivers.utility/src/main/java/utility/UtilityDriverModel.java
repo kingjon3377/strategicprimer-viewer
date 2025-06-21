@@ -111,7 +111,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					subordinateMap.getRivers(location).isEmpty()) {
 				subordinateMap.addRivers(location,
 						map.getRivers(location).toArray(River[]::new));
-				subordinateMap.setModified(true);
+				subordinateMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 	}
@@ -237,7 +237,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					map.getFixtures(location),
 					ifApplicable(fix -> map.addFixture(location, fix), TileFixture.class),
 					ifApplicable(fix -> map.removeFixture(location, fix), TileFixture.class),
-					() -> map.setModified(true), handlers));
+					() -> map.setStatus(ILegacyMap.ModificationStatus.Modified), handlers));
 		}
 		return retval;
 	}
@@ -248,7 +248,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	public final void subtractAtPoint(final Point location) {
 		final ILegacyMap map = getMap();
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			final TileType terrain = map.getBaseTerrain(location);
 			final TileType ours = subMap.getBaseTerrain(location);
 			if (Objects.nonNull(terrain) && Objects.nonNull(ours) && terrain == ours) {
@@ -309,10 +309,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						ostream.accept("Unmatched forest in %s: %s".formatted(
 								location, forest));
 						getRestrictedMap().addFixture(location, forest.copy(IFixture.CopyBehavior.KEEP));
-						setMapModified(true);
+						setMapStatus(ILegacyMap.ModificationStatus.Modified);
 					} else {
 						forest.setId(matching.getId());
-						setMapModified(true);
+						setMapStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 
@@ -328,10 +328,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						ostream.accept("Unmatched ground in %s: %s".formatted(
 								location, ground));
 						getRestrictedMap().addFixture(location, ground.copy(IFixture.CopyBehavior.KEEP));
-						setMapModified(true);
+						setMapStatus(ILegacyMap.ModificationStatus.Modified);
 					} else {
 						ground.setId(matching.getId());
-						setMapModified(true);
+						setMapStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 			}
@@ -407,7 +407,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					safeAdd(subMap, currentPlayer, neighbor, first);
 				}
 			}
-			subMap.setModified(true);
+			subMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 }

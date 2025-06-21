@@ -240,11 +240,11 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final IMutableLegacyMap eachMap : getRestrictedAllMaps()) {
 				addUnitAtLocationImpl(unit, location, eachMap);
-				eachMap.setModified(true);
+				eachMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		} else {
 			addUnitAtLocationImpl(unit, location, getRestrictedMap());
-			setMapModified(true);
+			setMapStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -415,7 +415,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				unit.addMember(innerMember);
 			}
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			return true;
 		} else {
@@ -458,7 +458,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				if (Objects.nonNull(matchingMember) && Objects.nonNull(matchingNew)) {
 					matchingOld.removeMember(matchingMember);
 					matchingNew.addMember(matchingMember);
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				}
 			}
 		}
@@ -478,7 +478,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				if (Objects.nonNull(matching)) {
 					any = true;
 					unit.removeMember(matching);
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					break;
 				}
 			}
@@ -510,7 +510,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 	}
@@ -530,7 +530,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					if (matching instanceof final HasMutableName matchNamed) {
 						any = true;
 						matchNamed.setName(newName);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -557,7 +557,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 						// checked in 'isNamed' step in stream.
 						//noinspection CastToIncompatibleInterface
 						((HasMutableName) matching).setName(newName);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -586,7 +586,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					if (matching instanceof final HasMutableKind kinded) {
 						any = true;
 						kinded.setKind(newKind);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -611,7 +611,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					if (Objects.nonNull(matching)) {
 						any = true;
 						matching.setKind(newKind);
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					}
 				}
 				if (!any) {
@@ -637,7 +637,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					// TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					break;
 				}
 			}
@@ -675,7 +675,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					map.addPlayer(newOwner);
 				}
 				matching.setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -695,7 +695,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.sortMembers();
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -724,7 +724,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			if (Objects.nonNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 						.noneMatch(matchingJob)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					matching.addJob(new Job(jobName, 0));
 				}
 				any = true;
@@ -761,13 +761,13 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 						.filter(isMutableJob).map(mjCast)
 						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(job)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					final IMutableJob newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
 				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
 						.noneMatch(Predicate.isEqual(skillName))) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					job.addSkill(new Skill(skillName, 0, 0));
 				}
 				any = true;
@@ -827,7 +827,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					.filter(matchingFields)
 					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 				final IMutableJob job;
 				final IMutableJob temp = StreamSupport.stream(matching.spliterator(), true)
@@ -932,7 +932,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					if (Objects.isNull(matchingSkill)) {
 						LovelaceLogger.warning("No matching skill in matching worker");
 					} else {
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 						any = true;
 						matchingJob.removeSkill(matchingSkill);
 						matchingJob.addSkill(replacement.copy());
@@ -964,7 +964,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setOrders(turn, results);
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -992,7 +992,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 					.findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setResults(turn, results);
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}

@@ -367,11 +367,10 @@ import java.io.FileNotFoundException;
 
 	@Override
 	public void open(final IMutableLegacyMap map) {
-		if (model.isMapModified()) {
-			SwingUtilities.invokeLater(() -> new ResourceAddingGUI(cli, options,
+		switch (model.getMapStatus()) {
+			case Modified -> SwingUtilities.invokeLater(() -> new ResourceAddingGUI(cli, options,
 					new ResourceManagementDriverModel(map)).startDriver());
-		} else {
-			model.setMap(map);
+			case Unmodified -> model.setMap(map);
 		}
 	}
 }

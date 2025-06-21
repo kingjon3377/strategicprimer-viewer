@@ -140,9 +140,23 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	Path getFilename();
 
 	/**
-	 * Whether the map has been modified since it was last saved.
+	 * Possible statuses for the map.
 	 */
-	boolean isModified();
+	enum ModificationStatus {
+		/**
+		 * The map has been modified since it was last saved.
+		 */
+		Modified,
+		/**
+		 * The map has not been modified since it was last saved.
+		 */
+		Unmodified
+	}
+
+	/**
+	 * The modification status of the map.
+	 */
+	ModificationStatus getStatus();
 
 	/**
 	 * A location is empty if it has no terrain, no Ground, no Forest, no

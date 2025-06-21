@@ -89,22 +89,22 @@ public final class LegacyMap implements IMutableLegacyMap {
 	/**
 	 * Whether the map has been modified since it was last saved.
 	 */
-	private boolean modified = false; // FIXME: Make all mutating methods set this
+	private ModificationStatus status = ModificationStatus.Unmodified; // FIXME: Make all mutating methods set this
 
 	/**
 	 * Whether the map has been modified since it was last saved.
 	 */
 	@Override
-	public boolean isModified() {
-		return modified;
+	public ModificationStatus getStatus() {
+		return status;
 	}
 
 	/**
 	 * Set whether the map has been modified since it was last saved.
 	 */
 	@Override
-	public void setModified(final boolean modified) {
-		this.modified = modified;
+	public void setStatus(final ModificationStatus status) {
+		this.status = status;
 	}
 
 	/**
@@ -263,7 +263,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 */
 	@Override
 	public @Nullable TileType setBaseTerrain(final Point key, final @Nullable TileType item) {
-		modified = true; // TODO: Only if this is a change
+		status = ModificationStatus.Modified; // TODO: Only if this is a change
 		final @Nullable TileType retval = getBaseTerrain(key);
 		if (Objects.isNull(item)) {
 			terrain.remove(key);
@@ -283,7 +283,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 
 	@Override
 	public boolean setMountainous(final Point key, final boolean item) {
-		modified = true; // TODO: Only if this is a change
+		status = ModificationStatus.Modified; // TODO: Only if this is a change
 		final boolean retval = isMountainous(key);
 		if (item) {
 			mountains.add(key);
@@ -328,7 +328,9 @@ public final class LegacyMap implements IMutableLegacyMap {
 		}
 		final Map<Direction, Integer> roadsAtPoint = roadsMap.computeIfAbsent(point,
 				_ -> new EnumMap<>(Direction.class));
-		modified = !Objects.equals(quality, roadsAtPoint.get(direction)) || modified;
+		if (!Objects.equals(quality, roadsAtPoint.get(direction))) {
+			status = ModificationStatus.Modified;
+		}
 		roadsAtPoint.put(direction, quality);
 	}
 
@@ -356,7 +358,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	@Override
 	public void setCurrentPlayer(final Player currentPlayer) {
 		if (playerCollection.getCurrentPlayer().getPlayerId() != currentPlayer.getPlayerId()) {
-			modified = true;
+			status = ModificationStatus.Modified;
 			playerCollection.setCurrentPlayer(currentPlayer);
 		}
 	}
@@ -385,13 +387,17 @@ public final class LegacyMap implements IMutableLegacyMap {
 	@Override
 	public void addBookmark(final Point point, final Player player) {
 		final Set<Player> marks = bookmarksImpl.computeIfAbsent(point, _ -> new HashSet<>());
-		modified = marks.add(player) || modified;
+		if (marks.add(player)) {
+			status = ModificationStatus.Modified;
+		}
 	}
 
 	@Override
 	public void removeBookmark(final Point point, final Player player) {
 		final Set<Player> marks = bookmarksImpl.getOrDefault(point, Collections.emptySet());
-		modified = marks.remove(player) || modified;
+		if (marks.remove(player)) {
+			status = ModificationStatus.Modified;
+		}
 		if (marks.isEmpty()) {
 			bookmarksImpl.remove(point);
 		} else {
@@ -404,7 +410,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	 */
 	@Override
 	public void addPlayer(final Player player) {
-		modified = true; // TODO: Only if this is a change
+		status = ModificationStatus.Modified; // TODO: Only if this is a change
 		playerCollection.add(player);
 	}
 
@@ -415,7 +421,9 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void addRivers(final Point location, final River... addedRivers) {
 		if (addedRivers.length > 0) {
 			final Set<River> set = riversMap.computeIfAbsent(location, _ -> EnumSet.noneOf(River.class));
-			modified = set.addAll(Arrays.asList(addedRivers)) || modified;
+			if (set.addAll(Arrays.asList(addedRivers))) {
+				status = ModificationStatus.Modified;
+			}
 		}
 	}
 
@@ -426,7 +434,9 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void removeRivers(final Point location, final River... removedRivers) {
 		final Set<River> set = riversMap.getOrDefault(location, EnumSet.noneOf(River.class));
 		for (final River river : removedRivers) {
-			modified = set.remove(river) || modified;
+			if (set.remove(river)) {
+				status = ModificationStatus.Modified;
+			}
 		}
 		if (set.isEmpty()) {
 			riversMap.remove(location);
@@ -446,7 +456,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 			LovelaceLogger.debug(new Exception("Fake fixture"), "Stack trace for fake fixture in SPMapNG.addFixture()");
 			return false;
 		}
-		modified = true; // TODO: Only if this is a change
+		status = ModificationStatus.Modified; // TODO: Only if this is a change
 		final List<TileFixture> local = fixturesMap.computeIfAbsent(location, _ -> new ArrayList<>());
 		final Optional<TileFixture> existing = local.stream()
 				.filter(f -> f.getId() == fixture.getId()).findAny();
@@ -484,7 +494,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	public void removeFixture(final Point location, final TileFixture fixture) {
 		final List<TileFixture> local = fixturesMap.getOrDefault(location, Collections.emptyList());
 		if (local.contains(fixture)) {
-			modified = true;
+			status = ModificationStatus.Modified;
 			local.remove(fixture);
 			if (local.isEmpty()) {
 				fixturesMap.remove(location);
@@ -834,7 +844,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 
 	@Override
 	public void replace(final Point location, final TileFixture original, final TileFixture replacement) {
-		modified = true; // TODO: Only if this is a change
+		status = ModificationStatus.Modified; // TODO: Only if this is a change
 		if (getFixtures(location).contains(replacement) && !original.equals(replacement)) {
 			removeFixture(location, original);
 		} else {

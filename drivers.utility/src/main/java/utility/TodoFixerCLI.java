@@ -356,7 +356,7 @@ public final class TodoFixerCLI implements CLIDriver {
 					throw new DriverFailedException(except,
 							"Missing data file");
 				}
-				model.setMapModified(map, true);
+				model.setMapStatus(map, ILegacyMap.ModificationStatus.Modified);
 			}
 			model.getMap().getLocations().forEach(model::copyRiversAt);
 		} else {
@@ -370,7 +370,7 @@ public final class TodoFixerCLI implements CLIDriver {
 				throw new DriverFailedException(except,
 						"Missing data file");
 			}
-			model.setMapModified(true);
+			model.setMapStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 }

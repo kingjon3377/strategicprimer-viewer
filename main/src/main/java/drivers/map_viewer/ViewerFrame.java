@@ -155,10 +155,9 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	// freezing the UI, but it still can look like nothing's happened.
 	@Override
 	public void acceptDroppedFile(final Path file) {
-		if (mapModel.isMapModified()) {
-			new Thread(() -> acceptDroppedFileImpl(file)).start();
-		} else {
-			new Thread(() -> alternateAcceptDroppedFile(file)).start();
+		switch (mapModel.getMapStatus()) {
+			case Modified -> new Thread(() -> acceptDroppedFileImpl(file)).start();
+			case Unmodified -> new Thread(() -> alternateAcceptDroppedFile(file)).start();
 		}
 	}
 

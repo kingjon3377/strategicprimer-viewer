@@ -69,7 +69,7 @@ public interface IMultiMapModel extends IDriverModel {
 	 * @deprecated Modification to the map should ideally only come through model methods
 	 */
 	@Deprecated
-	void setMapModified(ILegacyMap map, boolean flag);
+	void setMapStatus(ILegacyMap map, ILegacyMap.ModificationStatus flag);
 
 	/**
 	 * Clear the modified flag on the given map. (For the code that saves the map to file.)

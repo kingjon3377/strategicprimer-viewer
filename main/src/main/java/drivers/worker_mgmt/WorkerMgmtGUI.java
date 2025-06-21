@@ -113,8 +113,8 @@ public final class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void open(final IMutableLegacyMap map) {
-		if (model.isMapModified()) {
-			SwingUtilities.invokeLater(() -> {
+		switch (model.getMapStatus()) {
+			case Modified -> SwingUtilities.invokeLater(() -> {
 				try {
 					new WorkerMgmtGUI(cli, options, new WorkerModel(map))
 							.startDriver();
@@ -125,8 +125,7 @@ public final class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 					LovelaceLogger.error(except, "Failed to open new window");
 				}
 			});
-		} else {
-			model.setMap(map);
+			case Unmodified -> model.setMap(map);
 		}
 	}
 }

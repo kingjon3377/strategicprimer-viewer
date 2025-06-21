@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import legacy.map.ILegacyMap;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -391,7 +392,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void setMountainous(final Point location, final boolean mountainous) {
 		getRestrictedMap().setMountainous(location, mountainous);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -400,7 +401,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void addFixture(final Point location, final TileFixture fixture) {
 		getRestrictedMap().addFixture(location, fixture);
-		setMapModified(true); // TODO: If addFixture() returns Boolean, only set this flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -412,7 +413,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition).toList()) {
 			getRestrictedMap().removeFixture(location, fixture);
 		}
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -421,7 +422,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void addBookmark(final Point location) {
 		getRestrictedMap().addBookmark(location);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -430,7 +431,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void removeBookmark(final Point location) {
 		getRestrictedMap().removeBookmark(location);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -439,7 +440,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void addRiver(final Point location, final River river) {
 		getRestrictedMap().addRivers(location, river);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -448,7 +449,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void removeRiver(final Point location, final River river) {
 		getRestrictedMap().removeRivers(location, river);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -457,7 +458,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	@Override
 	public void setBaseTerrain(final Point location, final @Nullable TileType terrain) {
 		getRestrictedMap().setBaseTerrain(location, terrain);
-		setMapModified(true); // TODO: Only set the flag if this was a change?
+		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
 	/**
@@ -481,7 +482,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		if (Objects.nonNull(matchingOld) && Objects.nonNull(matchingMember) && Objects.nonNull(matchingNew)) {
 			matchingOld.removeMember(matchingMember);
 			matchingNew.addMember(matchingMember);
-			getRestrictedMap().setModified(true);
+			getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -530,7 +531,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 							.map(IMutableFortress.class::cast).toList()) {
 						if (fort.stream().anyMatch(Predicate.isEqual(fixture))) {
 							fort.removeMember(fixture);
-							getRestrictedMap().setModified(true);
+							getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 							LovelaceLogger.trace(
 									"Finished removing matching unit from map");
 							return true;
@@ -559,7 +560,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.findAny().orElse(null);
 		if (Objects.nonNull(matching)) {
 			matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
-			getRestrictedMap().setModified(true);
+			getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -574,7 +575,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 						.findAny().orElse(null);
 				if (matching instanceof final HasMutableName hmn) {
 					hmn.setName(newName);
-					getRestrictedMap().setModified(true);
+					getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 					return true;
 				} else {
 					LovelaceLogger.warning("Unable to find unit to rename");
@@ -599,7 +600,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 					return false;
 				} else {
 					matching.setName(newName);
-					getRestrictedMap().setModified(true);
+					getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 					return true;
 				}
 			}
@@ -622,7 +623,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 						.findAny().orElse(null);
 				if (matching instanceof final HasMutableKind hmk) {
 					hmk.setKind(newKind);
-					getRestrictedMap().setModified(true);
+					getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 					return true;
 				} else {
 					LovelaceLogger.warning("Unable to find unit to change kind");
@@ -649,7 +650,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 					return false;
 				} else {
 					matching.setKind(newKind);
-					getRestrictedMap().setModified(true);
+					getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 					return true;
 				}
 			}
@@ -671,7 +672,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 			if (Objects.nonNull(matching)) {
 				unit.removeMember(matching);
 				dismissedMembers.add(member);
-				getRestrictedMap().setModified(true);
+				getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 				break; // TODO: Why not just return?
 			}
 		}
@@ -691,7 +692,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 			// TODO: look beyond equals() for matching-in-existing?
 			if (unit.stream().anyMatch(Predicate.isEqual(existing))) {
 				unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
-				getRestrictedMap().setModified(true);
+				getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 				return true;
 			}
 		}
@@ -715,7 +716,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				getRestrictedMap().addPlayer(newOwner);
 			}
 			matching.setOwner(getMap().getPlayers().getPlayer(newOwner.getPlayerId()));
-			getRestrictedMap().setModified(true);
+			getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 			return true;
 		}
 		return false;
@@ -730,7 +731,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 				.findAny().orElse(null);
 		if (Objects.nonNull(matching)) {
 			matching.sortMembers();
-			getRestrictedMap().setModified(true);
+			getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 			return true;
 		}
 		return false;

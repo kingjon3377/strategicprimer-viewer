@@ -364,6 +364,6 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 				.map(Shrub::getKind).distinct().forEach(this::generateShrubCounts);
 		generateFieldExtents();
 		generateForestExtents();
-		model.setMapModified(true);
+		model.setMapStatus(ILegacyMap.ModificationStatus.Modified);
 	}
 }

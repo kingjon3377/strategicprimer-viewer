@@ -32,7 +32,7 @@ public final class MapTradeModel extends SimpleMultiMapModel {
 	private void setGlobalModifiedFlag() {
 		if (!globalModifiedFlag) {
 			for (final IMutableLegacyMap second : getRestrictedSubordinateMaps()) {
-				second.setModified(true);
+				second.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 			globalModifiedFlag = true;
 		}

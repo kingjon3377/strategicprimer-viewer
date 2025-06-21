@@ -369,7 +369,7 @@ import java.util.function.Predicate;
 		} else {
 			warner.handle(new MissingPropertyException(mapTag, path, "current_player"));
 		}
-		retval.setModified(false);
+		retval.setStatus(ILegacyMap.ModificationStatus.Unmodified);
 		return retval;
 	}
 

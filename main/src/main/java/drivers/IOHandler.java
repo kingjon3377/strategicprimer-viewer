@@ -75,35 +75,39 @@ public final class IOHandler implements ActionListener {
 	                       final Runnable ifNotCanceled) {
 		final ModelDriver md = (ModelDriver) driver;
 		LovelaceLogger.trace("Checking if we need to save ...");
-		if (md.getModel().isMapModified()) {
-			LovelaceLogger.trace("main map was modified.");
-			final String prompt;
-			if (md instanceof MultiMapGUIDriver) {
-				prompt = "Save changes to main map before %s?";
-			} else {
-				prompt = "Save changes to map before %s?";
-			}
-			final int answer = JOptionPane.showConfirmDialog(window, prompt.formatted(verb),
-					"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-			switch (answer) {
-				case JOptionPane.CANCEL_OPTION -> {
-					LovelaceLogger.trace("User selected 'Cancel'");
-					return;
+		switch (md.getModel().getMapStatus()) {
+			case Modified -> {
+				LovelaceLogger.trace("main map was modified.");
+				final String prompt;
+				if (md instanceof MultiMapGUIDriver) {
+					prompt = "Save changes to main map before %s?";
+				} else {
+					prompt = "Save changes to map before %s?";
 				}
-				case JOptionPane.YES_OPTION -> {
-					LovelaceLogger.trace("User selected 'Yes'; invoking 'Save' menu ...");
-					actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST, "save"));
-					LovelaceLogger.trace("Finished saving main map");
+				final int answer = JOptionPane.showConfirmDialog(window, prompt.formatted(verb),
+						"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				switch (answer) {
+					case JOptionPane.CANCEL_OPTION -> {
+						LovelaceLogger.trace("User selected 'Cancel'");
+						return;
+					}
+					case JOptionPane.YES_OPTION -> {
+						LovelaceLogger.trace("User selected 'Yes'; invoking 'Save' menu ...");
+						actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST, "save"));
+						LovelaceLogger.trace("Finished saving main map");
+					}
+					default -> LovelaceLogger.trace("User said not to save main map");
 				}
-				default -> LovelaceLogger.trace("User said not to save main map");
 			}
-		} else {
-			LovelaceLogger.trace("main map was not modified");
+			case Unmodified -> {
+				LovelaceLogger.trace("main map was not modified");
+			}
 		}
 
 		if (md instanceof final MultiMapGUIDriver mmgd && mmgd.getModel().streamSubordinateMaps()
-				.anyMatch(ILegacyMap::isModified)) {
+				.map(ILegacyMap::getStatus)
+				.anyMatch(ILegacyMap.ModificationStatus.Modified::equals)) {
 			LovelaceLogger.trace("Subordinate map(s) modified.");
 			final int answer = JOptionPane.showConfirmDialog(window,
 					"Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?",
@@ -245,7 +249,7 @@ public final class IOHandler implements ActionListener {
 					} else {
 						try {
 							MapIOHelper.writeMap(givenFile, md.getModel().getMap());
-							md.getModel().setMapModified(false);
+							md.getModel().setMapStatus(ILegacyMap.ModificationStatus.Modified);
 						} catch (final IOException | XMLStreamException except) {
 							handleError(except, givenFile.toString(), source, errorTitle,
 									"writing to");
@@ -262,7 +266,7 @@ public final class IOHandler implements ActionListener {
 						try {
 							MapIOHelper.writeMap(path, md.getModel().getMap());
 							md.getModel().setMapFilename(path);
-							md.getModel().setMapModified(false);
+							md.getModel().setMapStatus(ILegacyMap.ModificationStatus.Modified);
 						} catch (final IOException | XMLStreamException except) {
 							handleError(except, path.toString(), source,
 									errorTitle, "writing to");

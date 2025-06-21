@@ -252,11 +252,11 @@ public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 		if (model.getSubordinateMaps().iterator().hasNext()) {
 			for (final ILegacyMap map : model.getAllMaps()) {
 				removeDuplicateFixtures(map);
-				model.setMapModified(map, true);
+				model.setMapStatus(map, ILegacyMap.ModificationStatus.Modified);
 			}
 		} else {
 			removeDuplicateFixtures(model.getMap());
-			model.setMapModified(true);
+			model.setMapStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 }

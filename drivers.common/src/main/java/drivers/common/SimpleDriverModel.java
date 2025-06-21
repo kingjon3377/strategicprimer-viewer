@@ -54,13 +54,13 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	@Override
-	public final boolean isMapModified() {
-		return mainMap.isModified();
+	public final ILegacyMap.ModificationStatus getMapStatus() {
+		return mainMap.getStatus();
 	}
 
 	@Override
-	public final void setMapModified(final boolean mapModified) {
-		mainMap.setModified(mapModified);
+	public final void setMapStatus(final ILegacyMap.ModificationStatus status) {
+		mainMap.setStatus(status);
 		for (final MapChangeListener listener : mcListeners) {
 			listener.mapMetadataChanged();
 		}
@@ -146,7 +146,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public void setCurrentTurn(final int currentTurn) {
 		mainMap.setCurrentTurn(currentTurn);
-		mainMap.setModified(true);
+		mainMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 	}
 
 	@Override

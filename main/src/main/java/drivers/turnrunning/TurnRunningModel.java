@@ -5,6 +5,7 @@ import legacy.map.HasExtent;
 import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
+import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.Player;
 import legacy.map.Point;
@@ -226,7 +227,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			if (Objects.nonNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 						.noneMatch(matchingJob)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					matching.addJob(new Job(jobName, 0));
 				}
 				any = true;
@@ -266,13 +267,13 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.filter(isMutableJob).map(mutableJobCast)
 						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(job)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					final IMutableJob newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
 				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
 						.noneMatch(Predicate.isEqual(skillName))) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					job.addSkill(new Skill(skillName, 0, 0));
 				}
 				any = true;
@@ -363,7 +364,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isWorker).map(workerCast)
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 				final IMutableJob job;
 				final IMutableJob temp = StreamSupport.stream(matching.spliterator(), false)
@@ -435,7 +436,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					final ISkill matchingSkill = StreamSupport.stream(matchingJob.spliterator(), true)
 							.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
 					if (Objects.nonNull(matchingSkill)) {
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 						any = true;
 						matchingJob.removeSkill(matchingSkill);
 						matchingJob.addSkill(replacement.copy());
@@ -484,7 +485,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 							item.setQuantity(new LegacyQuantity(qty.subtract(amount),
 									resource.getQuantity().units()));
 						}
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 						any = true;
 						found = true;
 						break;
@@ -529,7 +530,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 							default -> throw new IllegalStateException(
 									"Unexpected fixture container type");
 						}
-						map.setModified(true);
+						map.setStatus(ILegacyMap.ModificationStatus.Modified);
 						any = true;
 						found = true;
 						break;
@@ -562,7 +563,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setOrders(turn, results);
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -588,7 +589,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
 				matching.setResults(turn, results);
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 				any = true;
 			}
 		}
@@ -618,7 +619,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			any = true;
 		}
 		return any;
@@ -645,7 +646,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			any = true;
 		}
 		return any;
@@ -675,7 +676,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			any = true;
 		}
 		return any;
@@ -703,7 +704,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			any = true;
 		}
 		return any;
@@ -737,7 +738,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			if (Objects.nonNull(matching)) {
 				matching.addMember(animal.copy(IFixture.CopyBehavior.KEEP));
 				any = true;
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 		return any;
@@ -781,7 +782,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.filter(isUnit).map(unitCast)
 						.filter(matchingUnit).findAny().orElse(null);
 				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						switch (container) {
 							// TODO: Combine unit and fortress cases once supertype added for removeMember()
@@ -844,7 +845,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 						.filter(isFortress).map(fortressCast)
 						.filter(matchingFort).findAny().orElse(null);
 				if (Objects.nonNull(matching) && Objects.nonNull(destination)) {
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						switch (container) { // TODO: Combine cases when a supertype is added for removeMember()
 							case final IMutableFortress fort -> fort.removeMember(matching);
@@ -892,7 +893,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				continue;
 			}
 			any = true;
-			map.setModified(true);
+			map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			result.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		}
 		return any;

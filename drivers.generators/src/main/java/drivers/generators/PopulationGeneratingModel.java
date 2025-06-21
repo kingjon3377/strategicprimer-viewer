@@ -237,7 +237,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 					((Village) (town.get())).setPopulation(stats);
 				}
 				retval = true;
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
 		return retval;
@@ -288,7 +288,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 				if (localUnit.get().getOrders(turn).isEmpty()) {
 					localUnit.get().setOrders(turn, "TODO: assign");
 				}
-				map.setModified(true);
+				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			} else {
 				LovelaceLogger.debug("Unit not found in %s",
 						Optional.ofNullable(map.getFilename()).map(Object::toString).orElse("unsaved map"));
@@ -335,7 +335,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 	public void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
-			indivMap.setModified(true);
+			indivMap.setStatus(ILegacyMap.ModificationStatus.Modified);
 		}
 	}
 
@@ -382,7 +382,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 						continue;
 					}
 					any = true;
-					map.setModified(true);
+					map.setStatus(ILegacyMap.ModificationStatus.Modified);
 					break;
 				}
 			}
