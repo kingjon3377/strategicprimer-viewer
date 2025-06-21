@@ -103,4 +103,9 @@ public final class AdvancementCLI implements CLIDriver {
 			}
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "AdvancementCLIHelper with map from " + model.getMap().getFilename();
+	}
 }

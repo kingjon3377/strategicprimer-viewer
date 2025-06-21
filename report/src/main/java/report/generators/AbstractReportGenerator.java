@@ -328,6 +328,11 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		public boolean containsValue(final Object obj) {
 			return wrapped.containsValue(obj);
 		}
+
+		@Override
+		public String toString() {
+			return "HeadedMap with header '%s' and %d elements".formatted(header, wrapped.size());
+		}
 	}
 
 	protected static void atPoint(final Consumer<String> ostream, final Point point, final String... addenda) {
