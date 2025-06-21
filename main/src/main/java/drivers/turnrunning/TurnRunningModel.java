@@ -218,7 +218,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
@@ -258,7 +258,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching =
-					map.streamAllFixtures().flatMap(TurnRunningModel::unflattenNonFortresses)
+					map.streamAllFixtures().flatMap(ExplorationModel::unflattenNonFortresses)
 							.filter(isUnit).map(unitCast)
 							.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
 							.filter(matchingFields).findAny().orElse(null);
@@ -359,7 +359,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Predicate<IMutableSkill> matchingSkill = s -> skillName.equals(s.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast).flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
 					.filter(matchingFields).findAny().orElse(null);
@@ -423,7 +423,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		final Function<Object, IMutableSkill> mutableSkillCast = IMutableSkill.class::cast;
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast).flatMap(FixtureIterable::stream)
 					.filter(isWorker).map(workerCast)
 					.filter(matchingFields)
@@ -558,7 +558,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
@@ -584,7 +584,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
@@ -615,7 +615,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
 			map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
@@ -672,7 +672,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
 			map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny()
 					.ifPresent(addLambda);
@@ -732,7 +732,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 				IUnit::getName, IUnit::getId);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = map.streamAllFixtures()
-					.flatMap(TurnRunningModel::unflattenNonFortresses)
+					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(isUnit).map(unitCast)
 					.filter(matchingFields).findAny().orElse(null);
 			if (Objects.nonNull(matching)) {
