@@ -46,7 +46,8 @@ import java.nio.file.Path;
 
 	public static Portal readPortal(final StartElement element, final @Nullable Path path, final QName parent,
 									final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-									final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+									final Warning warner, final IDRegistrar idFactory)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "portal");
 		expectAttributes(element, path, warner, "row", "column", "world", "id", "image");
 		final Point location = new Point(getIntegerAttribute(element, path, "row"),

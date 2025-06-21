@@ -37,7 +37,8 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Wrapper around {@code imageUpdate}, which is overloaded, so we can pass a method reference instead of "this"
 	 */
-	private boolean imageUpdateWrapper(final Image img, final int infoFlags, final int x, final int y, final int width, final int height) {
+	private boolean imageUpdateWrapper(final Image img, final int infoFlags, final int x, final int y, final int width,
+	                                   final int height) {
 		return imageUpdate(img, infoFlags, x, y, width, height);
 	}
 

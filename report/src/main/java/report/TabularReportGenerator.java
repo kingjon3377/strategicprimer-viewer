@@ -106,7 +106,8 @@ public final class TabularReportGenerator {
 		}
 	}
 
-	private static @NotNull List<ITableGenerator<?>> getTableGenerators(final ILegacyMap map, @Nullable final Point hq) {
+	private static @NotNull List<ITableGenerator<?>> getTableGenerators(final ILegacyMap map,
+	                                                                    final @Nullable Point hq) {
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
 		final int currentTurn = map.getCurrentTurn();

@@ -80,6 +80,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	}
 
 	/**
+	 * TODO: Take @Nullable droppedFileHandler instead of boolean supportsDroppedFiles?
 	 * @param supportsDroppedFiles Whether this app supports having files dropped on it.
 	 * @param windowName           The name of the window, for use in customizing the About dialog
 	 */

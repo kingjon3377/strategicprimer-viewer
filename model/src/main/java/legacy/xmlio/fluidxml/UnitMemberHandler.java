@@ -96,7 +96,8 @@ import static java.util.function.Predicate.not;
 	}
 
 	private static String readNote(final StartElement element, final @Nullable Path path, final QName parent,
-	                               final Iterable<XMLEvent> stream, final Warning warner) throws UnwantedChildException {
+	                               final Iterable<XMLEvent> stream, final Warning warner)
+			throws UnwantedChildException {
 		requireTag(element, path, parent, "note");
 		expectAttributes(element, path, warner, "player");
 		final StringBuilder retval = new StringBuilder();

@@ -85,7 +85,8 @@ import org.jetbrains.annotations.Nullable;
 				Map.entry("kraken", Kraken::new));
 	}
 
-	private MobileFixture createAnimal(final StartElement element, final @Nullable Path path) throws MissingPropertyException {
+	private MobileFixture createAnimal(final StartElement element, final @Nullable Path path)
+			throws MissingPropertyException {
 		final String tag = element.getName().getLocalPart();
 		final String kind;
 		final boolean tracks;

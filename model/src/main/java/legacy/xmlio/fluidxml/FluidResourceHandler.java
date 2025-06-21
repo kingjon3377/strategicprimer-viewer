@@ -39,7 +39,8 @@ import java.nio.file.Path;
 	public static IMutableResourcePile readResource(final StartElement element, final @Nullable Path path,
 	                                                final QName parent, final Iterable<XMLEvent> stream,
 	                                                final ILegacyPlayerCollection players, final Warning warner,
-	                                                final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+	                                                final IDRegistrar idFactory)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "resource");
 		expectAttributes(element, path, warner, "quantity", "kind", "contents", "unit",
 				"created", "id", "image");
@@ -58,7 +59,8 @@ import java.nio.file.Path;
 
 	public static Implement readImplement(final StartElement element, final @Nullable Path path, final QName parent,
 										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-										  final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+										  final Warning warner, final IDRegistrar idFactory)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "implement");
 		expectAttributes(element, path, warner, "kind", "id", "count", "image");
 		spinUntilEnd(element.getName(), path, stream);
@@ -70,7 +72,8 @@ import java.nio.file.Path;
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CacheFixture readCache(final StartElement element, final @Nullable Path path, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-										 final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+										 final Warning warner, final IDRegistrar idFactory)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "cache");
 		expectAttributes(element, path, warner, "kind", "contents", "id", "image");
 		// We want to transition from arbitrary-String 'contents' to sub-tags. As a first

@@ -60,7 +60,7 @@ public class SPFileChooser extends FileChooser {
 	 *
 	 * TODO: Move functionality into FileChooser somehow?
 	 *
-	 * @param allowMultiple Whether to allow multi-selection.
+	 * @param allowMultiple Whether to allow multi-selection. FIXME: Remove, as this is not used in the code
 	 * @param current       The current directory.
 	 * @param filter        The filter to apply, if any.
 	 */

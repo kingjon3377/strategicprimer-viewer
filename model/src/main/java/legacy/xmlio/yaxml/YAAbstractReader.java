@@ -407,7 +407,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Parse a Point from a tag's properties.
 	 */
-	protected static Point parsePoint(final StartElement element, final @Nullable Path path) throws MissingPropertyException {
+	protected static Point parsePoint(final StartElement element, final @Nullable Path path)
+			throws MissingPropertyException {
 		return new Point(getIntegerParameter(element, path, "row"),
 				getIntegerParameter(element, path, "column"));
 	}

@@ -66,10 +66,13 @@ import query.SmallAnimalModel;
 
 	private Either<HerdModel, ICLIHelper.BooleanResponse> chooseHerdModel(final String animal) {
 		while (true) {
-			final @Nullable HerdModel retval = cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-									Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+			// FIXME: Extract animal-kind-possibilities-to-list to outside the loop
+			final @Nullable HerdModel retval = cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()),
+									Stream.concat(Stream.of(PoultryModel.values()),
+											Stream.of(SmallAnimalModel.values())))
 							.collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
-					"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+					"No animal kinds found", "Kind of animal:",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.nonNull(retval)) {
 				return Either.left(retval);
 			} else {

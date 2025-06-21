@@ -284,7 +284,8 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 					final Either<SimpleApplet, ICLIHelper.BooleanResponse> choice = appletChooser.chooseApplet();
 					final SimpleApplet applet = choice.fromLeft().orElse(null);
 					if (Objects.isNull(applet)) {
-						final ICLIHelper.BooleanResponse condition = choice.fromRight().orElse(ICLIHelper.BooleanResponse.EOF);
+						final ICLIHelper.BooleanResponse condition = choice.fromRight()
+								.orElse(ICLIHelper.BooleanResponse.EOF);
 						if (ICLIHelper.BooleanResponse.NO == condition) { // ambiguous/non-present
 							break;
 						}

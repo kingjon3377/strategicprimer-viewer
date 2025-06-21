@@ -129,7 +129,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 
 		public Object reader(final StartElement element, final @Nullable Path path, final QName parent,
 		                     final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
-		                     final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+		                     final Warning warner, final IDRegistrar idFactory)
+				throws UnwantedChildException, MissingPropertyException {
 			requireTag(element, path, parent, tag);
 			expectAttributes(element, path, warner, "id", "image");
 			spinUntilEnd(element.getName(), path, stream);
@@ -151,7 +152,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 
 		public Object reader(final StartElement element, final @Nullable Path path, final QName parent,
 		                     final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
-		                     final Warning warner, final IDRegistrar idFactory) throws UnwantedChildException, MissingPropertyException {
+		                     final Warning warner, final IDRegistrar idFactory)
+				throws UnwantedChildException, MissingPropertyException {
 			requireTag(element, path, parent, tag);
 			expectAttributes(element, path, warner, "id", "kind", "image");
 			spinUntilEnd(element.getName(), path, stream);
@@ -259,7 +261,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 		}
 		for (final XMLEvent event : stream) {
 			switch (event) {
-				case final StartElement se when isSPStartElement(event) -> parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
+				case final StartElement se when isSPStartElement(event) ->
+						parseTileChild(map, element, path, stream, players, warner, idFactory, loc, se);
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return;
 				}
@@ -442,14 +445,16 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private static void parseOrders(final StartElement element, final @Nullable Path path, final IMutableUnit unit,
-	                                final Iterable<XMLEvent> stream, final Warning warner) throws UnwantedChildException {
+	                                final Iterable<XMLEvent> stream, final Warning warner)
+			throws UnwantedChildException {
 		expectAttributes(element, path, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setOrders(turn, getTextUntil(element.getName(), path, stream));
 	}
 
 	private static void parseResults(final StartElement element, final @Nullable Path path, final IMutableUnit unit,
-	                                 final Iterable<XMLEvent> stream, final Warning warner) throws UnwantedChildException {
+	                                 final Iterable<XMLEvent> stream, final Warning warner)
+			throws UnwantedChildException {
 		expectAttributes(element, path, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setResults(turn, getTextUntil(element.getName(), path, stream));
