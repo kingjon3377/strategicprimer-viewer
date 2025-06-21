@@ -140,6 +140,15 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
 		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
+		}
 	}
 
 	/**
@@ -207,6 +216,15 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		@Serial
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.PointList");
+		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
 		}
 	}
 

@@ -157,6 +157,16 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.WorkerTreeNode");
 		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			// n.b. the runtime creates a shallow copy of all fields, final or not, before we get control
+			return super.clone();
+		}
 	}
 
 	/**
@@ -168,6 +178,15 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 
 		public UnitMemberNode(final UnitMember member) {
 			super(UnitMember.class, member, false);
+		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
 		}
 	}
 
@@ -242,6 +261,15 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.worker_mgmt.WorkerTreeModelAlt.UnitNode");
 		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
+		}
 	}
 
 	/**
@@ -258,6 +286,15 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 			for (int index = 0; index < units.length; index++) {
 				insert(new UnitNode(units[index]), index);
 			}
+		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
 		}
 	}
 
@@ -284,6 +321,15 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 			if (getChildCount() == 0) {
 				LovelaceLogger.warning("No unit kinds in player node for player %s", player);
 			}
+		}
+
+		/**
+		 * @deprecated We don't use cloning.
+		 */
+		@Deprecated
+		@Override
+		public Object clone() {
+			return super.clone();
 		}
 	}
 

@@ -110,6 +110,11 @@ import java.awt.image.BufferedImage;
 						.filter(Component.class::isInstance)
 						.map(Component.class::cast).orElse(null));
 			}
+
+			@Override
+			protected Object clone() throws CloneNotSupportedException {
+				throw new CloneNotSupportedException("No cloning in this project");
+			}
 		});
 		final ComponentListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
 		addComponentListener(mapSizeListener); // TODO:inline

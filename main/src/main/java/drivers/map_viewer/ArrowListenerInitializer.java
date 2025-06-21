@@ -113,6 +113,11 @@ import java.util.Arrays;
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("drivers.map_viewer.ArrowListenerInitializer.DirectionListener");
 		}
+
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("No cloning in this project");
+		}
 	}
 
 	@SuppressWarnings("MagicConstant")
