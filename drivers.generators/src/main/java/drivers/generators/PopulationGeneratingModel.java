@@ -87,7 +87,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Predicate<Animal> sameTalking = a -> a.isTalking() == talking;
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<Animal> animal = map.getFixtures(location).stream()
+			final Optional<Animal> animal = map.streamFixtures(location)
 					.filter(isAnimal).map(animalCast)
 					.filter(sameTalking)
 					.filter(equalKind)
@@ -114,7 +114,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Predicate<Grove> sameKind = g -> kind.equals(g.getKind());
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<Grove> grove = map.getFixtures(location).stream()
+			final Optional<Grove> grove = map.streamFixtures(location)
 					.filter(isGrove).map(groveCast)
 					.filter(sameKind)
 					.findAny(); // TODO: Only match those without an existing population?
@@ -140,7 +140,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Predicate<Shrub> sameKind = s -> kind.equals(s.getKind());
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<Shrub> shrub = map.getFixtures(location).stream()
+			final Optional<Shrub> shrub = map.streamFixtures(location)
 					.filter(isShrub).map(shrubCast)
 					.filter(sameKind)
 					.findAny(); // TODO: Only match without an existing count?
@@ -166,7 +166,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 				Meadow::getCultivation, Meadow::getStatus, Meadow::getId);
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<Meadow> existing = map.getFixtures(location).stream()
+			final Optional<Meadow> existing = map.streamFixtures(location)
 					.filter(isMeadow).map(meadowCast)
 					.filter(matchingProperties)
 					.findAny(); // TODO: only match without an existing extent?
@@ -193,7 +193,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 				Forest::getKind, Forest::isRows, Forest::getId);
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<Forest> existing = map.getFixtures(location).stream()
+			final Optional<Forest> existing = map.streamFixtures(location)
 					.filter(isForest).map(forestCast)
 					.filter(matchingFields)
 					.findAny();
@@ -223,7 +223,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 		final Predicate<ITownFixture> sameName = f -> name.equals(f.getName());
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<ITownFixture> town = map.getFixtures(location).stream()
+			final Optional<ITownFixture> town = map.streamFixtures(location)
 					// TODO: extract IMutableTown interface
 					.filter(f -> f instanceof AbstractTown || f instanceof Village)
 					.map(townCast)

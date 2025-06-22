@@ -117,7 +117,7 @@ import org.jetbrains.annotations.Nullable;
 	private static @Nullable String findAdjacentForest(final ILegacyMap map, final Point location) {
 		final List<Forest> forests =
 				new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
-						.flatMap(l -> map.getFixtures(l).stream())
+						.flatMap(map::streamFixtures)
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.collect(Collectors.toList());
 		Collections.shuffle(forests);

@@ -225,7 +225,7 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 			case final River r -> map.addRivers(currentTile, r);
 			case final TileFixture tf -> {
 				if (tf instanceof final IFortress fort &&
-						map.getFixtures(currentTile).stream()
+						map.streamFixtures(currentTile)
 								.filter(IFortress.class::isInstance)
 								.map(IFortress.class::cast)
 								.anyMatch(f -> f.owner().equals(fort.owner()))) {

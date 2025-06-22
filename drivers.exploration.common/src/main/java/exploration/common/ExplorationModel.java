@@ -131,7 +131,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			description = unit.getShortDescription();
 		}
 		new SurroundingPointIterable(dest, dimensions).stream()
-				.flatMap(point -> map.getFixtures(point).stream().filter(HasOwner.class::isInstance)
+				.flatMap(point -> map.streamFixtures(point).filter(HasOwner.class::isInstance)
 						.map(HasOwner.class::cast).filter(owned -> !owned.owner().isIndependent())
 						.filter(not(matchingValue(unit, HasOwner::owner)))
 						.map(TileFixture.class::cast).map(fix -> Pair.with(point, fix.getShortDescription())))
@@ -389,7 +389,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	private void fixMovedUnits(final Point base) {
 		final BiFunction<ILegacyMap, TileFixture, Iterable<Pair<Point, TileFixture>>> localFind =
 				(mapParam, target) -> mapParam.streamLocations()
-						.flatMap(l -> mapParam.getFixtures(l).stream().map(f -> Pair.with(l, f)))
+						.flatMap(l -> mapParam.streamFixtures(l).map(f -> Pair.with(l, f)))
 						.filter(p -> target.equals(p.getValue1())) // TODO: Filter should come earlier
 						.collect(Collectors.toList());
 		// TODO: Unit vision range
@@ -453,7 +453,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			} else {
 				final Iterable<TileFixture> fixtures = getMap().getFixtures(dest);
 				base = SimpleMovementModel.movementCost(getMap().getBaseTerrain(dest),
-						getMap().getFixtures(dest).stream()
+						getMap().streamFixtures(dest)
 								.anyMatch(Forest.class::isInstance),
 						getMap().isMountainous(dest),
 						SimpleMovementModel.riversSpeedTravel(direction,
@@ -639,7 +639,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final IUnit unit = localSelection.getValue1();
 		if (Objects.nonNull(unit)) {
 			final Player owner = unit.owner();
-			final List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
+			final List<Village> villages = streamAllMaps().flatMap(m -> m.streamFixtures(currentPoint))
 					.filter(Village.class::isInstance)
 					.map(Village.class::cast)
 					.filter(v -> v.owner().isIndependent()).toList();
@@ -661,10 +661,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				for (final Point point : surroundingPoints) {
 					for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 						ensureTerrain(mainMap, subMap, point);
-						final Optional<Forest> subForest = subMap.getFixtures(point)
-								.stream().filter(isForest)
+						final Optional<Forest> subForest = subMap.streamFixtures(point)
+								.filter(isForest)
 								.map(forestCast).findFirst();
-						final Optional<Forest> forest = getMap().getFixtures(point).stream()
+						final Optional<Forest> forest = getMap().streamFixtures(point)
 								.filter(isForest)
 								.map(forestCast).findFirst();
 						if (forest.isPresent() && subForest.isEmpty()) {
@@ -674,7 +674,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 				final Iterable<Pair<Point, TileFixture>> surroundingFixtures =
 						StreamSupport.stream(surroundingPoints.spliterator(), true)
-								.flatMap(point -> mainMap.getFixtures(point).stream()
+								.flatMap(point -> mainMap.streamFixtures(point)
 										.map(fixture -> Pair.with(point, fixture)))
 								.collect(Collectors.toList());
 				final Optional<Pair<Point, TileFixture>> vegetation =
@@ -706,8 +706,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Point currentPoint = selection.getValue0();
 		if (currentPoint.isValid()) {
 			final IMutableLegacyMap mainMap = getRestrictedMap();
-			final List<TileFixture> diggables = mainMap.getFixtures(currentPoint)
-					.stream().filter(ExplorationModel::isDiggable).collect(Collectors.toList());
+			final List<TileFixture> diggables = mainMap.streamFixtures(currentPoint)
+					.filter(ExplorationModel::isDiggable).collect(Collectors.toList());
 			if (diggables.isEmpty()) {
 				return;
 			}
@@ -728,7 +728,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 			}
 			final BiConsumer<IMutableLegacyMap, IFixture.CopyBehavior> addToMap = (map, condition) -> {
-				if (map.getFixtures(currentPoint).stream()
+				if (map.streamFixtures(currentPoint)
 						.anyMatch(f -> areDiggablesEqual(oldFixture, f))) {
 					map.replace(currentPoint, oldFixture, newFixture.copy(condition));
 				} else {
@@ -773,7 +773,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				return false; // Skip it! It'll corrupt the output XML!
 			}
 			case final AnimalTracks tracks -> matching = fixture;
-			default -> matching = getMap().getFixtures(location).stream()
+			default -> matching = getMap().streamFixtures(location)
 					.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
 		if (Objects.isNull(matching)) {
@@ -966,7 +966,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Collection<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<Pair<Point, TileFixture>> pair = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream().map(f -> Pair.with(l, f)))
+					.flatMap(l -> map.streamFixtures(l).map(f -> Pair.with(l, f)))
 					.filter(unitMatching(unit)).findAny();
 			if (pair.isPresent()) {
 				LovelaceLogger.debug("Map has matching unit");
@@ -1000,7 +1000,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				map.removeFixture(location, fixture);
 			} else {
 				boolean any = false;
-				for (final IMutableFortress fort : map.getFixtures(location).stream()
+				for (final IMutableFortress fort : map.streamFixtures(location)
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(fixture::equals)) {
@@ -1269,7 +1269,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		final Predicate<IFortress> matchingPlayer = f -> f.owner().equals(unit.owner());
 		for (final Point location : getMap().getLocations()) {
-			final Optional<IFortress> fortress = getMap().getFixtures(location).stream()
+			final Optional<IFortress> fortress = getMap().streamFixtures(location)
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingPlayer).findAny();
 			if (fortress.isPresent()) {

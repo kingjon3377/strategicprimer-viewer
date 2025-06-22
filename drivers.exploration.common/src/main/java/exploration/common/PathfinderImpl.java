@@ -141,7 +141,7 @@ import java.util.Optional;
 				final int estimate = tentativeDistances.get(SimplePair.of(start, neighbor));
 				final int tentativeDistance = clampAdd(currentDistance,
 						SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
-								map.getFixtures(neighbor).stream().anyMatch(isForest),
+								map.streamFixtures(neighbor).anyMatch(isForest),
 								map.isMountainous(neighbor),
 								SimpleMovementModel.riversSpeedTravel(
 										getDirection(current, neighbor),

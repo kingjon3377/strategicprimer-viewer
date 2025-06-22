@@ -175,7 +175,7 @@ public final class HuntingModel {
 		this.map = map;
 		fishKinds = map.streamLocations()
 				.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
-				.flatMap(l -> map.getFixtures(l).stream())
+				.flatMap(map::streamFixtures)
 				.filter(Animal.class::isInstance)
 				.map(Animal.class::cast)
 				.map(Animal::getKind)
@@ -192,7 +192,7 @@ public final class HuntingModel {
 	 * non-aquatic, at the given location in the map.
 	 */
 	private Stream<Animal> baseAnimals(final Point point) {
-		return map.getFixtures(point).stream().filter(Animal.class::isInstance)
+		return map.streamFixtures(point).filter(Animal.class::isInstance)
 				.map(Animal.class::cast).filter(not(Animal::isTalking));
 	}
 
@@ -216,7 +216,7 @@ public final class HuntingModel {
 	 * sufficient to give the proportion we want for that tile type.
 	 */
 	private Stream<TileFixture> plants(final Point point) {
-		final Collection<TileFixture> retval = map.getFixtures(point).stream()
+		final Collection<TileFixture> retval = map.streamFixtures(point)
 				.filter(f -> f instanceof Grove || f instanceof Meadow || f instanceof Shrub)
 				.collect(Collectors.toList());
 		final double nothingProportion;

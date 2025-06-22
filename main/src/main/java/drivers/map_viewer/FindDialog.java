@@ -202,7 +202,7 @@ import java.util.function.Predicate;
 					model.getMap().getBookmarks().contains(point)) {
 				return true;
 			} else {
-				return model.getMap().getFixtures(point).stream()
+				return model.getMap().streamFixtures(point)
 						.anyMatch(matches(pattern, id, caseSensitivity));
 			}
 		};

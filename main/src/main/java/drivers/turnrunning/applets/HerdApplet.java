@@ -57,7 +57,7 @@ import query.SmallAnimalModel;
 
 	// TODO: Pull up to AbstractTurnApplet for use by other applets?
 	private @Nullable IFortress containingFortress(final IUnit unit) {
-		return model.getMap().getFixtures(model.find(unit)).stream().filter(IFortress.class::isInstance)
+		return model.getMap().streamFixtures(model.find(unit)).filter(IFortress.class::isInstance)
 				.map(IFortress.class::cast).filter(f -> f.owner().equals(unit.owner()))
 				.findAny().orElse(null);
 	}

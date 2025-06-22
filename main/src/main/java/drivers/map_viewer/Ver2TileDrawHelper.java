@@ -265,7 +265,7 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 	 * The drawable fixtures at the given location.
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final ILegacyMap map, final Point location) {
-		return map.getFixtures(location).stream().filter(not(FakeFixture.class::isInstance))
+		return map.streamFixtures(location).filter(not(FakeFixture.class::isInstance))
 				.filter(filter).sorted(this::compareFixtures);
 	}
 

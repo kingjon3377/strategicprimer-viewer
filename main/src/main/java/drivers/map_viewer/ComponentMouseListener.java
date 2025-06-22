@@ -56,7 +56,7 @@ import java.util.function.Consumer;
 			}
 			builder.append(fixture.getShortDescription());
 		};
-		final List<TileFixture> stream = map.getFixtures(point).stream().filter(zof).sorted(comparator).toList();
+		final List<TileFixture> stream = map.streamFixtures(point).filter(zof).sorted(comparator).toList();
 		if (!stream.isEmpty()) {
 			c.accept(stream.getFirst());
 		}

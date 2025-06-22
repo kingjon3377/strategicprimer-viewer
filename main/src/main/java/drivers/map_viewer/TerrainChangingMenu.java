@@ -153,24 +153,24 @@ import legacy.map.fixtures.terrain.Hill;
 		final Point localPoint = point;
 		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 		if (localPoint.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
-			if (model.getMap().getFixtures(localPoint).stream()
+			if (model.getMap().streamFixtures(localPoint)
 					.noneMatch(Hill.class::isInstance)) {
 				model.addFixture(localPoint, new Hill(idf.createID()));
 			} else {
 				model.removeMatchingFixtures(localPoint, Hill.class::isInstance);
 			}
-			hillItem.getModel().setSelected(model.getMap().getFixtures(localPoint)
-					.stream().anyMatch(Hill.class::isInstance));
+			hillItem.getModel().setSelected(model.getMap().streamFixtures(localPoint)
+					.anyMatch(Hill.class::isInstance));
 			scs.fireChanges(null, localPoint);
 		} else if (localPoint.isValid() && Objects.isNull(terrain)) {
-			if (model.getMap().getFixtures(localPoint).stream()
+			if (model.getMap().streamFixtures(localPoint)
 					.noneMatch(Hill.class::isInstance)) {
 				model.addFixture(localPoint, new Hill(idf.createID()));
 			} else {
 				model.removeMatchingFixtures(localPoint, Hill.class::isInstance);
 			}
-			hillItem.getModel().setSelected(model.getMap().getFixtures(localPoint)
-					.stream().anyMatch(Hill.class::isInstance));
+			hillItem.getModel().setSelected(model.getMap().streamFixtures(localPoint)
+					.anyMatch(Hill.class::isInstance));
 			scs.fireChanges(null, localPoint);
 		}
 		model.setInteraction(null);
@@ -327,7 +327,7 @@ import legacy.map.fixtures.terrain.Hill;
 		if (point.isValid() && Objects.nonNull(terrain) && TileType.Ocean != terrain) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
-			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()
+			hillItem.getModel().setSelected(model.getMap().streamFixtures(point)
 					.anyMatch(Hill.class::isInstance));
 			hillItem.setEnabled(true);
 			newForestItem.setEnabled(true);
@@ -339,7 +339,7 @@ import legacy.map.fixtures.terrain.Hill;
 		} else if (point.isValid() && Objects.isNull(terrain)) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
-			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()
+			hillItem.getModel().setSelected(model.getMap().streamFixtures(point)
 					.anyMatch(Hill.class::isInstance));
 			hillItem.setEnabled(true);
 			newForestItem.setEnabled(true);

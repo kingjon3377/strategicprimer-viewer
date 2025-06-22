@@ -506,7 +506,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	public boolean removeUnit(final IUnit unit) {
 		LovelaceLogger.trace("In ViewerModel.removeUnit()");
 		final Pair<Point, IFixture> pair = getMap().streamLocations()
-				.flatMap(l -> getMap().getFixtures(l).stream()
+				.flatMap(l -> getMap().streamFixtures(l)
 						.map(f -> Pair.<Point, IFixture>with(l, f)))
 				.flatMap(ViewerModel::flattenEntries).filter(unitMatching(unit))
 				.findAny().orElse(null);
@@ -526,7 +526,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 					LovelaceLogger.trace("Finished removing matching unit from map");
 					return true;
 				} else {
-					for (final IMutableFortress fort : getMap().getFixtures(location).stream()
+					for (final IMutableFortress fort : getMap().streamFixtures(location)
 							.filter(IMutableFortress.class::isInstance)
 							.map(IMutableFortress.class::cast).toList()) {
 						if (fort.stream().anyMatch(Predicate.isEqual(fixture))) {
@@ -744,7 +744,7 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		final Predicate<HasOwner> matchingOwner = matchingValue(unit, HasOwner::owner);
 		for (final Point location : getMap().getLocations()) {
-			final IFortress fortress = getMap().getFixtures(location).stream()
+			final IFortress fortress = getMap().streamFixtures(location)
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingOwner)
 					.findAny().orElse(null);

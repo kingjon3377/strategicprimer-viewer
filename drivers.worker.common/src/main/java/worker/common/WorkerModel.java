@@ -103,7 +103,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * Add the given unit at the given location in the given map.
 	 */
 	private static void addUnitAtLocationImpl(final IUnit unit, final Point location, final IMutableLegacyMap map) {
-		final IMutableFortress fortress = map.getFixtures(location).stream()
+		final IMutableFortress fortress = map.streamFixtures(location)
 				.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 				.filter(matchingValue(unit, HasOwner::owner)).findAny().orElse(null);
 		if (Objects.isNull(fortress)) {
@@ -255,7 +255,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public void addUnit(final IUnit unit) {
 		Pair<IMutableFortress, Point> temp = null;
 		for (final Pair<Point, IMutableFortress> pair : getMap().streamLocations()
-				.flatMap(l -> getMap().getFixtures(l).stream()
+				.flatMap(l -> getMap().streamFixtures(l)
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast)
 						.filter(f -> f.owner().getPlayerId() ==
@@ -313,7 +313,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				p -> unitMatching(unit).test(p.getValue0(), p.getValue1());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Pair<Point, IFixture> pair = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()
+					.flatMap(l -> map.streamFixtures(l)
 							.map(f -> Pair.with(l, f)))
 					.flatMap(p -> flattenEntries(p.getValue0(), p.getValue1()))
 					.filter(testPair)
@@ -348,7 +348,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				map.removeFixture(location, fixture);
 			} else {
 				boolean any = false;
-				for (final IMutableFortress fort : map.getFixtures(location).stream()
+				for (final IMutableFortress fort : map.streamFixtures(location)
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(Predicate.isEqual(fixture))) {

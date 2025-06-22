@@ -81,7 +81,7 @@ public final class EchoDriver implements UtilityDriver {
 			final Predicate<Object> isGround = Ground.class::isInstance;
 			final Function<Object, Ground> groundCast = Ground.class::cast;
 			for (final Point location : map.getLocations()) {
-				final Forest mainForest = map.getFixtures(location).stream()
+				final Forest mainForest = map.streamFixtures(location)
 						.filter(isForest).map(forestCast)
 						.findFirst().orElse(null);
 				if (Objects.nonNull(mainForest) && mainForest.getId() < 0) {
@@ -89,7 +89,7 @@ public final class EchoDriver implements UtilityDriver {
 							FOREST_ID_SEED + location.row() * columnCount +
 									location.column()));
 				}
-				final Ground mainGround = map.getFixtures(location).stream()
+				final Ground mainGround = map.streamFixtures(location)
 						.filter(isGround).map(groundCast)
 						.findFirst().orElse(null);
 				if (Objects.nonNull(mainGround) && mainGround.getId() < 0) {

@@ -496,7 +496,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 
 		if (file.toString().contains("world_turn")) {
 			for (final Pair<Point, TileFixture> pair : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()
+					.flatMap(l -> map.streamFixtures(l)
 							.map(f -> Pair.with(l, f))).toList()) {
 				final Point location = pair.getValue0();
 				final TileFixture fixture = pair.getValue1();

@@ -325,7 +325,7 @@ import java.util.function.Predicate;
 							final QName top = Objects.requireNonNull(tagStack.peekFirst());
 							final TileFixture child = parseFixture(se, path, top, stream);
 							if (child instanceof final IFortress f &&
-									retval.getFixtures(point).stream()
+									retval.streamFixtures(point)
 											.filter(isFortress)
 											.map(fortressCast)
 											.anyMatch(matchingValue(f, IFortress::owner))) {
@@ -472,7 +472,7 @@ import java.util.function.Predicate;
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, we put the first Ground and Forest
 					// before other fixtures.
-					final Ground ground = obj.getFixtures(loc).stream()
+					final Ground ground = obj.streamFixtures(loc)
 							.filter(isGround).map(groundCast)
 							.findFirst().orElse(null);
 					if (Objects.nonNull(ground)) {
@@ -480,7 +480,7 @@ import java.util.function.Predicate;
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
 					}
-					final Forest forest = obj.getFixtures(loc).stream()
+					final Forest forest = obj.streamFixtures(loc)
 							.filter(isForest).map(forestCast)
 							.findFirst().orElse(null);
 					if (Objects.nonNull(forest)) {
@@ -511,7 +511,7 @@ import java.util.function.Predicate;
 			writeTag(ostream, "elsewhere", tabs + 2);
 			finishParentTag(ostream);
 			for (final TileFixture fixture : obj.streamLocations().filter(not(Point::isValid))
-					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
+					.flatMap(obj::streamFixtures).toList()) {
 				writeChild(ostream, fixture, tabs + 3);
 			}
 			closeTag(ostream, tabs + 2, "elsewhere");

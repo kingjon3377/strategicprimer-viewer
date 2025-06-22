@@ -90,12 +90,17 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	Collection<TileFixture> getFixtures(Point location);
 
 	/**
+	 * Stream the tile-fixtures at the given location.
+	 */
+	Stream<TileFixture> streamFixtures(Point location);
+
+	/**
 	 * A stream of all the tile-fixtures in all the locations in the map.
 	 *
 	 * TODO: Should this be extended to include non-"tile" fixtures inside fortresses and units?
 	 */
 	default Stream<TileFixture> streamAllFixtures() {
-		return streamLocations().flatMap(l -> getFixtures(l).stream());
+		return streamLocations().flatMap(this::streamFixtures);
 	}
 
 	/**

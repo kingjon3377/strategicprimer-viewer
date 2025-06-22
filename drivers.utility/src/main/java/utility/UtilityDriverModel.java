@@ -147,7 +147,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					default -> {
 					}
 				}
-				final List<TileFixture> matching = map.getFixtures(location).stream()
+				final List<TileFixture> matching = map.streamFixtures(location)
 						.filter(noneMatch)
 						.filter(fixture::equalsIgnoringID)
 						.collect(Collectors.toList());
@@ -270,7 +270,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			}
 			final Collection<TileFixture> toRemove = new ArrayList<>();
 			for (final TileFixture fixture : subMap.getFixtures(location)) {
-				if (map.getFixtures(location).stream()
+				if (map.streamFixtures(location)
 						.anyMatch(item -> isSubset(item, fixture))) {
 					toRemove.add(fixture);
 				}
@@ -282,12 +282,12 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static List<Forest> extractForests(final ILegacyMap map, final Point location) {
-		return map.getFixtures(location).stream().filter(Forest.class::isInstance)
+		return map.streamFixtures(location).filter(Forest.class::isInstance)
 				.map(Forest.class::cast).collect(Collectors.toList());
 	}
 
 	private static List<Ground> extractGround(final ILegacyMap map, final Point location) {
-		return map.getFixtures(location).stream().filter(Ground.class::isInstance)
+		return map.streamFixtures(location).filter(Ground.class::isInstance)
 				.map(Ground.class::cast).collect(Collectors.toList());
 	}
 
@@ -345,7 +345,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		};
 		final Predicate<TileFixture> newSubsetOfOld =
 				f -> f instanceof final SubsettableFixture sf && sf.isSubset(fixture, noop);
-		if (map.getFixtures(point).stream().anyMatch(equality.or(newSubsetOfOld))) {
+		if (map.streamFixtures(point).anyMatch(equality.or(newSubsetOfOld))) {
 			return;
 		}
 		final IFixture.CopyBehavior cb;
@@ -361,8 +361,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				f -> f instanceof final SubsettableFixture sf && sf.isSubset(zeroed, noop);
 		final Predicate<TileFixture> oldSubsetOfZeroed =
 				f -> zeroed instanceof final SubsettableFixture sf && sf.isSubset(f, noop);
-		if (map.getFixtures(point).stream().noneMatch(zeroedEquals.or(zeroedSubsetOfOld))) {
-			final Optional<TileFixture> matching = map.getFixtures(point).stream().filter(oldSubsetOfZeroed).findAny();
+		if (map.streamFixtures(point).noneMatch(zeroedEquals.or(zeroedSubsetOfOld))) {
+			final Optional<TileFixture> matching = map.streamFixtures(point).filter(oldSubsetOfZeroed).findAny();
 			if (matching.isPresent()) {
 				map.replace(point, matching.get(), fixture.copy(cb));
 			} else {

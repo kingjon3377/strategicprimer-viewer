@@ -542,7 +542,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 		}
 		final Point hqLoc;
 		final Optional<Point> found = model.getMap().streamLocations()
-				.flatMap(l -> model.getMap().getFixtures(l).stream()
+				.flatMap(l -> model.getMap().streamFixtures(l)
 						.map(f -> Pair.with(l, f)))
 				.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
 				.map(Pair::getValue0).findAny();
@@ -562,7 +562,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 				(dest) -> Pair.with(pather.getTravelDistance(hqLoc, dest).getValue0(),
 						model.getMapDimensions().distance(hqLoc, dest));
 		final List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
-				.flatMap(l -> model.getMap().getFixtures(l).stream()
+				.flatMap(l -> model.getMap().streamFixtures(l)
 						.filter(Village.class::isInstance).map(Village.class::cast)
 						.filter(matchingValue(unit, HasOwner::owner))
 						.filter(filterRecentVillages(unit.owner()))

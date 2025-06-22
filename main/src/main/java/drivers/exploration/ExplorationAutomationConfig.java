@@ -135,7 +135,7 @@ import org.jetbrains.annotations.Nullable;
 		 * Returns true when the given tile matches this condition.
 		 */
 		public boolean matches(final ILegacyMap map, final Point point) {
-			return map.getFixtures(point).stream().anyMatch(this::allConditions);
+			return map.streamFixtures(point).anyMatch(this::allConditions);
 		}
 
 		/**

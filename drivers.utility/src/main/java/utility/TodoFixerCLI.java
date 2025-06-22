@@ -137,7 +137,7 @@ public final class TodoFixerCLI implements CLIDriver {
 			case Steppe:
 				if (map.isMountainous(location)) {
 					return SimpleTerrain.Unforested;
-				} else if (map.getFixtures(location).stream().anyMatch(Forest.class::isInstance)) {
+				} else if (map.streamFixtures(location).anyMatch(Forest.class::isInstance)) {
 					return SimpleTerrain.Forested;
 				} else {
 					return SimpleTerrain.Unforested;
@@ -170,7 +170,7 @@ public final class TodoFixerCLI implements CLIDriver {
 			return "ocean";
 		} else if (map.isMountainous(loc)) {
 			return "mountain";
-		} else if (map.getFixtures(loc).stream().noneMatch(Forest.class::isInstance)) {
+		} else if (map.streamFixtures(loc).noneMatch(Forest.class::isInstance)) {
 			return "plains";
 		} else {
 			return "forest";
@@ -193,7 +193,7 @@ public final class TodoFixerCLI implements CLIDriver {
 	private void fixAllVillages(final ILegacyMap map) throws MissingTableException, IOException {
 		final List<Village> villages = map.streamLocations()
 				.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
-				.flatMap(l -> map.getFixtures(l).stream())
+				.flatMap(l -> map.streamFixtures(l))
 				.filter(Village.class::isInstance).map(Village.class::cast)
 				.filter(v -> LandRaces.LAND_RACES.contains(v.getRace())).toList();
 		if (!villages.isEmpty()) {
@@ -223,7 +223,7 @@ public final class TodoFixerCLI implements CLIDriver {
 
 		final List<Pair<Point, CommunityStats>> brokenTownContents =
 				map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream()
+						.flatMap(l -> map.streamFixtures(l)
 								.filter(ITownFixture.class::isInstance)
 								.map(ITownFixture.class::cast)
 								.map(ITownFixture::getPopulation)
@@ -253,7 +253,7 @@ public final class TodoFixerCLI implements CLIDriver {
 
 		final List<Pair<Point, CommunityStats>> brokenExpertise =
 				map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream()
+						.flatMap(l -> map.streamFixtures(l)
 								.filter(ITownFixture.class::isInstance)
 								.map(ITownFixture.class::cast)
 								.map(ITownFixture::getPopulation)
@@ -336,7 +336,7 @@ public final class TodoFixerCLI implements CLIDriver {
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
 		for (final Point point : map.getLocations()) {
 			final SimpleTerrain terrain = getTerrain(map, point);
-			map.getFixtures(point).stream().filter(isUnit)
+			map.streamFixtures(point).filter(isUnit)
 					.map(unitCast).filter(u -> "TODO".equals(u.getKind()))
 					.forEach(fixture -> fixUnit(fixture, terrain));
 		}

@@ -62,7 +62,7 @@ public final class MapTradeModel extends SimpleMultiMapModel {
 		for (final IMutableLegacyMap second : getRestrictedSubordinateMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				if (condition.test(fixture) && fixture.getId() >= 0 &&
-						second.getFixtures(location).stream().noneMatch(f -> f.getId() == fixture.getId())) {
+						second.streamFixtures(location).noneMatch(f -> f.getId() == fixture.getId())) {
 					second.addFixture(location, fixture.copy(zeroFixtures));
 					setGlobalModifiedFlag();
 				}

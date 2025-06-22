@@ -159,7 +159,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 		for (final Pair<Point, ITownFixture> pair : map.streamLocations()
 				.filter(l -> distance(point, l, map.getDimensions()) <= distance)
 				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
-				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
+				.flatMap(l -> map.streamFixtures(l).filter(ITownFixture.class::isInstance)
 						.map(ITownFixture.class::cast).filter(t -> Objects.nonNull(t.getPopulation()))
 						.map(f -> Pair.with(l, f))).toList()) {
 			final Point loc = pair.getValue0();
@@ -214,9 +214,9 @@ public final class QueryCLI implements ReadOnlyDriver {
 		if (Objects.nonNull(location)) {
 			cli.printf("Terrain is %s%n", Optional.ofNullable(map.getBaseTerrain(location))
 					.map(TileType::toString).orElse("unknown"));
-			final List<Ground> ground = map.getFixtures(location).stream()
+			final List<Ground> ground = map.streamFixtures(location)
 					.filter(Ground.class::isInstance).map(Ground.class::cast).toList();
-			final List<Forest> forests = map.getFixtures(location).stream()
+			final List<Forest> forests = map.streamFixtures(location)
 					.filter(Forest.class::isInstance).map(Forest.class::cast).toList();
 			if (!ground.isEmpty()) {
 				cli.println("Kind(s) of ground (rock) on the tile:");
@@ -270,7 +270,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 		for (final Point location : new SurroundingPointIterable(base,
 				map.getDimensions(), distance).stream().distinct()
 				.sorted(comparator).toList()) { // TODO: can we combine loops?
-			for (final ITownFixture town : map.getFixtures(location).stream()
+			for (final ITownFixture town : map.streamFixtures(location)
 					.filter(ITownFixture.class::isInstance)
 					.map(ITownFixture.class::cast).toList()) {
 				final CommunityStats population = town.getPopulation();

@@ -40,7 +40,7 @@ public final class ExpansionDriver implements CLIDriver {
 	}
 
 	private static Predicate<Point> containsSwornVillage(final ILegacyMap map, final Player currentPlayer) {
-		return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
+		return (point) -> map.streamFixtures(point).filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast).map(HasOwner::owner)
 				.anyMatch(currentPlayer::equals);
 	}

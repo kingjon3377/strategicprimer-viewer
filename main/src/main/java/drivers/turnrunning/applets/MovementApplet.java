@@ -113,10 +113,10 @@ import static lovelace.util.Decimalize.decimalize;
 			final Point oldPosition = model.getSelectedUnitLocation();
 			explorationCLI.moveOneStep();
 			final Point newPosition = model.getSelectedUnitLocation();
-			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
+			final IFortress startingFort = model.getMap().streamFixtures(oldPosition)
 					.filter(isFortress).map(fortressCast)
 					.filter(sameOwner).findAny().orElse(null);
-			if (Objects.nonNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
+			if (Objects.nonNull(startingFort) && model.getMap().streamFixtures(newPosition)
 					.filter(isFortress).map(fortressCast)
 					.noneMatch(sameOwner)) {
 				switch (cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?")) {

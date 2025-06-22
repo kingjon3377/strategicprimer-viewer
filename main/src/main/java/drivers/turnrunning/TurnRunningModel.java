@@ -82,7 +82,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 	public void addToSubMaps(final Point point, final TileFixture fixture, final IFixture.CopyBehavior zero) {
 		final IntPredicate matching = i -> fixture.getId() == i;
 		for (final IMutableLegacyMap map : getRestrictedSubordinateMaps()) {
-			if (map.getFixtures(point).stream().mapToInt(TileFixture::getId)
+			if (map.streamFixtures(point).mapToInt(TileFixture::getId)
 					.noneMatch(matching)) {
 				map.addFixture(point, fixture.copy(zero));
 			}
@@ -104,7 +104,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			final Function<Object, ? extends HasPopulation<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				// unchecked-cast warning is unavoidable unless we take a Class<T> parameter
-				@SuppressWarnings("unchecked") final T matching = (T) map.getFixtures(location).stream()
+				@SuppressWarnings("unchecked") final T matching = (T) map.streamFixtures(location)
 						.filter(isInstance).map(cast)
 						.filter(f -> fixture.isSubset(f, x -> {
 						})) // n.b. can't extract, non-denotable type
@@ -162,7 +162,7 @@ public final class TurnRunningModel extends ExplorationModel implements ITurnRun
 			final Function<Object, ? extends HasExtent<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				// unchecked-cast warning is unavoidable unless we take a Class<T> parameter
-				@SuppressWarnings("unchecked") final T matching = (T) map.getFixtures(location).stream()
+				@SuppressWarnings("unchecked") final T matching = (T) map.streamFixtures(location)
 						.filter(isInstance).map(cast).filter(f -> fixture.isSubset(f, x -> {
 						}))
 						.findAny().orElse(null);

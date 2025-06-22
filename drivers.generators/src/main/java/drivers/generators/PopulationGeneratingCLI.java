@@ -88,7 +88,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	private void generateAnimalPopulations(final boolean talking, final String kind) {
 		// We assume there is at most one population of each kind of animal per tile.
 		final List<Point> locations = map.streamLocations()
-				.filter(l -> map.getFixtures(l).stream()
+				.filter(l -> map.streamFixtures(l)
 						.filter(Animal.class::isInstance).map(Animal.class::cast)
 						.filter(a -> a.isTalking() == talking)
 						.filter(a -> kind.equals(a.getKind()))
@@ -138,7 +138,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	private void generateGroveCounts(final String kind) {
 		// We assume there is at most one grove or orchard of each kind per tile.
 		final List<Point> locations = map.streamLocations()
-				.filter(l -> map.getFixtures(l).stream()
+				.filter(l -> map.streamFixtures(l)
 						.filter(Grove.class::isInstance).map(Grove.class::cast)
 						.filter(g -> kind.equals(g.getKind()))
 						.anyMatch(g -> g.getPopulation() <= 0))
@@ -175,7 +175,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	private void generateShrubCounts(final String kind) {
 		// We assume there is at most one population of each kind of shrub per tile.
 		final List<Point> locations = map.streamLocations()
-				.filter(l -> map.getFixtures(l).stream()
+				.filter(l -> map.streamFixtures(l)
 						.filter(Shrub.class::isInstance).map(Shrub.class::cast)
 						.filter(s -> kind.equals(s.getKind()))
 						.anyMatch(s -> s.getPopulation() <= 0))
@@ -211,7 +211,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	 */
 	private void generateFieldExtents() {
 		final List<Pair<Point, Meadow>> entries = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()
+				.flatMap(l -> map.streamFixtures(l)
 						.filter(Meadow.class::isInstance).map(Meadow.class::cast)
 						.filter(m -> m.getAcres().doubleValue() < 0.0)
 						.map(f -> Pair.with(l, f)))
@@ -230,7 +230,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	 * Whether any of the fixtures on the given tile are forests of the given kind.
 	 */
 	private Predicate<Point> hasForests(final String kind) {
-		return (point) -> map.getFixtures(point).stream().filter(Forest.class::isInstance)
+		return (point) -> map.streamFixtures(point).filter(Forest.class::isInstance)
 				.map(Forest.class::cast).anyMatch(f -> kind.equals(f.getKind()));
 	}
 
@@ -256,7 +256,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 	 */
 	private void generateForestExtents() {
 		final List<Point> locations = map.streamLocations()
-				.filter(l -> map.getFixtures(l).stream()
+				.filter(l -> map.streamFixtures(l)
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.anyMatch(f -> f.getAcres().doubleValue() <= 0.0))
 				.collect(Collectors.toList());
@@ -275,25 +275,25 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final BigDecimal four = BigDecimal.valueOf(4);
 		final BigDecimal five = BigDecimal.valueOf(5);
 		for (final Point location : locations) {
-			final Forest primaryForest = map.getFixtures(location).stream()
+			final Forest primaryForest = map.streamFixtures(location)
 					.filter(isForest).map(forestCast)
 					.findFirst().orElseThrow(
 							() -> new IllegalStateException("Not found despite double-checking"));
 			BigDecimal reserved = BigDecimal.ZERO;
 			if (primaryForest.getAcres().doubleValue() > 0.0) {
 				cli.printf("First forest at %s had acreage set already.%n", location);
-				reserved = map.getFixtures(location).stream()
+				reserved = map.streamFixtures(location)
 						.filter(isForest).map(forestCast)
 						.map(Forest::getAcres).filter(n -> n.doubleValue() > 0.0)
 						.map(Decimalize::decimalize)
 						.reduce(reserved, BigDecimal::add);
 			}
-			final List<Forest> otherForests = map.getFixtures(location).stream()
+			final List<Forest> otherForests = map.streamFixtures(location)
 					.filter(isForest).map(forestCast)
 					.filter(Predicate.not(Predicate.isEqual(primaryForest)))
 					.filter(f -> f.getAcres().doubleValue() <= 0.0).toList();
 			final int adjacentCount = countAdjacentForests(location, primaryForest.getKind());
-			for (final ITownFixture town : map.getFixtures(location).stream()
+			for (final ITownFixture town : map.streamFixtures(location)
 					.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast).toList()) {
 				reserved = reserved.add(switch (town.getTownSize()) {
 					case Small -> fifteen;
@@ -301,12 +301,12 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 					case Large -> eighty;
 				});
 			}
-			reserved = reserved.add(BigDecimal.valueOf(map.getFixtures(location).stream()
+			reserved = reserved.add(BigDecimal.valueOf(map.streamFixtures(location)
 					.filter(isGrove).map(groveCast)
 					.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum())
 					.divide(fiveHundred));
-			reserved = map.getFixtures(location).stream().filter(hasExtent)
-					.filter(f -> !(f instanceof Forest)) // already counted above
+			reserved = map.streamFixtures(location).filter(hasExtent)
+					.filter(f -> !(f instanceof Forest)) // already counted above // TODO: Use not(isForest)
 					.map(heCast).map(HasExtent::getAcres)
 					.filter(n -> n.doubleValue() > 0.0).map(Decimalize::decimalize)
 					.reduce(reserved, BigDecimal::add);

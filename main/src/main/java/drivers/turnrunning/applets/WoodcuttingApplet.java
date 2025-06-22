@@ -164,7 +164,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (treeCount > 7) {
-			final Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
+			final Forest forest = chooseFromList(model.getMap().streamFixtures(loc)
 							.filter(Forest.class::isInstance).map(Forest.class::cast)
 							.collect(Collectors.toList()),
 					"Forests on tile:", "No forests on tile", "Forest being cleared: ",

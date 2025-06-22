@@ -347,6 +347,11 @@ public final class LegacyMap implements IMutableLegacyMap {
 		}
 	}
 
+	@Override
+	public Stream<TileFixture> streamFixtures(Point location) {
+		return fixturesMap.getOrDefault(location, Collections.emptyList()).stream();
+	}
+
 	/**
 	 * The current player.
 	 */

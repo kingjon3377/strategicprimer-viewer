@@ -24,7 +24,7 @@ import java.util.Objects;
 		final TileType terrain = map.getBaseTerrain(location);
 		return Objects.nonNull(terrain) && !map.isMountainous(location) &&
 				TileType.Ocean != terrain &&
-				map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
+				map.streamFixtures(location).noneMatch(Forest.class::isInstance);
 	}
 
 	@SuppressWarnings("MagicNumber")

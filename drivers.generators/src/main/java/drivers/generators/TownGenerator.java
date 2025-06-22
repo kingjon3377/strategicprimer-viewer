@@ -160,7 +160,7 @@ import static java.util.function.Predicate.not;
 	 */
 	static List<Pair<Point, ITownFixture>> unstattedTowns(final ILegacyMap map) {
 		return map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
+				.flatMap(l -> map.streamFixtures(l).filter(ITownFixture.class::isInstance)
 						.map(ITownFixture.class::cast)
 						.filter(t -> TownStatus.Active == t.getStatus())
 						.map(f -> Pair.with(l, f)))
@@ -186,7 +186,7 @@ import static java.util.function.Predicate.not;
 	 */
 	private static @Nullable Point findLocById(final ILegacyMap map, final int id) {
 		return map.streamLocations()
-				.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
+				.filter(l -> map.streamFixtures(l).anyMatch(f -> f.getId() == id))
 				.findAny().orElse(null);
 	}
 
@@ -254,7 +254,7 @@ import static java.util.function.Predicate.not;
 			return new SurroundingPointIterable(location,
 					map.getDimensions(), 10).stream().distinct()
 					.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
-					.flatMap(l -> map.getFixtures(l).stream())
+					.flatMap(map::streamFixtures)
 					.filter(HarvestableFixture.class::isInstance)
 					.map(HarvestableFixture.class::cast).filter(TownGenerator::isReallyClaimable)
 					.collect(Collectors.toList());
@@ -503,7 +503,7 @@ import static java.util.function.Predicate.not;
 		} else if (map.isMountainous(location)) {
 			skillTable = "mountain_skills";
 			consumptionTableName = "mountain";
-		} else if (map.getFixtures(location).stream().anyMatch(Forest.class::isInstance)) {
+		} else if (map.streamFixtures(location).anyMatch(Forest.class::isInstance)) {
 			skillTable = "forest_skills";
 			consumptionTableName = "forest";
 		} else {
