@@ -155,6 +155,7 @@ import legacy.map.HasKind;
 
 // TODO: Make methods static where possible
 // FIXME: A lot of the assertions in this class have expected and actual values backwards
+@SuppressWarnings("BooleanParameter")
 public final class TestXMLIO {
 	private static final Set<String> RACES = Set.copyOf(RaceFactory.RACES);
 	private static final List<String> ANIMAL_STATUSES = List.of("wild", "semi-domesticated", "domesticated", "tame");

@@ -143,6 +143,7 @@ import legacy.map.fixtures.TerrainFixture;
  *
  * TODO: Figure out a way to share tests with {@link TestXMLIO}
  */
+@SuppressWarnings("BooleanParameter")
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
 			List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new,
