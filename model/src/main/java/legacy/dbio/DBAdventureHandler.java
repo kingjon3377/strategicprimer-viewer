@@ -11,6 +11,7 @@ import impl.dbio.MapContentsReader;
 import impl.dbio.TryBiConsumer;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+import legacy.map.fixtures.explorable.AdventureFixtureImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -69,7 +70,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 			final int ownerId = (Integer) dbRow.get("owner");
 //			final int ownerId = Integer.parseInt(dbRow.get("owner"));
 			final String image = (String) dbRow.get("image");
-			final AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
+			final AdventureFixture adventure = new AdventureFixtureImpl(map.getPlayers().getPlayer(ownerId),
 					brief, full, id);
 			if (Objects.nonNull(image)) {
 				adventure.setImage(image);

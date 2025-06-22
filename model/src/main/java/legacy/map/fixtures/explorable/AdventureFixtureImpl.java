@@ -1,0 +1,152 @@
+package legacy.map.fixtures.explorable;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import legacy.map.IFixture;
+import legacy.map.HasMutableOwner;
+import legacy.map.Player;
+import org.javatuples.Pair;
+
+import static lovelace.util.MatchingValue.matchingValue;
+
+/**
+ * A Fixture representing an adventure hook. Satisfies Subsettable because
+ * players shouldn't know when another player completes an adventure on the far
+ * side of the world.
+ */
+public final class AdventureFixtureImpl implements HasMutableOwner, AdventureFixture {
+	public AdventureFixtureImpl(final Player owner, final String briefDescription, final String fullDescription,
+	                            final int id) {
+		this.owner = owner;
+		this.briefDescription = briefDescription;
+		this.fullDescription = fullDescription;
+		this.id = id;
+	}
+
+	/**
+	 * A brief description of the adventure.
+	 */
+	private final String briefDescription;
+
+	/**
+	 * A brief description of the adventure.
+	 */
+	@Override
+	public String getBriefDescription() {
+		return briefDescription;
+	}
+
+	/**
+	 * A longer description of the adventure.
+	 */
+	private final String fullDescription;
+
+	/**
+	 * A longer description of the adventure.
+	 */
+	@Override
+	public String getFullDescription() {
+		return fullDescription;
+	}
+
+	/**
+	 * A unique ID number.
+	 */
+	private final int id;
+
+	/**
+	 * A unique ID number.
+	 */
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * The filename of an image to use as an icon for this instance.
+	 */
+	private String image = "";
+
+	/**
+	 * The filename of an image to use as an icon for this instance.
+	 */
+	@Override
+	public String getImage() {
+		return image;
+	}
+
+	/**
+	 * Set the filename of an image to use as an icon for this instance.
+	 */
+	@Override
+	public void setImage(final String image) {
+		this.image = image;
+	}
+
+	/**
+	 * The player that has undertaken the adventure.
+	 */
+	private Player owner;
+
+	/**
+	 * The player that has undertaken the adventure.
+	 */
+	@Override
+	public Player owner() {
+		return owner;
+	}
+
+	/**
+	 * Set the player that has undertaken the adventure.
+	 */
+	@Override
+	public void setOwner(final Player owner) {
+		this.owner = owner;
+	}
+
+	/**
+	 * Clone the fixture.
+	 */
+	@Override
+	public AdventureFixture copy(final CopyBehavior zero) {
+		final AdventureFixture retval = new AdventureFixtureImpl(owner, briefDescription,
+				fullDescription, id);
+		retval.setImage(image);
+		return retval;
+	}
+
+	@Override
+	public String toString() {
+		if (fullDescription.isEmpty()) {
+			if (briefDescription.isEmpty()) {
+				return "Adventure hook";
+			} else {
+				return briefDescription;
+			}
+		} else {
+			return fullDescription;
+		}
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof final AdventureFixture af) {
+			return id == af.getId() && equalsIgnoringID(af);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
+	}
+
+	@Override
+	public String getShortDescription() {
+		return briefDescription;
+	}
+}

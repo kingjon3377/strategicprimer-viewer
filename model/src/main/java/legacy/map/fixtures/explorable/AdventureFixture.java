@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import legacy.map.IFixture;
-import legacy.map.HasMutableOwner;
+import legacy.map.HasOwner;
 import legacy.map.Player;
 import org.javatuples.Pair;
 
@@ -17,193 +17,91 @@ import static lovelace.util.MatchingValue.matchingValue;
  * players shouldn't know when another player completes an adventure on the far
  * side of the world.
  */
-public final class AdventureFixture implements ExplorableFixture, HasMutableOwner, SubsettableFixture {
-	public AdventureFixture(final Player owner, final String briefDescription, final String fullDescription,
-							final int id) {
-		this.owner = owner;
-		this.briefDescription = briefDescription;
-		this.fullDescription = fullDescription;
-		this.id = id;
-	}
-
+public interface AdventureFixture extends ExplorableFixture, SubsettableFixture, HasOwner {
 	/**
 	 * A brief description of the adventure.
 	 */
-	private final String briefDescription;
-
-	/**
-	 * A brief description of the adventure.
-	 */
-	public String getBriefDescription() {
-		return briefDescription;
-	}
+	String getBriefDescription();
 
 	/**
 	 * A longer description of the adventure.
 	 */
-	private final String fullDescription;
-
-	/**
-	 * A longer description of the adventure.
-	 */
-	public String getFullDescription() {
-		return fullDescription;
-	}
-
-	/**
-	 * A unique ID number.
-	 */
-	private final int id;
+	String getFullDescription();
 
 	/**
 	 * A unique ID number.
 	 */
 	@Override
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * The filename of an image to use as an icon for this instance.
-	 */
-	private String image = "";
+	int getId();
 
 	/**
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public String getImage() {
-		return image;
-	}
-
-	/**
-	 * Set the filename of an image to use as an icon for this instance.
-	 */
-	@Override
-	public void setImage(final String image) {
-		this.image = image;
-	}
-
-	/**
-	 * The player that has undertaken the adventure.
-	 */
-	private Player owner;
+	String getImage();
 
 	/**
 	 * The player that has undertaken the adventure.
 	 */
 	@Override
-	public Player owner() {
-		return owner;
-	}
-
-	/**
-	 * Set the player that has undertaken the adventure.
-	 */
-	@Override
-	public void setOwner(final Player owner) {
-		this.owner = owner;
-	}
+	Player owner();
 
 	/**
 	 * Clone the fixture.
 	 */
 	@Override
-	public AdventureFixture copy(final CopyBehavior zero) {
-		final AdventureFixture retval = new AdventureFixture(owner, briefDescription,
-				fullDescription, id);
-		retval.setImage(image);
-		return retval;
-	}
+	AdventureFixture copy(CopyBehavior zero);
 
 	@Override
-	public String toString() {
-		if (fullDescription.isEmpty()) {
-			if (briefDescription.isEmpty()) {
-				return "Adventure hook";
-			} else {
-				return briefDescription;
-			}
-		} else {
-			return fullDescription;
-		}
-	}
-
-	@Override
-	public String getDefaultImage() {
+	default String getDefaultImage() {
 		return "adventure.png";
 	}
 
 	@Override
-	public boolean equalsIgnoringID(final IFixture fixture) {
+	default boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final AdventureFixture obj) {
-			return ((owner.isIndependent() && obj.owner().isIndependent()) ||
-					(owner.getPlayerId() == obj.owner().getPlayerId())) &&
-					briefDescription.equals(obj.getBriefDescription()) &&
-					fullDescription.equals(obj.getFullDescription());
+			return ((owner().isIndependent() && obj.owner().isIndependent()) ||
+					(owner().getPlayerId() == obj.owner().getPlayerId())) &&
+					getBriefDescription().equals(obj.getBriefDescription()) &&
+					getFullDescription().equals(obj.getFullDescription());
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (obj instanceof final AdventureFixture af) {
-			return id == af.getId() && equalsIgnoringID(af);
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return id;
-	}
-
-	@Override
-	public String getPlural() {
+	default String getPlural() {
 		return "Adventures";
 	}
 
-	@Override
-	public String getShortDescription() {
-		return briefDescription;
-	}
-
-	/**
-	 * The required Perception check result for an explorer to find the adventure hook.
-	 *
-	 * TODO: Should probably be variable, i.e. read from XML
-	 */
+	/// The required Perception check result for an explorer to find the adventure hook.
+	///
+	/// TODO: Should probably be variable, i.e. read from XML
 	@SuppressWarnings("MagicNumber")
 	@Override
-	public int getDC() {
-		return 30;
+	default int getDC() { return 30; }
+
+	default boolean ownerSubset(final AdventureFixture fix) {
+		return fix.owner().isIndependent() || fix.owner().getPlayerId() == owner().getPlayerId();
 	}
 
-	private static final Function<IFixture, AdventureFixture> cast = AdventureFixture.class::cast;
-
-	private boolean ownerSubset(AdventureFixture fix) {
-		return fix.owner().isIndependent() || fix.owner().getPlayerId() == owner.getPlayerId();
-	}
+	Function<IFixture, AdventureFixture> CAST = AdventureFixture.class::cast;
 
 	@Override
-	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
-		if (obj.getId() == id) {
+	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
+		if (obj.getId() == getId()) {
 			if (obj instanceof final AdventureFixture af) {
 				final Consumer<String> localReport =
-						(str) -> report.accept("In adventure with ID #%d: %s".formatted(id, str));
+						(str) -> report.accept("In adventure with ID #%d: %s".formatted(getId(), str));
 				return passesAllPredicates(localReport, af, Pair.with("Brief descriptions differ", matchingValue(this,
-								cast.andThen(AdventureFixture::getBriefDescription))),
+								CAST.andThen(AdventureFixture::getBriefDescription))),
 						Pair.with("Full descriptions differ", matchingValue(this,
-								cast.andThen(AdventureFixture::getFullDescription))),
-						Pair.with("Owners differ", matchingValue(this, cast.andThen(this::ownerSubset))));
+								CAST.andThen(AdventureFixture::getFullDescription))),
+						Pair.with("Owners differ", matchingValue(this, CAST.andThen(this::ownerSubset))));
 			} else {
-				report.accept("Different kinds of fixtures for ID #" + id);
+				report.accept("Different kinds of fixtures for ID #" + getId());
 				return false;
 			}
 		} else {

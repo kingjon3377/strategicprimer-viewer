@@ -9,6 +9,7 @@ import legacy.map.Player;
 import legacy.map.Point;
 import legacy.map.fixtures.TextFixture;
 import legacy.map.fixtures.explorable.AdventureFixture;
+import legacy.map.fixtures.explorable.AdventureFixtureImpl;
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.Cave;
 import legacy.map.fixtures.explorable.Portal;
@@ -36,7 +37,7 @@ import java.nio.file.Path;
 		} else {
 			player = players.getIndependent();
 		}
-		final AdventureFixture retval = setImage(new AdventureFixture(player,
+		final AdventureFixture retval = setImage(new AdventureFixtureImpl(player,
 				getAttribute(element, "brief", ""),
 				getAttribute(element, "full", ""),
 				getOrGenerateID(element, warner, path, idFactory)), element, path, warner);

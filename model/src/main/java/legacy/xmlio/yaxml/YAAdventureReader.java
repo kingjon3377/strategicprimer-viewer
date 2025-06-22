@@ -7,6 +7,7 @@ import legacy.idreg.IDRegistrar;
 import legacy.map.ILegacyPlayerCollection;
 import legacy.map.Player;
 import legacy.map.fixtures.explorable.AdventureFixture;
+import legacy.map.fixtures.explorable.AdventureFixtureImpl;
 import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +43,7 @@ import java.nio.file.Path;
 		} else {
 			player = players.getIndependent();
 		}
-		final AdventureFixture retval = new AdventureFixture(player,
+		final AdventureFixture retval = new AdventureFixtureImpl(player,
 				getParameter(element, "brief", ""), getParameter(element, "full", ""),
 				getOrGenerateID(element, path));
 		retval.setImage(getParameter(element, "image", ""));

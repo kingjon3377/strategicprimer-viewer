@@ -55,7 +55,7 @@ import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.TextFixture;
-import legacy.map.fixtures.explorable.AdventureFixture;
+import legacy.map.fixtures.explorable.AdventureFixtureImpl;
 import legacy.map.fixtures.explorable.Portal;
 import legacy.map.fixtures.explorable.Cave;
 import legacy.map.fixtures.explorable.Battlefield;
@@ -540,7 +540,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
 	public void testAdventureSerialization(final int id) throws SQLException, IOException {
-		assertFixtureSerialization(new AdventureFixture(new PlayerImpl(1, "independent"),
+		assertFixtureSerialization(new AdventureFixtureImpl(new PlayerImpl(1, "independent"),
 				"hook brief", "hook full", id));
 	}
 

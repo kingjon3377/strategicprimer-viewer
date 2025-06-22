@@ -14,6 +14,7 @@ import common.map.fixtures.mobile.MaturityModel;
 import javax.xml.stream.XMLStreamException;
 
 import impl.xmlio.ISPReader;
+import legacy.map.fixtures.explorable.AdventureFixtureImpl;
 import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.ExposureStatus;
 import org.jetbrains.annotations.Nullable;
@@ -1757,9 +1758,9 @@ public final class TestXMLIO {
 	public void testAdventureSerialization(final int idOne, final int idTwo)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Player independent = new PlayerImpl(1, "independent");
-		final TileFixture first = new AdventureFixture(independent, "first hook brief",
+		final TileFixture first = new AdventureFixtureImpl(independent, "first hook brief",
 				"first hook full", idOne);
-		final AdventureFixture second = new AdventureFixture(new PlayerImpl(2, "player"),
+		final AdventureFixture second = new AdventureFixtureImpl(new PlayerImpl(2, "player"),
 				"second hook brief", "second hook full", idTwo);
 		assertNotEquals(first, second, "Two different hooks are not equal");
 		final IMutableLegacyMap wrapper = createSimpleMap(new Point(1, 1),
@@ -1769,7 +1770,7 @@ public final class TestXMLIO {
 		assertSerialization("First AdventureFixture serialization test", wrapper);
 		assertSerialization("Second AdventureFixture serialization test", second);
 		assertSerialization("AdventureFixture with empty descriptions",
-				new AdventureFixture(new PlayerImpl(3, "third"), "", "", idOne));
+				new AdventureFixtureImpl(new PlayerImpl(3, "third"), "", "", idOne));
 		// TODO: split portals into separate test method
 		final Portal third = new Portal("portal dest", new Point(1, 2), idOne);
 		final TileFixture fourth = new Portal("portal dest two", new Point(2, 1), idTwo);
