@@ -17,49 +17,87 @@ public final class PointIterable implements Iterable<Point> {
 	private final MapDimensions dimensions;
 
 	/**
-	 * Whether we should search forwards (if true) or backwards (if false).
-	 *
-	 * TODO: convert to enum
+	 * Which direction to search.
 	 */
-	private final boolean forwards;
+	enum IterationDirection {
+		/**
+		 * Left-to-right, top-to-bottom.
+		 */
+		Forwards,
+		/**
+		 * Right-to-left, bottom-to-top.
+		 */
+		Backwards
+	}
+
+	private final IterationDirection direction;
 
 	/**
-	 * Whether we should search horizontally (if true) or vertically (if false)
-	 *
-	 * TODO: convert to enum
+	 * Which axis is primary in the search.
 	 */
-	private final boolean horizontal;
+	enum IterationOrientation {
+		/**
+		 * Search across, then down/up.
+		 */
+		Horizontal,
+		/**
+		 * Search down/up, then across.
+		 */
+		Vertical
+	}
+
+	private final IterationOrientation orientation;
 
 	/**
 	 * The selected point; we start from (just before) (0, 0) if omitted.
 	 */
 	private final @Nullable Point selection;
 
-	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal,
-						 final Point selection) {
+	public PointIterable(final MapDimensions dimensions, final IterationDirection direction,
+	                     final IterationOrientation orientation, final Point selection) {
 		this.dimensions = dimensions;
-		this.forwards = forwards;
-		this.horizontal = horizontal;
+		this.direction = direction;
+		this.orientation = orientation;
 		this.selection = selection;
 	}
 
-	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal) {
+	public PointIterable(final MapDimensions dimensions, final IterationDirection direction,
+	                     final IterationOrientation orientation) {
 		this.dimensions = dimensions;
-		this.forwards = forwards;
-		this.horizontal = horizontal;
+		this.direction = direction;
+		this.orientation = orientation;
 		selection = null;
+	}
+
+	/**
+	 * @deprecated Use the form taking the enums
+	 */
+	@Deprecated
+	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal,
+						 final Point selection) {
+		this(dimensions, forwards ? IterationDirection.Forwards : IterationDirection.Backwards,
+				horizontal ? IterationOrientation.Horizontal : IterationOrientation.Vertical, selection);
+	}
+
+	/**
+	 * @deprecated Use the form taking the enums
+	 */
+	@Deprecated
+	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal) {
+		this(dimensions, forwards ? IterationDirection.Forwards : IterationDirection.Backwards,
+				horizontal ? IterationOrientation.Horizontal : IterationOrientation.Vertical);
 	}
 
 	private static final class PointIteratorImpl implements Iterator<Point> {
 		/**
-		 * Whether we should search forwards (if true) or backwards (if false).
+		 * The direction of the search.
 		 */
-		private final boolean forwards;
+		private final IterationDirection direction;
 
 		/**
-		 * Whether we should search horizontally (if true) or vertically (if false)
+		 * The orientation of the search.
 		 */
-		private final boolean horizontal;
+		private final IterationOrientation orientation;
 
 		/**
 		 * The maximum row in the map.
@@ -89,15 +127,15 @@ public final class PointIterable implements Iterable<Point> {
 		}
 
 		public PointIteratorImpl(final MapDimensions dimensions, final @Nullable Point selection,
-		                         final boolean forwards, final boolean horizontal) {
+		                         final IterationDirection direction, final IterationOrientation orientation) {
 			maxRow = dimensions.rows() - 1;
 			maxColumn = dimensions.columns() - 1;
-			this.forwards = forwards;
-			this.horizontal = horizontal;
+			this.direction = direction;
+			this.orientation = orientation;
 			if (Objects.nonNull(selection)) {
 				startRow = wrap(selection.row(), maxRow);
 				startColumn = wrap(selection.column(), maxColumn);
-			} else if (forwards) {
+			} else if (direction == IterationDirection.Forwards) {
 				startRow = maxRow;
 				startColumn = maxColumn;
 			} else {
@@ -129,10 +167,10 @@ public final class PointIterable implements Iterable<Point> {
 		@Override
 		public String toString() {
 			return """
-					PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %swards and no farther \
+					PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %s and no farther \
 					than (%d, %d)"""
-					.formatted(startRow, startColumn, row, column, (horizontal) ? "horizontal" : "vertical",
-					(forwards) ? "for" : "back", maxRow, maxColumn);
+					.formatted(startRow, startColumn, row, column, orientation.toString().toLowerCase(),
+					direction.toString().toLowerCase(), maxRow, maxColumn);
 		}
 
 		@Override
@@ -146,43 +184,52 @@ public final class PointIterable implements Iterable<Point> {
 				throw new NoSuchElementException("Iteration finished");
 			} else {
 				started = true;
-				if (horizontal) {
-					if (forwards) {
-						column++;
-						if (column > maxColumn) {
-							column = 0;
-							row++;
-							if (row > maxRow) {
-								row = 0;
+				switch (orientation) {
+					case Horizontal -> {
+						switch (direction) {
+							case Forwards -> {
+								column++;
+								if (column > maxColumn) {
+									column = 0;
+									row++;
+									if (row > maxRow) {
+										row = 0;
+									}
+								}
 							}
-						}
-					} else {
-						column--;
-						if (column < 0) {
-							column = maxColumn;
-							row--;
-							if (row < 0) {
-								row = maxRow;
+							case Backwards -> {
+								column--;
+								if (column < 0) {
+									column = maxColumn;
+									row--;
+									if (row < 0) {
+										row = maxRow;
+									}
+								}
 							}
 						}
 					}
-				} else {
-					if (forwards) {
-						row++;
-						if (row > maxRow) {
-							row = 0;
-							column++;
-							if (column > maxColumn) {
-								column = 0;
+					case Vertical -> {
+						switch (direction) {
+							case Forwards -> {
+								row++;
+								if (row > maxRow) {
+									row = 0;
+									column++;
+									if (column > maxColumn) {
+										column = 0;
+									}
+								}
 							}
-						}
-					} else {
-						row--;
-						if (row < 0) {
-							row = maxRow;
-							column--;
-							if (column < 0) {
-								column = maxColumn;
+							case Backwards -> {
+								row--;
+								if (row < 0) {
+									row = maxRow;
+									column--;
+									if (column < 0) {
+										column = maxColumn;
+									}
+								}
 							}
 						}
 					}
@@ -194,7 +241,7 @@ public final class PointIterable implements Iterable<Point> {
 
 	@Override
 	public Iterator<Point> iterator() {
-		return new PointIteratorImpl(dimensions, selection, forwards, horizontal);
+		return new PointIteratorImpl(dimensions, selection, direction, orientation);
 	}
 }
 
