@@ -48,13 +48,13 @@ public final class YAXMLWriter implements SPWriter {
 	/**
 	 * Write a map to a file.
 	 *
-	 * @param arg The file to write to.
+	 * @param file The file to write to.
 	 * @param map The map to write.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Path arg, final ILegacyMap map) throws IOException {
-		writeSPObject(arg, map);
+	public void write(final Path file, final ILegacyMap map) throws IOException {
+		writeSPObject(file, map);
 	}
 
 	/**
