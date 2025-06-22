@@ -190,13 +190,37 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public Collection<IUnit> getUnits(final Player player, final String kind) {
-		return getUnits(player).stream().filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
+		return streamUnits(player).filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
+	}
+
+	/**
+	 * Get all the given player's units, or only those of a specified kind, as a stream.
+	 */
+	@Override
+	public Stream<IUnit> streamUnits(final Player player) {
+		if (getSubordinateMaps().iterator().hasNext()) {
+			final Iterable<IUnit> temp = streamAllMaps()
+					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures() , player))
+					.collect(Collectors.toList()); // TODO: Can we avoid this Collector step?
+			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
+			for (final IUnit unit : temp) {
+				final int key = unit.getId();
+				final ProxyUnit proxy = tempMap.computeIfAbsent(key, ProxyUnit::new);
+				proxy.addProxied(unit);
+			}
+			return tempMap.values().stream().map(IUnit.class::cast).sorted(Comparator.comparing(IUnit::getName,
+					String.CASE_INSENSITIVE_ORDER));
+		} else {
+			// Just in case I missed something in the proxy implementation, make sure
+			// things work correctly when there's only one map.
+			return getUnitsImpl(getMap().streamAllFixtures(), player)
+					.sorted(Comparator.comparing(IUnit::getName,
+							String.CASE_INSENSITIVE_ORDER));
+		}
 	}
 
 	/**
 	 * Get all the given player's units, or only those of a specified kind.
-	 *
-	 * TODO: Provide streamUnits() if any caller immediately calls stream() on result
 	 */
 	@Override
 	public Collection<IUnit> getUnits(final Player player) {
@@ -227,7 +251,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<String> getUnitKinds(final Player player) {
-		return getUnits(player).stream().map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
+		return streamUnits(player).map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
 				.collect(Collectors.toList());
 	}
 
@@ -287,8 +311,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
-		return getUnits(owner).parallelStream()
-				.filter(u -> u.getId() == id).findAny().orElse(null);
+		return streamUnits(owner).filter(u -> u.getId() == id).findAny().orElse(null);
 	}
 
 	private static BiPredicate<Point, IFixture> unitMatching(final IUnit unit) {

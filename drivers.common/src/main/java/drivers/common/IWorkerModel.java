@@ -2,6 +2,7 @@ package drivers.common;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +28,13 @@ public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtur
 	 * @param player The player whose units we want
 	 */
 	Collection<IUnit> getUnits(Player player);
+
+	/**
+	 * A stream of the units in the map belonging to the given player.
+	 *
+	 * @param player The player whose units we want
+	 */
+	Stream<IUnit> streamUnits(Player player);
 
 	/**
 	 * The units in the map of the given "kind" belonging to the given player.
