@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  * players have been informed about by name.
  */
 public final class Village implements IMutableTownFixture, HasMutableImage,
-		SubsettableFixture {
+		SubsettableFixture, HasMutablePopulation {
 	public Village(final TownStatus status, final String name, final int id, final Player owner, final String race) {
 		this.status = status;
 		this.name = name;

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
  * // FIXME: Probably Needs to implement SubsettableFixture instead of {@code Subsettable<AbstractTown>}
  */
 public abstract class AbstractTown implements HasMutableImage,
-		IMutableTownFixture, Subsettable<AbstractTown> {
+		IMutableTownFixture, Subsettable<AbstractTown>, HasMutablePopulation {
 	// TODO: Should probably take ID as a constructor parameter too?
 	protected AbstractTown(final TownStatus status, final TownSize townSize, final String name, final Player owner,
 						   final int dc) {
@@ -167,6 +167,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	/**
 	 * The contents of the town.
 	 */
+	@Override
 	public final void setPopulation(final @Nullable CommunityStats population) {
 		this.population = population;
 	}
