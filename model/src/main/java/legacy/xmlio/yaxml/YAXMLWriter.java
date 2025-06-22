@@ -9,7 +9,6 @@ import impl.xmlio.SPWriter;
 
 import java.nio.file.Path;
 import java.nio.file.Files;
-import javax.xml.stream.XMLStreamException;
 
 import lovelace.util.ThrowingConsumer;
 
@@ -54,7 +53,7 @@ public final class YAXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Path arg, final ILegacyMap map) throws XMLStreamException, IOException {
+	public void write(final Path arg, final ILegacyMap map) throws IOException {
 		writeSPObject(arg, map);
 	}
 

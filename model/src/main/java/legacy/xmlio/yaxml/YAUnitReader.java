@@ -45,7 +45,7 @@ import java.util.Map;
 	 * Parse the kind of unit, from the "kind" or deprecated "type"
 	 * parameter, but merely warn if neither is present.
 	 */
-	private String parseKind(final StartElement element, final @Nullable Path path) throws SPFormatException {
+	private String parseKind(final StartElement element, final @Nullable Path path) {
 		try {
 			final String retval = getParamWithDeprecatedForm(element, path, "kind", "type");
 			if (retval.isEmpty()) {

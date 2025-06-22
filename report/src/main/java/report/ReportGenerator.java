@@ -58,7 +58,7 @@ public final class ReportGenerator {
 		return 0;
 	}
 
-	public static String createReport(final ILegacyMap map, final ICLIHelper cli) throws IOException {
+	public static String createReport(final ILegacyMap map, final ICLIHelper cli) {
 		return createReport(map, cli, map.getCurrentPlayer());
 	}
 
