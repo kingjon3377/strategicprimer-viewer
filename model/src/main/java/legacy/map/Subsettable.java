@@ -19,7 +19,8 @@ public interface Subsettable<Element> {
 	 */
 	boolean isSubset(Element obj, Consumer<String> report);
 
-	default boolean test(Consumer<String> report, String message, Predicate<Element> predicate, Element obj) {
+	default boolean test(final Consumer<String> report, final String message, final Predicate<Element> predicate,
+	                     final Element obj) {
 		if (predicate.test(obj)) {
 			return true;
 		} else {
@@ -28,12 +29,12 @@ public interface Subsettable<Element> {
 		}
 	}
 
+	// TODO: Refactor, if we can think of a way, to avoid "possible heap pollution" warning
 	default boolean passesAllPredicates(final Consumer<String> report, final Element obj,
 	                                    final Pair<String, Predicate<Element>>... predicates) {
-		for (Pair<String, Predicate<Element>> pair : predicates) {
-			String message = pair.getValue0();
-			Predicate<Element> predicate = pair.getValue1();
-			//noinspection unchecked
+		for (final Pair<String, Predicate<Element>> pair : predicates) {
+			final String message = pair.getValue0();
+			final Predicate<Element> predicate = pair.getValue1();
 			if (!test(report, message, predicate, obj)) {
 				return false;
 			}
