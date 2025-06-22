@@ -16,7 +16,6 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.UnitMember;
 
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

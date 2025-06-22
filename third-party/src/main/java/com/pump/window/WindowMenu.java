@@ -27,7 +27,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeListener;
 
 /**
  * This is a Window menu resembling <A HREF=
