@@ -144,9 +144,8 @@ public final class DBMapReader {
 		final IMutableLegacyMap retval =
 				new LegacyMap(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		try (final Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
-					 TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)
-							 DBMapReader::parseTerrain).stream(), conn)) {
+		final RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainParser = DBMapReader::parseTerrain;
+		try (final var terrainStream = TERRAIN_SELECT.as(terrainParser.stream(), conn)) {
 			terrainStream.forEach(dbRow -> {
 				final Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean> tuple = dbRow.getValue2();
 				final boolean mtn = tuple.getValue0();
