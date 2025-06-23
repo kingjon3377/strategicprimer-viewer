@@ -609,9 +609,6 @@ public final class TestXMLIO {
 
 	/**
 	 * Test that deserializing a {@link Village} without a name will cause a warning.
-	 *
-	 * TODO: if test fails because boxed Integer and Boolean can't be assigned to unboxed primitives,
-	 * change parameter types in this method's signature
 	 */
 	@ParameterizedTest
 	@MethodSource
