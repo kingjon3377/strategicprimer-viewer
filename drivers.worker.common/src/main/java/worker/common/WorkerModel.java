@@ -225,15 +225,14 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public Collection<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
-			final Iterable<IUnit> temp = streamAllMaps()
-					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures() , player))
-					.collect(Collectors.toList()); // TODO: Can we avoid this Collector step?
 			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
-			for (final IUnit unit : temp) {
-				final int key = unit.getId();
-				final ProxyUnit proxy = tempMap.computeIfAbsent(key, ProxyUnit::new);
-				proxy.addProxied(unit);
-			}
+			streamAllMaps()
+					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures() , player))
+					.forEach(unit -> {
+						final int key = unit.getId();
+						final ProxyUnit proxy = tempMap.computeIfAbsent(key, ProxyUnit::new);
+						proxy.addProxied(unit);
+					});
 			return tempMap.values().stream().sorted(Comparator.comparing(IUnit::getName,
 					String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
 		} else {
