@@ -49,11 +49,11 @@ public final class ResourceAddingCLIHelper {
 			return one;
 		}
 		final String two = cli.inputString("Resource kind to use: ");
-		if (Objects.isNull(two) || two.isEmpty()) {
+		if (Objects.isNull(two) || two.isBlank()) {
 			return null;
 		}
-		resourceKinds.add(two);
-		return two;
+		resourceKinds.add(two.trim());
+		return two.trim();
 	}
 
 	/**
@@ -70,12 +70,12 @@ public final class ResourceAddingCLIHelper {
 			return one;
 		}
 		final String two = cli.inputString("Resource to use: ");
-		if (Objects.isNull(two) || two.isEmpty()) {
+		if (Objects.isNull(two) || two.isBlank()) {
 			return null;
 		}
-		list.add(two);
+		list.add(two.trim());
 		resourceContents.put(kind, list);
-		return two;
+		return two.trim();
 	}
 
 	/**
@@ -102,11 +102,11 @@ public final class ResourceAddingCLIHelper {
 		}
 		// N.B. ICLIHelper trims input before returning
 		final String retval = cli.inputString("Unit to use for %s: ".formatted(resource));
-		if (Objects.isNull(retval) || retval.isEmpty()) { // TODO: isBlank()
+		if (Objects.isNull(retval) || retval.isBlank()) {
 			return null;
 		}
-		resourceUnits.put(resource, retval);
-		return retval;
+		resourceUnits.put(resource, retval.trim());
+		return retval.trim();
 	}
 
 	/**
@@ -136,10 +136,10 @@ public final class ResourceAddingCLIHelper {
 			}
 			case YES -> {
 				final String prefix = cli.inputString("Prefix to use: ");
-				if (Objects.isNull(prefix) || prefix.isEmpty()) {
+				if (Objects.isNull(prefix) || prefix.isBlank()) {
 					return null;
 				}
-				contents = prefix + " " + origContents;
+				contents = prefix.trim() + " " + origContents;
 			}
 			case NO -> contents = origContents;
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
@@ -171,7 +171,7 @@ public final class ResourceAddingCLIHelper {
 	 */
 	public @Nullable Implement enterImplement() {
 		final String kind = cli.inputString("Kind of equipment: ");
-		if (Objects.isNull(kind) || kind.isEmpty()) {
+		if (Objects.isNull(kind) || kind.isBlank()) {
 			return null;
 		}
 		final int count;
@@ -193,7 +193,7 @@ public final class ResourceAddingCLIHelper {
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		if (count >= 1) {
-			return new Implement(kind, idf.createID(), count);
+			return new Implement(kind.trim(), idf.createID(), count);
 		} else {
 			return null;
 		}
