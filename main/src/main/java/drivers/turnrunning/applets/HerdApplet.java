@@ -75,6 +75,7 @@ import query.SmallAnimalModel;
 					"What kind of animal(s) is/are %s?".formatted(animal),
 					"No animal kinds found", "Kind of animal:",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			//noinspection ConstantValue // Inspection ignores that this can be null!
 			if (Objects.nonNull(retval)) {
 				return Either.left(retval);
 			} else {
