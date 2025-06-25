@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import drivers.common.IterableComparator;
+import lovelace.util.ActionWrapper;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,22 +101,11 @@ import java.awt.image.BufferedImage;
 		final InputMap localInputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		ArrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
 		localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
-		localActionMap.put("show-terrain-menu", new AbstractAction() { // FIXME: Use ActionWrapper
-			@Serial
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(final ActionEvent event) {
+		localActionMap.put("show-terrain-menu", new ActionWrapper(event -> {
 				cml.showMenuAtSelection(Optional.ofNullable(event.getSource())
 						.filter(Component.class::isInstance)
 						.map(Component.class::cast).orElse(null));
-			}
-
-			@Override
-			protected Object clone() throws CloneNotSupportedException {
-				throw new CloneNotSupportedException("No cloning in this project");
-			}
-		});
+			}));
 		final ComponentListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
 		addComponentListener(mapSizeListener); // TODO:inline
 
