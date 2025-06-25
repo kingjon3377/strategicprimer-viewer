@@ -18,6 +18,7 @@ import java.nio.file.Path;
 
 import legacy.map.fixtures.FixtureIterable;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -409,10 +410,9 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 	 */
 	@Override
 	public void removeMatchingFixtures(final Point location, final Predicate<TileFixture> condition) {
-		// TODO: try to avoid collector step (using forEach(lambda))
-		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition).toList()) {
-			getRestrictedMap().removeFixture(location, fixture);
-		}
+		final IMutableLegacyMap rmap = getRestrictedMap();
+		final Consumer<TileFixture> impl = fixture -> rmap.removeFixture(location, fixture);
+		getMap().getFixtures(location).stream().filter(condition).toList().forEach(impl);
 		setMapStatus(ILegacyMap.ModificationStatus.Modified); // TODO: Only set the flag if this was a change?
 	}
 
