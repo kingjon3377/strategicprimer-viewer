@@ -263,12 +263,12 @@ import query.SmallAnimalModel;
 			}
 			addLineToOrders.accept("This produced %.1f %s, %.1f lbs, of %s.".formatted(
 					production.number().doubleValue(), production.units(), pounds, resourceProduced));
+			final LegacyQuantity poundsProduction = new LegacyQuantity(pounds, "pounds");
 			if (Objects.nonNull(home)) {
-				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
-				model.addResource(home, idf.createID(), "food", resourceProduced, production,
+				model.addResource(home, idf.createID(), "food", resourceProduced, poundsProduction,
 						model.getMap().getCurrentTurn());
 			} else {
-				model.addResource(unit, idf.createID(), "food", resourceProduced, production,
+				model.addResource(unit, idf.createID(), "food", resourceProduced, poundsProduction,
 						model.getMap().getCurrentTurn());
 			}
 		}
