@@ -199,7 +199,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	}
 
 	private void strategyWritingListener() {
-		SPFileChooser.save(null, filteredFileChooser(false, Paths.get("."), null)).call(this::writeStrategy);
+		SPFileChooser.save(null, filteredFileChooser(Paths.get("."), null)).call(this::writeStrategy);
 	}
 
 	private final TreeExpansionOrderListener expander;
