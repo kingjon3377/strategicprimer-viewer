@@ -265,8 +265,10 @@ import query.SmallAnimalModel;
 					production.number().doubleValue(), production.units(), pounds, resourceProduced));
 			if (Objects.nonNull(home)) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
-				// TODO: If 'home' is null, should probably add to the unit itself ...
 				model.addResource(home, idf.createID(), "food", resourceProduced, production,
+						model.getMap().getCurrentTurn());
+			} else {
+				model.addResource(unit, idf.createID(), "food", resourceProduced, production,
 						model.getMap().getCurrentTurn());
 			}
 		}
