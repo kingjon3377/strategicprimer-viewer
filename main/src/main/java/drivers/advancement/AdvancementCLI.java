@@ -60,7 +60,10 @@ public final class AdvancementCLI implements CLIDriver {
 			}
 			units.remove(chosen);
 			helper.advanceWorkersInUnit(chosen, experienceConfig);
-			// FIXME: Don't prompt if there aren't any more units
+			if (units.isEmpty()) {
+				cli.println("No units remaining.");
+				return;
+			}
 			switch (cli.inputBoolean("Choose another unit?")) {
 				case YES -> { // Do nothing
 				}
