@@ -271,10 +271,8 @@ public final class CLITest {
 				"inputBooleanInSeries honors yes-to-all when prompt is the same");
 		assertEquals("prompt four prompt four yes%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic yes");
-		// TODO: Should we assert that [() -> cli.inputBooleanInSeries("other prompt")] throws
-		// IOException? We had an assertion of that commented out in the Ceylon version of this test,
-		// commented out because of a bug in the Java interop of the Ceylon metamodel used by the
-		// assertThatException().hasType() idiom.
+		assertEquals(ICLIHelper.BooleanResponse.EOF, cli.inputBooleanInSeries("other prompt"),
+				"inputBooleanInSeries with other prompt handles EOF");
 	}
 
 	/**
@@ -293,8 +291,8 @@ public final class CLITest {
 				"inputBooleanInSeries honors no-to-all when prompt is the same");
 		assertEquals("prompt five prompt five no%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic no");
-		// TODO: Should we assert that [() -> cli.inputBooleanInSeries("other prompt")] throws
-		// IOException? (See above.)
+		assertEquals(ICLIHelper.BooleanResponse.EOF, cli.inputBooleanInSeries("other prompt"),
+				"inputBooleanInSeries with other prompt handles EOF");
 	}
 
 	/**
