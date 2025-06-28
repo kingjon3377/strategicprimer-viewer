@@ -64,7 +64,7 @@ public interface ICLIHelper {
 	 * Read from the input stream repeatedly until a valid non-negative
 	 * decimal number is entered, then return it. Returns null on EOF.
 	 *
-	 * TODO: Throw IOException on EOF instead and return int?
+	 * TODO: Throw IOException on EOF instead?
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
@@ -73,7 +73,7 @@ public interface ICLIHelper {
 	/**
 	 * Read a line of input. It is trimmed of leading and trailing whitespace. Returns null on EOF.
 	 *
-	 * TODO: Throw IOException on EOF instead and return int?
+	 * TODO: Throw IOException on EOF instead?
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
@@ -84,7 +84,7 @@ public interface ICLIHelper {
 	 * trailing whitespace, except that if it ends with multiple newlines
 	 * two of them will be retained. Returns null on EOF.
 	 *
-	 * TODO: Throw IOException on EOF instead and return int?
+	 * TODO: Throw IOException on EOF instead?
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
@@ -121,8 +121,7 @@ public interface ICLIHelper {
 	}
 
 	/**
-	 * Ask the user a yes-or-no question. Returns null on EOF or if the
-	 * user enters "quit".
+	 * Ask the user a yes-or-no question.
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
