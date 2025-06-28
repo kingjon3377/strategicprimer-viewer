@@ -1,6 +1,7 @@
 package drivers.generators;
 
 import legacy.map.TileFixture;
+import legacy.map.fixtures.towns.HasMutablePopulation;
 import lovelace.util.LovelaceLogger;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
@@ -219,23 +220,21 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 								   final CommunityStats stats) {
 		boolean retval = false;
 		final Function<Object, ITownFixture> townCast = ITownFixture.class::cast;
+		final Predicate<Object> hmpFilter = HasMutablePopulation.class::isInstance;
+		final Function<Object, HasMutablePopulation> hmpCast = HasMutablePopulation.class::cast;
 		final Predicate<ITownFixture> sameId = f -> f.getId() == townId;
 		final Predicate<ITownFixture> sameName = f -> name.equals(f.getName());
 		// TODO: Should submaps really all get this information?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-			final Optional<ITownFixture> town = map.streamFixtures(location)
-					// TODO: extract IMutableTown interface
-					.filter(f -> f instanceof AbstractTown || f instanceof Village)
+			final Optional<HasMutablePopulation> town = map.streamFixtures(location)
+					.filter(hmpFilter)
 					.map(townCast)
 					.filter(sameId)
 					.filter(sameName)
+					.map(hmpFilter)
 					.findAny();
 			if (town.isPresent()) {
-				if (town.get() instanceof final AbstractTown t) {
-					t.setPopulation(stats);
-				} else {
-					((Village) (town.get())).setPopulation(stats);
-				}
+				town.get().setPopulation(stats);
 				retval = true;
 				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
