@@ -6,7 +6,7 @@ import legacy.map.fixtures.mobile.IWorker;
 import java.awt.event.ActionListener;
 
 /**
- * TODO: explain this class
+ * An interface for classes that respond to the creation of new worker objects.
  *
  * @author Jonathan Lovelace
  */

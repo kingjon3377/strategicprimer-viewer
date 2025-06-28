@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.function.Supplier;
 
 /**
- * TODO: explain this class
+ * An interface for the class to match menu item selections to the listeners to handle them.
  *
  * @author Jonathan Lovelace
  */

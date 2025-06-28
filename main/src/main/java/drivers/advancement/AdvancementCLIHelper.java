@@ -3,7 +3,7 @@ package drivers.advancement;
 import legacy.map.fixtures.mobile.IUnit;
 
 /**
- * TODO: explain this class
+ * An interface for the helper class that contains much of the logic of the advancement CLI.
  *
  * @author Jonathan Lovelace
  */
