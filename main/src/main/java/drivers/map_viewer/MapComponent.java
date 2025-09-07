@@ -26,14 +26,12 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ComponentAdapter;
 
-import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;

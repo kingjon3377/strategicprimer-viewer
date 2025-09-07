@@ -29,7 +29,6 @@ import report.generators.TextReportGenerator;
 import report.generators.AdventureReportGenerator;
 import drivers.common.cli.ICLIHelper;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 
 /**

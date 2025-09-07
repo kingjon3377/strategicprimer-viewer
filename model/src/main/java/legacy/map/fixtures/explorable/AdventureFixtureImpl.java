@@ -1,14 +1,7 @@
 package legacy.map.fixtures.explorable;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import legacy.map.IFixture;
 import legacy.map.HasMutableOwner;
 import legacy.map.Player;
-import org.javatuples.Pair;
-
-import static lovelace.util.MatchingValue.matchingValue;
 
 /**
  * A Fixture representing an adventure hook. Satisfies Subsettable because

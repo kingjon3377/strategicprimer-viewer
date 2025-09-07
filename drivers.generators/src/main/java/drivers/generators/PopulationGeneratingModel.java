@@ -24,11 +24,9 @@ import legacy.map.fixtures.resources.Grove;
 import legacy.map.fixtures.resources.Meadow;
 import legacy.map.fixtures.resources.Shrub;
 
-import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.CommunityStats;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.ITownFixture;
-import legacy.map.fixtures.towns.Village;
 
 import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.fixtures.mobile.worker.IMutableJob;
