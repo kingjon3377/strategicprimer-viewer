@@ -17,6 +17,7 @@ public final class FunctionalSplitPane extends JSplitPane {
 
 	private static final double ONE_HALF = 0.5;
 
+	@SuppressWarnings("MagicConstant")
 	private FunctionalSplitPane(final int orientation, final Component left, final Component right,
 	                            final double dividerLocation, final double resizeWeight) {
 		super(orientation, true, left, right);
