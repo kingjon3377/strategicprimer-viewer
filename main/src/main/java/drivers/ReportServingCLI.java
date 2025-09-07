@@ -72,7 +72,7 @@ import org.takes.http.Exit;
 	private void serveReports(final int port, final @Nullable Player currentPlayer) throws DriverFailedException {
 		final Map<Path, String> cache = new HashMap<>();
 		if (model instanceof final IMultiMapModel mmm &&
-				mmm.streamSubordinateMaps().map(m -> m.getFilename()).anyMatch(Objects::nonNull)) {
+				mmm.streamSubordinateMaps().map(ILegacyMap::getFilename).anyMatch(Objects::nonNull)) {
 			for (final ILegacyMap map : mmm.getAllMaps()) {
 				final Path file = map.getFilename();
 				if (Objects.isNull(file)) {
