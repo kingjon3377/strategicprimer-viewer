@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import lovelace.util.LovelaceLogger;
+import lovelace.util.MenuUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
@@ -76,7 +77,7 @@ public final class FixtureList extends JList<TileFixture>
 
 		createHotKey(this, "delete",
 				event -> listModel.removeAll(getSelectedValuesList()),
-				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+				MenuUtils.HotKeyCondition.WhenAncestorOfFocusedComponent,
 				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
 				KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
 	}

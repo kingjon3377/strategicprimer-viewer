@@ -59,6 +59,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 
 import lovelace.util.LovelaceLogger;
+import lovelace.util.MenuUtils;
 import org.javatuples.Pair;
 import drivers.map_viewer.FixtureEditHelper;
 import drivers.map_viewer.FixtureFilterTableModel;
@@ -77,7 +78,6 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.ListModel;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JComponent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
@@ -214,7 +214,7 @@ import worker.common.IFixtureEditHelper;
 			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
 			}
-			createHotKey(dtb, direction.toString(), ecl, JComponent.WHEN_IN_FOCUSED_WINDOW,
+			createHotKey(dtb, direction.toString(), ecl, MenuUtils.HotKeyCondition.WhenInFocusedWindow,
 					Stream.of(arrowKeys.get(direction), numKeys.get(direction))
 							.filter(Objects::nonNull).toArray(KeyStroke[]::new));
 			dtb.addActionListener(ecl);

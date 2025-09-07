@@ -51,6 +51,22 @@ public final class MenuUtils {
 	}
 
 	/**
+	 * A more-typesafe wrapper around the JComponent constants that define when a hotkey applies.
+	 */
+	public enum HotKeyCondition {
+		WhenInFocusedWindow(JComponent.WHEN_IN_FOCUSED_WINDOW),
+		WhenFocused(JComponent.WHEN_FOCUSED),
+		WhenAncestorOfFocusedComponent(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		HotKeyCondition(final int condition) {
+			this.condition = condition;
+		}
+		private final int condition;
+		public int getCondition() {
+			return condition;
+		}
+	}
+
+	/**
 	 * Set up a hot-key for an action that doesn't call a *menu* item.
 	 *
 	 * @param component the component defining the action's context
@@ -60,7 +76,7 @@ public final class MenuUtils {
 	 * @param keys      the keys to use as hot-keys.
 	 */
 	public static void createHotKey(final JComponent component, final String action, final ActionListener handler,
-	                                final int condition, final KeyStroke... keys) {
+	                                final HotKeyCondition condition, final KeyStroke... keys) {
 		createHotKey(component, action, new ActionWrapper(handler), condition, keys);
 	}
 
@@ -74,8 +90,8 @@ public final class MenuUtils {
 	 * @param keys      the keys to use as hot-keys.
 	 */
 	public static void createHotKey(final JComponent component, final String action, final Action handler,
-	                                final int condition, final KeyStroke... keys) {
-		final InputMap inputMap = component.getInputMap(condition);
+	                                final HotKeyCondition condition, final KeyStroke... keys) {
+		@SuppressWarnings("MagicConstant") final InputMap inputMap = component.getInputMap(condition.getCondition());
 		for (final KeyStroke key : keys) {
 			inputMap.put(key, action);
 		}

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import lovelace.util.LovelaceLogger;
+import lovelace.util.MenuUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -25,7 +26,6 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 import javax.swing.JScrollPane;
-import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
@@ -86,7 +86,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		final int keyMask = Platform.SHORTCUT_MASK;
 		createHotKey(tree, "openUnits", ignored -> tree.requestFocusInWindow(),
-				JComponent.WHEN_IN_FOCUSED_WINDOW,
+				MenuUtils.HotKeyCondition.WhenInFocusedWindow,
 				KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
 
 		playerLabel = new FormattedLabel("Units belonging to %%s: (%sU)".formatted(Platform.SHORTCUT_DESCRIPTION),
@@ -131,7 +131,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 				lowerLeft, DIVIDER_LOCATION), mdp));
 
 		createHotKey(jumpButton, "jumpToNext", ignored -> SwingUtilities.invokeLater(this::jumpNext),
-				JComponent.WHEN_IN_FOCUSED_WINDOW, createAccelerator(KeyEvent.VK_J));
+				MenuUtils.HotKeyCondition.WhenInFocusedWindow, createAccelerator(KeyEvent.VK_J));
 
 		expander = new TreeExpansionHandler(tree);
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import lovelace.util.MenuUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.TreePath;
@@ -27,7 +28,6 @@ import legacy.map.fixtures.mobile.IUnit;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
-import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -91,7 +91,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 		area.addKeyListener(new EnterListener(this::apply));
 
 		createHotKey(area, "openOrders", ignored -> focusOnArea(),
-				JComponent.WHEN_IN_FOCUSED_WINDOW,
+				MenuUtils.HotKeyCondition.WhenInFocusedWindow,
 				KeyStroke.getKeyStroke(KeyEvent.VK_D, Platform.SHORTCUT_MASK));
 
 		final String topLabel;
