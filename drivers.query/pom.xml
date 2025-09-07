@@ -11,7 +11,6 @@
   </parent>
 
   <artifactId>drivers.query</artifactId>
-  <version>${parent.version}</version>
 
   <dependencies>
     <dependency>
