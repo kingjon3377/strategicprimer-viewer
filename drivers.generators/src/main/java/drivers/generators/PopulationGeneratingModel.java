@@ -231,7 +231,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 					.map(townCast)
 					.filter(sameId)
 					.filter(sameName)
-					.map(hmpFilter)
+					.map(hmpCast)
 					.findAny();
 			if (town.isPresent()) {
 				town.get().setPopulation(stats);
