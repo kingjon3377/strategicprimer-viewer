@@ -101,11 +101,10 @@ import java.awt.image.BufferedImage;
 		final InputMap localInputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		ArrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
 		localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
-		localActionMap.put("show-terrain-menu", new ActionWrapper(event -> {
+		localActionMap.put("show-terrain-menu", new ActionWrapper(event ->
 				cml.showMenuAtSelection(Optional.ofNullable(event.getSource())
-						.filter(Component.class::isInstance)
-						.map(Component.class::cast).orElse(null));
-			}));
+				.filter(Component.class::isInstance)
+				.map(Component.class::cast).orElse(null))));
 		final ComponentListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
 		addComponentListener(mapSizeListener); // TODO:inline
 
