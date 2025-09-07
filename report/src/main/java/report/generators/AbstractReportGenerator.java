@@ -132,12 +132,12 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Serial
-		private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+		private void readObject(final ObjectInputStream in) throws ClassNotFoundException, NotSerializableException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
 		}
 
 		@Serial
-		private void writeObject(final ObjectOutputStream out) throws IOException {
+		private void writeObject(final ObjectOutputStream out) throws NotSerializableException {
 			throw new NotSerializableException("report.generators.AbstractReportGenerator.HtmlList");
 		}
 
