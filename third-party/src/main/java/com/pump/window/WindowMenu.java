@@ -10,7 +10,7 @@
  */
 package com.pump.window;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Frame;
 import java.awt.Toolkit;

@@ -4,7 +4,6 @@ import lovelace.util.LovelaceLogger;
 import legacy.map.MapDimensions;
 import legacy.map.TileFixture;
 import lovelace.util.SimplePair;
-import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.util.Collection;
@@ -19,6 +18,7 @@ import legacy.map.ILegacyMap;
 import legacy.map.Direction;
 import legacy.map.Point;
 import legacy.map.fixtures.terrain.Forest;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Predicate;
 import java.util.Collections;

@@ -4,8 +4,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -20,7 +19,7 @@ public final class ComponentParentStream implements Iterable<Component> {
 	private static final class ComponentParentIterator implements Iterator<Component> {
 		private @Nullable Component current;
 
-		protected ComponentParentIterator(final @NotNull Component widget) {
+		protected ComponentParentIterator(final Component widget) {
 			current = widget;
 		}
 
@@ -31,8 +30,8 @@ public final class ComponentParentStream implements Iterable<Component> {
 
 		@SuppressWarnings("ChainOfInstanceofChecks")
 		@Override
-		public @NotNull Component next() {
-			final @Nullable Component retval = current;
+		public Component next() {
+			final Component retval = current;
 			if (Objects.isNull(current)) {
 				throw new NoSuchElementException("Last parent reached");
 			} else {
@@ -52,9 +51,9 @@ public final class ComponentParentStream implements Iterable<Component> {
 		}
 	}
 
-	private final @NotNull Component widget;
+	private final Component widget;
 
-	public ComponentParentStream(final @NotNull Component component) {
+	public ComponentParentStream(final Component component) {
 		widget = component;
 	}
 

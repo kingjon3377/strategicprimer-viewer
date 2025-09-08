@@ -68,8 +68,7 @@ import lovelace.util.NumParsingHelper;
 import org.javatuples.Triplet;
 import org.javatuples.Pair;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 
@@ -101,7 +100,7 @@ import static java.util.function.Predicate.not;
 		return Collections.unmodifiableMap(retval);
 	}
 
-	private static @NotNull Triplet<LegacyQuantity, String, String> parseLine(final String line) {
+	private static Triplet<LegacyQuantity, String, String> parseLine(final String line) {
 		final String[] split = line.split("\t");
 		final int quantity = Integer.parseInt(split[0]);
 		final String units = split[1];
@@ -583,8 +582,8 @@ import static java.util.function.Predicate.not;
 			if (Objects.isNull(input) || input.isBlank()) {
 				break;
 			}
-			final @Nullable Point location;
-			final @Nullable ITownFixture town; // ModifiableTown, i.e. AbstractTown|Village, in Ceylon
+			final Point location;
+			final ITownFixture town; // ModifiableTown, i.e. AbstractTown|Village, in Ceylon
 			if (NumParsingHelper.isNumeric(input)) {
 				final int id = NumParsingHelper.parseInt(input).orElseThrow(
 						() -> new IllegalStateException(

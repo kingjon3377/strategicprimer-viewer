@@ -5,7 +5,7 @@ import common.xmlio.Warning;
 import javax.xml.stream.Location;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 

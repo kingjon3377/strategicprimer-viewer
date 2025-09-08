@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import legacy.map.IFixture;
 import legacy.map.HasImage;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A quantity of some kind of resource.
@@ -33,7 +32,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * the same kind and contents, of the same age, with equal quantity.
 	 */
 	@Override
-	default boolean equalsIgnoringID(final @NotNull IFixture fixture) {
+	default boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final IResourcePile rp) {
 			return rp.getKind().equals(getKind()) &&
 					rp.getContents().equals(getContents()) &&
@@ -50,7 +49,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * ours.
 	 */
 	@Override
-	default boolean isSubset(final IFixture obj, final @NotNull Consumer<String> report) {
+	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
 			if (obj instanceof final IResourcePile rp) {
 				boolean retval = true;
@@ -86,6 +85,5 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * Clone the object.
 	 */
 	@Override
-	@NotNull
-	IResourcePile copy(@NotNull CopyBehavior zero);
+	IResourcePile copy(CopyBehavior zero);
 }

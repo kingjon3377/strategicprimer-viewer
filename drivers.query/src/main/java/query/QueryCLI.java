@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.text.DecimalFormat;
 

@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;

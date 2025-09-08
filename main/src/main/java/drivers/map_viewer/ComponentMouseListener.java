@@ -9,7 +9,7 @@ import legacy.map.TileType;
 import java.util.Optional;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.awt.event.MouseAdapter;

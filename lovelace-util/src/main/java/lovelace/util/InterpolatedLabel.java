@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 import java.io.Serial;
 import java.util.function.Function;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A JLabel that takes a function to produce its text as constructor parameters

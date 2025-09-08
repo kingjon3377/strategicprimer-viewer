@@ -1,6 +1,6 @@
 package common.entity;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * An interface for ways of identifying entities in the game-world. This is an interface to possibly allow us to import
@@ -9,6 +9,6 @@ import org.jetbrains.annotations.NotNull;
  * TODO: What should the interface contain?
  */
 public interface EntityIdentifier {
-	@NotNull
+	@NonNull
 	String getIdentifierString();
 }

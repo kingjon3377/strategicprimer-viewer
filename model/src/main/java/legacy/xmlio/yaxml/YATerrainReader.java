@@ -18,7 +18,7 @@ import legacy.map.fixtures.terrain.Oasis;
 import legacy.map.fixtures.terrain.Hill;
 import legacy.map.fixtures.terrain.Forest;
 import common.xmlio.Warning;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Set;

@@ -3,7 +3,7 @@ package drivers.turnrunning.applets;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class OtherApplet implements TurnApplet {
 	private static final List<String> COMMANDS = Collections.singletonList("other");

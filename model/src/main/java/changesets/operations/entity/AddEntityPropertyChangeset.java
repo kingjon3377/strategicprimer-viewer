@@ -9,7 +9,7 @@ import common.entity.IEntity;
 import common.entity.IMutableEntity;
 import common.map.IMap;
 import common.map.IMutableMap;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -18,19 +18,19 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	private final String propertyName;
 	private final PropertyType propertyValue;
 
-	public AddEntityPropertyChangeset(final @NotNull EntityIdentifier id, final @NotNull String propertyName,
-	                                  final @NotNull PropertyType propertyValue) {
+	public AddEntityPropertyChangeset(final @NonNull EntityIdentifier id, final @NonNull String propertyName,
+	                                  final @NonNull PropertyType propertyValue) {
 		this.id = id;
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new RemoveEntityPropertyChangeset<>(id, propertyName, propertyValue);
 	}
 
-	private void checkPreconditions(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPreconditions(final @NonNull IMap map) throws PreconditionFailureException {
 		final IEntity entity = map.getEntity(id);
 		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot add property to entity that does not exist in the map");
@@ -40,7 +40,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
@@ -55,7 +55,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));

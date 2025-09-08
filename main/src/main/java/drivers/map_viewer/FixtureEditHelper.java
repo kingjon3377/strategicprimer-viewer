@@ -2,7 +2,7 @@ package drivers.map_viewer;
 
 import legacy.map.HasName;
 import legacy.map.HasOwner;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import legacy.map.fixtures.UnitMember;
 

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import legacy.map.fixtures.IResourcePile;
 
 import legacy.map.fixtures.resources.HarvestableFixture;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * TODO: Convert to an interface, or otherwise provide an alternative for

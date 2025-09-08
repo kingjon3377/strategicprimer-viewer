@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Extends {@link ImprovedComboBox} to keep a running collection of values.

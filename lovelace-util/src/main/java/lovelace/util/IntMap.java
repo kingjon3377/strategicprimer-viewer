@@ -1,7 +1,6 @@
 package lovelace.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	 */
 	@Override
 	public final @Nullable Item put(final Integer key, final Item item) {
-		final @Nullable Item retval;
+		final Item retval;
 		if (toRemove.contains(key)) {
 			retval = null;
 			toRemove.remove(key);
@@ -97,7 +96,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	}
 
 	@Override
-	public final @NotNull Set<Entry<Integer, Item>> entrySet() {
+	public final Set<Entry<Integer, Item>> entrySet() {
 		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey()))
 				.collect(Collectors.toUnmodifiableSet());
 	}

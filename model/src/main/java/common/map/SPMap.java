@@ -2,7 +2,6 @@ package common.map;
 
 import common.entity.EntityIdentifier;
 import common.entity.IEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,17 +20,17 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public final @NotNull Collection<IEntity> getAllEntities() {
+	public final Collection<IEntity> getAllEntities() {
 		return entityMap.values();
 	}
 
 	@Override
-	public final @NotNull Collection<MapRegion> getRegions() {
+	public final Collection<MapRegion> getRegions() {
 		return regionMap.values();
 	}
 
 	@Override
-	public final @NotNull IPlayerCollection getPlayers() {
+	public final IPlayerCollection getPlayers() {
 		return players.copy();
 	}
 
@@ -134,7 +133,7 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public final @NotNull IMutableMap copy() {
+	public final IMutableMap copy() {
 		final SPMap retval = new SPMap();
 		entityMap.values().forEach(retval::addEntity);
 		// Don't use addRegion() because precondition checking is expensive

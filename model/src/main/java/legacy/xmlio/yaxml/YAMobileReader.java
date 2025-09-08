@@ -47,7 +47,7 @@ import legacy.map.fixtures.mobile.Unicorn;
 import legacy.map.fixtures.mobile.Kraken;
 import legacy.map.fixtures.mobile.ImmortalAnimal;
 import common.xmlio.Warning;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for "mobile fixtures"

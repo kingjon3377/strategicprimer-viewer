@@ -1,7 +1,7 @@
 package report.generators;
 
 import legacy.DistanceComparatorImpl;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.io.IOException;

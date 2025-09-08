@@ -25,7 +25,7 @@ import legacy.map.fixtures.resources.Shrub;
 import legacy.map.fixtures.resources.StoneDeposit;
 import legacy.map.fixtures.resources.StoneKind;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

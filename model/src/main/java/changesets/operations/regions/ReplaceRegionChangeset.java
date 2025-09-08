@@ -5,26 +5,26 @@ import changesets.PreconditionFailureException;
 import common.map.IMap;
 import common.map.IMutableMap;
 import common.map.MapRegion;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public final class ReplaceRegionChangeset implements Changeset {
-	private final @NotNull MapRegion toRemove;
-	private final @NotNull MapRegion toAdd;
+	private final @NonNull MapRegion toRemove;
+	private final @NonNull MapRegion toAdd;
 
-	public ReplaceRegionChangeset(final @NotNull MapRegion toRemove, final @NotNull MapRegion toAdd) {
+	public ReplaceRegionChangeset(final @NonNull MapRegion toRemove, final @NonNull MapRegion toAdd) {
 		this.toRemove = toRemove;
 		this.toAdd = toAdd;
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new ReplaceRegionChangeset(toAdd, toRemove);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPrecondition(final @NonNull IMap map) throws PreconditionFailureException {
 		final Collection<MapRegion> regions = new ArrayList<>(map.getRegions());
 		if (!regions.remove(toRemove)) {
 			throw new PreconditionFailureException("Region to remove must exist in the map");
@@ -37,13 +37,13 @@ public final class ReplaceRegionChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.replaceMapRegion(toRemove, toAdd);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.replaceMapRegion(toRemove, toAdd);

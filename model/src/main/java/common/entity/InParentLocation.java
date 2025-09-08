@@ -1,6 +1,6 @@
 package common.entity;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * An entity can be located within, or "at the same location as", another entity. Care will need to be taken to ensure
@@ -8,5 +8,5 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param parent The entity that is the parent of the one this location object is embedded in.
  */
-public record InParentLocation(@NotNull EntityIdentifier parent) implements Location {
+public record InParentLocation(@NonNull EntityIdentifier parent) implements Location {
 }

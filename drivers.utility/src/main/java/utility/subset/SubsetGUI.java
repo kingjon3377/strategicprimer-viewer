@@ -15,7 +15,7 @@ import drivers.common.UtilityGUI;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.UtilityMenuHandler;
 import drivers.gui.common.SPMenu;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display the results graphically.
@@ -47,7 +47,7 @@ public final class SubsetGUI implements UtilityGUI {
 	}
 
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final @Nullable String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
 		}

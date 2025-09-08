@@ -12,8 +12,6 @@ import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingBiConsumer;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingFunction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
 
@@ -35,6 +33,7 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.map.ILegacyMap;
 
+import org.jspecify.annotations.Nullable;
 import report.TabularReportGenerator;
 
 import java.util.HashMap;
@@ -181,7 +180,7 @@ import org.takes.http.Exit;
 		}
 	}
 
-	private @NotNull ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> getReportCreator(
+	private ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> getReportCreator(
 			final Map<Path, ILegacyMap> mapping, final Map<Pair<String, String>, StringBuilder> builders) {
 		final IOThrowingFunction<Path, IOThrowingFunction<String, IOThrowingConsumer<String>>> filenameFunction =
 				base -> {
@@ -190,7 +189,8 @@ import org.takes.http.Exit;
 							k -> new StringBuilder())::append;
 				};
 
-		return (map, mapFile) -> {
+		// Explicit types given here so we can annotate mapFile with @Nullable
+		return (ILegacyMap map, @Nullable Path mapFile) -> {
 					try {
 						if (Objects.isNull(mapFile)) {
 							LovelaceLogger.error("Asked to create reports from map with no filename");

@@ -4,8 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -86,7 +85,7 @@ public final class ImmortalsTabularReportGenerator implements ITableGenerator<Im
 	}
 
 	@Override
-	public @NotNull Class<Immortal> getTableClass() {
+	public Class<Immortal> getTableClass() {
 		return Immortal.class;
 	}
 }

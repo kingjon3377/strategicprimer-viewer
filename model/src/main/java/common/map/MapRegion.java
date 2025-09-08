@@ -1,7 +1,5 @@
 package common.map;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.util.Collection;
@@ -35,7 +33,7 @@ public interface MapRegion {
 	 * @param regions a collection of regions
 	 * @return whether they have mutually unique IDs, and none overlaps another.
 	 */
-	static boolean areRegionsValid(final @NotNull Collection<? extends MapRegion> regions) {
+	static boolean areRegionsValid(final Collection<? extends MapRegion> regions) {
 		for (final MapRegion first : regions) {
 			for (final MapRegion second : regions) {
 				if (first == second) {

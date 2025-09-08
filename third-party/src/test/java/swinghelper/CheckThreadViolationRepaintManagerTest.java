@@ -1,8 +1,8 @@
 package swinghelper;
 
-import javax.swing.WindowConstants;
+import org.jspecify.annotations.Nullable;
 
-import org.jetbrains.annotations.Nullable;
+import javax.swing.WindowConstants;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;

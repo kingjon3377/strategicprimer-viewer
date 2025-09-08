@@ -3,7 +3,7 @@ package drivers.map_viewer;
 import drivers.common.IterableComparator;
 import lovelace.util.ActionWrapper;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.Objects;

@@ -11,7 +11,7 @@ import java.util.Set;
 
 import legacy.map.ILegacyMap;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.nio.file.Path;

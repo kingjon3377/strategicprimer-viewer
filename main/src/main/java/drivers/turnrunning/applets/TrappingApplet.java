@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class TrappingApplet extends HuntGeneralApplet {
 	public TrappingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {

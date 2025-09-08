@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package worker.common;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

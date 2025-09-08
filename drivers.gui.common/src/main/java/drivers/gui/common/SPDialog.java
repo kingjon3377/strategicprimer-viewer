@@ -2,7 +2,7 @@ package drivers.gui.common;
 
 import javax.swing.JRootPane;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;

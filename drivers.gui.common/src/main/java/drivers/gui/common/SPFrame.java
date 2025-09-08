@@ -4,7 +4,7 @@ import java.io.Serial;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 

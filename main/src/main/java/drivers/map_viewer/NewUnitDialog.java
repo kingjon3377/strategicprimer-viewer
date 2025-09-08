@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import lovelace.util.Platform;
 import lovelace.util.ListenedButton;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import drivers.common.PlayerChangeListener;
 import worker.common.NewUnitListener;

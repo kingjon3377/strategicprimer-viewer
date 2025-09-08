@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import org.javatuples.Pair;
 
@@ -146,7 +146,7 @@ import org.takes.http.Exit;
 			}
 			port = PORT;
 		}
-		@Nullable Player player;
+		Player player;
 		try {
 			player = model.getMap().getPlayers().getPlayer(
 					Integer.parseInt(options.getArgument("--player")));

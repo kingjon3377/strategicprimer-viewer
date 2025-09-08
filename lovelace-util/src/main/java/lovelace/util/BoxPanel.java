@@ -1,7 +1,5 @@
 package lovelace.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -39,10 +37,10 @@ public final class BoxPanel extends JPanel {
 	/**
 	 * Which direction the panel is laid out, for use in the helper methods.
 	 */
-	private final @NotNull BoxAxis axis;
+	private final BoxAxis axis;
 
 	@SuppressWarnings("MagicConstant")
-	public BoxPanel(final @NotNull BoxAxis layoutAxis) {
+	public BoxPanel(final BoxAxis layoutAxis) {
 		axis = layoutAxis;
 		setLayout(new BoxLayout(this, axis.axis));
 	}

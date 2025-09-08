@@ -3,7 +3,7 @@ package drivers.map_viewer;
 import drivers.common.DriverFailedException;
 import drivers.gui.common.IMenuBroker;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.io.FileNotFoundException;

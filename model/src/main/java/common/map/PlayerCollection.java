@@ -1,7 +1,5 @@
 package common.map;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -137,7 +135,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public void setCurrentPlayer(final Player player) {
-		final @Nullable Player actual = players.get(player.playerId());
+		final Player actual = players.get(player.playerId());
 		if (Objects.isNull(actual)) {
 			throw new IllegalArgumentException("Player does not exist in the collection");
 		} else {

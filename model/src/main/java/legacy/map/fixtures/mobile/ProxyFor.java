@@ -2,7 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import java.util.Collection;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -32,7 +32,7 @@ public interface ProxyFor<Type> /* implements Type */ {
 	 * TODO: Return Optional instead?
 	 */
 	default @Nullable <MemberType> MemberType getConsensus(final Function<Type, @Nullable MemberType> accessor) {
-		@Nullable MemberType retval = null;
+		MemberType retval = null;
 		for (final Type proxied : getProxied()) {
 			final MemberType item = accessor.apply(proxied);
 			if (Objects.isNull(retval)) {

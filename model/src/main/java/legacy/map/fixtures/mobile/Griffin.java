@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Griffin extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Griffin(final int id) {
@@ -9,7 +7,7 @@ public final class Griffin extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Griffin copy(final CopyBehavior zero) {
+	public Griffin copy(final CopyBehavior zero) {
 		return new Griffin(getId());
 	}
 }

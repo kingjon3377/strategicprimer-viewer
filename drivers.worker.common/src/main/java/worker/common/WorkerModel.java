@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import legacy.map.fixtures.mobile.worker.IJob;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;

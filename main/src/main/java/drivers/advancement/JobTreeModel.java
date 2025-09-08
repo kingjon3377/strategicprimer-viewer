@@ -7,7 +7,7 @@ import java.util.function.ToIntFunction;
 import javax.swing.tree.DefaultTreeSelectionModel;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import legacy.map.HasName;
 

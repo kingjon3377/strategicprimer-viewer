@@ -35,7 +35,7 @@ import java.util.concurrent.Executor;
 import legacy.map.fixtures.resources.CultivationStatus;
 import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.xmlio.TestXMLIO;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.sqlite.SQLiteDataSource;
 

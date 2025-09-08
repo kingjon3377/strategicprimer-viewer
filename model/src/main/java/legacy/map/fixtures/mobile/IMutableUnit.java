@@ -7,7 +7,6 @@ import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;
 import legacy.map.HasMutableOwner;
 import legacy.map.HasMutablePortrait;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * An interface for mutator methods on units.
@@ -44,6 +43,5 @@ public interface IMutableUnit extends IUnit, HasMutableKind, HasMutableName,
 	 * Clone the unit.
 	 */
 	@Override
-	@NotNull
 	IMutableUnit copy(CopyBehavior zero);
 }

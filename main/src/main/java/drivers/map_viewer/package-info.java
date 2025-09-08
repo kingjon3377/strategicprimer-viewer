@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package drivers.map_viewer;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

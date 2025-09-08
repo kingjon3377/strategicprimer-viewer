@@ -7,7 +7,6 @@ import legacy.map.fixtures.resources.StoneDeposit;
 import lovelace.util.LovelaceLogger;
 import static lovelace.util.MatchingValue.matchingValues;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -65,6 +64,7 @@ import legacy.map.fixtures.terrain.Forest;
 import legacy.map.fixtures.towns.IMutableFortress;
 import legacy.map.fixtures.towns.Village;
 import legacy.map.fixtures.towns.IFortress;
+import org.jspecify.annotations.Nullable;
 
 import static java.util.function.Predicate.not;
 import static lovelace.util.MatchingValue.matchingValue;
@@ -766,7 +766,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public final boolean copyToSubMaps(final Point location, final TileFixture fixture,
 	                                   final IFixture.CopyBehavior zero) {
-		final @Nullable TileFixture matching;
+		final TileFixture matching;
 		boolean retval = false;
 		switch (fixture) {
 			case final FakeFixture fake -> { // must be a block, won't compile if inlined

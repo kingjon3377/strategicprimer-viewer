@@ -1,6 +1,6 @@
 package drivers.advancement;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Dimension;
 import java.io.Serial;

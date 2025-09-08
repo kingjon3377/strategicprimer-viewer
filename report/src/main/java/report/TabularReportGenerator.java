@@ -2,8 +2,7 @@ package report;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingFunction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.text.ParseException;
@@ -74,7 +73,7 @@ public final class TabularReportGenerator {
 			final ThrowingFunction<String, ? extends ThrowingConsumer<String, IOException>, IOException> source,
 			final ICLIHelper cli) throws IOException {
 		final Player player = map.getCurrentPlayer();
-		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final Point hq = ReportGeneratorHelper.findHQ(map, player);
 		createTabularReports(map, source, cli, hq);
 	}
 
@@ -106,8 +105,8 @@ public final class TabularReportGenerator {
 		}
 	}
 
-	private static @NotNull List<ITableGenerator<?>> getTableGenerators(final ILegacyMap map,
-	                                                                    final @Nullable Point hq) {
+	private static List<ITableGenerator<?>> getTableGenerators(final ILegacyMap map,
+	                                                           final @Nullable Point hq) {
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
 		final int currentTurn = map.getCurrentTurn();
@@ -164,7 +163,7 @@ public final class TabularReportGenerator {
 	 */
 	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final ILegacyMap map) {
 		final Player player = map.getCurrentPlayer();
-		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final Point hq = ReportGeneratorHelper.findHQ(map, player);
 		createGUITabularReports(consumer, map, hq);
 	}
 

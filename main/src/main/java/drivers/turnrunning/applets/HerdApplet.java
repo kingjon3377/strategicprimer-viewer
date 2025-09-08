@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import query.HerdModel;
 import query.MammalModel;
 import query.PoultryModel;
@@ -71,7 +71,7 @@ import query.SmallAnimalModel;
 										Stream.of(SmallAnimalModel.values())))
 						.collect(Collectors.toList());
 		while (true) {
-			final @Nullable HerdModel retval = cli.chooseFromList(animalKindPossibilities,
+			final HerdModel retval = cli.chooseFromList(animalKindPossibilities,
 					"What kind of animal(s) is/are %s?".formatted(animal),
 					"No animal kinds found", "Kind of animal:",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
@@ -98,7 +98,7 @@ import query.SmallAnimalModel;
 			return null;
 		}
 		final StringBuilder buffer = new StringBuilder();
-		final @Nullable IFortress home = containingFortress(unit);
+		final IFortress home = containingFortress(unit);
 		for (final String kind : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
@@ -107,7 +107,7 @@ import query.SmallAnimalModel;
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final ICLIHelper.BooleanResponse skip = ICLIHelper.BooleanResponse.NO;
 			final Either<HerdModel, ICLIHelper.BooleanResponse> herdModelEither = chooseHerdModel(kind);
-			final @Nullable HerdModel herdModel = herdModelEither.fromLeft().orElse(null);
+			final HerdModel herdModel = herdModelEither.fromLeft().orElse(null);
 			final ICLIHelper.BooleanResponse herdModelResp = herdModelEither.fromRight()
 					.orElse(ICLIHelper.BooleanResponse.NO);
 			if (Objects.isNull(herdModel)) {

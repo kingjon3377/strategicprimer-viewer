@@ -15,7 +15,7 @@ import legacy.map.PlayerImpl;
 import common.xmlio.Warning;
 
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for {@link Player}s."

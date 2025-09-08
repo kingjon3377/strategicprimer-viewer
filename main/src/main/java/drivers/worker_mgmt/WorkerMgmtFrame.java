@@ -14,7 +14,7 @@ import java.util.List;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.MenuUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 
@@ -98,7 +98,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
 
-		final @Nullable OrdersPanel.IOrdersConsumer resultsSupplier;
+		final OrdersPanel.IOrdersConsumer resultsSupplier;
 		if ("true".equals(options.getArgument("--edit-results"))) {
 			resultsSupplier = model::setUnitResults;
 		} else {

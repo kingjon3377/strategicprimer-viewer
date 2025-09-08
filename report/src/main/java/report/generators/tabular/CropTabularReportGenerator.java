@@ -6,8 +6,7 @@ import legacy.DistanceComparatorImpl;
 import legacy.map.HasExtent;
 import legacy.map.HasPopulation;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -160,7 +159,7 @@ public final class CropTabularReportGenerator implements ITableGenerator</*Fores
 	}
 
 	@Override
-	public @NotNull Class<TileFixture> getTableClass() {
+	public Class<TileFixture> getTableClass() {
 		return TileFixture.class;
 	}
 }

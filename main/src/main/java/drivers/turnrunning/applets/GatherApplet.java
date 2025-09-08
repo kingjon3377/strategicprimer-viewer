@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class GatherApplet extends AbstractTurnApplet {
 	public GatherApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {

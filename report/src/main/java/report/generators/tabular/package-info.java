@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package report.generators.tabular;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

@@ -17,7 +17,7 @@ import legacy.map.Player;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.mobile.IUnit;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 

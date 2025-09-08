@@ -1,4 +1,4 @@
 @NullMarked
-package impl.xmlio;
+package legacy.map.fixtures;
 
 import org.jspecify.annotations.NullMarked;

@@ -3,8 +3,6 @@ package lovelace.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * A class encapsulating a range of integers, to fluently test whether other
  * integers are in the range. (Replacement for Ceylon's {@code Range<Integer>}.)
@@ -28,7 +26,7 @@ public record Range(int lowerBound, int upperBound) implements Iterable<Integer>
 	}
 
 	@Override
-	public @NotNull Iterator<Integer> iterator() {
+	public Iterator<Integer> iterator() {
 		return new RangeIterator(lowerBound, upperBound);
 	}
 

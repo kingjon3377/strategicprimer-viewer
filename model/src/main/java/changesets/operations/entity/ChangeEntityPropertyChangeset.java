@@ -9,7 +9,7 @@ import common.entity.IEntity;
 import common.entity.IMutableEntity;
 import common.map.IMap;
 import common.map.IMutableMap;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -29,11 +29,11 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new ChangeEntityPropertyChangeset<>(id, propertyName, newValue, oldValue);
 	}
 
-	private void checkPreconditions(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPreconditions(final @NonNull IMap map) throws PreconditionFailureException {
 		final IEntity entity = map.getEntity(id);
 		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot change property of non-existent entity");
@@ -43,7 +43,7 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<ToType> property = new EntityProperty<>(propertyName, newValue);
@@ -60,7 +60,7 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));

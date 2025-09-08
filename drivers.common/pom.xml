@@ -14,10 +14,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.jetbrains</groupId>
-      <artifactId>annotations</artifactId>
-      <version>${jetbrains.annotations.version}</version>
-      <scope>compile</scope>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <version>${jspecify.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.strategic-primer</groupId>
@@ -39,12 +38,6 @@
       <artifactId>junit-jupiter</artifactId>
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>org.eclipse.jdt.annotation</artifactId>
-      <version>2.3.100</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>

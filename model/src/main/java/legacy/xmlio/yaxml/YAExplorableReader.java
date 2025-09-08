@@ -16,7 +16,7 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnsupportedTagException;
 
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for Caves and Battlefields.

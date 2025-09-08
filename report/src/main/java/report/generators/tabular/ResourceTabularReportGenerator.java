@@ -6,8 +6,7 @@ import java.util.List;
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -200,7 +199,7 @@ public final class ResourceTabularReportGenerator
 	}
 
 	@Override
-	public @NotNull Class<IFixture> getTableClass() {
+	public Class<IFixture> getTableClass() {
 		return IFixture.class;
 	}
 }

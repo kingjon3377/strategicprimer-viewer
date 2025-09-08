@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package drivers.exploration.old;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

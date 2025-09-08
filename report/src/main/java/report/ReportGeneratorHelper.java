@@ -3,7 +3,7 @@ package report;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.IWorker;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 import lovelace.util.IntMap;

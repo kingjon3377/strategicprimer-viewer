@@ -2,7 +2,7 @@ package impl.xmlio.exceptions;
 
 import common.xmlio.SPFormatException;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;

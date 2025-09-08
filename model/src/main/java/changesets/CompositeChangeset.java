@@ -2,7 +2,6 @@ package changesets;
 
 import common.map.IMap;
 import common.map.IMutableMap;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -15,14 +14,14 @@ public final class CompositeChangeset implements Changeset {
 	private final List<Changeset> changesets;
 
 	@SuppressWarnings("TypeMayBeWeakened") // Order matters.
-	public CompositeChangeset(final @NotNull List<Changeset> changesets) {
+	public CompositeChangeset(final List<Changeset> changesets) {
 		if (changesets.isEmpty()) {
 			throw new IllegalArgumentException("Cannot have an empty composite changeset");
 		}
 		this.changesets = List.copyOf(changesets);
 	}
 
-	public CompositeChangeset(final @NotNull Changeset... changesets) {
+	public CompositeChangeset(final Changeset... changesets) {
 		if (changesets.length == 0) {
 			throw new IllegalArgumentException("Cannot have an empty composite changeset");
 		}
@@ -30,12 +29,12 @@ public final class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public Changeset invert() {
 		return new CompositeChangeset(changesets.reversed().stream().map(Changeset::invert).toList());
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		final Deque<Changeset> alreadyApplied = new LinkedList<>();
 		try {
 			for (final Changeset changeset : changesets) {
@@ -58,7 +57,7 @@ public final class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		IMap retval = map;
 		for (final Changeset changeset : changesets) {
 			retval = changeset.apply(retval);

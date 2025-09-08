@@ -4,7 +4,6 @@ import legacy.map.HasMutableId;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
 import legacy.map.fixtures.resources.ExposureStatus;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -25,7 +24,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * The kind of ground.
 	 */
 	@Override
-	public @NotNull String getKind() {
+	public String getKind() {
 		return kind;
 	}
 
@@ -78,7 +77,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public @NotNull String getImage() {
+	public String getImage() {
 		return image;
 	}
 
@@ -86,7 +85,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(final @NotNull String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -94,7 +93,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * Clone the object.
 	 */
 	@Override
-	public @NotNull Ground copy(final @NotNull IFixture.CopyBehavior zero) {
+	public Ground copy(final IFixture.CopyBehavior zero) {
 		final Ground retval = new Ground(id, kind, exposure);
 		retval.setImage(image);
 		return retval;
@@ -104,7 +103,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * Default image depends on whether the ground is exposed or not.
 	 */
 	@Override
-	public @NotNull String getDefaultImage() {
+	public String getDefaultImage() {
 		return switch (exposure) {
 			case EXPOSED -> "expground.png";
 			case HIDDEN -> "blank.png";
@@ -133,7 +132,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	}
 
 	@Override
-	public @NotNull String getShortDescription() {
+	public String getShortDescription() {
 		return (switch (exposure) {
 			case EXPOSED -> "Exposed %s ground";
 			case HIDDEN -> "Unexposed %s ground";
@@ -150,7 +149,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * kind and either both or neither are exposed.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final @NotNull IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final Ground that) {
@@ -164,7 +163,7 @@ public final class Ground implements MineralFixture, HasMutableImage, HasMutable
 	 * This works as the plural for our purposes, since it functions as a collective noun.
 	 */
 	@Override
-	public @NotNull String getPlural() {
+	public String getPlural() {
 		return "Ground";
 	}
 

@@ -3,7 +3,6 @@ package legacy.map.fixtures.mobile;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -64,7 +63,7 @@ public final class Dragon implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public @NotNull Dragon copy(final CopyBehavior zero) {
+	public Dragon copy(final CopyBehavior zero) {
 		final Dragon retval = new Dragon(kind, id);
 		retval.setImage(image);
 		return retval;

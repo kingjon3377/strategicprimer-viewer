@@ -12,8 +12,7 @@ import common.map.fixtures.mobile.worker.WorkerStats;
 
 import java.util.Collection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for Workers.
@@ -43,7 +42,6 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, H
 	 * Clone the object.
 	 */
 	@Override
-	@NotNull
 	IWorker copy(CopyBehavior zero);
 
 	/**

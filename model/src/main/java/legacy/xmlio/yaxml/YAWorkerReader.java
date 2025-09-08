@@ -18,7 +18,7 @@ import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.Job;
 import legacy.map.fixtures.mobile.worker.Skill;
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Characters;

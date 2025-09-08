@@ -3,7 +3,7 @@ package legacy;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.NotSerializableException;

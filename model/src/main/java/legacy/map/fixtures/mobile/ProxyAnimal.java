@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import legacy.map.IFixture;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A proxy for corresponding animal populations in different maps.
@@ -61,7 +60,7 @@ import org.jetbrains.annotations.NotNull;
 	}
 
 	@Override
-	public @NotNull Animal copy(final CopyBehavior zero) {
+	public Animal copy(final CopyBehavior zero) {
 		return new ProxyAnimal(animals.stream().map((a) -> a.copy(zero)).toArray(Animal[]::new));
 	}
 

@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Djinn extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Djinn(final int id) {
@@ -9,7 +7,7 @@ public final class Djinn extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Djinn copy(final CopyBehavior zero) {
+	public Djinn copy(final CopyBehavior zero) {
 		return new Djinn(getId());
 	}
 }

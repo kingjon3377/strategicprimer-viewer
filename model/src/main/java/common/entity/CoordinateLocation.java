@@ -1,6 +1,6 @@
 package common.entity;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * An entity can be located in a particular region of a map at particular coordinates. Note that this class cannot
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  *                          TODO: Is row/column how we want to represent position within a region?
  * @param column The column within the region where the entity is located
  */
-public record CoordinateLocation(@NotNull String world, int region, int row, int column) implements Location {
+public record CoordinateLocation(@NonNull String world, int region, int row, int column) implements Location {
 	public CoordinateLocation {
 		if (region < -1) {
 			throw new IllegalArgumentException("Region must be -1 if unknown, or nonnegative");

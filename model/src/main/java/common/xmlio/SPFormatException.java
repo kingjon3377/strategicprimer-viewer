@@ -1,7 +1,7 @@
 package common.xmlio;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.stream.Location;
 import java.io.Serial;

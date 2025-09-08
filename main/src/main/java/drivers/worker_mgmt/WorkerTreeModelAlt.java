@@ -3,7 +3,7 @@ package drivers.worker_mgmt;
 import legacy.map.HasName;
 import legacy.map.HasOwner;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -655,7 +655,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 				new IteratorWrapper<>(new EnumerationWrapper<>(enumeration, WorkerTreeNode.class));
 		@SuppressWarnings("rawtypes") final Iterable<? extends WorkerTreeNode> sequence;
 		boolean leading;
-		final @Nullable WorkerTreeNode<?> toTrim;
+		final WorkerTreeNode<?> toTrim;
 		if (Objects.isNull(starting)) {
 			sequence = wrapped;
 			leading = false;

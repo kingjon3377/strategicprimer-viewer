@@ -5,8 +5,7 @@ import java.util.List;
 import legacy.DistanceComparatorImpl;
 import legacy.map.fixtures.resources.ExposureStatus;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -121,7 +120,7 @@ public final class DiggableTabularReportGenerator implements ITableGenerator<Min
 	}
 
 	@Override
-	public @NotNull Class<MineralFixture> getTableClass() {
+	public Class<MineralFixture> getTableClass() {
 		return MineralFixture.class;
 	}
 }

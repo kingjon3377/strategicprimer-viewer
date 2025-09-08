@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import lovelace.util.MenuUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.swing.tree.TreePath;
 import javax.swing.JScrollPane;
@@ -188,7 +188,7 @@ public final class OrdersPanel extends BorderedPanel implements OrdersContainer 
 			}
 			case final String sel -> {
 				area.setEnabled(true);
-				@Nullable String orders = null;
+				String orders = null;
 				final int turn = spinnerModel.getNumber().intValue();
 				for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
 					if (Objects.isNull(orders)) {

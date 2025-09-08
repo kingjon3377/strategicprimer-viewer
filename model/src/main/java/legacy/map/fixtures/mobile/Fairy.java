@@ -3,7 +3,6 @@ package legacy.map.fixtures.mobile;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -64,7 +63,7 @@ public final class Fairy implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public @NotNull Fairy copy(final CopyBehavior zero) {
+	public Fairy copy(final CopyBehavior zero) {
 		final Fairy retval = new Fairy(kind, id);
 		retval.setImage(image);
 		return retval;

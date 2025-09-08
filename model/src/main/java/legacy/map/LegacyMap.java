@@ -31,7 +31,7 @@ import java.util.function.BiPredicate;
 
 import legacy.map.fixtures.towns.AbstractTown;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A class to represent a game-world map and its contents.
@@ -264,7 +264,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 	@Override
 	public @Nullable TileType setBaseTerrain(final Point key, final @Nullable TileType item) {
 		status = ModificationStatus.Modified; // TODO: Only if this is a change
-		final @Nullable TileType retval = getBaseTerrain(key);
+		final TileType retval = getBaseTerrain(key);
 		if (Objects.isNull(item)) {
 			terrain.remove(key);
 		} else {
@@ -597,8 +597,8 @@ public final class LegacyMap implements IMutableLegacyMap {
 	                        final BiPredicate<Point, TileFixture> movedFrom) {
 		int count = 0;
 		boolean unmatched = true;
-		@Nullable SubsetType match = null;
-		@Nullable Point matchPoint = null;
+		SubsetType match = null;
+		Point matchPoint = null;
 		boolean exactly = false;
 		for (final Pair<SubsetType, Point> pair : list) {
 			count++;

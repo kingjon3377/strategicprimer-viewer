@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An abstract superclass for towns etc.

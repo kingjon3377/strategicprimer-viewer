@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import org.javatuples.Pair;
 
@@ -191,7 +191,7 @@ import java.util.function.Consumer;
 						builder.append("%s must be a non-negative number.%n".formatted(stat));
 					}
 				}
-				final @Nullable Component parent = getParent();
+				final Component parent = getParent();
 				JOptionPane.showMessageDialog(parent, builder.toString(),
 						"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
 			}

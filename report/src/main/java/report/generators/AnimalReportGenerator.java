@@ -2,7 +2,7 @@ package report.generators;
 
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import lovelace.util.DelayedRemovalMap;

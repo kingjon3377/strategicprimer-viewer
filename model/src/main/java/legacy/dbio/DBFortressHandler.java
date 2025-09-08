@@ -22,7 +22,7 @@ import legacy.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.towns.TownSize;
 import common.xmlio.Warning;
 import legacy.map.fixtures.FortressMember;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static io.jenetics.facilejdbc.Param.value;
 

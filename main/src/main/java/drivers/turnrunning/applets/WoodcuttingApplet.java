@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class WoodcuttingApplet extends AbstractTurnApplet {
 	private static final int CU_FT_PER_TREE = 300;

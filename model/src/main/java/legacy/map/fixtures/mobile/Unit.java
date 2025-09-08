@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A unit in the map.
@@ -203,7 +202,7 @@ public final class Unit implements IMutableUnit {
 	 * but not *their* details?
 	 */
 	@Override
-	public @NotNull Unit copy(final CopyBehavior zero) {
+	public Unit copy(final CopyBehavior zero) {
 		final Unit retval = new Unit(owner, kind, name, id);
 		if (zero == CopyBehavior.KEEP) {
 			retval.orders.putAll(orders);

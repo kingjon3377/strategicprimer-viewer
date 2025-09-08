@@ -3,7 +3,6 @@ package legacy.map.fixtures.mobile;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -64,7 +63,7 @@ public final class Giant implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public @NotNull Giant copy(final CopyBehavior zero) {
+	public Giant copy(final CopyBehavior zero) {
 		final Giant retval = new Giant(kind, id);
 		retval.setImage(image);
 		return retval;

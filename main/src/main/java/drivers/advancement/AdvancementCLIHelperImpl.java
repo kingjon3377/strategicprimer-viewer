@@ -26,7 +26,7 @@ import legacy.map.fixtures.mobile.worker.Skill;
 
 import drivers.common.IAdvancementModel;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import drivers.common.LevelGainListener;
 
 /**

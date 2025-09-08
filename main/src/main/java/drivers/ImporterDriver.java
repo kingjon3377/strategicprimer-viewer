@@ -49,7 +49,7 @@ import legacy.map.fixtures.terrain.Forest;
 
 import exploration.common.SurroundingPointIterable;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An app to let the user create a map from an image.
@@ -125,7 +125,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final @Nullable String... args) throws DriverFailedException {
 		final int size;
 		try {
 			size = Integer.parseInt(options.getArgument("--size"));

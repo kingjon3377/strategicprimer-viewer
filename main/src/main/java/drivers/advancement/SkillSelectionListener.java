@@ -3,7 +3,7 @@ package drivers.advancement;
 import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.IJob;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for objects that want to know when the user selects a Skill from a list or tree.

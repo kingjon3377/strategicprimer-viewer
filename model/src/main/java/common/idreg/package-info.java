@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package common.idreg;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Thunderbird extends ImmortalAnimal {
 	@SuppressWarnings("MagicNumber")
 	public Thunderbird(final int id) {
@@ -9,7 +7,7 @@ public final class Thunderbird extends ImmortalAnimal {
 	}
 
 	@Override
-	public @NotNull Thunderbird copy(final CopyBehavior zero) {
+	public Thunderbird copy(final CopyBehavior zero) {
 		return new Thunderbird(getId());
 	}
 }

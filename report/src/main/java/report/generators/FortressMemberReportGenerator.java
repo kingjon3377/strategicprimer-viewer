@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.util.Comparator;

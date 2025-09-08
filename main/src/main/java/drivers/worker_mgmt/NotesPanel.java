@@ -19,7 +19,7 @@ import legacy.map.fixtures.UnitMember;
 
 import java.awt.Toolkit;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public final class NotesPanel extends BorderedPanel
 		implements UnitMemberListener, PlayerChangeListener {

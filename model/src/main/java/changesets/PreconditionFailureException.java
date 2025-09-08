@@ -1,7 +1,5 @@
 package changesets;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serial;
 import java.util.List;
 
@@ -12,7 +10,7 @@ public class PreconditionFailureException extends ChangesetFailureException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public PreconditionFailureException(final @NotNull String message, final @NotNull String... failedPreconditions) {
+	public PreconditionFailureException(final String message, final String... failedPreconditions) {
 		super(message);
 		this.failedPreconditions = List.of(failedPreconditions);
 	}

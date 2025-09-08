@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A village in the map.

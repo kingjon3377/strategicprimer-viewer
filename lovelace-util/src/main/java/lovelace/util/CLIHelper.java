@@ -1,8 +1,7 @@
 package lovelace.util;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -32,7 +31,7 @@ public final class CLIHelper {
 	@SafeVarargs
 	public static @Nullable <Element> Element chooseFromListWithAuto(
 			final @Nullable String header,
-			final @NotNull String prompt,
+			final String prompt,
 			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
 			if (choices.length == 1) {
@@ -46,7 +45,7 @@ public final class CLIHelper {
 					System.out.println(header);
 				}
 				printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
-				final @Nullable Integer index = inputNumber(prompt);
+				final Integer index = inputNumber(prompt);
 				if (Objects.nonNull(index) && index >= 0 && index < choices.length) {
 					return choices[index].getValue1();
 				} else {
@@ -70,14 +69,14 @@ public final class CLIHelper {
 	@SafeVarargs
 	public static @Nullable <Element> Element chooseFromList(
 			final @Nullable String header,
-			final @NotNull String prompt,
+			final String prompt,
 			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
 			if (Objects.nonNull(header)) {
 				System.out.println(header);
 			}
 			printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
-			final @Nullable Integer index = inputNumber(prompt);
+			final Integer index = inputNumber(prompt);
 			if (Objects.nonNull(index) && index >= 0 && index < choices.length) {
 				return choices[index].getValue1();
 			} else {

@@ -10,7 +10,7 @@ import drivers.exploration.PlayerChangeSource;
 import drivers.gui.common.IMenuBroker;
 import lovelace.util.Decimalize;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 import java.nio.file.Path;

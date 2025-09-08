@@ -1,7 +1,7 @@
 package common.entity;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -14,21 +14,21 @@ import java.util.Collection;
  * its orders next.
  */
 public interface IEntity {
-	@NotNull
+	@NonNull
 	Location getLocation();
 
-	@NotNull
+	@NonNull
 	EntityIdentifier getId();
 
-	@NotNull
+	@NonNull
 	String getType();
 
-	boolean hasProperty(@NotNull String propertyName);
+	boolean hasProperty(@NonNull String propertyName);
 
 	@Nullable
-	EntityProperty<?> getProperty(@NotNull String propertyName);
+	EntityProperty<?> getProperty(@NonNull String propertyName);
 
-	@NotNull
+	@NonNull
 	Collection<EntityProperty<?>> getAllProperties();
 
 	IEntity copy();

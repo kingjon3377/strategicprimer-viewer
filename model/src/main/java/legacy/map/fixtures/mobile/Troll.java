@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Troll extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Troll(final int id) {
@@ -9,7 +7,7 @@ public final class Troll extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Troll copy(final CopyBehavior zero) {
+	public Troll copy(final CopyBehavior zero) {
 		return new Troll(getId());
 	}
 }

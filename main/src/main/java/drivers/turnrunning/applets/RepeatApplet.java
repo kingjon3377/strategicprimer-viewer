@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.StreamSupport;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class RepeatApplet implements TurnApplet {
 	public RepeatApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {

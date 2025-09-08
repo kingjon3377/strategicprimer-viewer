@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.Cave;
 import legacy.map.fixtures.resources.ExposureStatus;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.util.Comparator;

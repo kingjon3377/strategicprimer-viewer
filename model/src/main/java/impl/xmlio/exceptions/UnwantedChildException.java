@@ -10,7 +10,7 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.

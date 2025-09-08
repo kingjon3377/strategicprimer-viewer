@@ -1,7 +1,6 @@
 package report;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import lovelace.util.DelayedRemovalMap;
@@ -78,7 +77,7 @@ public final class ReportGenerator {
 				""");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				ReportGeneratorHelper.getFixtures(map);
-		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		createSubReports(builder, fixtures, map, player,
 				new FortressReportGenerator(player, dimensions, currentTurn, hq),

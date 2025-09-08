@@ -9,12 +9,12 @@ import drivers.common.cli.ICLIHelper;
 import legacy.map.Player;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.IUnit;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public final class AdvancementCLI implements CLIDriver {
 		final List<IUnit> units = model.getUnits(player).stream()
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
-			final @Nullable IUnit chosen = cli.chooseFromList((List<? extends IUnit>) units,
+			final IUnit chosen = cli.chooseFromList((List<? extends IUnit>) units,
 					"%s's units:".formatted(player.getName()), "No unadvanced units remain.", "Chosen unit:",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {
@@ -89,7 +89,7 @@ public final class AdvancementCLI implements CLIDriver {
 		final List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false)
 				.collect(Collectors.toList());
 		while (!playerList.isEmpty()) {
-			final @Nullable Player chosen = cli.chooseFromList((List<? extends Player>) playerList, "Available players:",
+			final Player chosen = cli.chooseFromList((List<? extends Player>) playerList, "Available players:",
 					"No players found.", "Chosen player:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {
 				break;

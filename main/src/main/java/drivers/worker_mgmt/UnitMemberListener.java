@@ -4,7 +4,7 @@ import java.util.EventListener;
 
 import legacy.map.fixtures.UnitMember;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for objects that want to know when a new unit member (usually a worker) is selected.

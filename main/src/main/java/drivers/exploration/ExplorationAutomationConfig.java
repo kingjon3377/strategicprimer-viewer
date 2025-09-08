@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class ExplorationAutomationConfig {
 	public ExplorationAutomationConfig(final Player player) {

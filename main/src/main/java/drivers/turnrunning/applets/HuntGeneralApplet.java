@@ -29,7 +29,7 @@ import java.util.function.Supplier;
 
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 // TODO: Once we're on Java 17, make "sealed", limited to HuntingApplet, FishingApplet, and TrappingApplet
 /* package */ abstract class HuntGeneralApplet extends AbstractTurnApplet {

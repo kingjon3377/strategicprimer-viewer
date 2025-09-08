@@ -1,7 +1,6 @@
 package drivers.gui.common.about;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -53,7 +52,7 @@ public final class AboutDialog extends SPDialog {
 		pack();
 	}
 
-	private static @NotNull JScrollPane createMainPanel(final String html) {
+	private static JScrollPane createMainPanel(final String html) {
 		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);

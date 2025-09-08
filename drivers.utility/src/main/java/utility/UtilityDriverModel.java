@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.SingletonRandom;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import legacy.map.TileType;
 

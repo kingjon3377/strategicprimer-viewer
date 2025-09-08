@@ -9,7 +9,7 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class FishingApplet extends HuntGeneralApplet {
 	public FishingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {

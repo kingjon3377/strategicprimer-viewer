@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import javax.swing.JPanel;

@@ -21,7 +21,7 @@ import legacy.map.fixtures.mobile.Unit;
 import legacy.map.fixtures.towns.IFortress;
 import common.xmlio.Warning;
 import legacy.map.fixtures.UnitMember;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static io.jenetics.facilejdbc.Param.value;
 

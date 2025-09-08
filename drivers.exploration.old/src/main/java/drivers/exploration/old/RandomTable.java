@@ -1,7 +1,7 @@
 package drivers.exploration.old;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import legacy.map.TileType;
 import legacy.map.Point;
 import legacy.map.MapDimensions;

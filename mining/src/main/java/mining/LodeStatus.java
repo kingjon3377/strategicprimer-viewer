@@ -3,7 +3,7 @@ package mining;
 import java.util.Random;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.DoubleSupplier;
 

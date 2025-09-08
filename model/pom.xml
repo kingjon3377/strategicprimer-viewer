@@ -14,10 +14,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.jetbrains</groupId>
-      <artifactId>annotations</artifactId>
-      <version>${jetbrains.annotations.version}</version>
-      <scope>compile</scope>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <version>${jspecify.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

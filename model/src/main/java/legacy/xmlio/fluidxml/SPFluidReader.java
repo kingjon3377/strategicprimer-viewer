@@ -61,7 +61,7 @@ import legacy.xmlio.IMapReader;
 import lovelace.util.IteratorWrapper;
 import lovelace.util.TypesafeXMLEventReader;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -110,8 +110,8 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 	                            final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
 		final String namespace = element.getName().getNamespaceURI();
 		final String tag = element.getName().getLocalPart().toLowerCase();
-		if (namespace.isEmpty() || namespace.equals(SP_NAMESPACE) ||
-				namespace.equals(XMLConstants.NULL_NS_URI)) {
+		if (namespace.isEmpty() || Objects.equals(namespace, SP_NAMESPACE) ||
+				Objects.equals(namespace, XMLConstants.NULL_NS_URI)) {
 			if ("animal".equals(tag) &&
 					Immortal.IMMORTAL_ANIMALS.contains(getAttribute(element, path, "kind")) &&
 					!getBooleanAttribute(element, path, "traces", false)) {

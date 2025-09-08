@@ -3,7 +3,7 @@ package legacy.map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An enumeration of directions of possible travel. Note that the order is

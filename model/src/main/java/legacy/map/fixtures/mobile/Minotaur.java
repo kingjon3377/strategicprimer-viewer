@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Minotaur extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Minotaur(final int id) {
@@ -9,7 +7,7 @@ public final class Minotaur extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Minotaur copy(final CopyBehavior zero) {
+	public Minotaur copy(final CopyBehavior zero) {
 		return new Minotaur(getId());
 	}
 }

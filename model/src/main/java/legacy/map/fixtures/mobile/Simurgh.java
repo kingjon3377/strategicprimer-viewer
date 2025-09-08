@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Simurgh extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Simurgh(final int id) {
@@ -9,7 +7,7 @@ public final class Simurgh extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Simurgh copy(final CopyBehavior zero) {
+	public Simurgh copy(final CopyBehavior zero) {
 		return new Simurgh(getId());
 	}
 }

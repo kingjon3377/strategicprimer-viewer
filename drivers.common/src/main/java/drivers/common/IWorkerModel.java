@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
 
 import legacy.map.Player;
 
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A driver model for the worker management app and the advancement app, aiming

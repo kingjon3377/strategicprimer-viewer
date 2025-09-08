@@ -20,7 +20,7 @@ import legacy.map.Point;
 import legacy.map.ILegacyMap;
 
 import drivers.common.FixtureMatcher;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A button (visually) representing a tile in two maps.
@@ -96,7 +96,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public void paintComponent(final Graphics pen) {
 		super.paintComponent(pen);
-		final @Nullable Shape oldClip = pen.getClip();
+		final Shape oldClip = pen.getClip();
 		final Coordinate origin = new Coordinate(0, 0);
 		final Coordinate dimensions = new Coordinate(getWidth(), getHeight());
 		pen.setClip(getLeftClip());

@@ -5,7 +5,7 @@ import changesets.PreconditionFailureException;
 import common.map.IMap;
 import common.map.IMutableMap;
 import common.map.MapRegion;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,16 +16,16 @@ import java.util.Collection;
 public final class AddRegionChangeset implements Changeset {
 	private final MapRegion region;
 
-	public AddRegionChangeset(final @NotNull MapRegion region) {
+	public AddRegionChangeset(final @NonNull MapRegion region) {
 		this.region = region;
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new RemoveRegionChangeset(region);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPrecondition(final @NonNull IMap map) throws PreconditionFailureException {
 		final Collection<MapRegion> regions = new ArrayList<>(map.getRegions());
 		regions.add(region);
 		if (!MapRegion.areRegionsValid(regions)) {
@@ -34,13 +34,13 @@ public final class AddRegionChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.addMapRegion(region);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addMapRegion(region);

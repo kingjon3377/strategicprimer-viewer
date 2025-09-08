@@ -2,7 +2,7 @@ package drivers.worker_mgmt;
 
 import legacy.map.fixtures.mobile.IUnit;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for objects that want to know when the user selects a Unit from a list or tree.

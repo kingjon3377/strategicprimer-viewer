@@ -44,7 +44,7 @@ import lovelace.util.LongAccumulator;
 import lovelace.util.Range;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static drivers.map_viewer.TileViewSize.scaleZoom;
 
@@ -240,7 +240,7 @@ public final class DrawHelperComparator implements UtilityDriver {
 	 * Run the tests.
 	 */
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final @Nullable String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(DrawHelperComparatorFactory.USAGE);
 		}

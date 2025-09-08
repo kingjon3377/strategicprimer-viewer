@@ -11,7 +11,7 @@ import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.resources.ExposureStatus;
 import legacy.map.fixtures.terrain.Forest;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

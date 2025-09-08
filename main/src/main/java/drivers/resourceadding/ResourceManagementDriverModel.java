@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import legacy.map.ILegacyMap;
 import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import legacy.map.fixtures.towns.IMutableFortress;
 

@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
 import static lovelace.util.MatchingValue.matchingValue;

@@ -3,7 +3,7 @@ package legacy.xmlio.yaxml;
 import java.nio.file.Path;
 import java.util.Collection;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import org.javatuples.Pair;
 

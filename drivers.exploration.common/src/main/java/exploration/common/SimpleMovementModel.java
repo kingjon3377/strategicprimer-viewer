@@ -2,7 +2,6 @@ package exploration.common;
 
 import legacy.map.fixtures.FixtureIterable;
 import legacy.map.fixtures.UnitMember;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import legacy.map.fixtures.terrain.Hill;
 import legacy.map.fixtures.terrain.Forest;
 
 import legacy.map.fixtures.towns.ITownFixture;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Collection;

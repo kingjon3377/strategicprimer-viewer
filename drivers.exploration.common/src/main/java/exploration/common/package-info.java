@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package exploration.common;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

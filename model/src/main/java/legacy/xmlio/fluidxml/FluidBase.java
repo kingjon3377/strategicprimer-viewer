@@ -14,7 +14,7 @@ import legacy.map.Player;
 import lovelace.util.IteratorWrapper;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;

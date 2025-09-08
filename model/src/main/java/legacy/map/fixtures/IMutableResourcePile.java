@@ -1,7 +1,6 @@
 package legacy.map.fixtures;
 
 import legacy.map.HasMutableImage;
-import org.jetbrains.annotations.NotNull;
 
 // TODO: If the mutators are used, surely this should extend HasMutableKind?
 public interface IMutableResourcePile extends IResourcePile, HasMutableImage {
@@ -25,6 +24,5 @@ public interface IMutableResourcePile extends IResourcePile, HasMutableImage {
 	 * Specialization.
 	 */
 	@Override
-	@NotNull
-	IMutableResourcePile copy(@NotNull CopyBehavior zero);
+	IMutableResourcePile copy(CopyBehavior zero);
 }

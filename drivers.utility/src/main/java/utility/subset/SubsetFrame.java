@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

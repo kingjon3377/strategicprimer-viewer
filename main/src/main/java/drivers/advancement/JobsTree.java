@@ -1,7 +1,6 @@
 package drivers.advancement;
 
 import lovelace.util.TreeAutoExpander;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TreeSelectionEvent;
 
@@ -58,8 +57,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void handleTreeSelectionChange(final TreeSelectionEvent event) {
-		final @Nullable ISkill retval;
-		final @Nullable IJob job;
+		final ISkill retval;
+		final IJob job;
 		final TreePath selectionPath = event.getNewLeadSelectionPath();
 		if (Objects.nonNull(selectionPath) && selectionPath.getLastPathComponent() instanceof ISkill) {
 			retval = (ISkill) selectionPath.getLastPathComponent();

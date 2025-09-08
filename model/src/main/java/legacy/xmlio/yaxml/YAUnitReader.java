@@ -11,7 +11,7 @@ import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Unit;
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

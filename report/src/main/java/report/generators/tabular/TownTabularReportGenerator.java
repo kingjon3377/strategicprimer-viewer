@@ -4,8 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -95,7 +94,7 @@ public final class TownTabularReportGenerator implements ITableGenerator<Abstrac
 	}
 
 	@Override
-	public @NotNull Class<AbstractTown> getTableClass() {
+	public Class<AbstractTown> getTableClass() {
 		return AbstractTown.class;
 	}
 }

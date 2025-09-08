@@ -42,7 +42,7 @@ import java.util.stream.Stream;
 
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
 

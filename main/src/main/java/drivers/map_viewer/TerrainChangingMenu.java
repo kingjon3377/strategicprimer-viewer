@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
@@ -98,7 +97,7 @@ import legacy.map.fixtures.terrain.Hill;
 		nuDialog.dispose();
 	}
 
-	private @NotNull JCheckBoxMenuItem createRiverItem(final River direction) {
+	private JCheckBoxMenuItem createRiverItem(final River direction) {
 		final String desc;
 		final int mnemonic;
 		// TODO: Can we get this effect w/out going one-by-one here? e.g. for non-lakes desc = direction + " river"
@@ -260,7 +259,7 @@ import legacy.map.fixtures.terrain.Hill;
 		riverItems.values().forEach(this::add);
 	}
 
-	private static @NotNull JMenuItem createTerrainItem(final TileType type) {
+	private static JMenuItem createTerrainItem(final TileType type) {
 		final String desc;
 		final int mnemonic;
 		switch (type) {

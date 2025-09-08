@@ -10,7 +10,7 @@ import common.xmlio.Warning;
 import legacy.idreg.IDRegistrar;
 import common.xmlio.SPFormatException;
 import legacy.map.IMutableLegacyPlayerCollection;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 

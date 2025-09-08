@@ -43,7 +43,7 @@ import drivers.gui.common.SPMenu;
 import exploration.common.Speed;
 
 import legacy.xmlio.MapIOHelper;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The main window for the exploration GUI.
@@ -52,10 +52,12 @@ import org.jetbrains.annotations.Nullable;
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final SimpleCardLayout layoutObj;
-	private final JList<Player> playerList;
+	// "@Nullable Player" because IDEA has the idea that methods DOCUMENTED TO RETURN NULL
+	// cannot return null.
+	private final JList<@Nullable Player> playerList;
 	private final IExplorationGUI driver;
 	private final UnitListModel unitListModel;
-	private final JList<IUnit> unitList;
+	private final JList<@Nullable IUnit> unitList;
 
 	public ExplorationFrame(final IExplorationGUI driver, final IMenuBroker menuHandler) {
 		super("Exploration", driver, new Dimension(768, 48), true);
@@ -137,7 +139,9 @@ import org.jetbrains.annotations.Nullable;
 	private void handlePlayerChanged() {
 		layoutObj.goFirst();
 		if (!playerList.isSelectionEmpty()) {
-			final @Nullable Player newPlayer = playerList.getSelectedValue();
+			final Player newPlayer = playerList.getSelectedValue();
+			// JList::getSelectedValue is documented TO RETURN NULL in some cases!
+			//noinspection ConstantExpression
 			if (Objects.nonNull(newPlayer)) {
 				unitListModel.playerChanged(null, newPlayer);
 			}
@@ -146,7 +150,9 @@ import org.jetbrains.annotations.Nullable;
 
 	private void buttonListener() {
 		LovelaceLogger.trace("In ExplorationFrame.buttonListener");
-		final @Nullable IUnit selectedValue = unitList.getSelectedValue();
+		final IUnit selectedValue = unitList.getSelectedValue();
+		// JList::getSelectedValue is documented TO RETURN NULL in some cases!
+		//noinspection ConstantExpression
 		if (Objects.nonNull(selectedValue) && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
 			LovelaceLogger.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");

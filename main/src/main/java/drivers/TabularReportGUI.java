@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
 import legacy.map.Point;
 import drivers.common.DriverFailedException;
 
@@ -61,7 +60,7 @@ public final class TabularReportGUI implements GUIDriver {
 	public void startDriver() {
 		final SPFrame window = new SPFrame("Tabular Report", this, new Dimension(640, 480));
 		final JTabbedPane frame = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-		final @Nullable Point hq;
+		final Point hq;
 		if (options.hasOption("--hq-row") && options.hasOption("--hq-col")) {
 			OptionalInt row = OptionalInt.empty();
 			OptionalInt column = OptionalInt.empty();

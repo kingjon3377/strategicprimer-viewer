@@ -3,7 +3,6 @@ package legacy.map.fixtures.mobile;
 import legacy.map.HasKind;
 import legacy.map.HasMutableImage;
 import legacy.map.IFixture;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -108,7 +107,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * Clone the object.
 	 */
 	@Override
-	public abstract @NotNull SimpleImmortal copy(CopyBehavior zero);
+	public abstract SimpleImmortal copy(CopyBehavior zero);
 
 	@Override
 	public final String toString() {

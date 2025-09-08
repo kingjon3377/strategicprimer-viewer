@@ -4,7 +4,6 @@ import legacy.map.IFixture;
 import legacy.map.HasPopulation;
 import legacy.map.HasMutableImage;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -14,7 +13,7 @@ import java.util.function.Consumer;
  * TODO: More members?
  */
 public final class Implement implements UnitMember, FortressMember, HasKind, HasMutableImage,
-		HasPopulation<@NotNull Implement> {
+		HasPopulation<Implement> {
 	public Implement(final String kind, final int id, final int count) {
 		this.kind = kind;
 		this.id = id;
@@ -26,7 +25,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	}
 
 	@Override
-	public @NotNull String getPlural() {
+	public String getPlural() {
 		return "Equipment";
 	}
 
@@ -39,7 +38,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	 * The "kind" of the implement.
 	 */
 	@Override
-	public @NotNull String getKind() {
+	public String getKind() {
 		return kind;
 	}
 
@@ -82,7 +81,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public @NotNull String getImage() {
+	public String getImage() {
 		return image;
 	}
 
@@ -90,7 +89,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(final @NotNull String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -98,7 +97,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	 * If we ignore ID, a fixture is equal iff itis an Implement of the same kind.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final @NotNull IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final Implement that) {
@@ -112,7 +111,7 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	 * A fixture is a subset iff it is equal.
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final @NotNull Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (this == obj) {
 			return true;
 		} else if (obj.getId() == id) {
@@ -139,22 +138,22 @@ public final class Implement implements UnitMember, FortressMember, HasKind, Has
 	}
 
 	@Override
-	public @NotNull Implement copy(final @NotNull CopyBehavior zero) {
+	public Implement copy(final CopyBehavior zero) {
 		return new Implement(kind, id, count);
 	}
 
 	@Override
-	public @NotNull Implement reduced(final int newPopulation, final int newId) {
+	public Implement reduced(final int newPopulation, final int newId) {
 		return new Implement(kind, newId, newPopulation);
 	}
 
 	@Override
-	public @NotNull Implement combined(final @NotNull Implement addend) {
+	public Implement combined(final Implement addend) {
 		return new Implement(kind, id, Math.max(0, count) + Math.max(0, addend.getCount()));
 	}
 
 	@Override
-	public @NotNull String getDefaultImage() {
+	public String getDefaultImage() {
 		return "implement.png";
 	}
 

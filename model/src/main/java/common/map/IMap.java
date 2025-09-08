@@ -2,8 +2,7 @@ package common.map;
 
 import common.entity.EntityIdentifier;
 import common.entity.IEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -12,17 +11,15 @@ import java.util.Collection;
  */
 public interface IMap {
 	@Nullable
-	IEntity getEntity(@NotNull EntityIdentifier id);
+	IEntity getEntity(EntityIdentifier id);
 
-	@NotNull
-	Collection<@NotNull IEntity> getAllEntities();
+	Collection<IEntity> getAllEntities();
 
 	/**
 	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another (sharing an edge is
 	 * fine), and no two regions have the same ID number.
 	 */
-	@NotNull
-	Collection<@NotNull MapRegion> getRegions();
+	Collection<MapRegion> getRegions();
 
 	/**
 	 * The players in the map.
@@ -30,7 +27,6 @@ public interface IMap {
 	 * TODO: Move the specialized functionality up to IMap etc., so users can't determine the player collection is
 	 * mutable and modify it in place?
 	 */
-	@NotNull
 	IPlayerCollection getPlayers();
 
 	/**
@@ -38,6 +34,5 @@ public interface IMap {
 	 *
 	 * @return a deep copy of the map
 	 */
-	@NotNull
 	IMap copy();
 }

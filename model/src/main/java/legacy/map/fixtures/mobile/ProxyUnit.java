@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A proxy for units in multiple maps, or all a player's units of one kind.
@@ -118,7 +118,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public @NotNull IUnit copy(final CopyBehavior zero) {
+	public IUnit copy(final CopyBehavior zero) {
 		final ProxyUnit retval;
 		if (parallel) {
 			retval = new ProxyUnit(Objects.requireNonNull(commonID));
@@ -232,7 +232,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							}
 							// unchecked warning is unavoidable in the absence of reified generics
 							default -> //noinspection unchecked
-									((ProxyFor<UnitMember>) proxy).addProxied(member);
+									((ProxyFor<@NonNull UnitMember>) proxy).addProxied(member);
 						}
 					} else {
 						proxy = switch (member) {

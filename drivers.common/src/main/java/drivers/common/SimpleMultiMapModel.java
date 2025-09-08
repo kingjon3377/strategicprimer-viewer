@@ -2,7 +2,6 @@ package drivers.common;
 
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Collections;
 
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A superclass for implementations of interfaces inheriting from {@link IMultiMapModel}.

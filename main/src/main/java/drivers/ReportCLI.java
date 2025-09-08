@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

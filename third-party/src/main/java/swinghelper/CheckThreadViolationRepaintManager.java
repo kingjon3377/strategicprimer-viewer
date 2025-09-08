@@ -1,6 +1,6 @@
 package swinghelper;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.swing.JComponent;
 import javax.swing.RepaintManager;

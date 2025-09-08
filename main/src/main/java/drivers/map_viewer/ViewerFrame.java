@@ -8,7 +8,7 @@ import drivers.common.ViewerDriver;
 import drivers.common.IDriverModel;
 import drivers.common.DriverFailedException;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Dimension;
 import java.awt.Component;

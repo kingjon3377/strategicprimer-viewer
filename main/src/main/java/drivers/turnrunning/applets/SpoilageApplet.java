@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 // Note we *deliberately* do not make a factory for service-discovery to find a way to build an instance of this class.
 public final class SpoilageApplet extends AbstractTurnApplet {

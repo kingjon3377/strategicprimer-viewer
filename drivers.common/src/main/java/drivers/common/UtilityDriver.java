@@ -1,5 +1,7 @@
 package drivers.common;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * An interface to allow utility drivers, which operate on files rather than a
  * map model, to be a single-abstract-method interface. (Except that that's not actually true,
@@ -14,5 +16,5 @@ public interface UtilityDriver extends ISPDriver {
 	 * @param args Any command-line arguments, such as filenames, that
 	 *             should be passed to the driver. This will not include options.
 	 */
-	void startDriver(String... args) throws DriverFailedException;
+	void startDriver(@Nullable String... args) throws DriverFailedException;
 }

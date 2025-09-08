@@ -5,7 +5,7 @@ import javax.swing.tree.TreePath;
 
 import legacy.map.fixtures.mobile.IUnit;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for worker tree-models, adding methods to the {@link TreeModel} interface.

@@ -1,6 +1,6 @@
 package legacy.map.fixtures.towns;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface to add the 'population details' setter to town classes.

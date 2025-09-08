@@ -7,7 +7,6 @@ import java.util.List;
 
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.resources.StoneDeposit;
-import org.jetbrains.annotations.Nullable;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
 import drivers.common.IMultiMapModel;
@@ -18,6 +17,7 @@ import legacy.map.River;
 import legacy.map.TileFixture;
 import legacy.map.TileType;
 import legacy.map.fixtures.mobile.IUnit;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A model for exploration apps.

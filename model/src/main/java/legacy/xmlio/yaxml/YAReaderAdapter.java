@@ -27,7 +27,7 @@ import java.util.Map;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 

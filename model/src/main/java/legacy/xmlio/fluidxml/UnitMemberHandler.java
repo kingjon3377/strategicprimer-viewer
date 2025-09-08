@@ -28,7 +28,7 @@ import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.Job;
 import legacy.map.fixtures.mobile.worker.Skill;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

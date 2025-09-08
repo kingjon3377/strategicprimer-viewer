@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import legacy.map.fixtures.LegacyQuantity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ enum FoodType {
 	Milk(2, 3, 4, null, decimalize(0.5), decimalize(8), "milk"),

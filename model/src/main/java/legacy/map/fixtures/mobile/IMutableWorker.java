@@ -5,7 +5,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 
 import legacy.map.HasMutableImage;
 import legacy.map.HasMutablePortrait;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Mutator operations for {@link IWorker}.

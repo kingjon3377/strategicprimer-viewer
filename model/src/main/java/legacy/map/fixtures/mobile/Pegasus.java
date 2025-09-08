@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Pegasus extends ImmortalAnimal {
 	@SuppressWarnings("MagicNumber")
 	public Pegasus(final int id) {
@@ -9,7 +7,7 @@ public final class Pegasus extends ImmortalAnimal {
 	}
 
 	@Override
-	public @NotNull Pegasus copy(final CopyBehavior zero) {
+	public Pegasus copy(final CopyBehavior zero) {
 		return new Pegasus(getId());
 	}
 }

@@ -14,7 +14,7 @@ import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.TextFixture;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnwantedChildException;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for arbitrary-text notes.

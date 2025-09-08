@@ -15,7 +15,7 @@ import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
 import common.xmlio.Warning;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for resource piles.

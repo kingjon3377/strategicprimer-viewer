@@ -2,7 +2,7 @@ package legacy.map;
 
 import java.nio.file.Path;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A mutable map.

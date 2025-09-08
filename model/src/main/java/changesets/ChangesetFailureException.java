@@ -1,7 +1,5 @@
 package changesets;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serial;
 
 /**
@@ -11,11 +9,11 @@ public abstract class ChangesetFailureException extends Exception {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	protected ChangesetFailureException(final @NotNull String message, final @NotNull Throwable cause) {
+	protected ChangesetFailureException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	protected ChangesetFailureException(final @NotNull String message) {
+	protected ChangesetFailureException(final String message) {
 		super(message);
 	}
 }

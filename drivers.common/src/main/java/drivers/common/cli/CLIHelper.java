@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.SystemIn;
-import org.eclipse.jdt.annotation.NonNull;
-import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.math.BigDecimal;
@@ -17,6 +15,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legacy.map.HasName;
+import org.jspecify.annotations.Nullable;
 
 import static lovelace.util.NumParsingHelper.isNumeric;
 import static lovelace.util.NumParsingHelper.parseInt;
@@ -175,7 +174,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Implementation of {@link #chooseFromList} and {@link #chooseStringFromList}.
 	 */
-	private <Item> Pair<Integer, @Nullable Item> chooseFromListImpl(final List<@NonNull ? extends Item> items,
+	private <Item> Pair<Integer, @Nullable Item> chooseFromListImpl(final List<? extends Item> items,
 	                                                                final String description, final String none,
 	                                                                final String prompt,
 	                                                                final ListChoiceBehavior behavior,
@@ -216,7 +215,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-			final List<@NonNull ? extends Element> list, final String description, final String none,
+			final List<? extends Element> list, final String description, final String none,
 			final String prompt, final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(list, description, none, prompt, behavior, CLIHelper::getElementName);
 	}

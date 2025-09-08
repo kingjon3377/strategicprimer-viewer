@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package com.pump.window;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

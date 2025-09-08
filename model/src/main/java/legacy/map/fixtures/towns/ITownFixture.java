@@ -3,7 +3,7 @@ package legacy.map.fixtures.towns;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.HasKind;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import legacy.map.TileFixture;
 import legacy.map.HasPortrait;

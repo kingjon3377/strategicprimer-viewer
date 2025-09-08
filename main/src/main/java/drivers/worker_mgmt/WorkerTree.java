@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.Objects;
@@ -612,7 +612,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			// This is a single if-instanceof, with no 'else'
 			//noinspection IfCanBeSwitch
 			if (component instanceof final DefaultTreeCellRenderer comp) {
-				final @Nullable Color backgroundColor = background.getColor();
+				final Color backgroundColor = background.getColor();
 				if (Objects.isNull(backgroundColor)) {
 					comp.setBackgroundSelectionColor(DEFAULT_STORER
 							.getBackgroundSelectionColor());

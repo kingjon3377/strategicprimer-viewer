@@ -4,8 +4,7 @@ import java.util.List;
 
 import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -108,7 +107,7 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	}
 
 	@Override
-	public @NotNull Class<IUnit> getTableClass() {
+	public Class<IUnit> getTableClass() {
 		return IUnit.class;
 	}
 }

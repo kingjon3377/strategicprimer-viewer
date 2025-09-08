@@ -1,10 +1,10 @@
 package drivers.common.cli;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.api.Test;

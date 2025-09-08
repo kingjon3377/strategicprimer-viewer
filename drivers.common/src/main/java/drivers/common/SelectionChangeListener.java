@@ -1,8 +1,8 @@
 package drivers.common;
 
-import org.jetbrains.annotations.Nullable;
 import legacy.map.Point;
 import legacy.map.fixtures.mobile.IUnit;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for objects that want to know when the selected tile, or the

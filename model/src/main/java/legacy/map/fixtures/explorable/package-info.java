@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package legacy.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

@@ -14,6 +14,7 @@ import drivers.common.SPOptions;
 import drivers.common.IncorrectUsageException;
 
 import drivers.common.cli.ICLIHelper;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A driver to create a spreadsheet model of a mine. Its parameters are the
@@ -37,7 +38,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final @Nullable String... args) throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(MiningCLIFactory.USAGE);
 		}

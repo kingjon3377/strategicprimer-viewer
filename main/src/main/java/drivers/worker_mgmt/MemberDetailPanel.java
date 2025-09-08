@@ -1,7 +1,8 @@
 package drivers.worker_mgmt;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.stream.Collectors;
@@ -65,12 +66,12 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 		statPanel.setLayout(statLayout);
 		statPanel.setBorder(BorderFactory.createEmptyBorder());
 
-		final InterpolatedLabel<@Nullable WorkerStats> strLabel = statLabel(WorkerStats::getStrength);
-		final InterpolatedLabel<@Nullable WorkerStats> dexLabel = statLabel(WorkerStats::getDexterity);
-		final InterpolatedLabel<@Nullable WorkerStats> conLabel = statLabel(WorkerStats::getConstitution);
-		final InterpolatedLabel<@Nullable WorkerStats> intLabel = statLabel(WorkerStats::getIntelligence);
-		final InterpolatedLabel<@Nullable WorkerStats> wisLabel = statLabel(WorkerStats::getWisdom);
-		final InterpolatedLabel<@Nullable WorkerStats> chaLabel = statLabel(WorkerStats::getCharisma);
+		final InterpolatedLabel<WorkerStats> strLabel = statLabel(WorkerStats::getStrength);
+		final InterpolatedLabel<WorkerStats> dexLabel = statLabel(WorkerStats::getDexterity);
+		final InterpolatedLabel<WorkerStats> conLabel = statLabel(WorkerStats::getConstitution);
+		final InterpolatedLabel<WorkerStats> intLabel = statLabel(WorkerStats::getIntelligence);
+		final InterpolatedLabel<WorkerStats> wisLabel = statLabel(WorkerStats::getWisdom);
+		final InterpolatedLabel<WorkerStats> chaLabel = statLabel(WorkerStats::getCharisma);
 		statLabels = List.of(strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel);
 
 		final JLabel typeCaption = caption("Member Type");
@@ -154,11 +155,11 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 		};
 	}
 
-	private static InterpolatedLabel<@Nullable WorkerStats> statLabel(final ToIntFunction<WorkerStats> stat) {
+	private static InterpolatedLabel<WorkerStats> statLabel(final ToIntFunction<WorkerStats> stat) {
 		return new InterpolatedLabel<>(labelFormat(stat), null);
 	}
 
-	private final List<InterpolatedLabel<@Nullable WorkerStats>> statLabels;
+	private final List<InterpolatedLabel<WorkerStats>> statLabels;
 
 	private static JLabel caption(final String string) {
 		return new JLabel("<html><b>" + string + ":</b></html>");
@@ -198,7 +199,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				nameLabel.setText(worker.getName());
 				kindLabel.setText(worker.getKind());
 				final WorkerStats stats = worker.getStats();
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(stats);
 				}
 				if (Objects.nonNull(worker.getMount())) {
@@ -248,7 +249,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 					}
 				}
 				nameLabel.setText("");
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(null);
 				}
 			}
@@ -260,7 +261,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				} else {
 					kindLabel.setText(eq.getKind());
 				}
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(null);
 				}
 			}
@@ -269,7 +270,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				nameLabel.setText("");
 				kindLabel.setText("%s %s (%s)".formatted(rp.getQuantity(), rp.getContents(),
 						rp.getKind()));
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(null);
 				}
 			}
@@ -277,7 +278,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				typeLabel.setText("");
 				nameLabel.setText("");
 				kindLabel.setText("");
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(null);
 				}
 			}
@@ -285,7 +286,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 				typeLabel.setText("Unknown");
 				nameLabel.setText("");
 				kindLabel.setText(local.getClass().getName());
-				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+				for (final InterpolatedLabel<WorkerStats> label : statLabels) {
 					label.setArgument(null);
 				}
 			}
@@ -310,7 +311,7 @@ public final class MemberDetailPanel extends BorderedPanel implements UnitMember
 			if (p.isParallel()) {
 				// unchecked-cast warning is unavoidable without reified generics
 				@SuppressWarnings("unchecked") final Iterator<? extends UnitMember> proxied =
-						((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
+						((ProxyFor<? extends @NonNull UnitMember>) selected).getProxied().iterator();
 				if (proxied.hasNext()) {
 					memberSelected(old, proxied.next());
 					return;

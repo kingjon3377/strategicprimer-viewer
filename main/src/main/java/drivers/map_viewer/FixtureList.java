@@ -2,7 +2,7 @@ package drivers.map_viewer;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.MenuUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.Objects;

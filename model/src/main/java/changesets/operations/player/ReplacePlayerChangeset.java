@@ -6,26 +6,26 @@ import common.map.IMap;
 import common.map.IMutableMap;
 import common.map.IPlayerCollection;
 import common.map.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * A changeset operation to replace one player with another.
  */
 public final class ReplacePlayerChangeset implements Changeset {
-	private final @NotNull Player toRemove;
-	private final @NotNull Player toAdd;
+	private final @NonNull Player toRemove;
+	private final @NonNull Player toAdd;
 
-	public ReplacePlayerChangeset(final @NotNull Player toRemove, final @NotNull Player toAdd) {
+	public ReplacePlayerChangeset(final @NonNull Player toRemove, final @NonNull Player toAdd) {
 		this.toRemove = toRemove;
 		this.toAdd = toAdd;
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new ReplacePlayerChangeset(toAdd, toRemove);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPrecondition(final @NonNull IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		boolean neverMet = true;
 		for (final Player item : players) {
@@ -41,13 +41,13 @@ public final class ReplacePlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.replacePlayer(toRemove, toAdd);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.replacePlayer(toRemove, toAdd);

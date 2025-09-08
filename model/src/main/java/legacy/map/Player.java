@@ -1,6 +1,6 @@
 package legacy.map;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for the representation of a player in the game.

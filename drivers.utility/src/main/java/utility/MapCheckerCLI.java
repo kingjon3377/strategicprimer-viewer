@@ -70,7 +70,7 @@ import legacy.map.fixtures.IResourcePile;
 
 import legacy.map.fixtures.terrain.Hill;
 import legacy.map.fixtures.terrain.Oasis;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A driver to check every map file in a list for errors.
@@ -516,7 +516,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(final String... args) {
+	public void startDriver(final @Nullable String... args) {
 		for (final String filename : args) {
 			if (Objects.isNull(filename)) {
 				continue;

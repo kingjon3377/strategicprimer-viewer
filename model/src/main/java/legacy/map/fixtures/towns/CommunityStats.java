@@ -3,11 +3,12 @@ package legacy.map.fixtures.towns;
 import legacy.map.Subsettable;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.resources.HarvestableFixture;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * TODO: explain this class
@@ -82,4 +83,11 @@ public interface CommunityStats extends Subsettable<@Nullable CommunityStats> {
 	void removeYearlyConsumption(IResourcePile resource);
 
 	void replaceYearlyConsumption(IResourcePile oldResource, IResourcePile newResource);
+
+	/**
+	 * Explicit specialization, which should have been implicit in the interface declaration above, to try to convince
+	 * the IDE type-checker that instances of CommunityStats are designed to accept null for their first parameter.
+	 */
+	@Override
+	boolean isSubset(@Nullable CommunityStats obj, Consumer<String> report);
 }

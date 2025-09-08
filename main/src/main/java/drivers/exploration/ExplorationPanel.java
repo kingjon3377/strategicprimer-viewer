@@ -90,7 +90,7 @@ import javax.swing.KeyStroke;
 import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactoryFiller;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import worker.common.IFixtureEditHelper;
 
 /**
@@ -316,7 +316,7 @@ import worker.common.IFixtureEditHelper;
 		for (final Direction direction : Direction.values()) {
 			LovelaceLogger.trace("ExplorationPanel.selectedPointChanged: Beginning %s", direction);
 			final Point point = driverModel.getDestination(newPoint, direction);
-			final @Nullable Point previous;
+			final Point previous;
 			if (speedChangeListeners.containsKey(direction)) {
 				// TODO: Change SpeedChangeListener API so we can do this in one operation
 				final SpeedChangeListener scl = speedChangeListeners.get(direction);

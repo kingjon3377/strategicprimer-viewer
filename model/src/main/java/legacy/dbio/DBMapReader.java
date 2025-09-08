@@ -34,7 +34,7 @@ import legacy.map.fixtures.towns.Village;
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 import lovelace.util.LovelaceLogger;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Sextet;
@@ -120,7 +120,7 @@ public final class DBMapReader {
 
 	public IMutableLegacyMap readMap(final Transactional db, final Warning warner) throws SQLException {
 		final Connection conn = db.connection();
-		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata =
+		final Quartet<Integer, Integer, Integer, Integer> metadata =
 				METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata)
 						.singleNull(), conn);
 		if (Objects.isNull(metadata)) {
@@ -155,7 +155,7 @@ public final class DBMapReader {
 				final boolean westR = tuple.getValue4();
 				final boolean lake = tuple.getValue5();
 				final Point location = dbRow.getValue0();
-				final @Nullable TileType tileType = dbRow.getValue1();
+				final TileType tileType = dbRow.getValue1();
 				if (Objects.nonNull(tileType)) {
 					retval.setBaseTerrain(location, tileType);
 				}
@@ -205,7 +205,7 @@ public final class DBMapReader {
 		}
 		LovelaceLogger.debug("Finished reading the map except adding members to parents");
 
-		for (final Map.Entry<Integer, List<Object>> entry : containees.entrySet()) {
+		for (final Map.Entry<Integer, List<@Nullable Object>> entry : containees.entrySet()) {
 			final int parentId = entry.getKey();
 			for (final Object member : entry.getValue()) {
 				final IFixture parent = containers.get(parentId);

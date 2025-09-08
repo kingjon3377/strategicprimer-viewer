@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Unicorn extends ImmortalAnimal {
 	@SuppressWarnings("MagicNumber")
 	public Unicorn(final int id) {
@@ -9,7 +7,7 @@ public final class Unicorn extends ImmortalAnimal {
 	}
 
 	@Override
-	public @NotNull Unicorn copy(final CopyBehavior zero) {
+	public Unicorn copy(final CopyBehavior zero) {
 		return new Unicorn(getId());
 	}
 }

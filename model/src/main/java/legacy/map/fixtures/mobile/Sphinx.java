@@ -1,7 +1,5 @@
 package legacy.map.fixtures.mobile;
 
-import org.jetbrains.annotations.NotNull;
-
 public final class Sphinx extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Sphinx(final int id) {
@@ -9,7 +7,7 @@ public final class Sphinx extends SimpleImmortal {
 	}
 
 	@Override
-	public @NotNull Sphinx copy(final CopyBehavior zero) {
+	public Sphinx copy(final CopyBehavior zero) {
 		return new Sphinx(getId());
 	}
 }

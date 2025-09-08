@@ -1,7 +1,7 @@
 package drivers.common;
 
-import org.jetbrains.annotations.Nullable;
 import legacy.map.Player;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An interface for things that want to be told when the current player changes.

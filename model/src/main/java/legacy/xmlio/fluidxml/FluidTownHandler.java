@@ -20,7 +20,7 @@ import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.Town;
 import legacy.map.fixtures.towns.Village;
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -155,7 +155,7 @@ import java.util.function.Consumer;
 		requireTag(element, path, parent, "population");
 		expectAttributes(element, path, warner, "size");
 		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, path, "size"));
-		@Nullable String current = null;
+		String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		final Consumer<IMutableResourcePile> addProduction = retval::addYearlyProduction;

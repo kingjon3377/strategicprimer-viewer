@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class AppChooserGUI implements UtilityGUI {
 	public AppChooserGUI(final ICLIHelper cli, final SPOptions options) {
@@ -53,7 +54,7 @@ import lovelace.util.ListenedButton;
 	}
 
 	@Override
-	public void startDriver(final String... args) {
+	public void startDriver(final @Nullable String... args) {
 		final MenuContainer tempComponent = new JEditorPane();
 		final Font font = tempComponent.getFont();
 		final Graphics2D pen = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();

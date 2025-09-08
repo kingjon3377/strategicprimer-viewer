@@ -13,7 +13,7 @@ import lovelace.util.ThrowingConsumer;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.Implement;
 import common.xmlio.Warning;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A reader for {@link Implement}s.

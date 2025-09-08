@@ -5,8 +5,7 @@ import java.util.List;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -234,5 +233,5 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * The type of item we handle.
 	 */
-	@NotNull Class<T> getTableClass();
+	Class<T> getTableClass();
 }

@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import drivers.gui.common.about.AboutDialog;
 import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import drivers.gui.common.SPMenu;
 

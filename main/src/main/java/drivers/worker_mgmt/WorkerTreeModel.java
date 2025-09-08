@@ -6,7 +6,7 @@ import legacy.map.HasOwner;
 import java.util.Collection;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import javax.swing.event.TreeModelListener;
@@ -322,7 +322,7 @@ import java.util.stream.Collectors;
 	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
-		final @Nullable Predicate<IUnit> leadingFilter;
+		final Predicate<IUnit> leadingFilter;
 		if (Objects.isNull(starting)) {
 			leading = false;
 			leadingFilter = null;

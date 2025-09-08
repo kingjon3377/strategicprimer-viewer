@@ -1,4 +1,4 @@
-@NonNullByDefault
+@NullMarked
 package drivers.worker_mgmt;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jspecify.annotations.NullMarked;

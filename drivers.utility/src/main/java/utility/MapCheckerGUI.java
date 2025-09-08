@@ -14,7 +14,7 @@ import drivers.gui.common.UtilityMenuHandler;
 import java.util.stream.Stream;
 import java.util.Objects;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A driver to check every map file in a list for errors and report the results in a window.

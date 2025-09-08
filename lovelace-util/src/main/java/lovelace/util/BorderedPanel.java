@@ -1,6 +1,6 @@
 package lovelace.util;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;

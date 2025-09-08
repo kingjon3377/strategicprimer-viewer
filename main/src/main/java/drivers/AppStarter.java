@@ -26,7 +26,7 @@ import drivers.common.DriverFactory;
 import drivers.common.cli.ICLIHelper;
 
 import lovelace.util.LovelaceLogger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /* package */ final class AppStarter {
 	private final Map<String, List<DriverFactory>> driverCache =
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 		return driver.getUsage().includeInList(IDriverUsage.DriverMode.CommandLine);
 	}
 
-	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args)
+	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final @Nullable String... args)
 			throws DriverFailedException {
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		IDriverUsage.DriverMode mode = GraphicsEnvironment.isHeadless() ? IDriverUsage.DriverMode.CommandLine :
@@ -99,8 +99,8 @@ import org.jetbrains.annotations.Nullable;
 
 		LovelaceLogger.trace("Reached the end of arguments");
 		// TODO: Use appletChooser so we can support prefixes
-		final @Nullable DriverFactory currentDriver;
-		final @Nullable String command = others.stream().findFirst().orElse(null);
+		final DriverFactory currentDriver;
+		final String command = others.stream().findFirst().orElse(null);
 		final List<DriverFactory> drivers = Optional.ofNullable(command).map(driverCache::get)
 				.orElse(Collections.emptyList());
 		if (Objects.nonNull(command) && !drivers.isEmpty()) {

@@ -5,7 +5,7 @@ import changesets.PreconditionFailureException;
 import common.entity.IEntity;
 import common.map.IMap;
 import common.map.IMutableMap;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -15,16 +15,16 @@ import java.util.Objects;
 public final class AddEntityChangeset implements Changeset {
 	private final IEntity entity;
 
-	public AddEntityChangeset(final @NotNull IEntity entity) {
+	public AddEntityChangeset(final @NonNull IEntity entity) {
 		this.entity = entity;
 	}
 
 	@Override
-	public @NotNull Changeset invert() {
+	public @NonNull Changeset invert() {
 		return new RemoveEntityChangeset(entity);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
+	private void checkPrecondition(final @NonNull IMap map) throws PreconditionFailureException {
 		for (final IEntity item : map.getAllEntities()) {
 			if (Objects.equals(item.getId(), entity.getId())) {
 				throw new PreconditionFailureException("Cannot add entity if another exists with same ID");
@@ -33,13 +33,13 @@ public final class AddEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.addEntity(entity);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
+	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addEntity(entity);

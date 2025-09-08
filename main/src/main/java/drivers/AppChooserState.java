@@ -38,7 +38,7 @@ import common.xmlio.SPFormatException;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static lovelace.util.MatchingValue.matchingValue;
 
