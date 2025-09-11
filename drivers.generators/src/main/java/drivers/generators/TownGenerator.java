@@ -602,6 +602,8 @@ import static java.util.function.Predicate.not;
 				town = temp.map(Pair::getValue1).orElse(null);
 			}
 			try {
+				// "location" can be null here!
+				//noinspection ConstantValue
 				if (Objects.isNull(town) || Objects.isNull(location)) {
 					cli.println("No matching town found.");
 				} else {
