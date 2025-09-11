@@ -199,9 +199,13 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public Stream<IUnit> streamUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
+			// While it's possible to avoid the collect() here, this requires us to turn the rest of the logic of this
+			// method into a custom collector (via Collector.of and at least three lambdas), which doesn't seem worth
+			// the effort. Even Collectors.toMap() would be less efficient than the loop, since it
+			// would require constructing a new ProxyUnit for every single unit in the input.
 			final Iterable<IUnit> temp = streamAllMaps()
 					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures() , player))
-					.collect(Collectors.toList()); // TODO: Can we avoid this Collector step?
+					.collect(Collectors.toList());
 			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 			for (final IUnit unit : temp) {
 				final int key = unit.getId();
