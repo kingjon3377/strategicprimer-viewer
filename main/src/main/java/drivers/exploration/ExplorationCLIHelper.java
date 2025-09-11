@@ -264,7 +264,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 			switch (tracksAnimal) {
 				case final Animal a -> allFixtures.add(new AnimalTracks(a.getKind()));
 				case final AnimalTracks tracks -> allFixtures.add(tracks.copy(IFixture.CopyBehavior.KEEP));
-				case null, default -> {
+				default -> {
 				}
 			}
 

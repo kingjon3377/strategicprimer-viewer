@@ -354,7 +354,7 @@ import worker.common.IFixtureEditHelper;
 		return switch (animal) {
 			case final Animal a -> new AnimalTracks(a.getKind());
 			case final AnimalTracks animalTracks -> animalTracks.copy(IFixture.CopyBehavior.ZERO);
-			case null, default -> null;
+			default -> null;
 		};
 	}
 
