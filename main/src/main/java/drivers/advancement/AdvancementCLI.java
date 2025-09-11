@@ -9,7 +9,6 @@ import drivers.common.cli.ICLIHelper;
 import legacy.map.Player;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
