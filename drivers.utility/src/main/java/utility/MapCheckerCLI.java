@@ -13,6 +13,7 @@ import legacy.map.TileFixture;
 
 import java.io.Serial;
 import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -517,9 +518,6 @@ public final class MapCheckerCLI implements UtilityDriver {
 
 	@Override
 	public void startDriver(final String... args) {
-		// TODO: Condense now we don't need the null check
-		for (final String filename : args) {
-			check(Paths.get(filename));
-		}
+		Arrays.stream(args).map(Paths::get).forEachOrdered(this::check);
 	}
 }
