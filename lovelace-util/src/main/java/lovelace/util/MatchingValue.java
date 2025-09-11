@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  *
  * @author Jonathan Lovelace
  */
-public class MatchingValue {
+public final class MatchingValue {
 	private MatchingValue() {
 
 	}
