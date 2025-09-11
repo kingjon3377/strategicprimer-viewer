@@ -29,6 +29,7 @@ import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IMutableWorker;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.HasMutablePopulation;
 import legacy.map.fixtures.towns.IMutableFortress;
 import legacy.map.fixtures.towns.Village;
 import lovelace.util.Accumulator;
@@ -219,20 +220,17 @@ public final class DBMapReader {
 					p.addMember(m);
 				} else if (parent instanceof final IMutableUnit p && member instanceof final UnitMember m) {
 					p.addMember(m);
-				} else if (parent instanceof final AbstractTown p && member instanceof final CommunityStats m &&
-						Objects.isNull(p.getPopulation())) {
-					p.setPopulation(m);
-				} else if (parent instanceof final Village p && member instanceof final CommunityStats m &&
-						Objects.isNull(p.getPopulation())) {
-					p.setPopulation(m);
+				} else if (parent instanceof final HasMutablePopulation p && member instanceof final CommunityStats m) {
+					if (Objects.isNull(p.getPopulation())) {
+						p.setPopulation(m);
+					} else {
+						throw new IllegalStateException("Community stats already set");
+					}
 				} else if (parent instanceof final IMutableWorker p && member instanceof final Animal m &&
 						Objects.isNull(p.getMount())) {
 					p.setMount(m);
 				} else if (parent instanceof final IMutableWorker p && member instanceof final Implement m) {
 					p.addEquipment(m);
-				} else if (parent instanceof final AbstractTown p && member instanceof CommunityStats &&
-						Objects.nonNull(p.getPopulation())) { // TODO: combine with earlier AbstractTown case?
-					throw new IllegalStateException("Community stats already set");
 				} else {
 					throw new IllegalStateException("DB parent-child type invariants not met (parent %s, child %s)"
 							.formatted(parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
