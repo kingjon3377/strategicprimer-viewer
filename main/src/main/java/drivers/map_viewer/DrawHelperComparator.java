@@ -240,7 +240,7 @@ public final class DrawHelperComparator implements UtilityDriver {
 	 * Run the tests.
 	 */
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(DrawHelperComparatorFactory.USAGE);
 		}

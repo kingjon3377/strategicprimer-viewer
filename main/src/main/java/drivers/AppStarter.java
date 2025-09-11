@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
 		return driver.getUsage().includeInList(IDriverUsage.DriverMode.CommandLine);
 	}
 
-	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final @Nullable String... args)
+	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args)
 			throws DriverFailedException {
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		IDriverUsage.DriverMode mode = GraphicsEnvironment.isHeadless() ? IDriverUsage.DriverMode.CommandLine :
@@ -61,9 +61,7 @@ import org.jspecify.annotations.Nullable;
 		};
 
 		for (final String arg : args) {
-			if (Objects.isNull(arg)) {
-				continue;
-			} else if ("-g".equals(arg) || "--gui".equals(arg)) {
+			if ("-g".equals(arg) || "--gui".equals(arg)) {
 				LovelaceLogger.trace("User specified either -g or --gui");
 				currentOptions.addOption("--gui");
 				mode = IDriverUsage.DriverMode.Graphical;

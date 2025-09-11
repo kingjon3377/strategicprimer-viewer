@@ -54,7 +54,7 @@ import org.jspecify.annotations.Nullable;
 	}
 
 	@Override
-	public void startDriver(final @Nullable String... args) {
+	public void startDriver(final String... args) {
 		final MenuContainer tempComponent = new JEditorPane();
 		final Font font = tempComponent.getFont();
 		final Graphics2D pen = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();

@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.util.Arrays;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.swing.UIManager;
 
@@ -19,12 +20,13 @@ import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptionsImpl;
 
 import drivers.common.cli.CLIHelper;
+import org.jspecify.annotations.Nullable;
 
 public final class Main {
 	private Main() {
 	}
 
-	public static void main(final String... args) {
+	public static void main(final @Nullable String... args) {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SP Helpers");
 		System.setProperty("apple.awt.application.name", "SP Helpers");
 		try {
@@ -48,8 +50,9 @@ public final class Main {
 			Desktop.getDesktop().setOpenFileHandler(AppChooserState::handleDroppedFiles);
 		}
 		final AppStarter appStarter = new AppStarter();
+		final String[] nonNullArgs = Stream.of(args).filter(Objects::nonNull).toArray(String[]::new);
 		try {
-			appStarter.startDriverOnArguments(new CLIHelper(), options, args);
+			appStarter.startDriverOnArguments(new CLIHelper(), options, nonNullArgs);
 		} catch (final IncorrectUsageException except) {
 			final IDriverUsage usage = except.getCorrectUsage();
 			System.err.println(AppChooserState.usageMessage(usage, options.hasOption("--verbose") ?

@@ -23,7 +23,6 @@ import drivers.common.UtilityDriver;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptions;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A driver that reads in maps and then writes them out again---this is
@@ -59,7 +58,7 @@ public final class EchoDriver implements UtilityDriver {
 	 * syntax and forest and Ground IDs.
 	 */
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 2) {
 			final String inArg = args[0];
 			final String outArg = args[1];

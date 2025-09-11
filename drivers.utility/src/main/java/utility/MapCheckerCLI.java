@@ -516,11 +516,9 @@ public final class MapCheckerCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(final @Nullable String... args) {
+	public void startDriver(final String... args) {
+		// TODO: Condense now we don't need the null check
 		for (final String filename : args) {
-			if (Objects.isNull(filename)) {
-				continue;
-			}
 			check(Paths.get(filename));
 		}
 	}

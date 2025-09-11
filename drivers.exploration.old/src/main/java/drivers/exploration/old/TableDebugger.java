@@ -13,7 +13,6 @@ import drivers.common.UtilityDriver;
 import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptions;
 import drivers.common.EmptyOptions;
-import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -72,7 +71,7 @@ public final class TableDebugger implements UtilityDriver {
 	private static final Path TABLES_PATH = Paths.get("tables");
 
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length > 0) {
 			throw new IncorrectUsageException(TableDebuggerFactory.USAGE);
 		} else if (!Files.isDirectory(TABLES_PATH)) {

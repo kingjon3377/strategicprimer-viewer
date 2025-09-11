@@ -51,7 +51,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 * Compare the two readers' performance on the given files.
 	 */
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		final IMapReader readerOne = TestReaderFactory.getOldMapReader();
 		final IMapReader readerTwo = TestReaderFactory.getNewMapReader();
 		final SPWriter writerOne = TestReaderFactory.getOldWriter();

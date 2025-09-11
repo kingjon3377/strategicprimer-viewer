@@ -12,9 +12,6 @@ import drivers.gui.common.SPMenu;
 import drivers.gui.common.UtilityMenuHandler;
 
 import java.util.stream.Stream;
-import java.util.Objects;
-
-import org.jspecify.annotations.Nullable;
 
 /**
  * A driver to check every map file in a list for errors and report the results in a window.
@@ -42,9 +39,9 @@ public final class MapCheckerGUI implements UtilityGUI {
 	}
 
 	@Override
-	public void startDriver(final @Nullable String... args) {
+	public void startDriver(final String... args) {
 		window.showWindow();
-		Stream.of(args).filter(Objects::nonNull).map(Paths::get).forEach(window::check);
+		Stream.of(args).map(Paths::get).forEach(window::check);
 	}
 
 	@Override

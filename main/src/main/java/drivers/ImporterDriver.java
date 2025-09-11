@@ -125,7 +125,7 @@ import org.jspecify.annotations.Nullable;
 	}
 
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		final int size;
 		try {
 			size = Integer.parseInt(options.getArgument("--size"));

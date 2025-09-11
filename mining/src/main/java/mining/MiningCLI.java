@@ -38,7 +38,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(final @Nullable String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(MiningCLIFactory.USAGE);
 		}
