@@ -193,7 +193,7 @@ public final class TodoFixerCLI implements CLIDriver {
 	private void fixAllVillages(final ILegacyMap map) throws MissingTableException, IOException {
 		final List<Village> villages = map.streamLocations()
 				.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
-				.flatMap(l -> map.streamFixtures(l))
+				.flatMap(map::streamFixtures)
 				.filter(Village.class::isInstance).map(Village.class::cast)
 				.filter(v -> LandRaces.LAND_RACES.contains(v.getRace())).toList();
 		if (!villages.isEmpty()) {
