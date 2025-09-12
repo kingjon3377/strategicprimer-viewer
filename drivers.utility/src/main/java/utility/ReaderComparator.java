@@ -47,6 +47,10 @@ public final class ReaderComparator implements UtilityDriver {
 		this.cli = cli;
 	}
 
+	private void logElapsedTime(final String label, final long start, final long end) {
+		cli.printf("%s took %ld", label, (end - start));
+	}
+
 	/**
 	 * Compare the two readers' performance on the given files.
 	 */
@@ -83,7 +87,7 @@ public final class ReaderComparator implements UtilityDriver {
 						"I/O error thrown by first reader");
 			}
 			final long readEndOne = System.nanoTime();
-			cli.println("Old reader took " + (readEndOne - readStartOne));
+			logElapsedTime("Old reader", readEndOne, readStartOne);
 			final long readStartTwo = System.nanoTime();
 			final ILegacyMap mapTwo;
 			try {
@@ -100,7 +104,7 @@ public final class ReaderComparator implements UtilityDriver {
 						"I/O error thrown by second reader");
 			}
 			final long readEndTwo = System.nanoTime();
-			cli.println("New reader took " + (readEndTwo - readStartTwo));
+			logElapsedTime("New reader", readEndTwo, readStartTwo);
 			if (mapOne.equals(mapTwo)) {
 				cli.println("Readers produce identical results");
 			} else {
@@ -119,7 +123,7 @@ public final class ReaderComparator implements UtilityDriver {
 						"I/O error reported by first writer");
 			}
 			final long writeEndOne = System.nanoTime();
-			cli.println("Old writer took " + (writeEndOne - writeStartOne));
+			logElapsedTime("Old writer", writeEndOne, writeStartOne);
 			final StringBuilder outTwo = new StringBuilder();
 			final long writeStartTwo = System.nanoTime();
 			try {
@@ -132,7 +136,7 @@ public final class ReaderComparator implements UtilityDriver {
 						"I/O error reported by second writer");
 			}
 			final long writeEndTwo = System.nanoTime();
-			cli.println("New writer took " + (writeEndTwo - writeStartTwo));
+			logElapsedTime("New writer", writeEndTwo, writeStartTwo);
 			if (outOne.toString().contentEquals(outTwo)) {
 				cli.println("Writers produce identical results");
 			} else if (outOne.toString().strip().equals(outTwo.toString().strip())) {
