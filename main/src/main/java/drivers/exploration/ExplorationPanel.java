@@ -416,10 +416,11 @@ import worker.common.IFixtureEditHelper;
 
 		private void villageSwearingAction() {
 			driverModel.swearVillages();
-			driverModel.getMap().getFixtures(driverModel.getSelectedUnitLocation())
-					.stream().filter(Village.class::isInstance).map(Village.class::cast)
-					.forEach(v -> getSelectedValuesList().add(v));
-			// FIXME: Adding to that list doesn't actually do anything, if I read it correctly ...
+			final List<TileFixture> allFixtures =
+					new ArrayList<>(driverModel.getMap().getFixtures(driverModel.getSelectedUnitLocation()));
+			final var lsm = mainList.getSelectionModel();
+			allFixtures.stream().filter(Village.class::isInstance).mapToInt(allFixtures::indexOf)
+					.forEach(index -> lsm.addSelectionInterval(index, index));
 		}
 
 		/**
