@@ -57,7 +57,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			final Village village = pair.getValue1();
 			if (village.owner().equals(currentPlayer)) {
 				own.put(village, loc);
-			} else if (village.owner().isIndependent()) {
+			} else if (village.isIndependent()) {
 				independents.put(village, loc);
 			} else {
 				final HeadedMap<Village, Point> mapping = others.computeIfAbsent(village.owner(),
@@ -94,7 +94,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		ostream.accept(", a(n) ");
 		ostream.accept(item.getRace());
 		ostream.accept(" village, ");
-		if (item.owner().isIndependent()) {
+		if (item.isIndependent()) {
 			ostream.accept("independent ");
 		} else if (item.owner().equals(currentPlayer)) {
 			ostream.accept("sworn to you ");

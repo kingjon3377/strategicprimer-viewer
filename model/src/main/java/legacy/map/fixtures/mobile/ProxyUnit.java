@@ -148,7 +148,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		if (parallel || proxiedList.size() == 1) {
 			if (owner().isCurrent()) {
 				return "a(n) %s unit belonging to you".formatted(getKind());
-			} else if (owner().isIndependent()) {
+			} else if (isIndependent()) {
 				return "an independent %s unit".formatted(getKind());
 			} else {
 				return "a(n) %s unit belonging to %s".formatted(getKind(),

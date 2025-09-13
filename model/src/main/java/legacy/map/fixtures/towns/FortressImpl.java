@@ -245,7 +245,7 @@ public final class FortressImpl implements IMutableFortress {
 				builder.append(unit.getName());
 				if (unit.owner().equals(owner)) {
 					builder.append(" (").append(unit.getKind()).append(")");
-				} else if (unit.owner().isIndependent()) {
+				} else if (unit.isIndependent()) {
 					builder.append(", an independent ")
 							.append(unit.getKind());
 				} else {

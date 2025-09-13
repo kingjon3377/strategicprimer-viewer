@@ -1,5 +1,6 @@
 package utility;
 
+import legacy.map.HasOwner;
 import legacy.map.IFixture;
 import drivers.common.IncorrectUsageException;
 
@@ -67,13 +68,15 @@ import legacy.map.fixtures.explorable.AdventureFixture;
 import legacy.map.fixtures.explorable.Battlefield;
 import lovelace.util.LovelaceLogger;
 
+import static java.util.function.Predicate.not;
+
 /**
  * An app to copy selected contents from one map to another.
  */
 public final class MapTradeCLI implements CLIDriver {
 	private static List<FixtureMatcher> initializeMatchers() {
 		final List<FixtureMatcher> retval = new ArrayList<>();
-		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),
+		FixtureMatcher.complements(IUnit.class, not(HasOwner::isIndependent),
 				"Units", "Independent Units").forEach(retval::add);
 		retval.add(FixtureMatcher.trivialMatcher(IFortress.class, "Fortresses"));
 		retval.add(FixtureMatcher.trivialMatcher(TextFixture.class, "Arbitrary-Text Notes"));

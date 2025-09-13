@@ -120,7 +120,7 @@ public final class ExplorableTabularReportGenerator
 				owner = "You";
 				longDesc = af.getFullDescription();
 			}
-			case final AdventureFixture af when af.owner().isIndependent() -> {
+			case final AdventureFixture af when af.isIndependent() -> {
 				brief = af.getBriefDescription();
 				owner = "No-one";
 				longDesc = af.getFullDescription();

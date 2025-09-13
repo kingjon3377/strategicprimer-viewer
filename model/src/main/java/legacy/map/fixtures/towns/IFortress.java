@@ -51,7 +51,7 @@ public interface IFortress extends HasImage, ITownFixture,
 	default String getShortDescription() {
 		if (owner().isCurrent()) {
 			return "a fortress, %s, owned by you".formatted(getName());
-		} else if (owner().isIndependent()) {
+		} else if (isIndependent()) {
 			return "an independent fortress, " + getName();
 		} else {
 			return "a fortress, %s, owned by %s".formatted(getName(),

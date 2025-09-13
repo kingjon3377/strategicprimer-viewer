@@ -98,7 +98,7 @@ import java.nio.file.Path;
 									  final int indent) throws XMLStreamException {
 		writeTag(ostream, "adventure", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
-		if (!obj.owner().isIndependent()) {
+		if (!obj.isIndependent()) {
 			writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		}
 		writeNonEmptyAttributes(ostream, Pair.with("brief", obj.getBriefDescription()),

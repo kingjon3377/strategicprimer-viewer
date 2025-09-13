@@ -1,5 +1,6 @@
 package utility;
 
+import legacy.map.HasOwner;
 import legacy.map.IFixture;
 import legacy.map.fixtures.FixtureIterable;
 import legacy.map.fixtures.IResourcePile;
@@ -321,7 +322,7 @@ import static java.util.function.Predicate.not;
 		final MappedCounter<IUnit, String, Integer> independentUnits =
 				simpleCounter(IUnit::getName);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.owner().isIndependent()).forEach(independentUnits::add);
+				.filter(HasOwner::isIndependent).forEach(independentUnits::add);
 		printSummary(independentUnits, "Independent Units:");
 
 		final MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker::getRace);

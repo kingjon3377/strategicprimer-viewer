@@ -139,7 +139,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		ostream.accept(" (");
 		ostream.accept(item.getKind());
 		ostream.accept("), ");
-		if (item.owner().isIndependent()) {
+		if (item.isIndependent()) {
 			ostream.accept("independent");
 		} else if (item.owner().equals(currentPlayer)) {
 			ostream.accept("owned by you");

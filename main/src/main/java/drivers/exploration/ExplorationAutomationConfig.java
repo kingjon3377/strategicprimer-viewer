@@ -1,6 +1,7 @@
 package drivers.exploration;
 
 import legacy.map.HasName;
+import legacy.map.HasOwner;
 import legacy.map.ILegacyMap;
 import legacy.map.Player;
 import legacy.map.Point;
@@ -23,6 +24,8 @@ import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
 
+import static java.util.function.Predicate.not;
+
 /* package */ final class ExplorationAutomationConfig {
 	public ExplorationAutomationConfig(final Player player) {
 		this.player = player;
@@ -35,17 +38,17 @@ import org.jspecify.annotations.Nullable;
 								fixture.getStatus(), fixture.getKind()),
 						AbstractTown.class, t -> TownStatus.Active != t.getStatus()),
 				new Condition<>("at independent villages", "an independent village",
-						Village.class, v -> v.owner().isIndependent()), new Condition<>("at other players' villages",
+						Village.class, HasOwner::isIndependent), new Condition<>("at other players' villages",
 						"another player's village",
-						Village.class, v -> !v.owner().equals(this.player), v -> !v.owner().isIndependent()),
+						Village.class, v -> !v.owner().equals(this.player), not(HasOwner::isIndependent)),
 				// TODO: Maybe mention name in stop message for other towns
 				new Condition<>("at villages sworn to you", "one of your villages, %s",
 						Village.class, v -> v.owner().equals(this.player)),
 				new Condition<>("on meeting other players' units", unit -> "a unit belonging to " + unit.owner(),
-						IUnit.class, u -> !u.owner().equals(this.player), u -> !u.owner().isIndependent()),
+						IUnit.class, u -> !u.owner().equals(this.player), not(HasOwner::isIndependent)),
+				// TODO: Provide helper default method sameOwner() in HasOwner (maybe ownedBy())
 				new Condition<>("on meeting independent units", "an independent unit", IUnit.class,
-						// TODO: Provide helper default methods isIndependent() and sameOwner() in HasOwner?
-						u -> u.owner().isIndependent()),
+						HasOwner::isIndependent),
 				new Condition<>("on meeting an immortal", i -> "a(n) " + i.getShortDescription(), Immortal.class));
 	}
 

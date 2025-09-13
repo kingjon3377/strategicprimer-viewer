@@ -125,14 +125,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	private static void checkAllNearbyWatchers(final ILegacyMap map, final IUnit unit, final Point dest) {
 		final MapDimensions dimensions = map.getDimensions();
 		final String description;
-		if (unit.owner().isIndependent()) {
+		if (unit.isIndependent()) {
 			description = "%s (ID #%d)".formatted(unit.getShortDescription(), unit.getId());
 		} else {
 			description = unit.getShortDescription();
 		}
 		new SurroundingPointIterable(dest, dimensions).stream()
 				.flatMap(point -> map.streamFixtures(point).filter(HasOwner.class::isInstance)
-						.map(HasOwner.class::cast).filter(owned -> !owned.owner().isIndependent())
+						.map(HasOwner.class::cast).filter(not(HasOwner::isIndependent))
 						.filter(not(matchingValue(unit, HasOwner::owner)))
 						.map(TileFixture.class::cast).map(fix -> Pair.with(point, fix.getShortDescription())))
 				.forEach(pair ->
@@ -642,7 +642,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final List<Village> villages = streamAllMaps().flatMap(m -> m.streamFixtures(currentPoint))
 					.filter(Village.class::isInstance)
 					.map(Village.class::cast)
-					.filter(v -> v.owner().isIndependent()).toList();
+					.filter(HasOwner::isIndependent).toList();
 			if (!villages.isEmpty()) {
 				IFixture.CopyBehavior subordinate = IFixture.CopyBehavior.KEEP;
 				for (final Village village : villages) {

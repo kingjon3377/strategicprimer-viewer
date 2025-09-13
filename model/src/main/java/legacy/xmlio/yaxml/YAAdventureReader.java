@@ -59,7 +59,7 @@ import java.nio.file.Path;
 			throws IOException {
 		writeTag(ostream, "adventure", indent);
 		writeProperty(ostream, "id", obj.getId());
-		if (!obj.owner().isIndependent()) {
+		if (!obj.isIndependent()) {
 			writeProperty(ostream, "owner", obj.owner().getPlayerId());
 		}
 		writeNonemptyProperty(ostream, "brief", obj.getBriefDescription());

@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import javax.swing.table.AbstractTableModel;
 
 import drivers.common.IterableComparator;
+import legacy.map.HasOwner;
 import legacy.map.fixtures.resources.ExposureStatus;
 import lovelace.util.Reorderable;
 
@@ -64,6 +65,8 @@ import legacy.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownStatus;
 import drivers.common.FixtureMatcher;
 
+import static java.util.function.Predicate.not;
+
 /**
  * A class to allow the Z-order of fixtures to be represented as a table (and
  * so dynamically controlled by the user).
@@ -75,14 +78,14 @@ public final class FixtureFilterTableModel extends AbstractTableModel
 	private final List<FixtureMatcher> matchers = new ArrayList<>();
 
 	public FixtureFilterTableModel() {
-		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),
+		FixtureMatcher.complements(IUnit.class, not(HasOwner::isIndependent),
 				"Units", "Independent Units").forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(IFortress.class, "Fortresses"));
 		FixtureMatcher.complements(AbstractTown.class, t -> TownStatus.Active == t.getStatus(),
 				"Active Cities, Towns, & Fortifications",
 				"Ruined, Abandoned, & Burned Communities").forEach(matchers::add);
 		// TODO: break up by owner beyond owned/independent
-		FixtureMatcher.complements(Village.class, v -> v.owner().isIndependent(),
+		FixtureMatcher.complements(Village.class, HasOwner::isIndependent,
 				"Independent Villages", "Villages With Suzerain").forEach(matchers::add);
 		Stream.of(Mine.class, Troll.class, Simurgh.class, Ogre.class,
 				Minotaur.class, Griffin.class).map(FixtureMatcher::trivialMatcher).forEach(matchers::add);

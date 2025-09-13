@@ -190,7 +190,7 @@ public final class Village implements IMutableTownFixture, HasMutableImage,
 	@Override
 	public String getShortDescription() {
 		final StringBuilder builder = new StringBuilder();
-		if (owner.isIndependent()) {
+		if (isIndependent()) {
 			builder.append("Independent ");
 		}
 		builder.append(status).append(" village");
@@ -199,7 +199,7 @@ public final class Village implements IMutableTownFixture, HasMutableImage,
 		}
 		if (owner.isCurrent()) {
 			builder.append(", owned by you");
-		} else if (!owner.isIndependent()) {
+		} else if (!isIndependent()) {
 			builder.append(", owned by ").append(owner.getName());
 		}
 		return builder.toString();
@@ -280,7 +280,7 @@ public final class Village implements IMutableTownFixture, HasMutableImage,
 				report.accept("In village %s (ID #%d):\tDominant race differs".formatted(
 						name, id));
 			} else if (owner.getPlayerId() != it.owner().getPlayerId() &&
-					!it.owner().isIndependent()) {
+					!it.isIndependent()) {
 				report.accept("In village %s (ID #%d):\tOwners differ".formatted(
 						name, id));
 			} else if (Objects.nonNull(population)) {

@@ -617,7 +617,7 @@ public final class LegacyMap implements IMutableLegacyMap {
 		if (exactly || count == 1) {
 			if (!matchPoint.equals(location)) {
 				final String idStr;
-				if (match instanceof final IUnit unit && unit.owner().isIndependent()) {
+				if (match instanceof final IUnit unit && unit.isIndependent()) {
 					idStr = " (ID #" + unit.getId();
 				} else {
 					idStr = "";

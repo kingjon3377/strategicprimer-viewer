@@ -80,7 +80,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		switch (item) {
 			case final Village v -> new VillageReportGenerator(currentPlayer, dimensions, hq)
 					.produceSingle(fixtures, map, ostream, v, loc);
-			case final AbstractTown abstractTown when item.owner().isIndependent() -> {
+			case final AbstractTown abstractTown when item.isIndependent() -> {
 				fixtures.remove(item.getId());
 				atPoint(ostream, loc, ": ");
 				ostream.accept(item.getName());
@@ -94,7 +94,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				ostream.accept(" ");
 				ostream.accept(distanceString.apply(loc));
 			}
-			case final AbstractTown abstractTown when !item.owner().isIndependent() -> {
+			case final AbstractTown abstractTown when !item.isIndependent() -> {
 				fixtures.remove(item.getId());
 				atPoint(ostream, loc, ": ");
 				ostream.accept(item.getName());

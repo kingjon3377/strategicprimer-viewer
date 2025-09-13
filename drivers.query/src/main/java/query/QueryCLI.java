@@ -286,7 +286,7 @@ public final class QueryCLI implements ReadOnlyDriver {
 					} else {
 						cli.print(town.getKind());
 					}
-					if (town.owner().isIndependent()) {
+					if (town.isIndependent()) {
 						cli.print(", independent");
 					} else if (!map.getCurrentPlayer().equals(town.owner())) {
 						cli.print(", allied to ", town.owner().toString());

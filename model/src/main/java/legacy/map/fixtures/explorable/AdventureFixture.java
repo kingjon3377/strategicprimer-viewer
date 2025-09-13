@@ -62,7 +62,7 @@ public interface AdventureFixture extends ExplorableFixture, SubsettableFixture,
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final AdventureFixture obj) {
-			return ((owner().isIndependent() && obj.owner().isIndependent()) ||
+			return ((isIndependent() && obj.isIndependent()) ||
 					(owner().getPlayerId() == obj.owner().getPlayerId())) &&
 					getBriefDescription().equals(obj.getBriefDescription()) &&
 					getFullDescription().equals(obj.getFullDescription());
@@ -84,7 +84,7 @@ public interface AdventureFixture extends ExplorableFixture, SubsettableFixture,
 	default int getDC() { return 30; }
 
 	default boolean ownerSubset(final AdventureFixture fix) {
-		return fix.owner().isIndependent() || fix.owner().getPlayerId() == owner().getPlayerId();
+		return fix.isIndependent() || fix.owner().getPlayerId() == owner().getPlayerId();
 	}
 
 	Function<IFixture, AdventureFixture> CAST = AdventureFixture.class::cast;

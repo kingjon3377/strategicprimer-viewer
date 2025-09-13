@@ -272,7 +272,7 @@ public final class Unit implements IMutableUnit {
 
 	@Override
 	public String toString() {
-		if (owner.isIndependent()) {
+		if (isIndependent()) {
 			return "Independent unit of type %s, named %s".formatted(kind, name);
 		} else {
 			return "Unit of type %s, belonging to %s, named %s".formatted(
@@ -375,7 +375,7 @@ public final class Unit implements IMutableUnit {
 	public String getShortDescription() {
 		if (owner.isCurrent()) {
 			return "a(n) %s unit belonging to you".formatted(kind);
-		} else if (owner.isIndependent()) {
+		} else if (isIndependent()) {
 			return name + ", an independent unit";
 		} else {
 			return "a(n) %s unit belonging to %s".formatted(kind, owner.getName());

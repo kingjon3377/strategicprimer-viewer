@@ -303,7 +303,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			LovelaceLogger.info("Added unit at fortress %s, not HQ", fortress.getName());
 			addUnitAtLocation(unit, loc);
 			return;
-		} else if (!unit.owner().isIndependent()) {
+		} else if (!unit.isIndependent()) {
 			LovelaceLogger.warning("No suitable location found for unit %s, owned by %s",
 					unit.getName(), unit.owner());
 		}

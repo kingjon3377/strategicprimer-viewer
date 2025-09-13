@@ -205,7 +205,7 @@ public abstract class AbstractTown implements HasMutableImage,
 			localReport.accept("Has different population details");
 			retval = false;
 		}
-		if (!owner.equals(other.owner()) && !other.owner().isIndependent()) {
+		if (!owner.equals(other.owner()) && !other.isIndependent()) {
 			localReport.accept("Has different owner");
 			retval = false;
 		}
@@ -249,7 +249,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	@Override
 	public final String toString() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
-		if (owner.isIndependent()) {
+		if (isIndependent()) {
 			return "An independent %s %s %s of DC %s %s".formatted(
 					townSize, status, getKind(), dc,
 					displayName);
@@ -268,7 +268,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	@Override
 	public final String getShortDescription() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
-		if (owner.isIndependent()) {
+		if (isIndependent()) {
 			return "An independent %s %s %s %s".formatted(townSize,
 					status, getKind(),
 					displayName);
