@@ -2,6 +2,7 @@ package lovelace.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A class to parse enum values from their corresponding toString values.
@@ -15,13 +16,18 @@ public final class EnumParser<T extends Enum<T>> implements ThrowingFunction<Str
 	private final Map<String, T> cache;
 
 	public EnumParser(final Class<T> classType, final int enumCount) {
+		this(classType, enumCount, Object::toString);
+	}
+
+	public EnumParser(final Class<T> classType, final int enumCount, Function<T, String> getter) {
 		string = "EnumParser<%s>".formatted(classType.getSimpleName());
 		cache = new HashMap<>(enumCount);
 		for (final T item : classType.getEnumConstants()) {
-			if (cache.containsKey(item.toString())) {
+			final String key = getter.apply(item);
+			if (cache.containsKey(key)) {
 				throw new IllegalStateException("EnumParser used for type with non-unique toString");
 			}
-			cache.put(item.toString(), item);
+			cache.put(key, item);
 		}
 	}
 

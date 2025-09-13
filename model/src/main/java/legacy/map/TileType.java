@@ -1,5 +1,8 @@
 package legacy.map;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
+
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;
@@ -125,12 +128,13 @@ public enum TileType implements HasName {
 		return Stream.of(values()).filter((t) -> t.isSupportedByVersion(version)).collect(Collectors.toList());
 	}
 
+	private static final ThrowingFunction<String, TileType, IllegalArgumentException> PARSER =
+			new EnumParser<>(TileType.class, values().length, TileType::getXml);
+
 	/**
 	 * Parse an XML representation of a tile type.
 	 */
 	public static TileType parse(final String xml) throws ParseException {
-		// TODO: Adapt EnumParser to customize what field to look at; we use 'xml' instead of 'string'
-		return Stream.of(values()).filter((t) -> xml.equals(t.getXml())).findAny()
-				.orElseThrow(() -> new ParseException("Failed to parse TileType from " + xml, -1));
+		return PARSER.apply(xml);
 	}
 }

@@ -1,5 +1,8 @@
 package legacy.map;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
+
 import java.text.ParseException;
 import java.util.stream.Stream;
 
@@ -49,12 +52,13 @@ public enum River {
 		return string;
 	}
 
+	private static final ThrowingFunction<String, River, IllegalArgumentException> PARSER =
+			new EnumParser<>(River.class, values().length, River::getDescription);
+
 	/**
 	 * Get the river matching the given description.
 	 */
 	public static River parse(final String description) throws ParseException {
-		// TODO: Adapt EnumParser to specify a function other than toString(); we use 'description' instead.
-		return Stream.of(values()).filter(r -> description.equals(r.description)).findAny()
-				.orElseThrow(() -> new ParseException("Failed to parse River from '%s'".formatted(description), -1));
+		return PARSER.apply(description);
 	}
 }
