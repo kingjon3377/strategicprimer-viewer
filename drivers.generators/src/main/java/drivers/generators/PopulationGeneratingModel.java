@@ -322,15 +322,19 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 	}
 
 	/**
-	 * Add the given unit at the given location.
+	 * Add the given unit at the given location. If a unit with the same ID is already there, it is not updated.
 	 *
 	 * TODO: If more than one map, return a proxy for the units; otherwise, return the unit
 	 */
 	@SuppressWarnings("TypeMayBeWeakened") // Let's not change the public API
 	public void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
-			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
-			indivMap.setStatus(ILegacyMap.ModificationStatus.Modified);
+			if (indivMap.streamFixtures(location).filter(IUnit.class::isInstance)
+					.noneMatch(matchingValue(unit, TileFixture::getId))) {
+				// TODO: Maybe require more (owner?) to match to prevent adding
+				indivMap.addFixture(location, unit);
+				indivMap.setStatus(ILegacyMap.ModificationStatus.Modified);
+			}
 		}
 	}
 
