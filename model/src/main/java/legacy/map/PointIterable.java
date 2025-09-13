@@ -19,7 +19,7 @@ public final class PointIterable implements Iterable<Point> {
 	/**
 	 * Which direction to search.
 	 */
-	enum IterationDirection {
+	public enum IterationDirection {
 		/**
 		 * Left-to-right, top-to-bottom.
 		 */
@@ -35,7 +35,7 @@ public final class PointIterable implements Iterable<Point> {
 	/**
 	 * Which axis is primary in the search.
 	 */
-	enum IterationOrientation {
+	public enum IterationOrientation {
 		/**
 		 * Search across, then down/up.
 		 */
