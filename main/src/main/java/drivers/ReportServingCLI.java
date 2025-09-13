@@ -147,13 +147,13 @@ import org.takes.http.Exit;
 			}
 			port = PORT;
 		}
-		Player player;
+		Optional<Player> player;
 		try {
-			player = model.getMap().getPlayers().getPlayer(
-					Integer.parseInt(options.getArgument("--player")));
+			player = Optional.of(model.getMap().getPlayers().getPlayer(
+					Integer.parseInt(options.getArgument("--player"))));
 		} catch (final NumberFormatException except) {
-			player = null;
+			player = Optional.empty();
 		}
-		serveReports(port, player);
+		serveReports(port, player.orElse(null));
 	}
 }

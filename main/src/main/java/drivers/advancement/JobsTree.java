@@ -57,25 +57,25 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void handleTreeSelectionChange(final TreeSelectionEvent event) {
-		final ISkill retval;
-		final IJob job;
+		final Optional<ISkill> retval;
+		final Optional<IJob> job;
 		final TreePath selectionPath = event.getNewLeadSelectionPath();
 		if (Objects.nonNull(selectionPath) && selectionPath.getLastPathComponent() instanceof ISkill) {
-			retval = (ISkill) selectionPath.getLastPathComponent();
+			retval = Optional.ofNullable((ISkill) selectionPath.getLastPathComponent());
 			final Object[] path = selectionPath.getPath();
 			if (path.length < 2) {
-				job = null;
+				job = Optional.empty();
 			} else {
 				job = Optional.of(path[path.length - 2]).filter(IJob.class::isInstance)
-						.map(IJob.class::cast).orElse(null);
+						.map(IJob.class::cast);
 			}
 		} else {
-			retval = null;
-			job = null;
+			retval = Optional.empty();
+			job = Optional.empty();
 		}
 		for (final SkillSelectionListener listener : listeners) {
-			listener.selectJob(job);
-			listener.selectSkill(retval);
+			listener.selectJob(job.orElse(null));
+			listener.selectSkill(retval.orElse(null));
 		}
 	}
 }

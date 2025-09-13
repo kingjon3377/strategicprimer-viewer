@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -98,15 +99,15 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
 
-		final OrdersPanel.IOrdersConsumer resultsSupplier;
+		final Optional<OrdersPanel.IOrdersConsumer> resultsSupplier;
 		if ("true".equals(options.getArgument("--edit-results"))) {
-			resultsSupplier = model::setUnitResults;
+			resultsSupplier = Optional.of(model::setUnitResults);
 		} else {
-			resultsSupplier = null;
+			resultsSupplier = Optional.empty();
 		}
 		final OrdersPanel resultsPanel = new OrdersPanel("Results", mainMap.getCurrentTurn(),
 				model.getCurrentPlayer(), model::getUnits, IUnit::getResults,
-				resultsSupplier, trueSupplier);
+				resultsSupplier.orElse(null), trueSupplier);
 		tree.addTreeSelectionListener(resultsPanel);
 
 		final NotesPanel notesPanelInstance = new NotesPanel(model.getMap().getCurrentPlayer());

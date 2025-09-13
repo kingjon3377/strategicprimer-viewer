@@ -54,6 +54,7 @@ import java.util.List;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -234,7 +235,7 @@ import java.util.function.Predicate;
 		tagStack.addFirst(element.getName());
 		tagStack.addFirst(mapTag.getName());
 		final IMutableLegacyMap retval = new LegacyMap(dimensions, players, currentTurn);
-		Point point = null;
+		Optional<Point> point = Optional.empty();
 		final Predicate<Object> isFortress = IFortress.class::isInstance;
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		for (final XMLEvent event : stream) {
@@ -250,7 +251,7 @@ import java.util.function.Predicate;
 					// Deliberately ignore "row"
 					continue;
 				} else if ("tile".equals(type)) {
-					if (Objects.nonNull(point)) {
+					if (point.isPresent()) {
 						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
 					expectAttributes(se, path, "row", "column", "kind",
@@ -258,7 +259,7 @@ import java.util.function.Predicate;
 					tagStack.addFirst(se.getName());
 					// TODO: Just assign to point, maybe?
 					final Point localPoint = parsePoint(se, path);
-					point = localPoint;
+					point = Optional.of(localPoint);
 					// Since tiles have sometimes been *written* without "kind", then
 					// failed to load, be liberal in what we accept here.
 					if ((hasParameter(se, "kind") || hasParameter(se, "type"))) {
@@ -275,33 +276,33 @@ import java.util.function.Predicate;
 						retval.setMountainous(localPoint, true);
 					}
 				} else if ("elsewhere".equals(type)) {
-					if (Objects.nonNull(point)) {
+					if (point.isPresent()) {
 						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se, path);
 					}
 					expectAttributes(se, path);
 					tagStack.addFirst(se.getName());
-					point = Point.INVALID_POINT;
+					point = Optional.of(Point.INVALID_POINT);
 				} else if (FUTURE_TAGS.contains(type)) {
 					tagStack.addFirst(se.getName());
 					warner.handle(UnsupportedTagException.future(se, path));
 				} else if ("sandbar".equals(type)) {
 					tagStack.addFirst(se.getName());
 					warner.handle(UnsupportedTagException.obsolete(se, path));
-				} else if (Objects.nonNull(point)) {
+				} else if (point.isPresent()) {
 					switch (type) {
 						case "lake", "river" -> {
-							retval.addRivers(point,
+							retval.addRivers(point.get(),
 									parseRiver(se, path, Objects.requireNonNull(tagStack.peekFirst())));
 							spinUntilEnd(se.getName(), path, stream);
 						}
 						case "mountain" -> {
 							tagStack.addFirst(se.getName());
-							retval.setMountainous(point, true);
+							retval.setMountainous(point.get(), true);
 						}
 						case "bookmark" -> {
 							tagStack.addFirst(se.getName());
 							expectAttributes(se, path, "player");
-							retval.addBookmark(point,
+							retval.addBookmark(point.get(),
 									players.getPlayer(getIntegerParameter(
 											se, path, "player")));
 						}
@@ -318,21 +319,21 @@ import java.util.function.Predicate;
 							if (direction == null) {
 								throw new MissingPropertyException(se, path, "direction");
 							}
-							retval.setRoadLevel(point, direction,
+							retval.setRoadLevel(point.get(), direction,
 									getIntegerParameter(se, path, "quality"));
 						}
 						default -> {
 							final QName top = Objects.requireNonNull(tagStack.peekFirst());
 							final TileFixture child = parseFixture(se, path, top, stream);
 							if (child instanceof final IFortress f &&
-									retval.streamFixtures(point)
+									retval.streamFixtures(point.get())
 											.filter(isFortress)
 											.map(fortressCast)
 											.anyMatch(matchingValue(f, IFortress::owner))) {
 								warner.handle(new UnwantedChildException(top, path, se,
 										"Multiple fortresses owned by one player on a tile"));
 							}
-							retval.addFixture(point, child);
+							retval.addFixture(point.get(), child);
 						}
 					}
 				} else {
@@ -350,12 +351,12 @@ import java.util.function.Predicate;
 					break;
 				} else if ("tile".equalsIgnoreCase(ee.getName().getLocalPart()) ||
 						"elsewhere".equalsIgnoreCase(ee.getName().getLocalPart())) {
-					point = null;
+					point = Optional.empty();
 				}
 			} else if (event instanceof final Characters c) {
 				final String data = c.getData().strip();
 				if (!data.isEmpty()) {
-					retval.addFixture(Objects.requireNonNullElse(point, Point.INVALID_POINT),
+					retval.addFixture(point.orElse(Point.INVALID_POINT),
 							new TextFixture(data, -1));
 				}
 			}

@@ -98,7 +98,7 @@ import java.util.function.Consumer;
 		final CommunityStats retval = new CommunityStatsImpl(getIntegerParameter(element, path, "size"));
 		final Consumer<IResourcePile> addProductionLambda = retval::addYearlyProduction;
 		final Consumer<IResourcePile> addConsumptionLambda = retval::addYearlyConsumption;
-		String current = null;
+		Optional<String> current = Optional.empty();
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		for (final XMLEvent event : stream) {
@@ -109,53 +109,53 @@ import java.util.function.Consumer;
 				case final StartElement se when isSupportedNamespace(se.getName()) -> {
 					switch (se.getName().getLocalPart().toLowerCase()) {
 						case "expertise":
-							if (Objects.isNull(current)) {
+							if (current.isEmpty()) {
 								expectAttributes(se, path, "skill", "level");
 								retval.setSkillLevel(getParameter(se, path, "skill"),
 										getIntegerParameter(se, path, "level"));
 								stack.addFirst(se);
-								current = se.getName().getLocalPart();
+								current = Optional.of(se.getName().getLocalPart());
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
 										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
-										expectedCommunityStatsTags(current).toArray(String[]::new));
+										expectedCommunityStatsTags(current.get()).toArray(String[]::new));
 							}
 							break;
 						case "claim":
-							if (Objects.isNull(current)) {
+							if (current.isEmpty()) {
 								expectAttributes(se, path, "resource");
 								retval.addWorkedField(getIntegerParameter(
 										se, path, "resource"));
 								stack.addFirst(se);
-								current = se.getName().getLocalPart();
+								current = Optional.of(se.getName().getLocalPart());
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
 										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
-										expectedCommunityStatsTags(current).toArray(String[]::new));
+										expectedCommunityStatsTags(current.get()).toArray(String[]::new));
 							}
 							break;
 						case "production":
 						case "consumption":
-							if (Objects.isNull(current)) {
+							if (current.isEmpty()) {
 								expectAttributes(se, path);
 								stack.addFirst(se);
-								current = se.getName().getLocalPart();
+								current = Optional.of(se.getName().getLocalPart());
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
 										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
-										expectedCommunityStatsTags(current).toArray(String[]::new));
+										expectedCommunityStatsTags(current.get()).toArray(String[]::new));
 							}
 							break;
 						case "resource":
 							final Consumer<IResourcePile> lambda;
-							if ("production".equals(current)) {
+							if ("production".equals(current.orElse(null))) {
 								lambda = addProductionLambda;
-							} else if ("consumption".equals(current)) {
+							} else if ("consumption".equals(current.orElse(null))) {
 								lambda = addConsumptionLambda;
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
 										Objects.requireNonNull(stack.peekFirst()).getName(), se, path,
-										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
+										expectedCommunityStatsTags(current.orElse("population"))
 												.toArray(String[]::new));
 							}
 							lambda.accept(resourceReader.read(se, path,
@@ -165,8 +165,8 @@ import java.util.function.Consumer;
 							throw UnwantedChildException.listingExpectedTags(
 									stack.isEmpty() ? element.getName() :
 											stack.peekFirst().getName(),
-									se, path, expectedCommunityStatsTags(Objects.requireNonNullElse(current,
-											"population")).toArray(String[]::new));
+									se, path, expectedCommunityStatsTags(current.orElse("population"))
+											.toArray(String[]::new));
 					}
 				}
 				case final EndElement ee when !stack.isEmpty() &&
@@ -175,12 +175,12 @@ import java.util.function.Consumer;
 					final StartElement nextTop = Objects.requireNonNull(stack.peekFirst());
 					if (top.equals(element)) {
 						return retval;
-					} else if (Objects.nonNull(current) &&
-							top.getName().getLocalPart().equals(current)) {
+					} else if (current.isPresent() &&
+							top.getName().getLocalPart().equals(current.get())) {
 						if ("population".equals(nextTop.getName().getLocalPart())) {
-							current = null;
+							current = Optional.empty();
 						} else {
-							current = nextTop.getName().getLocalPart();
+							current = Optional.of(nextTop.getName().getLocalPart());
 						}
 					}
 				}

@@ -155,7 +155,7 @@ import java.util.function.Consumer;
 		requireTag(element, path, parent, "population");
 		expectAttributes(element, path, warner, "size");
 		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, path, "size"));
-		String current = null;
+		Optional<String> current = Optional.empty();
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		final Consumer<IMutableResourcePile> addProduction = retval::addYearlyProduction;
@@ -181,9 +181,9 @@ import java.util.function.Consumer;
 						break;
 					case "production":
 					case "consumption":
-						if (Objects.isNull(current)) {
+						if (current.isEmpty()) {
 							expectAttributes(se, path, warner);
-							current = se.getName().getLocalPart();
+							current = Optional.of(se.getName().getLocalPart());
 							stack.addFirst(se);
 						} else {
 							throw new UnwantedChildException(
@@ -193,7 +193,7 @@ import java.util.function.Consumer;
 						break;
 					case "resource":
 						final StartElement top = stack.peekFirst();
-						final Consumer<IMutableResourcePile> lambda = switch (current) {
+						final Consumer<IMutableResourcePile> lambda = switch (current.orElse(null)) {
 							case "production" -> addProduction;
 							case "consumption" -> addConsumption;
 							case null, default -> throw UnwantedChildException.listingExpectedTags(
@@ -214,8 +214,8 @@ import java.util.function.Consumer;
 				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;
-				} else if (top.getName().getLocalPart().equals(current)) {
-					current = null;
+				} else if (top.getName().getLocalPart().equals(current.orElse(null))) {
+					current = Optional.empty();
 				}
 			}
 		}

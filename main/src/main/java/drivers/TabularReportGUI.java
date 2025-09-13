@@ -2,6 +2,7 @@ package drivers;
 
 import java.awt.Dimension;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
@@ -60,7 +61,7 @@ public final class TabularReportGUI implements GUIDriver {
 	public void startDriver() {
 		final SPFrame window = new SPFrame("Tabular Report", this, new Dimension(640, 480));
 		final JTabbedPane frame = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-		final Point hq;
+		final Optional<Point> hq;
 		if (options.hasOption("--hq-row") && options.hasOption("--hq-col")) {
 			OptionalInt row = OptionalInt.empty();
 			OptionalInt column = OptionalInt.empty();
@@ -73,21 +74,21 @@ public final class TabularReportGUI implements GUIDriver {
 				LovelaceLogger.warning("--hq-row and --hq-col must be numeric");
 			}
 			if (row.isPresent() && column.isPresent()) {
-				hq = new Point(row.getAsInt(), column.getAsInt());
+				hq = Optional.of(new Point(row.getAsInt(), column.getAsInt()));
 			} else {
-				hq = null;
+				hq = Optional.empty();
 			}
 		} else {
-			hq = null;
+			hq = Optional.empty();
 		}
 		final MapChangeListener listener = new MapChangeListener() {
 			@Override
 			public void mapChanged() {
 				frame.removeAll();
-				if (Objects.isNull(hq)) {
+				if (hq.isEmpty()) {
 					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
 				} else {
-					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);
+					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq.get());
 				}
 			}
 

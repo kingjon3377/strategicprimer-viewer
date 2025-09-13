@@ -66,15 +66,13 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	 */
 	@Override
 	public final @Nullable Item put(final Integer key, final Item item) {
-		final Item retval;
 		if (toRemove.contains(key)) {
-			retval = null;
 			toRemove.remove(key);
 			backing.put(key, item);
+			return null;
 		} else {
-			retval = backing.put(key, item);
+			return backing.put(key, item);
 		}
-		return retval;
 	}
 
 	/**

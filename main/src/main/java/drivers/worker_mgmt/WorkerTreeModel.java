@@ -25,6 +25,7 @@ import worker.common.IWorkerTreeModel;
 import drivers.common.IWorkerModel;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -322,10 +323,10 @@ import java.util.stream.Collectors;
 	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
-		final Predicate<IUnit> leadingFilter;
+		final Optional<Predicate<IUnit>> leadingFilter;
 		if (Objects.isNull(starting)) {
 			leading = false;
-			leadingFilter = null;
+			leadingFilter = Optional.empty();
 			sequence = model.getUnits(player);
 		} else {
 			final IUnit startingUnit = Stream.of(starting.getPath()).filter(IUnit.class::isInstance)
@@ -336,19 +337,19 @@ import java.util.stream.Collectors;
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
 			if (Objects.nonNull(startingUnit)) {
 				leading = true;
-				leadingFilter = startingUnit::equals;
+				leadingFilter = Optional.of(startingUnit::equals);
 			} else if (Objects.isNull(startingKind)) {
 				leading = false;
-				leadingFilter = null;
+				leadingFilter = Optional.empty();
 				sequence = model.getUnits(player);
 			} else {
 				leading = true;
-				leadingFilter = unit -> startingKind.equals(unit.getKind());
+				leadingFilter = Optional.of(unit -> startingKind.equals(unit.getKind()));
 			}
 		}
 		for (final IUnit unit : sequence) {
 			if (leading) {
-				if (leadingFilter.test(unit)) {
+				if (leadingFilter.get().test(unit)) {
 					continue;
 				} else {
 					leading = false;

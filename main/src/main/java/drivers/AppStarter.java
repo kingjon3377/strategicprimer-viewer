@@ -96,7 +96,7 @@ import lovelace.util.LovelaceLogger;
 
 		LovelaceLogger.trace("Reached the end of arguments");
 		// TODO: Use appletChooser so we can support prefixes
-		final DriverFactory currentDriver;
+		final Optional<DriverFactory> currentDriver;
 		final String command = others.stream().findFirst().orElse(null);
 		final List<DriverFactory> drivers = Optional.ofNullable(command).map(driverCache::get)
 				.orElse(Collections.emptyList());
@@ -105,19 +105,19 @@ import lovelace.util.LovelaceLogger;
 			LovelaceLogger.trace("Found a driver or drivers");
 			if (drivers.size() == 1) {
 				LovelaceLogger.trace("Only one driver registered for that command");
-				currentDriver = first;
+				currentDriver = Optional.of(first);
 			} else {
 				final IDriverUsage.DriverMode localMode = mode;
 				LovelaceLogger.trace("Multiple drivers registered; filtering by interface");
 				currentDriver = drivers.stream()
-						.filter(d -> d.getUsage().getMode() == localMode).findAny().orElse(null);
+						.filter(d -> d.getUsage().getMode() == localMode).findAny();
 			}
 		} else {
 			LovelaceLogger.trace("No matching driver found");
-			currentDriver = null;
+			currentDriver = Optional.empty();
 		}
 		if (currentOptions.hasOption("--help")) {
-			if (Objects.isNull(currentDriver)) {
+			if (currentDriver.isEmpty()) {
 				LovelaceLogger.trace("No driver selected, so giving choices.");
 				System.out.println("Strategic Primer assistive programs suite");
 				System.out.println("No app specified; use one of the following invocations:");
@@ -133,16 +133,16 @@ import lovelace.util.LovelaceLogger;
 					System.out.printf("%s: %s%n", description, invocationExample);
 				}
 			} else {
-				final IDriverUsage currentUsage = currentDriver.getUsage();
+				final IDriverUsage currentUsage = currentDriver.get().getUsage();
 				LovelaceLogger.trace("Giving usage information for selected driver");
 				// TODO: Can we and should we move the usageMessage() method into this class?
 				System.out.println(AppChooserState.usageMessage(currentUsage,
 						"true".equals(options.getArgument("--verbose")) ? AppChooserState.UsageVerbosity.Verbose :
 								AppChooserState.UsageVerbosity.Terse));
 			}
-		} else if (Objects.nonNull(currentDriver)) {
+		} else if (currentDriver.isPresent()) {
 			LovelaceLogger.trace("Starting chosen app.");
-			startChosenDriver.accept(currentDriver, currentOptions.copy());
+			startChosenDriver.accept(currentDriver.get(), currentOptions.copy());
 		} else {
 			LovelaceLogger.trace("Starting app-chooser.");
 			final SPOptions currentOptionsTyped = currentOptions.copy();

@@ -655,13 +655,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 				new IteratorWrapper<>(new EnumerationWrapper<>(enumeration, WorkerTreeNode.class));
 		@SuppressWarnings("rawtypes") final Iterable<? extends WorkerTreeNode> sequence;
 		boolean leading;
-		final WorkerTreeNode<?> toTrim;
+		final Optional<WorkerTreeNode<?>> toTrim;
 		if (Objects.isNull(starting)) {
 			sequence = wrapped;
 			leading = false;
-			toTrim = null;
+			toTrim = Optional.empty();
 		} else {
-			toTrim = (WorkerTreeNode<?>) starting.getLastPathComponent();
+			toTrim = Optional.ofNullable((WorkerTreeNode<?>) starting.getLastPathComponent());
 			sequence = Stream.concat(StreamSupport.stream(wrapped.spliterator(), false),
 							StreamSupport.stream(wrapped.spliterator(), false))
 					.collect(Collectors.toList());
@@ -671,7 +671,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		// Thereafter, in any case, only look at UnitNode instances.
 		for (final WorkerTreeNode<?> node : sequence) {
 			if (leading) {
-				if (node.equals(toTrim)) {
+				if (node.equals(toTrim.orElse(null))) {
 					continue;
 				} else {
 					leading = false;
