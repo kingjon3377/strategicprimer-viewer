@@ -1,6 +1,7 @@
 package drivers.generators;
 
 import legacy.map.HasOwner;
+import legacy.map.TileFixture;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.AnimalImpl;
 
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import legacy.map.fixtures.towns.IFortress;
 import lovelace.util.LovelaceLogger;
 import org.jspecify.annotations.Nullable;
 import lovelace.util.TriConsumer;
@@ -523,6 +525,15 @@ import static lovelace.util.MatchingValue.matchingValue;
 		return village -> villageMap.getOrDefault(village.getName(), -1) < currentTurn - 7;
 	}
 
+	private static Stream<Pair<Point, TileFixture>> flattenFortresses(final Pair<Point, TileFixture> pair) {
+		final TileFixture fixture = pair.getValue1();
+		if (fixture instanceof IFortress fort) {
+			return fort.stream().map(TileFixture.class::cast).map(member -> Pair.with(pair.getValue0(), member));
+		} else {
+			return Stream.of(pair);
+		}
+	}
+
 	/**
 	 * Let the user create randomly-generated workers, with names read from file, in a unit.
 	 */
@@ -542,7 +553,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 		final Optional<Point> found = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().streamFixtures(l)
 						.map(f -> Pair.with(l, f)))
-				.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
+				.flatMap(StatGeneratingCLI::flattenFortresses)
+				.filter(pair -> pair.getValue1().getId() == unit.getId())
 				.map(Pair::getValue0).findAny();
 		if (found.isPresent()) {
 			hqLoc = found.get();
