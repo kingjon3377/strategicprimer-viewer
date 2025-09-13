@@ -3,6 +3,7 @@ package legacy.idreg;
 import legacy.map.Point;
 import legacy.map.IFixture;
 import legacy.map.ILegacyMap;
+import legacy.map.fixtures.mobile.Animal;
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.towns.ITownFixture;
 import legacy.map.fixtures.FixtureIterable;
@@ -59,7 +60,8 @@ public final class IDFactoryFiller {
 			}
 			if (fixture instanceof final IWorker w) {
 				if (Objects.nonNull(w.getMount())) {
-					recursiveRegister(factory, Collections.singleton(w.getMount()));
+					final Iterable<Animal> mountIterable = Collections.singleton(w.getMount());
+					recursiveRegister(factory, mountIterable);
 				}
 				recursiveRegister(factory, w.getEquipment());
 			}
