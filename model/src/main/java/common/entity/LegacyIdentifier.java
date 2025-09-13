@@ -1,7 +1,5 @@
 package common.entity;
 
-import org.jspecify.annotations.NonNull;
-
 /**
  * In the 2009-2022 campaign, "fixtures" in the map were identified using a single integer, starting from 0 and
  * counting up.
@@ -18,7 +16,7 @@ public record LegacyIdentifier(int idNumber) implements EntityIdentifier {
 	}
 
 	@Override
-	public @NonNull String getIdentifierString() {
+	public String getIdentifierString() {
 		return Integer.toString(idNumber);
 	}
 }

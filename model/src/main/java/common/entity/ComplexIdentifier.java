@@ -1,7 +1,5 @@
 package common.entity;
 
-import org.jspecify.annotations.NonNull;
-
 import java.util.UUID;
 
 /**
@@ -12,8 +10,7 @@ import java.util.UUID;
  *                       if it was not created due to player action.
  * @param id             A unique identifying number for the entity.
  */
-public record ComplexIdentifier(@NonNull String originWorld, int creatingPlayer,
-                                @NonNull UUID id) implements EntityIdentifier {
+public record ComplexIdentifier(String originWorld, int creatingPlayer, UUID id) implements EntityIdentifier {
 	public ComplexIdentifier {
 		if (creatingPlayer < -1) {
 			throw new IllegalArgumentException("Player ID must be -1 if unknown, or nonnegative");
@@ -22,7 +19,7 @@ public record ComplexIdentifier(@NonNull String originWorld, int creatingPlayer,
 
 
 	@Override
-	public @NonNull String getIdentifierString() {
+	public String getIdentifierString() {
 		return "%s (%s-%d)".formatted(id, originWorld, creatingPlayer);
 	}
 }

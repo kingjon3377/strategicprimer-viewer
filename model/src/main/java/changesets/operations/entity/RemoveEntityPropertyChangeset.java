@@ -21,7 +21,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 	private final String propertyName;
 	private final PropertyType propertyValue;
 
-	public RemoveEntityPropertyChangeset(final @NonNull EntityIdentifier id, final @NonNull String propertyName,
+	public RemoveEntityPropertyChangeset(final EntityIdentifier id, final String propertyName,
 	                                     final @NonNull PropertyType propertyValue) {
 		this.id = id;
 		this.propertyName = propertyName;
@@ -29,11 +29,11 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 	}
 
 	@Override
-	public @NonNull Changeset invert() {
+	public Changeset invert() {
 		return new AddEntityPropertyChangeset<>(id, propertyName, propertyValue);
 	}
 
-	private void checkPreconditions(final @NonNull IMap map) throws PreconditionFailureException {
+	private void checkPreconditions(final IMap map) throws PreconditionFailureException {
 		final IEntity matching = map.getEntity(id);
 		if (Objects.isNull(matching)) {
 			throw new PreconditionFailureException("Cannot remove property from nonexistent entity");
@@ -43,7 +43,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 	}
 
 	@Override
-	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
@@ -58,7 +58,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 	}
 
 	@Override
-	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
+	public IMap apply(final IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));

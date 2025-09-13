@@ -9,7 +9,6 @@ import common.entity.IMutableEntity;
 import common.entity.Location;
 import common.map.IMap;
 import common.map.IMutableMap;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -22,19 +21,19 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 	private final Location fromLocation;
 	private final Location toLocation;
 
-	public ChangeEntityLocationChangeset(final @NonNull EntityIdentifier id, final @NonNull Location fromLocation,
-										 final @NonNull Location toLocation) {
+	public ChangeEntityLocationChangeset(final EntityIdentifier id, final Location fromLocation,
+	                                     final Location toLocation) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 	}
 
 	@Override
-	public @NonNull Changeset invert() {
+	public Changeset invert() {
 		return new ChangeEntityLocationChangeset(id, toLocation, fromLocation);
 	}
 
-	private void checkPreconditions(final @NonNull IMap map) throws PreconditionFailureException {
+	private void checkPreconditions(final IMap map) throws PreconditionFailureException {
 		final IEntity matching = map.getEntity(id);
 		if (Objects.isNull(matching)) {
 			throw new PreconditionFailureException("Entity to move must exist in the map");
@@ -44,7 +43,7 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = map.getEntity(id);
 		if (matching instanceof final IMutableEntity entity) {
@@ -57,7 +56,7 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 	}
 
 	@Override
-	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
+	public IMap apply(final IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final IMutableMap retval = (IMutableMap) map.copy();

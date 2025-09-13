@@ -18,7 +18,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	private final String propertyName;
 	private final PropertyType propertyValue;
 
-	public AddEntityPropertyChangeset(final @NonNull EntityIdentifier id, final @NonNull String propertyName,
+	public AddEntityPropertyChangeset(final EntityIdentifier id, final String propertyName,
 	                                  final @NonNull PropertyType propertyValue) {
 		this.id = id;
 		this.propertyName = propertyName;
@@ -26,11 +26,11 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public @NonNull Changeset invert() {
+	public Changeset invert() {
 		return new RemoveEntityPropertyChangeset<>(id, propertyName, propertyValue);
 	}
 
-	private void checkPreconditions(final @NonNull IMap map) throws PreconditionFailureException {
+	private void checkPreconditions(final IMap map) throws PreconditionFailureException {
 		final IEntity entity = map.getEntity(id);
 		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot add property to entity that does not exist in the map");
@@ -40,7 +40,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
@@ -55,7 +55,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
+	public IMap apply(final IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));

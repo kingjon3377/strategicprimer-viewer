@@ -1,6 +1,5 @@
 package common.entity;
 
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
@@ -14,21 +13,17 @@ import java.util.Collection;
  * its orders next.
  */
 public interface IEntity {
-	@NonNull
 	Location getLocation();
 
-	@NonNull
 	EntityIdentifier getId();
 
-	@NonNull
 	String getType();
 
-	boolean hasProperty(@NonNull String propertyName);
+	boolean hasProperty(String propertyName);
 
 	@Nullable
-	EntityProperty<?> getProperty(@NonNull String propertyName);
+	EntityProperty<?> getProperty(String propertyName);
 
-	@NonNull
 	Collection<EntityProperty<?>> getAllProperties();
 
 	IEntity copy();

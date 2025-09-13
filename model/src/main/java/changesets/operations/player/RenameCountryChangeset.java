@@ -7,27 +7,26 @@ import common.map.IMutableMap;
 import common.map.IPlayerCollection;
 import common.map.Player;
 import common.map.PlayerImpl;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
 public final class RenameCountryChangeset implements Changeset {
 	private final int playerId;
-	private final @NonNull String oldCountry;
-	private final @NonNull String newCountry;
+	private final String oldCountry;
+	private final String newCountry;
 
-	public RenameCountryChangeset(final int playerId, final @NonNull String oldCountry,
-	                              final @NonNull String newCountry) {
+	public RenameCountryChangeset(final int playerId, final String oldCountry,
+	                              final String newCountry) {
 		this.playerId = playerId;
 		this.oldCountry = oldCountry;
 		this.newCountry = newCountry;
 	}
 
-	public @NonNull Changeset invert() {
+	public Changeset invert() {
 		return new RenameCountryChangeset(playerId, newCountry, oldCountry);
 	}
 
-	private void checkPrecondition(final @NonNull IMap map) throws PreconditionFailureException {
+	private void checkPrecondition(final IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
 			if (item.playerId() == playerId) {
@@ -42,18 +41,18 @@ public final class RenameCountryChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NonNull IMutableMap map) throws PreconditionFailureException {
+	public void applyInPlace(final IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
 		map.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 	}
 
-	private @NonNull Player alteredCopy(final Player oldPlayer) {
+	private Player alteredCopy(final Player oldPlayer) {
 		return new PlayerImpl(playerId, oldPlayer.name(), newCountry, oldPlayer.portrait());
 	}
 
 	@Override
-	public @NonNull IMap apply(final @NonNull IMap map) throws PreconditionFailureException {
+	public IMap apply(final IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
