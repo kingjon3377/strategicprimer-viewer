@@ -52,6 +52,7 @@ public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> 
 	 */
 	@Override
 	public List<String> getHeaderRow() {
+		//noinspection HardcodedFileSeparator
 		return Arrays.asList("Distance", "Location", "Owner", "Kind/Category", "Name", "Orders",
 				"ID #");
 	}

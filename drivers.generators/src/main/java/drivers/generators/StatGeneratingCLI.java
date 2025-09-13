@@ -216,6 +216,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 			LovelaceLogger.warning("No stat adjustments found for %s", race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.warning("I/O error reading stat adjustments for %s", race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
 		}
@@ -697,6 +698,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 				try {
 					createWorkersForPlayer(idf, chosen);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException(except, "I/O error");
 				}
 				final ICLIHelper.BooleanResponse continuation = cli.inputBoolean("Add more workers to another unit?");

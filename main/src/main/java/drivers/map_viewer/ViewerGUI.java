@@ -140,6 +140,7 @@ public final class ViewerGUI implements ViewerDriver {
 				LovelaceLogger.error("Background image file not found");
 				LovelaceLogger.debug(except, "Stack trace for background missing");
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error(except, "I/O error reading background image");
 			}
 		}
@@ -153,6 +154,7 @@ public final class ViewerGUI implements ViewerDriver {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()),
 					"about");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error loading About dialog contents");
 		}
 		// TODO: We'd like to have the starting position stored in the map

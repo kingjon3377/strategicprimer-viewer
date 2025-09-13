@@ -93,6 +93,9 @@ public final class ImageLoader {
 	 *
 	 * @throws IOException If no reader could read the file (or the file does not exist)
 	 */
+	// ResourceInputStream takes, because Class::getResourceAsStream takes, a '/'-delimited path even on systems
+	// with other path separators.
+	@SuppressWarnings("HardcodedFileSeparator")
 	public static Image loadImage(final String file) throws IOException {
 		if (IMAGE_CACHE.containsKey(file)) {
 			return IMAGE_CACHE.get(file);

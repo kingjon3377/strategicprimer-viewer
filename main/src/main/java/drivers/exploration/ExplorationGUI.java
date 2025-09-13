@@ -63,6 +63,7 @@ import lovelace.util.LovelaceLogger;
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 					frame.getWindowName()), "about");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error while loading About dialog text");
 			// But go on anyway
 		}

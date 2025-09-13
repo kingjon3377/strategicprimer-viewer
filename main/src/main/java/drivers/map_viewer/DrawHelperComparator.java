@@ -255,6 +255,7 @@ public final class DrawHelperComparator implements UtilityDriver {
 			} catch (final FileNotFoundException | NoSuchFileException except) {
 				throw new DriverFailedException(except, arg + " not found");
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error while reading " + arg);
 			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + arg);
@@ -280,6 +281,7 @@ public final class DrawHelperComparator implements UtilityDriver {
 							helper, test, Integer.toString(REPS), total.getSum().toString()));
 				}
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error while writing results");
 			}
 		}

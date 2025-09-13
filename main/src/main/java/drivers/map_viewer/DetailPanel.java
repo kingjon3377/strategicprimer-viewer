@@ -202,6 +202,7 @@ import worker.common.IFixtureEditHelper;
 							repaint();
 							return;
 						} catch (final IOException except) {
+							//noinspection HardcodedFileSeparator
 							LovelaceLogger.warning(except, "I/O error loading portrait");
 						}
 					}
@@ -212,6 +213,7 @@ import worker.common.IFixtureEditHelper;
 								portrait = ImageLoader
 										.loadImage(playerPortraitName);
 							} catch (final IOException except) {
+								//noinspection HardcodedFileSeparator
 								LovelaceLogger.warning(except, "I/O error loading player portrait");
 							}
 						}

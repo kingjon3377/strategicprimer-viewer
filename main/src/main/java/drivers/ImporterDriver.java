@@ -140,6 +140,7 @@ import org.jspecify.annotations.Nullable;
 			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "Image file not found");
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error reading image");
 			}
 			final int width = image.getWidth();
@@ -241,6 +242,7 @@ import org.jspecify.annotations.Nullable;
 				try {
 					MapIOHelper.writeMap(Paths.get(arg + ".xml"), finalRetval);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException(except, "I/O error while writing map");
 				} catch (final XMLStreamException except) {
 					throw new DriverFailedException(except, "Map writer produced invalid XML");

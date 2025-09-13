@@ -40,6 +40,7 @@ public final class UtilityMenuHandler {
 		try {
 			new AboutDialog(window, window.getWindowName()).setVisible(true);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error reading About dialog contents");
 			// FIXME: Show an error dialog
 		}

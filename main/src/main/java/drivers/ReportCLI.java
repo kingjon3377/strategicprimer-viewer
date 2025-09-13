@@ -95,6 +95,7 @@ public final class ReportCLI implements ReadOnlyDriver {
 				writeReport(model.getMap().getFilename(), model.getMap());
 			}
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error while writing report(s)");
 		}
 	}

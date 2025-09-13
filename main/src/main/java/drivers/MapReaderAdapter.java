@@ -44,6 +44,7 @@ public final class MapReaderAdapter {
 		} catch (final FileNotFoundException | NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error while reading");
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
@@ -63,6 +64,7 @@ public final class MapReaderAdapter {
 		} catch (final FileNotFoundException | NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error while reading");
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
@@ -80,6 +82,7 @@ public final class MapReaderAdapter {
 		try {
 			return new SimpleDriverModel(MapIOHelper.readMap(stream, warner));
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error while reading");
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
@@ -110,6 +113,7 @@ public final class MapReaderAdapter {
 			//  filename as a field of the exception
 			throw new DriverFailedException(except, "File not found: " + current);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error reading from file " + current);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML in " + current);
@@ -134,6 +138,7 @@ public final class MapReaderAdapter {
 				throw new DriverFailedException(except,
 						"Malformed XML while writing " + mainFile);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error writing to " + mainFile);
 			}
 		}
@@ -150,6 +155,7 @@ public final class MapReaderAdapter {
 						throw new DriverFailedException(except,
 								"Malformed XML while writing " + filename);
 					} catch (final IOException except) {
+						//noinspection HardcodedFileSeparator
 						throw new DriverFailedException(except,
 								"I/O error writing to " + filename);
 					}

@@ -38,6 +38,7 @@ public final class StrategyExportCLI implements ReadOnlyDriver {
 				new StrategyExporter(model, options).writeStrategy(Paths.get(
 						options.getArgument("--export")), Collections.emptyList());
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error writing to file");
 			}
 		} else {

@@ -58,6 +58,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	 * returning String, as we'd havee to do formatting anyway.
 	 */
 	private static String statsString(final WorkerStats stats) {
+		//noinspection HardcodedFileSeparator
 		return """
 				He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, \
 				Intelligence %s, Wisdom %s, Charisma %s""".formatted(

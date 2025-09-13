@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 		while (list.size() > count) {
 			list.removeFirst();
 		}
+		// While this is in fact a hardcoded file separator, we're just using it in a server cache
+		//noinspection HardcodedFileSeparator
 		return list.stream().map(Path::toString).collect(Collectors.joining("/"));
 	}
 

@@ -54,6 +54,7 @@ public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * Compare the two readers' performance on the given files.
 	 */
+	@SuppressWarnings("HardcodedFileSeparator")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final IMapReader readerOne = TestReaderFactory.getOldMapReader();

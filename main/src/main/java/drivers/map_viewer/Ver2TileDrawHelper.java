@@ -74,6 +74,7 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 			} catch (final FileNotFoundException | NoSuchFileException except) {
 				LovelaceLogger.info(except, "Image %s not found", file);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error(except, "I/O error while loading image %s", file);
 			}
 		}
@@ -92,6 +93,7 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 			} catch (final FileNotFoundException | NoSuchFileException except) {
 				LovelaceLogger.info(except, "Image %s not found", file);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error(except, "I/O error while loading image %s", file);
 			}
 		}
@@ -133,6 +135,7 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 			LovelaceLogger.error(except, "Image %s not found", filename);
 			return fallbackFallback;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error while loading image %s", filename);
 			return fallbackFallback;
 		}
@@ -171,12 +174,15 @@ public final class Ver2TileDrawHelper implements TileDrawHelper {
 			return ImageLoader.loadImage(filename);
 		} catch (final FileNotFoundException | NoSuchFileException except) {
 			if (!missingFiles.contains(filename)) {
+				// This is in fact a path, but this is an error log.
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error("images/%s not found", filename);
 				LovelaceLogger.debug(except, "with stack trace");
 				missingFiles.add(filename);
 			}
 			return fallbackImage;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error reading image images/%s", filename);
 			return fallbackImage;
 		}

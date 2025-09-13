@@ -107,6 +107,7 @@ import drivers.common.ISPDriver;
 		}
 	}
 
+	@SuppressWarnings("HardcodedFileSeparator")
 	public void loadMain(final Path arg) throws DriverFailedException {
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
@@ -139,6 +140,7 @@ import drivers.common.ISPDriver;
 	 * a strict subset. This method "eats" (but logs) all (anticipated)
 	 * errors in reading the file.
 	 */
+	@SuppressWarnings("HardcodedFileSeparator")
 	public void testFile(final Path path) {
 		printParagraph("Testing %s ...".formatted(path));
 		final ILegacyMap map;

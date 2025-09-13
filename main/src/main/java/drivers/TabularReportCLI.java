@@ -105,6 +105,7 @@ public final class TabularReportCLI implements ReadOnlyDriver {
 					writer.close();
 				}
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error(except, "I/O error closing writer(s)");
 			}
 		}

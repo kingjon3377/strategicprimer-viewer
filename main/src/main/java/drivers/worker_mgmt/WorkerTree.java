@@ -388,6 +388,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					LovelaceLogger.error(except, "Impossible unsupported data flavor");
 					return false;
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					LovelaceLogger.error(except, "I/O error in transfer after we checked");
 					return false;
 				}
@@ -454,10 +455,13 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			try {
 				return ImageLoader.loadIcon(filename);
 			} catch (final FileNotFoundException | NoSuchFileException except) {
+				// While this is a path, this is an error log entry.
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error("Image file images/%s not found", filename);
 				LovelaceLogger.debug(except, "with stack trace");
 				return null;
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.error(except, "I/O error reading image");
 				return null;
 			}

@@ -138,7 +138,8 @@ public final class IOHandler implements ActionListener {
 			case final XMLStreamException xse -> "Malformed XML in " + filename;
 			case final FileNotFoundException fnfe -> "File %s not found".formatted(filename);
 			case final NoSuchFileException nsfe -> "File %s not found".formatted(filename);
-			case final IOException ioe -> "I/O error %s file %s".formatted(verb, filename);
+			case final IOException ioe -> //noinspection HardcodedFileSeparator
+					"I/O error %s file %s".formatted(verb, filename);
 			case final SPFormatException spfe -> "SP map format error in " + filename;
 			default -> except.getMessage();
 		};

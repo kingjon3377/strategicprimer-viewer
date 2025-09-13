@@ -308,6 +308,7 @@ import java.io.FileNotFoundException;
 			implementLabel.setArguments(currentPlayer.getName());
 		}
 
+		@SuppressWarnings("HardcodedFileSeparator")
 		@Override
 		public void acceptDroppedFile(final Path file) {
 			try {
@@ -335,6 +336,7 @@ import java.io.FileNotFoundException;
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 					frame.getWindowName()), "about");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error loading about dialog text");
 			// But the About dialog isn't critical, so go on ...
 		}

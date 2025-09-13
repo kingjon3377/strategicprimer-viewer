@@ -258,6 +258,7 @@ public final class FixtureList extends JList<TileFixture>
 					} catch (final UnsupportedFlavorException except) {
 						LovelaceLogger.error(except, "Unsupported flavor when it said it was supported");
 					} catch (final IOException except) {
+						//noinspection HardcodedFileSeparator
 						LovelaceLogger.error(except, "I/O error getting the data");
 					}
 				}

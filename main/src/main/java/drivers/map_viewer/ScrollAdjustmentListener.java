@@ -87,6 +87,7 @@ import java.util.Objects;
 						oldDimensions.getMaximumRow(), 0, oldDimensions.getColumns().size() - 1);
 			} else if (oldDimensions.getMaximumColumn() + offset >
 					model.getMapDimensions().columns()) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.debug("Offset would go too far to the right ([%d + %d] / %d), constraining the view.",
 						oldDimensions.getMaximumColumn(), offset,
 						model.getMapDimensions().columns());
@@ -141,6 +142,7 @@ import java.util.Objects;
 				newDimensions = new VisibleDimensions(0, oldDimensions.getRows().size() - 1,
 						oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
 			} else if (oldDimensions.getMaximumRow() + offset > model.getMapDimensions().rows()) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.debug("Offset would go too far down ([%d + %d] / %d), constraining the view.",
 						oldDimensions.getMaximumRow(), offset, model.getMapDimensions().rows());
 				newDimensions = new VisibleDimensions(

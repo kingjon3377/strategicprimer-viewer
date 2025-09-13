@@ -65,6 +65,7 @@ import lovelace.util.LovelaceLogger;
 				LovelaceLogger.warning(except, "Malformed XML in dropped file");
 				return false;
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				LovelaceLogger.warning(except, "I/O error reading dropped file");
 				return false;
 			}

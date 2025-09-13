@@ -313,6 +313,7 @@ public final class TodoFixerCLI implements CLIDriver {
 		}
 		for (final String job : jobList) {
 			if (rng.nextBoolean()) {
+				//noinspection HardcodedFileSeparator
 				cli.printf("Setting unit with ID #%d (%d/%d) to kind %s%n", unit.getId(), count, totalCount, job);
 				unit.setKind(job);
 				return;
@@ -350,6 +351,7 @@ public final class TodoFixerCLI implements CLIDriver {
 				try {
 					fixAllVillages(map);
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					throw new DriverFailedException(except,
 							"I/O error loading data from disk");
 				} catch (final MissingTableException except) {
@@ -364,6 +366,7 @@ public final class TodoFixerCLI implements CLIDriver {
 			try {
 				fixAllVillages(model.getMap());
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except,
 						"I/O error loading data from disk");
 			} catch (final MissingTableException except) {

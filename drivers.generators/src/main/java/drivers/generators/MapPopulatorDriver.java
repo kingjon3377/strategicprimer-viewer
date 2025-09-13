@@ -76,6 +76,7 @@ public final class MapPopulatorDriver implements CLIDriver {
 	@Override
 	public void startDriver() {
 		populate();
+		//noinspection HardcodedFileSeparator
 		cli.printf("%d/%d suitable locations were changed%n", changedCount, suitableCount);
 		if (changedCount > 0) {
 			model.setMapStatus(ILegacyMap.ModificationStatus.Modified);

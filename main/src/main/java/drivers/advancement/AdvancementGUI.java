@@ -73,6 +73,7 @@ public final class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()), "about");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error loading About dialog text");
 			// But this isn't a blocker to the driver as a whole, so keep going.
 		}

@@ -46,6 +46,7 @@ public final class TownGeneratingCLI implements CLIDriver {
 		} catch (final MissingTableException except) {
 			throw new DriverFailedException(except, "Missing table file(s)");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			throw new DriverFailedException(except, "I/O error initializing generator");
 		}
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(

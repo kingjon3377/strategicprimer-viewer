@@ -93,11 +93,14 @@ import lovelace.util.LovelaceLogger;
 		try {
 			return ImageLoader.loadIcon(actualImage);
 		} catch (final FileNotFoundException | NoSuchFileException except) {
+			// For once this actually is a file-separator, but this is error logging.
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error("image file images/%s not found", actualImage);
 			LovelaceLogger.debug(except, "With stack trace");
 			MISSING_FILENAMES.add(actualImage);
 			return DEFAULT_FIXTURE_ICON;
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error reading image");
 			return DEFAULT_FIXTURE_ICON;
 		}

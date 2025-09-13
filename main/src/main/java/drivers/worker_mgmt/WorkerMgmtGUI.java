@@ -66,6 +66,7 @@ public final class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 					frame.getWindowName()), "about");
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error setting up About dialog");
 		}
 		LovelaceLogger.trace("Registered menu handlers");

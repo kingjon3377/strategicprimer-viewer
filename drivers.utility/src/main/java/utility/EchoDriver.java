@@ -68,6 +68,7 @@ public final class EchoDriver implements UtilityDriver {
 			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "No such file " + inArg);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error reading file " + inArg);
 			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + inArg);
@@ -120,6 +121,7 @@ public final class EchoDriver implements UtilityDriver {
 			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML writing " + outArg);
 			} catch (final IOException except) {
+				//noinspection HardcodedFileSeparator
 				throw new DriverFailedException(except, "I/O error writing " + outArg);
 			}
 		} else {

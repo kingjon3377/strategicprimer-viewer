@@ -109,6 +109,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		for (final Point location : locations) {
 			final int temp = (remainingCount * 2) + 2;
 			if (remainingTotal <= temp) {
+				//noinspection HardcodedFileSeparator
 				cli.printf(
 						"With %d/%d groups left, there is only %d left, not enough for 2 or more each%n",
 						remainingCount, total, remainingTotal);
@@ -156,6 +157,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
+				//noinspection HardcodedFileSeparator
 				cli.printf("With %d/%d groups left, there is only %s left%n",
 						remainingCount, total, remainingTotal); // TODO: adjust instead?
 				return;
@@ -193,6 +195,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
+				//noinspection HardcodedFileSeparator
 				cli.printf("With %d/%d groups left, there is only %s left%n",
 						remainingCount, total, remainingTotal); // TODO: adjust instead?
 				return;

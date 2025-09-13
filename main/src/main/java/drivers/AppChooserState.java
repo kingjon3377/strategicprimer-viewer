@@ -213,8 +213,10 @@ import static lovelace.util.MatchingValue.matchingValue;
 							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except, "Dropped file not found");
 				} catch (final IOException except) {
+					//noinspection HardcodedFileSeparator
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "I/O Error",
 							JOptionPane.ERROR_MESSAGE);
+					//noinspection HardcodedFileSeparator
 					LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
 				} catch (final XMLStreamException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",

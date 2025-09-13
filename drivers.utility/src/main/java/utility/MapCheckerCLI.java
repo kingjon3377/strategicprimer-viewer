@@ -448,6 +448,7 @@ public final class MapCheckerCLI implements UtilityDriver {
 		check(file, new Warning(System.out::println, true));
 	}
 
+	@SuppressWarnings("HardcodedFileSeparator")
 	public void check(final Path file, final Warning warner) {
 		stdout.accept("Starting " + file);
 		final ILegacyMap map;

@@ -69,6 +69,7 @@ import org.takes.http.Exit;
 		return model;
 	}
 
+	@SuppressWarnings("HardcodedFileSeparator")
 	private void serveReports(final int port, final @Nullable Player currentPlayer) throws DriverFailedException {
 		final Map<Path, String> cache = new HashMap<>();
 		if (model instanceof final IMultiMapModel mmm &&

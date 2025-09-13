@@ -130,6 +130,7 @@ import org.jspecify.annotations.Nullable;
 		} catch (final NoSuchFileException | FileNotFoundException except) {
 			LovelaceLogger.error(except, "Dropped file not found: %s", file);
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error reading dropped file");
 		} catch (final XMLStreamException except) {
 			LovelaceLogger.error(except, "Malformed XML in dropped file");

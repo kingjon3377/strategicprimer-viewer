@@ -172,6 +172,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 			final Direction direction;
 			final Point proposedDestination = proposedPath.pollFirst();
 			if (Objects.isNull(proposedDestination)) {
+				//noinspection HardcodedFileSeparator
 				cli.printf("%d/%d MP remaining. Current speed: %s.%n",
 						runningTotal.intValue(), totalMP, speed.getShortName());
 				cli.printlnAtInterval(usage);
@@ -204,6 +205,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 							if (path.iterator().hasNext()) {
 								path.forEach(proposedPath::addLast);
 							} else {
+								//noinspection HardcodedFileSeparator
 								cli.println(
 										"S/he doesn't know how to get there from here.");
 							}
@@ -225,6 +227,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 					cli.printf("Next step %s isn't adjacent to %s%n", proposedDestination, point);
 					return;
 				}
+				//noinspection HardcodedFileSeparator
 				cli.printf("%d/%d MP remaining. Current speed: %s.%n",
 						runningTotal.intValue(), totalMP, speed.getShortName());
 			}

@@ -272,6 +272,7 @@ import static java.util.function.Predicate.not;
 		final MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground::getKind);
 		allFixtures.stream().filter(Ground.class::isInstance).map(Ground.class::cast)
 				.forEach(ground::add);
+		//noinspection HardcodedFileSeparator
 		printSummary(ground,
 				"Ground (bedrock) (counting exposed/not separately):",
 				CountingCLI::countTilesWithKind, 0);

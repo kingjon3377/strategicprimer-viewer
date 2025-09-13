@@ -214,6 +214,7 @@ public final class MapTradeCLI implements CLIDriver {
 			if (first.isLocationEmpty(location)) {
 				continue;
 			}
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.debug("Copying contents at %s, location %d/%d", location,
 					count, totalCount);
 			model.copyBaseTerrainAt(location);

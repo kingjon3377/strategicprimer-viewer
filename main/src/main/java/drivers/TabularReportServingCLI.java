@@ -80,6 +80,7 @@ import org.takes.http.Exit;
 	@FunctionalInterface
 	private interface IOThrowingConsumer<T> extends ThrowingConsumer<T, IOException> {}
 
+	@SuppressWarnings("HardcodedFileSeparator")
 	private void serveReports(final int port) throws DriverFailedException {
 		final Map<Path, ILegacyMap> mapping;
 		if (model instanceof final IMultiMapModel mmm) {
@@ -110,7 +111,7 @@ import org.takes.http.Exit;
 		}
 
 		// [file, table]->builder
-		final Stream<Fork> endpoints = builders.entrySet().stream()
+		@SuppressWarnings("HardcodedFileSeparator") final Stream<Fork> endpoints = builders.entrySet().stream()
 				.map(entry -> new FkRegex("/%s.%s.csv".formatted(entry.getKey().getValue0(),
 						entry.getKey().getValue1()),
 						new RsWithType(new RsWithHeader(new RsText(entry.getValue().toString()),

@@ -194,6 +194,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			strategyExporter.writeStrategy(file, model.getDismissed());
 		} catch (final IOException except) {
 			// FIXME: Show error dialog
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.error(except, "I/O error while trying to write strategy");
 		}
 	}

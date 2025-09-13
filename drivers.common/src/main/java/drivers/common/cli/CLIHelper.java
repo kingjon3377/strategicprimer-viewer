@@ -89,7 +89,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public void print(final String... text) {
-		final long newlines = Stream.of(text)
+		// There's no Character::isLineSeparator method
+		@SuppressWarnings("HardcodedLineSeparator") final long newlines = Stream.of(text)
 				.mapToLong(s -> s.chars().filter(c -> c == '\n' || c == '\r').count()).sum();
 		if (newlines > 0) {
 			intervals.replaceAll((key, lines) -> lines + newlines);
@@ -227,6 +228,7 @@ public final class CLIHelper implements ICLIHelper {
 		try {
 			return istream.readLine();
 		} catch (final IOException except) {
+			//noinspection HardcodedFileSeparator
 			LovelaceLogger.warning(except, "I/O error");
 			return null;
 		}
