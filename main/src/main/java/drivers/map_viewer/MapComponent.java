@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import drivers.common.IterableComparator;
+import drivers.common.MapMetadataChangeListener;
 import lovelace.util.ActionWrapper;
 import lovelace.util.LovelaceLogger;
 import org.jspecify.annotations.Nullable;
@@ -36,7 +37,6 @@ import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import drivers.common.MapChangeListener;
 import drivers.common.SelectionChangeListener;
 import drivers.common.FixtureMatcher;
 
@@ -56,7 +56,7 @@ import java.awt.image.BufferedImage;
  * for every tile in the map, and removing them all and adding the visible
  * tiles back in every time the map was scrolled).
  */
-/* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
+/* package */ final class MapComponent extends JComponent implements MapGUI, MapMetadataChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -236,10 +236,6 @@ import java.awt.image.BufferedImage;
 	@Override
 	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {
 	} // TODO: check visibility of cursor point here?
-
-	@Override
-	public void mapChanged() {
-	}
 
 	private void drawBackgroundImage(final Graphics context, final int tileSize) {
 		final BufferedImage temp = backgroundImage;

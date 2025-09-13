@@ -26,6 +26,11 @@ public class SimpleDriverModel implements IDriverModel {
 	private final Collection<MapChangeListener> mcListeners = new ArrayList<>();
 
 	/**
+	 * The list of map-metadata-change listeners.
+	 */
+	private final Collection<MapMetadataChangeListener> mmListeners = new ArrayList<>();
+
+	/**
 	 * The list of version change listeners.
 	 */
 	private final Collection<VersionChangeListener> vcListeners = new ArrayList<>();
@@ -61,7 +66,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public final void setMapStatus(final ILegacyMap.ModificationStatus status) {
 		mainMap.setStatus(status);
-		for (final MapChangeListener listener : mcListeners) {
+		for (final MapMetadataChangeListener listener : mmListeners) {
 			listener.mapMetadataChanged();
 		}
 	}
@@ -120,6 +125,22 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public final void removeMapChangeListener(final MapChangeListener listener) {
 		mcListeners.remove(listener);
+	}
+
+	/**
+	 * Add a map-metadata-change listener.
+	 */
+	@Override
+	public void addMapMetadataListener(final MapMetadataChangeListener listener) {
+		mmListeners.add(listener);
+	}
+
+	/**
+	 * Remove a map-metadata-change listener.
+	 */
+	@Override
+	public void removeMapMetadataListener(final MapMetadataChangeListener listener) {
+		mmListeners.remove(listener);
 	}
 
 	/**

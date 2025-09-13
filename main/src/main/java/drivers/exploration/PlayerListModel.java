@@ -34,10 +34,6 @@ import java.io.Serial;
 		model.getPlayerChoices().forEach(this::addElement);
 	}
 
-	@Override
-	public void mapMetadataChanged() {
-	}
-
 	@Serial
 	private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("drivers.exploration.PlayerListModel");

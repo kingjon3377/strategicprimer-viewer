@@ -94,7 +94,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 		tableModel.addTableModelListener(this::repaintMapPanel); // TODO: inline into here?
 		mapModel.addGraphicalParamsListener(mapPanel);
-		mapModel.addMapChangeListener(mapPanel);
+		mapModel.addMapMetadataListener(mapPanel);
 		mapModel.addSelectionChangeListener(mapPanel);
 
 		final DetailPanel detailPane = new DetailPanel(mapModel.getMapDimensions().version(), mapModel,

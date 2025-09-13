@@ -81,19 +81,12 @@ public final class TabularReportGUI implements GUIDriver {
 		} else {
 			hq = Optional.empty();
 		}
-		final MapChangeListener listener = new MapChangeListener() {
-			@Override
-			public void mapChanged() {
-				frame.removeAll();
-				if (hq.isEmpty()) {
-					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
-				} else {
-					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq.get());
-				}
-			}
-
-			@Override
-			public void mapMetadataChanged() {
+		final MapChangeListener listener = () -> {
+			frame.removeAll();
+			if (hq.isEmpty()) {
+				TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
+			} else {
+				TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq.get());
 			}
 		};
 		listener.mapChanged();

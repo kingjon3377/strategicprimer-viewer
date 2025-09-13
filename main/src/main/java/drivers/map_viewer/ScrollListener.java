@@ -199,10 +199,6 @@ import legacy.map.fixtures.mobile.IUnit;
 	}
 
 	@Override
-	public void mapMetadataChanged() {
-	}
-
-	@Override
 	public void selectedUnitChanged(final @Nullable IUnit oldSelection, final @Nullable IUnit newSelection) {
 	}
 

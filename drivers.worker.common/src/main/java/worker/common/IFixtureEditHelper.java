@@ -1,5 +1,6 @@
 package worker.common;
 
+import drivers.common.MapMetadataChangeListener;
 import legacy.map.HasName;
 import legacy.map.HasOwner;
 import legacy.map.fixtures.UnitMember;
@@ -15,8 +16,11 @@ import legacy.map.Player;
 /**
  * An interface for helpers to allow the worker tree component, the fixture
  * list in the map viewer, etc., to allow the user to edit fixtures.
+ *
+ * TODO: Do we really need both MapChangeListener and MapMetadataChangeListener?
  */
-public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListener, MapChangeListener {
+public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListener, MapChangeListener,
+		MapMetadataChangeListener {
 	/**
 	 * Move a member between units.
 	 *

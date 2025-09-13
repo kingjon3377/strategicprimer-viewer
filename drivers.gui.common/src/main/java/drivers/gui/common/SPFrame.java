@@ -4,6 +4,7 @@ import java.io.Serial;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
 
+import drivers.common.IDriverModel;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ import javax.swing.SwingUtilities;
 
 import drivers.common.ISPDriver;
 import drivers.common.ModelDriver;
-import drivers.common.MapChangeListener;
 
 /**
  * An intermediate subclass of {@link JFrame} to take care of some common setup
@@ -96,23 +96,14 @@ public class SPFrame extends JFrame implements ISPWindow {
 		setTitle(refreshTitle());
 
 		if (driver instanceof final ModelDriver md) {
-			md.getModel().addMapChangeListener(new MapChangeListener() {
-				private void impl() {
-					final Path filename = md.getModel().getMap().getFilename();
-					getRootPane().putClientProperty("Window.documentFile", filename);
-					setTitle(refreshTitle());
-				}
-
-				@Override
-				public void mapChanged() {
-					SwingUtilities.invokeLater(this::impl);
-				}
-
-				@Override
-				public void mapMetadataChanged() {
-					SwingUtilities.invokeLater(this::impl);
-				}
-			});
+			final Runnable handleChangeImpl = () -> {
+				final Path filename = md.getModel().getMap().getFilename();
+				getRootPane().putClientProperty("Window.documentFile", filename);
+				setTitle(refreshTitle());
+			};
+			final IDriverModel model = md.getModel();
+			model.addMapChangeListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
+			model.addMapMetadataListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
 		}
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		if (Objects.nonNull(minSize)) {
