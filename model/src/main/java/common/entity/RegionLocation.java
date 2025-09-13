@@ -11,4 +11,9 @@ public record RegionLocation(@NonNull String world, int region) implements Locat
 			throw new IllegalArgumentException("Region must be -1 if unspecified, or else non-negative");
 		}
 	}
+
+	@Override
+	public String getDisplayRepresentation() {
+		return "In world %s region %d".formatted(world, region);
+	}
 }

@@ -26,4 +26,9 @@ public record CoordinateLocation(@NonNull String world, int region, int row, int
 	private static boolean isDifferentSign(final int one, final int two) {
 		return one < 0 && two >= 0;
 	}
+
+	@Override
+	public String getDisplayRepresentation() {
+		return "(%d, %d) in %s region %d".formatted(row, column, world, region);
+	}
 }

@@ -9,4 +9,8 @@ import org.jspecify.annotations.NonNull;
  * @param parent The entity that is the parent of the one this location object is embedded in.
  */
 public record InParentLocation(@NonNull EntityIdentifier parent) implements Location {
+	@Override
+	public String getDisplayRepresentation() {
+		return "Inside entity ID #%s".formatted(parent.getIdentifierString());
+	}
 }
