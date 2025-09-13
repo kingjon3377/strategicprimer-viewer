@@ -1,5 +1,6 @@
 package drivers.exploration;
 
+import legacy.map.HasName;
 import legacy.map.ILegacyMap;
 import legacy.map.Player;
 import legacy.map.Point;
@@ -37,8 +38,8 @@ import org.jspecify.annotations.Nullable;
 						Village.class, v -> v.owner().isIndependent()), new Condition<>("at other players' villages",
 						"another player's village",
 						Village.class, v -> !v.owner().equals(this.player), v -> !v.owner().isIndependent()),
-				// TODO: For "your villages" (and perhaps other towns), include name in stop message
-				new Condition<>("at villages sworn to you", "one of your villages",
+				// TODO: Maybe mention name in stop message for other towns
+				new Condition<>("at villages sworn to you", "one of your villages, %s",
 						Village.class, v -> v.owner().equals(this.player)),
 				new Condition<>("on meeting other players' units", unit -> "a unit belonging to " + unit.owner(),
 						IUnit.class, u -> !u.owner().equals(this.player), u -> !u.owner().isIndependent()),
@@ -64,7 +65,11 @@ import org.jspecify.annotations.Nullable;
 		public Condition(final String configExplanation, final String stopExplanation, final Class<Type> cls,
 						 final Predicate<Type>... conditions) {
 			this.configExplanation = configExplanation;
-			this.stopExplanation = ignored -> stopExplanation;
+			if (stopExplanation.contains("%") && HasName.class.isAssignableFrom(cls)) {
+				this.stopExplanation = item -> stopExplanation.formatted(HasName.class.cast(item).getName());
+			} else {
+				this.stopExplanation = ignored -> stopExplanation;
+			}
 			this.conditions = List.of(conditions);
 			this.cls = cls;
 		}
