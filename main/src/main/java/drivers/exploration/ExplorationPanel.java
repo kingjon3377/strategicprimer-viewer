@@ -285,6 +285,15 @@ import worker.common.IFixtureEditHelper;
 			this.point = point;
 		}
 
+		/**
+		 * Set the selected point to the given point, then return the previously selected point.
+		 */
+		public Point replacePoint(final Point newPoint) {
+			final Point oldPoint = point;
+			point = newPoint;
+			return oldPoint;
+		}
+
 		private void apply() {
 			scs.selectedPointChanged(null, point);
 		}
@@ -318,10 +327,7 @@ import worker.common.IFixtureEditHelper;
 			final Point point = driverModel.getDestination(newPoint, direction);
 			final Point previous;
 			if (speedChangeListeners.containsKey(direction)) {
-				// TODO: Change SpeedChangeListener API so we can do this in one operation
-				final SpeedChangeListener scl = speedChangeListeners.get(direction);
-				previous = scl.getPoint();
-				scl.setPoint(point);
+				previous = speedChangeListeners.get(direction).replacePoint(point);
 			} else {
 				previous = old;
 			}
