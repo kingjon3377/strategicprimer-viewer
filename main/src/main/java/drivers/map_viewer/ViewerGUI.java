@@ -131,7 +131,7 @@ public final class ViewerGUI implements ViewerDriver {
 	}
 
 	private void createWindow(final IMenuBroker menuHandler) {
-		final ViewerFrame frame = new ViewerFrame(model, menuHandler, this, this::factory);
+		final ViewerFrame frame = new ViewerFrame(model, menuHandler, ViewerGUI.class, this::factory);
 		final String backgroundFile = options.getArgument("--background");
 		if (!backgroundFile.isEmpty() && !"false".equals(backgroundFile)) {
 			try {

@@ -92,12 +92,13 @@ import lovelace.util.ListenedButton;
 				new JScrollPane(buttonPanel), null);
 		frame.setContentPane(mainPanel);
 		frame.pack();
+		// TODO: Extract "noop" named lambda to replace newline-containing lambdas below
 		frame.setJMenuBar(SPMenu.forWindow(frame,
-				SPMenu.createFileMenu(new IOHandler(this, cli), this),
+				SPMenu.createFileMenu(new IOHandler(this, cli), AppChooserGUI.class),
 				SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {
-				}, this)),
+				}, AppChooserGUI.class)),
 				SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {
-				}, this))));
+				}, AppChooserGUI.class))));
 		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 		frame.setVisible(true);
 	}

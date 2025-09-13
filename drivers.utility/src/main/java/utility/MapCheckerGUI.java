@@ -21,9 +21,9 @@ public final class MapCheckerGUI implements UtilityGUI {
 		window = new MapCheckerFrame();
 		window.setJMenuBar(SPMenu.forWindow(window,
 				SPMenu.createFileMenu(
-						new UtilityMenuHandler(this, window)::handleEvent, this),
-				SPMenu.disabledMenu(SPMenu.createMapMenu(MapCheckerGUI::noop, this)),
-				SPMenu.disabledMenu(SPMenu.createViewMenu(MapCheckerGUI::noop, this))));
+						new UtilityMenuHandler(this, window)::handleEvent, MapCheckerGUI.class),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(MapCheckerGUI::noop, MapCheckerGUI.class)),
+				SPMenu.disabledMenu(SPMenu.createViewMenu(MapCheckerGUI::noop, MapCheckerGUI.class))));
 		window.addWindowListener(new WindowCloseListener(arg -> window.dispose()));
 	}
 

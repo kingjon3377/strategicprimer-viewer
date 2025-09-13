@@ -59,8 +59,8 @@ import drivers.gui.common.SPFrame;
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 
-	public AdvancementFrame(final IWorkerModel model, final IMenuBroker menuHandler, final ISPDriver driver,
-	                        final ICLIHelper cli) {
+	public AdvancementFrame(final IWorkerModel model, final IMenuBroker menuHandler,
+	                        final Class<? extends ISPDriver> driverClass, final ICLIHelper cli) {
 		super("Worker Advancement", model, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final ILegacyMap map = model.getMap();
@@ -119,7 +119,7 @@ import drivers.gui.common.SPFrame;
 								hoursAdditionPanel), DIVIDER_LOCATION, RESIZE_WEIGHT)));
 
 		playerChanged(null, model.getCurrentPlayer());
-		setJMenuBar(workerMenu(menuHandler, this, driver));
+		setJMenuBar(workerMenu(menuHandler, this, driverClass));
 		pack();
 	}
 

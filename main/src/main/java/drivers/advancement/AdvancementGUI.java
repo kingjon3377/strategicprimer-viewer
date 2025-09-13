@@ -66,7 +66,7 @@ public final class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	}
 
 	private void createWindow(final IMenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
-		final AdvancementFrame frame = new AdvancementFrame(model, menuHandler, this, cli);
+		final AdvancementFrame frame = new AdvancementFrame(model, menuHandler, AdvancementGUI.class, cli);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		pcml.addPlayerChangeListener(frame);
 		menuHandler.register(ignored -> reload(frame), "reload tree");

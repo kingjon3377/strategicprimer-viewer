@@ -92,12 +92,13 @@ public final class TabularReportGUI implements GUIDriver {
 		listener.mapChanged();
 		model.addMapChangeListener(listener);
 		window.add(frame);
+		// TODO: Extract "noop" named lambda to replace repeated newline-including lambdas
 		window.setJMenuBar(SPMenu.forWindow(window,
-				SPMenu.createFileMenu(new IOHandler(this, cli), this),
+				SPMenu.createFileMenu(new IOHandler(this, cli), TabularReportGUI.class),
 				SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {
-				}, this)),
+				}, TabularReportGUI.class)),
 				SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {
-				}, this))));
+				}, TabularReportGUI.class))));
 		window.addWindowListener(new WindowCloseListener(ignored -> window.dispose()));
 		window.showWindow();
 	}

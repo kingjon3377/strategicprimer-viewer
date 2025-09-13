@@ -71,7 +71,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 	@SuppressWarnings("MagicConstant")
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final IMenuBroker menuHandler,
-						   final ISPDriver driver) {
+						   final Class<? extends ISPDriver> driverClass) {
 		super("Worker Management", model, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.model = model;
@@ -150,7 +150,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		pcListeners = List.of(newUnitFrame, treeModel, ordersPanel, resultsPanel, notesPanelInstance);
 
-		setJMenuBar(WorkerMenu.workerMenu(menuHandler, getContentPane(), driver));
+		setJMenuBar(WorkerMenu.workerMenu(menuHandler, getContentPane(), driverClass));
 		pack();
 	}
 

@@ -27,9 +27,9 @@ public final class SubsetGUI implements UtilityGUI {
 		this.options = options;
 		frame = new SubsetFrame();
 		frame.setJMenuBar(SPMenu.forWindow(frame,
-				SPMenu.createFileMenu(new UtilityMenuHandler(this, frame)::handleEvent, this),
-				SPMenu.disabledMenu(SPMenu.createMapMenu(SubsetGUI::noop, this)),
-				SPMenu.disabledMenu(SPMenu.createViewMenu(SubsetGUI::noop, this))));
+				SPMenu.createFileMenu(new UtilityMenuHandler(this, frame)::handleEvent, SubsetGUI.class),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(SubsetGUI::noop, SubsetGUI.class)),
+				SPMenu.disabledMenu(SPMenu.createViewMenu(SubsetGUI::noop, SubsetGUI.class))));
 		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 	}
 

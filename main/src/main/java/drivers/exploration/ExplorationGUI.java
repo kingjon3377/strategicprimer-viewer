@@ -56,8 +56,7 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	private void createWindow(final IMenuBroker menuHandler) {
-		// FIXME: Try to remove the use of 'this' here
-		final SPFrame frame = new ExplorationFrame(this, menuHandler);
+		final SPFrame frame = new ExplorationFrame(model, ExplorationGUI.class, menuHandler);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,

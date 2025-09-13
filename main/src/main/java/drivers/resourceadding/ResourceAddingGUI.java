@@ -6,7 +6,6 @@ import drivers.common.DriverFailedException;
 
 import javax.xml.stream.XMLStreamException;
 
-import drivers.common.ISPDriver;
 import drivers.exploration.PlayerChangeSource;
 import drivers.gui.common.IMenuBroker;
 import lovelace.util.Decimalize;
@@ -179,8 +178,7 @@ import java.io.FileNotFoundException;
 
 		private final JSpinner implementQuantityField;
 
-		public ResourceAddingFrame(final ActionListener menuHandler, final IDriverModel driverModel,
-		                           final ISPDriver outer) {
+		public ResourceAddingFrame(final ActionListener menuHandler, final IDriverModel driverModel) {
 			super("Resource Entry", driverModel, null, true);
 			this.menuHandler = menuHandler;
 			idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
@@ -241,7 +239,7 @@ import java.io.FileNotFoundException;
 			scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 
 			add(verticalSplit(mainPanel, scrolledLog, DIVIDER_LOCATION, RESIZE_WEIGHT));
-			setJMenuBar(WorkerMenu.workerMenu(menuHandler, mainPanel, outer));
+			setJMenuBar(WorkerMenu.workerMenu(menuHandler, mainPanel, ResourceAddingGUI.class));
 			pack();
 			logLabel.setMinimumSize(new Dimension(getWidth() - HORIZ_LOG_PADDING, 50));
 			logLabel.setPreferredSize(new Dimension(getWidth(), 100));
@@ -332,7 +330,7 @@ import java.io.FileNotFoundException;
 	}
 
 	private void startDriverImpl(final PlayerChangeSource pcml, final IMenuBroker menuHandler) {
-		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, model, this);
+		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, model);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,

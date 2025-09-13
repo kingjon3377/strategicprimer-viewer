@@ -55,7 +55,7 @@ public final class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	private void createWindow(final IMenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
 		LovelaceLogger.trace("Inside GUI creation lambda");
-		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
+		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, WorkerMgmtGUI.class);
 		LovelaceLogger.trace("Created worker mgmt frame");
 		pcml.addPlayerChangeListener(frame);
 		LovelaceLogger.trace("Added it as a listener on the PCML");

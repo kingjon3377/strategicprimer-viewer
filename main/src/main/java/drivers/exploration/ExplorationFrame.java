@@ -25,7 +25,9 @@ import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
 import javax.xml.stream.XMLStreamException;
 
+import drivers.common.ISPDriver;
 import drivers.gui.common.IMenuBroker;
+import exploration.common.IExplorationModel;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 import goldberg.ImprovedComboBox;
@@ -55,13 +57,14 @@ import org.jspecify.annotations.Nullable;
 	// "@Nullable Player" because IDEA has the idea that methods DOCUMENTED TO RETURN NULL
 	// cannot return null.
 	private final JList<@Nullable Player> playerList;
-	private final IExplorationGUI driver;
+	private final IExplorationModel driverModel;
 	private final UnitListModel unitListModel;
 	private final JList<@Nullable IUnit> unitList;
 
-	public ExplorationFrame(final IExplorationGUI driver, final IMenuBroker menuHandler) {
-		super("Exploration", driver.getModel(), new Dimension(768, 48), true);
-		this.driver = driver;
+	public ExplorationFrame(final IExplorationModel model, final Class<? extends IExplorationGUI> driverClass,
+	                        final IMenuBroker menuHandler) {
+		super("Exploration", model, new Dimension(768, 48), true);
+		this.driverModel = model;
 
 		layoutObj = new SimpleCardLayout(getContentPane());
 		setLayout(layoutObj);
@@ -69,14 +72,14 @@ import org.jspecify.annotations.Nullable;
 		final SpinnerNumberModel mpModel = new SpinnerNumberModel(0, 0, 2000, 0);
 		final JSpinner mpField = new JSpinner(mpModel);
 
-		unitListModel = new UnitListModel(driver.getModel());
+		unitListModel = new UnitListModel(model);
 		unitList = new JList<>(unitListModel);
 
-		final PlayerListModel playerListModel = new PlayerListModel(driver.getModel());
+		final PlayerListModel playerListModel = new PlayerListModel(model);
 		playerList = new JList<>(playerListModel);
 
 		final ComboBoxModel<Speed> speedModel = new DefaultComboBoxModel<>(Speed.values());
-		driver.getModel().addMapChangeListener(playerListModel);
+		model.addMapChangeListener(playerListModel);
 
 		playerList.addListSelectionListener(ignored -> handlePlayerChanged());
 		menuHandler.register(ignored -> handlePlayerChanged(), "change current player");
@@ -91,9 +94,9 @@ import org.jspecify.annotations.Nullable;
 		final FunctionalGroupLayout headerLayout = new FunctionalGroupLayout(headerPanel);
 
 		final ExplorationPanel explorationPanel = new ExplorationPanel(mpModel, speedModel, headerPanel,
-				headerLayout, tilesPanel, driver.getModel(), layoutObj::goNext);
+				headerLayout, tilesPanel, model, layoutObj::goNext);
 
-		driver.getModel().addSelectionChangeListener(explorationPanel);
+		model.addSelectionChangeListener(explorationPanel);
 
 		if (mpField.getEditor() instanceof final JTextField tf) {
 			tf.addActionListener(ignored -> buttonListener());
@@ -114,16 +117,16 @@ import org.jspecify.annotations.Nullable;
 		setPreferredSize(new Dimension(1024, 640));
 
 		setJMenuBar(SPMenu.forWindowContaining(explorationPanel,
-				SPMenu.createFileMenu(menuHandler, driver),
-				SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, driver)),
-				SPMenu.createViewMenu(menuHandler, driver)));
+				SPMenu.createFileMenu(menuHandler, driverClass),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, driverClass)),
+				SPMenu.createViewMenu(menuHandler, driverClass)));
 		pack();
 	}
 
 	@Override
 	public void acceptDroppedFile(final Path file) {
 		try {
-			driver.getModel().addSubordinateMap(MapIOHelper.readMap(file));
+			driverModel.addSubordinateMap(MapIOHelper.readMap(file));
 			// FIXME: THrow DriverFailedException and/or show error dialog on error
 		} catch (final SPFormatException except) {
 			LovelaceLogger.error(except, "SP format error in dropped file %s", file);
@@ -155,7 +158,7 @@ import org.jspecify.annotations.Nullable;
 		// JList::getSelectedValue is documented TO RETURN NULL in some cases!
 		//noinspection ConstantExpression
 		if (Objects.nonNull(selectedValue) && !unitList.isSelectionEmpty()) {
-			driver.getModel().setSelectedUnit(selectedValue);
+			driverModel.setSelectedUnit(selectedValue);
 			LovelaceLogger.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
 			layoutObj.goNext();
 		} else {
