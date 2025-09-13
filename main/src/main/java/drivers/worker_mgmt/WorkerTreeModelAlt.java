@@ -188,7 +188,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		 */
 		@Deprecated
 		@Override
-		public Object clone() {
+		public final Object clone() {
 			return super.clone();
 		}
 	}
