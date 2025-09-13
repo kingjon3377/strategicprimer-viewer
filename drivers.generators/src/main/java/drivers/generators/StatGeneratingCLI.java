@@ -170,7 +170,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 	 */
 	private ICLIHelper.BooleanResponse hasLeviedRecently(final Village village) {
 		if (excludedVillages.containsKey(village)) {
-			return excludedVillages.get(village) ? ICLIHelper.BooleanResponse.YES : ICLIHelper.BooleanResponse.NO;
+			return ICLIHelper.BooleanResponse.fromBoolean(excludedVillages.get(village));
 		} else {
 			final ICLIHelper.BooleanResponse retval = cli.inputBoolean(
 					"Has a newcomer come from %s in the last 7 turns?".formatted(village.getName()));

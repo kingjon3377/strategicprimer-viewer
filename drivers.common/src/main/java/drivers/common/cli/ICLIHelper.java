@@ -119,6 +119,9 @@ public interface ICLIHelper {
 				case EOF -> EOF;
 			};
 		}
+		public static BooleanResponse fromBoolean(final boolean primitive) {
+			return primitive ? YES : NO;
+		}
 	}
 
 	/**

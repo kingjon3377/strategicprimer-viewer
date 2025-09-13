@@ -301,7 +301,7 @@ public final class CLIHelper implements ICLIHelper {
 			writePrompt(prompt);
 			final boolean retval = seriesState.get(key);
 			println(retval ? "yes" : "no");
-			return retval ? BooleanResponse.YES : BooleanResponse.NO;
+			return BooleanResponse.fromBoolean(retval);
 		} // else
 		while (true) {
 			final String input = Optional.ofNullable(inputString(prompt))
