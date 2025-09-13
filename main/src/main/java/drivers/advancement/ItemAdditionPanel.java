@@ -58,16 +58,20 @@ import lovelace.util.SimpleCardLayout;
 
 		final JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
 		final JButton okButton = new ListenedButton("OK", this::okListener);
-		okPanel.add(okButton);
 
 		final JButton cancelButton = new ListenedButton("Cancel", ignored -> {
 			layoutObj.goFirst();
 			field.setText("");
 		});
 
-		// TODO: IIRC the Mac HIG requires OK and Cancel to be backwards from other platforms ...
-		Platform.makeButtonsSegmented(okButton, cancelButton);
-		okPanel.add(cancelButton);
+		if (Platform.SYSTEM_IS_MAC) {
+			Platform.makeButtonsSegmented(okButton, cancelButton);
+			okPanel.add(cancelButton);
+			okPanel.add(okButton);
+		} else {
+			okPanel.add(okButton);
+			okPanel.add(cancelButton);
+		}
 
 		second.add(okPanel);
 		setPanelSizes(second);
