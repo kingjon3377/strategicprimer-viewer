@@ -12,6 +12,7 @@ import drivers.common.cli.ICLIHelper;
 
 import com.google.auto.service.AutoService;
 
+import java.io.File;
 import java.util.EnumSet;
 
 /**
@@ -19,10 +20,13 @@ import java.util.EnumSet;
  */
 @AutoService(DriverFactory.class)
 public final class ImporterFactory implements UtilityDriverFactory {
+	private static final String SAMPLE_IMAGE = "%spath%sto%simagge.png".formatted(File.separator, File.separator,
+			File.separator);
+
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "import",
 			ParamCount.AtLeastOne, "Import terrain data from a raster image",
 			"Import terrain data from a raster image", EnumSet.noneOf(IDriverUsage.DriverMode.class),
-			"/path/to/image.png", "/path/to/image.png", "--size=NN");
+			SAMPLE_IMAGE, SAMPLE_IMAGE, "--size=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

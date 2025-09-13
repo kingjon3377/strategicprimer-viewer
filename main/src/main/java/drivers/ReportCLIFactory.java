@@ -24,11 +24,11 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class ReportCLIFactory implements ModelDriverFactory<IDriverModel> {
+	private static final String SAMPLE_PATH = "%spath%sto%soutput.html".formatted(File.separator, File.separator,
+			File.separator);
 	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "create-report",
 			ParamCount.AtLeastOne, "Report Generator", "Produce HTML report of the contents of a map",
-			EnumSet.of(IDriverUsage.DriverMode.CommandLine),
-			('\\' == File.separatorChar) ? "--out=C:\\path\\to\\output.html"
-					: "--out=/path/to/output.html",
+			EnumSet.of(IDriverUsage.DriverMode.CommandLine), SAMPLE_PATH,
 			"--player=NN", "--current-turn=NN", "--serve[=8080]");
 
 	@Override

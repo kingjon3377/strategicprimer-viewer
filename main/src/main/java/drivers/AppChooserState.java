@@ -91,11 +91,19 @@ import static lovelace.util.MatchingValue.matchingValue;
 		return Collections.unmodifiableMap(cache);
 	}
 
+	private static String removeTrailingSeparator(final String path) {
+		if (path.endsWith(File.separator)) {
+			return path.substring(0, path.length() - File.separator.length());
+		} else {
+			return path;
+		}
+	}
+
 	private static @Nullable Path getContainingApp(final @Nullable Path path) {
 		if (Objects.isNull(path)) {
 			return null;
 		}
-		if (path.toString().endsWith(".app") || path.toString().endsWith(".app/")) {
+		if (removeTrailingSeparator(path.toString()).endsWith(".app")) {
 			return path;
 		}
 		final Path root = path.getRoot();
@@ -117,6 +125,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 		}
 	}
 
+	private static final String APP_EXTENSION = ".app" + File.separator;
+
 	/**
 	 * Create the usage message for a particular driver.
 	 *
@@ -134,7 +144,7 @@ import static lovelace.util.MatchingValue.matchingValue;
 			if (clsPath.endsWith(".exe")) {
 				mainInvocation = currentDir.relativize(clsSource.toPath()).toString();
 			} else if (clsPath.endsWith(".jar")) {
-				if (Platform.SYSTEM_IS_MAC && clsPath.contains(".app/")) {
+				if (Platform.SYSTEM_IS_MAC && clsPath.contains(APP_EXTENSION)) {
 					final Path containingApp = getContainingApp(clsSource.toPath());
 					if (Objects.isNull(containingApp)) {
 						mainInvocation = "java -jar " + currentDir.relativize(clsSource.toPath());
