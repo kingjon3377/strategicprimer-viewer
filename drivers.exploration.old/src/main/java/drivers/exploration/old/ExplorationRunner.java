@@ -436,7 +436,7 @@ public final class ExplorationRunner {
 	public void loadAllTables(final Path path) throws IOException {
 		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 			for (final Path child : stream) {
-				if (Files.isHidden(child)) { // TODO: Also exclude dotfiles on Windows?
+				if (Files.isHidden(child) || child.getFileName().startsWith(".")) {
 					LovelaceLogger.info(
 							"%s looks like a hidden file, skipping ...",
 							child.getFileName().toString());
