@@ -4,6 +4,8 @@ import legacy.map.Player;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.TownStatus;
 
+import java.util.Objects;
+
 /**
  * An abandoned, ruined, or burned-out (or active) town.
  */
@@ -55,8 +57,9 @@ public final class Town extends AbstractTown {
 		final Town retval = new Town(getStatus(), getTownSize(),
 				(zero == CopyBehavior.ZERO) ? 0 : getDC(), getName(), id, owner());
 		retval.setImage(getImage());
-		if (zero == CopyBehavior.KEEP) {
-			retval.setPopulation(getPopulation());
+		CommunityStats population = getPopulation();
+		if (zero == CopyBehavior.KEEP && Objects.nonNull(population)) {
+			retval.setPopulation(population.copy());
 		}
 		return retval;
 	}

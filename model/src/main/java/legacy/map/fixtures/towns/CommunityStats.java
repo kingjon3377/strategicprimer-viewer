@@ -90,4 +90,9 @@ public interface CommunityStats extends Subsettable<@Nullable CommunityStats> {
 	 */
 	@Override
 	boolean isSubset(@Nullable CommunityStats obj, Consumer<String> report);
+
+	/**
+	 * @return a copy of this object
+	 */
+	CommunityStats copy();
 }

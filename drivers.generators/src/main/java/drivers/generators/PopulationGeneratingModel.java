@@ -211,8 +211,6 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 	 * identified by the given ID number and name at
 	 * the given location in each map. Returns true if such a town
 	 * was in any of the maps, false otherwise.
-	 *
-	 * TODO: Should use a copy of the stats object, not it itself
 	 */
 	public boolean assignTownStats(final Point location, final int townId, final String name,
 								   final CommunityStats stats) {
@@ -232,7 +230,7 @@ public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TO
 					.map(hmpCast)
 					.findAny();
 			if (town.isPresent()) {
-				town.get().setPopulation(stats);
+				town.get().setPopulation(stats.copy());
 				retval = true;
 				map.setStatus(ILegacyMap.ModificationStatus.Modified);
 			}

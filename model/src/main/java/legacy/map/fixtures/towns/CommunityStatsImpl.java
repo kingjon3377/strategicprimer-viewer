@@ -10,6 +10,7 @@ import java.util.Set;
 
 import java.util.function.Consumer;
 
+import legacy.map.IFixture;
 import legacy.map.fixtures.IResourcePile;
 
 import legacy.map.fixtures.resources.HarvestableFixture;
@@ -274,5 +275,19 @@ public final class CommunityStatsImpl implements CommunityStats {
 	@Override
 	public int hashCode() {
 		return population;
+	}
+
+	@Override
+	public CommunityStatsImpl copy() {
+		final CommunityStatsImpl retval = new CommunityStatsImpl(population);
+		for (final Map.Entry<String, Integer> entry : skillLevels.entrySet()) {
+			retval.setSkillLevel(entry.getKey(), entry.getValue());
+		}
+		workedFieldIDs.forEach(retval::addWorkedField);
+		yearlyProduction.stream().map(pile -> pile.copy(IFixture.CopyBehavior.KEEP))
+				.forEach(retval::addYearlyProduction);
+		yearlyConsumption.stream().map(pile -> pile.copy(IFixture.CopyBehavior.KEEP))
+				.forEach(retval::addYearlyConsumption);
+		return retval;
 	}
 }

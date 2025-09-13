@@ -340,7 +340,9 @@ public final class Village implements IMutableTownFixture, HasMutableImage,
 		retval.setImage(image);
 		if (zero == CopyBehavior.KEEP) {
 			retval.setPortrait(portrait);
-			retval.setPopulation(population);
+			if (Objects.nonNull(population)) {
+				retval.setPopulation(population.copy());
+			}
 		}
 		return retval;
 	}
