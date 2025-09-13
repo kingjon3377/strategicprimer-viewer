@@ -69,7 +69,7 @@ import lovelace.util.ListenedButton;
 			width = Double.max(width, dimensions.getWidth());
 			height += dimensions.getHeight();
 		}
-		final SPFrame frame = new SPFrame("SP App Chooser", this, new Dimension((int) width, (int) height));
+		final SPFrame frame = new SPFrame("SP App Chooser", null, new Dimension((int) width, (int) height));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		final Consumer<DriverFactory> buttonHandler = (target) -> {
 			new DriverWrapper(target).startCatchingErrors(cli, options,

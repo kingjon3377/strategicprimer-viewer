@@ -61,7 +61,7 @@ import drivers.gui.common.SPFrame;
 
 	public AdvancementFrame(final IWorkerModel model, final IMenuBroker menuHandler, final ISPDriver driver,
 	                        final ICLIHelper cli) {
-		super("Worker Advancement", driver, new Dimension(640, 480), true,
+		super("Worker Advancement", model, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final ILegacyMap map = model.getMap();
 		treeModel = new WorkerTreeModelAlt(model);

@@ -71,8 +71,8 @@ import drivers.gui.common.SPFrame;
 		}
 	}
 
-	public MapCheckerFrame(final ISPDriver driver) {
-		super("Strategic Primer Map Checker", driver, new Dimension(640, 320), true, x -> {
+	public MapCheckerFrame() {
+		super("Strategic Primer Map Checker", null, new Dimension(640, 320), true, x -> {
 				},
 				"Map Checker");
 		setBackground(Color.black);

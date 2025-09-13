@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  */
 public final class MapCheckerGUI implements UtilityGUI {
 	public MapCheckerGUI() {
-		window = new MapCheckerFrame(this);
+		window = new MapCheckerFrame();
 		window.setJMenuBar(SPMenu.forWindow(window,
 				SPMenu.createFileMenu(
 						new UtilityMenuHandler(this, window)::handleEvent, this),

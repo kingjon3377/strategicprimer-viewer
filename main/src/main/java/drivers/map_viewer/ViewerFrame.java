@@ -87,7 +87,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ISPDriver driver,
 					   final Function<IDriverModel, ViewerDriver> driverFactory) {
-		super("Map Viewer", driver, null, true);
+		super("Map Viewer", model, null, true);
 		mapModel = model;
 		this.driverFactory = driverFactory;
 		mapPanel = new MapComponent(mapModel, tableModel::shouldDisplay, tableModel);

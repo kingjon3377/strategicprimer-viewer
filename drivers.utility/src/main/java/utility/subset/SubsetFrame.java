@@ -8,6 +8,7 @@ import java.nio.file.NoSuchFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
+import drivers.common.IDriverModel;
 import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import org.jspecify.annotations.Nullable;
@@ -40,8 +41,8 @@ import drivers.common.ISPDriver;
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public SubsetFrame(final ISPDriver driver) {
-		super("Subset Tester", driver, new Dimension(640, 320), true);
+	public SubsetFrame() {
+		super("Subset Tester", null, new Dimension(640, 320), true);
 		label = new StreamingLabel();
 		setContentPane(new JScrollPane(label));
 	}

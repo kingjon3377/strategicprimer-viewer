@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import drivers.common.IDriverModel;
 import legacy.map.HasName;
 import drivers.common.DriverFailedException;
 
@@ -178,8 +179,9 @@ import java.io.FileNotFoundException;
 
 		private final JSpinner implementQuantityField;
 
-		public ResourceAddingFrame(final ActionListener menuHandler, final ISPDriver outer) {
-			super("Resource Entry", outer, null, true);
+		public ResourceAddingFrame(final ActionListener menuHandler, final IDriverModel driverModel,
+		                           final ISPDriver outer) {
+			super("Resource Entry", driverModel, null, true);
 			this.menuHandler = menuHandler;
 			idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
 					.toArray(ILegacyMap[]::new));
@@ -330,7 +332,7 @@ import java.io.FileNotFoundException;
 	}
 
 	private void startDriverImpl(final PlayerChangeSource pcml, final IMenuBroker menuHandler) {
-		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, this);
+		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, model, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,

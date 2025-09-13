@@ -59,7 +59,7 @@ public final class TabularReportGUI implements GUIDriver {
 
 	@Override
 	public void startDriver() {
-		final SPFrame window = new SPFrame("Tabular Report", this, new Dimension(640, 480));
+		final SPFrame window = new SPFrame("Tabular Report", model, new Dimension(640, 480));
 		final JTabbedPane frame = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		final Optional<Point> hq;
 		if (options.hasOption("--hq-row") && options.hasOption("--hq-col")) {

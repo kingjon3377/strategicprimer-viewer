@@ -15,13 +15,11 @@ import legacy.map.ILegacyMap;
 import java.awt.Dimension;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
-
-import drivers.common.ISPDriver;
-import drivers.common.ModelDriver;
 
 /**
  * An intermediate subclass of {@link JFrame} to take care of some common setup
@@ -37,7 +35,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	}
 
 	private final String windowTitle;
-	private final ISPDriver driver;
+	private final Optional<IDriverModel> driverModel;
 	private final boolean supportsDroppedFiles;
 	private final IDroppedFileHandler droppedFileHandler;
 	private final String windowName;
@@ -81,29 +79,30 @@ public class SPFrame extends JFrame implements ISPWindow {
 
 	/**
 	 * TODO: Take @Nullable droppedFileHandler instead of boolean supportsDroppedFiles?
+	 * @param modelGetter          If the current app uses a model, a getter for that model.
 	 * @param supportsDroppedFiles Whether this app supports having files dropped on it.
 	 * @param windowName           The name of the window, for use in customizing the About dialog
 	 */
-	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
-	               final String windowName) {
+	public SPFrame(final String windowTitle, final @Nullable IDriverModel driverModel,
+	               final @Nullable Dimension minSize, final boolean supportsDroppedFiles,
+	               final IDroppedFileHandler droppedFileHandler, final String windowName) {
 		super(windowTitle);
 		this.windowTitle = windowTitle;
-		this.driver = driver;
 		this.supportsDroppedFiles = supportsDroppedFiles;
 		this.droppedFileHandler = droppedFileHandler;
 		this.windowName = windowName;
 		setTitle(refreshTitle());
+		this.driverModel = Optional.ofNullable(driverModel);
 
-		if (driver instanceof final ModelDriver md) {
+		if (Objects.nonNull(driverModel)) {
 			final Runnable handleChangeImpl = () -> {
-				final Path filename = md.getModel().getMap().getFilename();
+				final Path filename = this.driverModel.map(IDriverModel::getMap).map(ILegacyMap::getFilename)
+						.orElse(null);
 				getRootPane().putClientProperty("Window.documentFile", filename);
 				setTitle(refreshTitle());
 			};
-			final IDriverModel model = md.getModel();
-			model.addMapChangeListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
-			model.addMapMetadataListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
+			driverModel.addMapChangeListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
+			driverModel.addMapMetadataListener(() -> SwingUtilities.invokeLater(handleChangeImpl));
 		}
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		if (Objects.nonNull(minSize)) {
@@ -117,29 +116,31 @@ public class SPFrame extends JFrame implements ISPWindow {
 		return supportsDroppedFiles;
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
-		this(windowTitle, driver, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
+	public SPFrame(final String windowTitle, final @Nullable IDriverModel driverModel,
+	               final @Nullable Dimension minSize, final boolean supportsDroppedFiles,
+	               final IDroppedFileHandler droppedFileHandler) {
+		this(windowTitle, driverModel, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles) {
-		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {
+	public SPFrame(final String windowTitle, final @Nullable IDriverModel driverModel,
+	               final @Nullable Dimension minSize, final boolean supportsDroppedFiles) {
+		this(windowTitle, driverModel, minSize, supportsDroppedFiles, p -> {
 		});
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize) {
-		this(windowTitle, driver, minSize, false);
+	public SPFrame(final String windowTitle, final @Nullable IDriverModel driverModel,
+	               final @Nullable Dimension minSize) {
+		this(windowTitle, driverModel, minSize, false);
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver) {
-		this(windowTitle, driver, null);
+	public SPFrame(final String windowTitle, final @Nullable IDriverModel driverModel) {
+		this(windowTitle, driverModel, null);
 	}
 
 	private String refreshTitle() {
-		if (driver instanceof final ModelDriver md &&
-				Objects.nonNull(md.getModel().getMap().getFilename())) {
-			final ILegacyMap map = md.getModel().getMap();
+		if (driverModel.map(IDriverModel::getMap)
+				.map(ILegacyMap::getFilename).isPresent()) {
+			final ILegacyMap map = driverModel.get().getMap();
 			final String modifiedIndicator = switch (map.getStatus()) {
 				case Modified -> "*";
 				case Unmodified -> "";

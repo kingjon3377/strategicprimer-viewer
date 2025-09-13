@@ -72,7 +72,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	@SuppressWarnings("MagicConstant")
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final IMenuBroker menuHandler,
 						   final ISPDriver driver) {
-		super("Worker Management", driver, new Dimension(640, 480), true,
+		super("Worker Management", model, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.model = model;
 		mainMap = model.getMap();

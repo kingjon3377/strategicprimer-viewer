@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
 public final class SubsetGUI implements UtilityGUI {
 	public SubsetGUI(final SPOptions options) {
 		this.options = options;
-		frame = new SubsetFrame(this);
+		frame = new SubsetFrame();
 		frame.setJMenuBar(SPMenu.forWindow(frame,
 				SPMenu.createFileMenu(new UtilityMenuHandler(this, frame)::handleEvent, this),
 				SPMenu.disabledMenu(SPMenu.createMapMenu(SubsetGUI::noop, this)),

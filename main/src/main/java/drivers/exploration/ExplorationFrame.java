@@ -60,7 +60,7 @@ import org.jspecify.annotations.Nullable;
 	private final JList<@Nullable IUnit> unitList;
 
 	public ExplorationFrame(final IExplorationGUI driver, final IMenuBroker menuHandler) {
-		super("Exploration", driver, new Dimension(768, 48), true);
+		super("Exploration", driver.getModel(), new Dimension(768, 48), true);
 		this.driver = driver;
 
 		layoutObj = new SimpleCardLayout(getContentPane());
