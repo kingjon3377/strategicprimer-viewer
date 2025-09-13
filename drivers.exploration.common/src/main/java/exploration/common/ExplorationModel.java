@@ -789,7 +789,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				// TODO: make removeFixture() return Boolean, true if anything was removed
 				getRestrictedMap().removeFixture(location, matching);
 				retval = true;
-				// TODO: Here and elsewhere, don't bother to set to 'modified' if an earlier mutator method already does so
+				// TODO: Throughout, don't bother to set to 'modified' if an earlier mutator method already does so
 				getRestrictedMap().setStatus(ILegacyMap.ModificationStatus.Modified);
 			}
 		}
