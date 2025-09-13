@@ -1,5 +1,6 @@
 package drivers.gui.common.about;
 
+import lovelace.util.BorderedPanel;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -40,15 +41,13 @@ public final class AboutDialog extends SPDialog {
 
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
 		super(parentComponent instanceof final Frame f ? f : null, DIALOG_TITLE);
-		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final String raw = FileContentsReader.streamFileContents(AboutDialog.class, Paths.get("about.html"))
 				.collect(Collectors.joining());
 		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
 				.filter(Predicate.not(String::isEmpty)).orElse(APP_SUITE_TITLE));
 		final JScrollPane scrollPane = createMainPanel(html);
-		add(scrollPane, BorderLayout.CENTER);
-		add(BoxPanel.centeredHorizontalBox(new ListenedButton(CLOSE_BUTTON, this::dispose)),
-				BorderLayout.PAGE_END);
+		setContentPane(BorderedPanel.verticalPanel(null, scrollPane,
+				BoxPanel.centeredHorizontalBox(new ListenedButton(CLOSE_BUTTON, this::dispose))));
 		pack();
 	}
 
