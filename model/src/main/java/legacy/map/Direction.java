@@ -3,6 +3,8 @@ package legacy.map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -40,10 +42,15 @@ public enum Direction {
 		return string;
 	}
 
+	private static final ThrowingFunction<String, Direction, IllegalArgumentException> PARSER =
+			new EnumParser<>(Direction.class, values().length);
+
 	public static @Nullable Direction parse(final String direction) {
-		// TODO: Use EnumParser, or a variant (it throws on unknown input, we return null)
-		return Stream.of(values())
-				.filter((dir) -> Objects.equals(dir.toString(), direction))
-				.findAny().orElse(null);
+		try {
+			return PARSER.apply(direction);
+		} catch (IllegalArgumentException except) {
+			// TODO: Log
+			return null;
+		}
 	}
 }
