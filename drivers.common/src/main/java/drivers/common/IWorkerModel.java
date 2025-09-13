@@ -68,11 +68,10 @@ public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtur
 	void setCurrentPlayer(Player currentPlayer);
 
 	/**
-	 * The fortresses belonging to the specified player.
+	 * The fortresses belonging to the specified player. In other model types we'd consider returning their locations
+	 * with them, but the apps that use this model don't care.
 	 *
 	 * @param player The player whose fortresses we want
-	 *
-	 * TODO: Return their positions with them?
 	 */
 	Iterable<IFortress> getFortresses(Player player);
 }
