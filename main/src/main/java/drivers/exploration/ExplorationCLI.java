@@ -69,7 +69,12 @@ import legacy.map.fixtures.mobile.IUnit;
 			if (Objects.nonNull(unit)) {
 				model.setSelectedUnit(unit);
 				while (eCLI.getMovement() > 0) {
-					eCLI.moveOneStep();
+					switch (eCLI.moveOneStep()) {
+						case YES, NO -> {
+						}
+						case QUIT, EOF -> { return;
+						}
+					}
 				}
 			}
 		}

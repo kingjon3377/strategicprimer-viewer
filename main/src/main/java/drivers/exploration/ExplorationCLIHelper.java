@@ -160,13 +160,20 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 	 * If the unit has a proposed path, move one more tile along it;
 	 * otherwise, ask the user for directions once and make that move, then
 	 * return to the caller.
+	 *
+	 * Returns YES when we stop, due to no selected unit, the user changing speed, the
+	 * user selecting an unreachable destination, the next step not being adjacent, or
+	 * the unit reaching its destination or hitting something the user said he or she
+	 * wants to see; NO when we're not stopping; QUIT when the user asked to quit; or
+	 * EOF on EOF (or an unexpected choice).
 	 */
 	// No need to set the 'modified' flag anywhere in this method, as
 	// ExplorationModel.move() always sets it.
-	public void moveOneStep() {
+	public ICLIHelper.BooleanResponse moveOneStep() {
 		final IUnit mover = model.getSelectedUnit();
 		if (Objects.isNull(mover)) {
 			cli.println("No unit is selected");
+			return ICLIHelper.BooleanResponse.YES;
 		} else {
 			final Point point = model.getSelectedUnitLocation();
 			final Direction direction;
@@ -181,7 +188,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 				switch (directionNum) {
 					case 0 -> {
 						changeSpeed();
-						return;
+						return ICLIHelper.BooleanResponse.YES;
 					}
 					case 1 -> direction = Direction.Southwest;
 					case 2 -> direction = Direction.South;
@@ -195,8 +202,8 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 					case 10 -> {
 						final Point destination = cli.inputPoint("Location to move toward: ");
 						if (Objects.isNull(destination)) {
-							// EOF
 							runningTotal = BigDecimal.ZERO;
+							return ICLIHelper.BooleanResponse.EOF;
 						} else {
 							final Pair<Integer, Iterable<Point>> pair =
 									pather.getTravelDistance(point, destination);
@@ -204,17 +211,18 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 							final Iterable<Point> path = pair.getValue1();
 							if (path.iterator().hasNext()) {
 								path.forEach(proposedPath::addLast);
+								return ICLIHelper.BooleanResponse.NO;
 							} else {
 								//noinspection HardcodedFileSeparator
 								cli.println(
 										"S/he doesn't know how to get there from here.");
+								return ICLIHelper.BooleanResponse.YES;
 							}
 						}
-						return;
 					}
 					default -> {
 						runningTotal = BigDecimal.ZERO;
-						return;
+						return ICLIHelper.BooleanResponse.EOF;
 					}
 				}
 			} else {
@@ -222,10 +230,10 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 						.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
 						.findAny().orElse(Direction.Nowhere);
 				if (proposedDestination.equals(point)) {
-					return;
+					return ICLIHelper.BooleanResponse.YES;
 				} else if (Direction.Nowhere == direction) {
 					cli.printf("Next step %s isn't adjacent to %s%n", proposedDestination, point);
-					return;
+					return ICLIHelper.BooleanResponse.YES;
 				}
 				//noinspection HardcodedFileSeparator
 				cli.printf("%d/%d MP remaining. Current speed: %s.%n",
@@ -238,7 +246,7 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 			} catch (final TraversalImpossibleException except) {
 				LovelaceLogger.debug("Attempted movement to impossible destination");
 				cli.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
-				return;
+				return ICLIHelper.BooleanResponse.NO;
 			}
 
 			final Collection<TileFixture> constants = new ArrayList<>();
@@ -275,12 +283,11 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 				while (true) {
 					final ICLIHelper.BooleanResponse response = cli.inputBooleanInSeries("Take an action here?");
 					if (ICLIHelper.BooleanResponse.EOF == response) {
-						// TODO: Somehoww propagate the EOF to callers
 						runningTotal = BigDecimal.ZERO;
-						return;
+						return ICLIHelper.BooleanResponse.EOF;
 					} else if (ICLIHelper.BooleanResponse.QUIT == response) {
 						runningTotal = BigDecimal.ZERO;
-						return;
+						return ICLIHelper.BooleanResponse.QUIT;
 					} else if (ICLIHelper.BooleanResponse.NO == response) {
 						break;
 					}
@@ -295,13 +302,9 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 						switch (condition) {
 							case YES -> { // "--help", handled in chooseApplet()
 							}
-							case QUIT -> {
+							case QUIT, EOF -> {
 								runningTotal = BigDecimal.ZERO;
-								return;
-							}
-							case EOF -> { // TODO: Somehow signal EOF to caller
-								runningTotal = BigDecimal.ZERO;
-								return;
+								return condition;
 							}
 						}
 					} else {
@@ -361,10 +364,16 @@ public final class ExplorationCLIHelper implements MovementCostListener, Selecti
 				}
 			}
 
-			if (!proposedPath.isEmpty() && automationConfig.stopAtPoint(cli,
-					model.streamSubordinateMaps().findFirst().orElseGet(model::getMap),
-					destPoint)) {
-				proposedPath.clear();
+			if (!proposedPath.isEmpty()) {
+				ICLIHelper.BooleanResponse retval = (automationConfig.stopAtPoint(cli,
+						model.streamSubordinateMaps().findFirst().orElseGet(model::getMap),
+						destPoint));
+				if (ICLIHelper.BooleanResponse.YES.equals(retval)) {
+					proposedPath.clear();
+				}
+				return retval;
+			} else {
+				return ICLIHelper.BooleanResponse.YES;
 			}
 		}
 	}

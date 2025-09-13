@@ -156,7 +156,7 @@ import org.jspecify.annotations.Nullable;
 
 	private @Nullable List<Condition<? extends TileFixture>> enabledConditions = null;
 
-	public boolean stopAtPoint(final ICLIHelper cli, final ILegacyMap map, final Point point) {
+	public ICLIHelper.BooleanResponse stopAtPoint(final ICLIHelper cli, final ILegacyMap map, final Point point) {
 		final List<Condition<? extends TileFixture>> localEnabledConditions;
 		if (Objects.isNull(enabledConditions)) {
 			final List<Condition<? extends TileFixture>> temp = new ArrayList<>();
@@ -166,10 +166,11 @@ import org.jspecify.annotations.Nullable;
 					case YES -> temp.add(condition);
 					case NO -> { // Do nothing
 					}
-					case QUIT, EOF -> {
-						// We want to abort at least the caller's loop.
-						// TODO: Somehow signal EOF (in that case) to callers
-						return true;
+					case EOF -> {
+						return ICLIHelper.BooleanResponse.EOF;
+					}
+					case QUIT -> {
+						return ICLIHelper.BooleanResponse.QUIT;
 					}
 				}
 			}
@@ -181,10 +182,10 @@ import org.jspecify.annotations.Nullable;
 		final Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
 				.filter(c -> c.matches(map, point)).findFirst().orElse(null);
 		if (Objects.isNull(matchingCondition)) {
-			return false;
+			return ICLIHelper.BooleanResponse.NO;
 		} else {
 			cli.printf("There is %s here, so the explorer stops.%n", matchingCondition.explain());
-			return true;
+			return ICLIHelper.BooleanResponse.YES;
 		}
 	}
 }

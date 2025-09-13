@@ -111,7 +111,20 @@ import static lovelace.util.Decimalize.decimalize;
 		final Predicate<HasOwner> sameOwner = f -> f.owner().equals(mover.owner());
 		while (explorationCLI.getMovement() > 0) {
 			final Point oldPosition = model.getSelectedUnitLocation();
-			explorationCLI.moveOneStep();
+			switch (explorationCLI.moveOneStep()) {
+				case YES, NO -> {
+				}
+				case QUIT -> {
+					// We don't want to be asked about MP for any other applets
+					model.removeSelectionChangeListener(explorationCLI);
+					return buffer.toString();
+				}
+				case EOF -> {
+					// We don't want to be asked about MP for any other applets
+					model.removeSelectionChangeListener(explorationCLI);
+					return null;
+				}
+			}
 			final Point newPosition = model.getSelectedUnitLocation();
 			final IFortress startingFort = model.getMap().streamFixtures(oldPosition)
 					.filter(isFortress).map(fortressCast)
