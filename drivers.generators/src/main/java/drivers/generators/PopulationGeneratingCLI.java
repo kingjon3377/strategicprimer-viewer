@@ -309,7 +309,7 @@ public final class PopulationGeneratingCLI implements CLIDriver {
 					.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum())
 					.divide(fiveHundred));
 			reserved = map.streamFixtures(location).filter(hasExtent)
-					.filter(f -> !(f instanceof Forest)) // already counted above // TODO: Use not(isForest)
+					.filter(Predicate.not(isForest)) // already counted above
 					.map(heCast).map(HasExtent::getAcres)
 					.filter(n -> n.doubleValue() > 0.0).map(Decimalize::decimalize)
 					.reduce(reserved, BigDecimal::add);
