@@ -139,6 +139,10 @@ import static lovelace.util.MatchingValue.matchingValue;
 	public StatGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;
+		// Assume there's more than 1 village for every 4 tiles.
+		final var dimensions = model.getMapDimensions();
+		final var villageCount = (dimensions.rows() * dimensions.columns()) / 3;
+		excludedVillages = new HashMap<>(villageCount);
 	}
 
 	/**
@@ -157,10 +161,8 @@ import static lovelace.util.MatchingValue.matchingValue;
 
 	/**
 	 * Villages from which newcomers have arrived either recently or already this turn.
-	 *
-	 * TODO: Preinitialize size
 	 */
-	private final Map<Village, Boolean> excludedVillages = new HashMap<>();
+	private final Map<Village, Boolean> excludedVillages;
 
 	/**
 	 * Get from the cache, or if not present there ask the user, if a
