@@ -2,10 +2,10 @@ package legacy.map.fixtures.resources;
 
 import legacy.map.IFixture;
 import legacy.map.HasPopulation;
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
 
-import java.text.ParseException;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
@@ -26,9 +26,10 @@ public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 			return name().toLowerCase();
 		}
 
-		public static GroveType parse(final String str) throws ParseException {
-			return Stream.of(values()).filter(v -> v.toString().equals(str)).findAny()
-					.orElseThrow(() -> new ParseException("Unexpected grove type %s".formatted(str), 0));
+		private static final ThrowingFunction<String, GroveType, IllegalArgumentException> PARSER =
+				new EnumParser<>(GroveType.class, values().length);
+		public static GroveType parse(final String str) throws IllegalArgumentException {
+			return PARSER.apply(str);
 		}
 	}
 	public Grove(final GroveType type, final CultivationStatus cultivation, final String kind, final int id,

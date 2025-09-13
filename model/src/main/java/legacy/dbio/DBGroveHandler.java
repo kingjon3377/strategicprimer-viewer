@@ -9,7 +9,6 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -67,12 +66,7 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
 			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
-			final Grove.GroveType type;
-			try {
-				type = Grove.GroveType.parse((String) dbRow.get("type"));
-			} catch (final ParseException except) {
-				throw new IllegalArgumentException(except);
-			}
+			final Grove.GroveType type = Grove.GroveType.parse((String) dbRow.get("type"));
 			final Grove grove = new Grove(type, cultivated ? CultivationStatus.CULTIVATED : CultivationStatus.WILD,
 					kind, id, count);
 			if (Objects.nonNull(image)) {

@@ -9,7 +9,6 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,12 +68,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
-			final Meadow.MeadowType type;
-			try {
-				type = Meadow.MeadowType.parse((String) dbRow.get("type"));
-			} catch (final ParseException except) {
-				throw new IllegalArgumentException(except);
-			}
+			final Meadow.MeadowType type = Meadow.MeadowType.parse((String) dbRow.get("type"));
 			final String kind = (String) dbRow.get("kind");
 			final CultivationStatus cultivation = getBooleanValue(dbRow, "cultivated") ?
 					CultivationStatus.CULTIVATED : CultivationStatus.WILD;

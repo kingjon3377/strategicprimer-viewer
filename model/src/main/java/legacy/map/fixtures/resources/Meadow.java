@@ -1,13 +1,13 @@
 package legacy.map.fixtures.resources;
 
 import common.map.fixtures.resources.FieldStatus;
+import lovelace.util.EnumParser;
 import lovelace.util.NumberComparator;
 import legacy.map.IFixture;
 import legacy.map.HasExtent;
+import lovelace.util.ThrowingFunction;
 
-import java.text.ParseException;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly when the unit is on it.
@@ -32,9 +32,10 @@ public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			return name().toLowerCase();
 		}
 
-		public static MeadowType parse(final String str) throws ParseException {
-			return Stream.of(values()).filter(v -> v.toString().equals(str)).findAny()
-					.orElseThrow(() -> new ParseException("Unexpected meadow type %s".formatted(str), 0));
+		private static final ThrowingFunction<String, MeadowType, IllegalArgumentException> PARSER =
+				new EnumParser<>(MeadowType.class, values().length);
+		public static MeadowType parse(final String str) throws IllegalArgumentException {
+			return PARSER.apply(str);
 		}
 
 	}

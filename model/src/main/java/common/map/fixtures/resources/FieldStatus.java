@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import lovelace.util.EnumCache;
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
@@ -42,18 +44,15 @@ public enum FieldStatus {
 
 	private static final Supplier<List<FieldStatus>> FS_CACHE = new EnumCache<>(FieldStatus.class);
 
+	private static final ThrowingFunction<String, FieldStatus, IllegalArgumentException> PARSER =
+			new EnumParser<>(FieldStatus.class, values().length);
+
 	public static FieldStatus random(final long seed) {
 		final List<FieldStatus> statuses = FS_CACHE.get();
 		return statuses.get(new Random(seed).nextInt(statuses.size()));
 	}
 
-	public static FieldStatus parse(final String status) {
-		// TODO: Have HashMap cache to speed this up?
-		for (final FieldStatus val : FS_CACHE.get()) {
-			if (status.equals(val.toString())) {
-				return val;
-			}
-		}
-		throw new IllegalArgumentException("Failed to parse FieldStatus from " + status);
+	public static FieldStatus parse(final String status) throws IllegalArgumentException {
+		return PARSER.apply(status);
 	}
 }

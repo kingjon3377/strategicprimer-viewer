@@ -41,6 +41,7 @@ public enum Direction {
 	}
 
 	public static @Nullable Direction parse(final String direction) {
+		// TODO: Use EnumParser, or a variant (it throws on unknown input, we return null)
 		return Stream.of(values())
 				.filter((dir) -> Objects.equals(dir.toString(), direction))
 				.findAny().orElse(null);

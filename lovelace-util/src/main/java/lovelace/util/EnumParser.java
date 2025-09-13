@@ -5,6 +5,9 @@ import java.util.Map;
 
 /**
  * A class to parse enum values from their corresponding toString values.
+ *
+ * We could throw ParseException, but some callers can't afford having a checked exception thrown.
+ *
  * @param <T> the enum type.
  */
 public final class EnumParser<T extends Enum<T>> implements ThrowingFunction<String, T, IllegalArgumentException> {

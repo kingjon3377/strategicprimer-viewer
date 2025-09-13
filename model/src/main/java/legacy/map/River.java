@@ -53,6 +53,7 @@ public enum River {
 	 * Get the river matching the given description.
 	 */
 	public static River parse(final String description) throws ParseException {
+		// TODO: Adapt EnumParser to specify a function other than toString(); we use 'description' instead.
 		return Stream.of(values()).filter(r -> description.equals(r.description)).findAny()
 				.orElseThrow(() -> new ParseException("Failed to parse River from '%s'".formatted(description), -1));
 	}

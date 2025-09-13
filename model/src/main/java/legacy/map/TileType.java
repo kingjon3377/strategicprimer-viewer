@@ -129,6 +129,7 @@ public enum TileType implements HasName {
 	 * Parse an XML representation of a tile type.
 	 */
 	public static TileType parse(final String xml) throws ParseException {
+		// TODO: Adapt EnumParser to customize what field to look at; we use 'xml' instead of 'string'
 		return Stream.of(values()).filter((t) -> xml.equals(t.getXml())).findAny()
 				.orElseThrow(() -> new ParseException("Failed to parse TileType from " + xml, -1));
 	}

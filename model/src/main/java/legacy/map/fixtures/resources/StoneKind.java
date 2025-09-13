@@ -1,5 +1,8 @@
 package legacy.map.fixtures.resources;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
+
 /**
  * The kinds of stone we know about.
  */
@@ -27,13 +30,10 @@ public enum StoneKind {
 		return string;
 	}
 
+	private static final ThrowingFunction<String, StoneKind, IllegalArgumentException> PARSER =
+			new EnumParser<>(StoneKind.class, values().length);
+
 	public static StoneKind parse(final String stone) {
-		// TODO: Replace with a HashMap cache?
-		for (final StoneKind kind : values()) {
-			if (stone.equals(kind.toString())) {
-				return kind;
-			}
-		}
-		throw new IllegalArgumentException("Failed to parse StoneKind from " + stone);
+		return PARSER.apply(stone);
 	}
 }

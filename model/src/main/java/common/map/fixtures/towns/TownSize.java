@@ -1,5 +1,8 @@
 package common.map.fixtures.towns;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
+
 /**
  * Sizes of towns, fortifications, and cities.
  */
@@ -19,12 +22,10 @@ public enum TownSize {
 		return string;
 	}
 
+	private static final ThrowingFunction<String, TownSize, IllegalArgumentException> PARSER =
+			new EnumParser<>(TownSize.class, 3);
+
 	public static TownSize parseTownSize(final String size) {
-		return switch (size) {
-			case "small" -> Small;
-			case "medium" -> Medium;
-			case "large" -> Large;
-			default -> throw new IllegalArgumentException("Failed to parse TownSize from '%s'".formatted(size));
-		};
+		return PARSER.apply(size);
 	}
 }

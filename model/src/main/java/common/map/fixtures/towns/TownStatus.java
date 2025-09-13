@@ -1,5 +1,8 @@
 package common.map.fixtures.towns;
 
+import lovelace.util.EnumParser;
+import lovelace.util.ThrowingFunction;
+
 /**
  * Possible statuses of towns, fortifications, and cities.
  */
@@ -20,13 +23,10 @@ public enum TownStatus {
 		return string;
 	}
 
+	private static final ThrowingFunction<String, TownStatus, IllegalArgumentException> PARSER =
+			new EnumParser<>(TownStatus.class, values().length);
+
 	public static TownStatus parse(final String status) {
-		return switch (status) {
-			case "active" -> Active;
-			case "abandoned" -> Abandoned;
-			case "burned" -> Burned;
-			case "ruined" -> Ruined;
-			default -> throw new IllegalArgumentException("Failed to parse TownStatus from '%s'".formatted(status));
-		};
+		return PARSER.apply(status);
 	}
 }
