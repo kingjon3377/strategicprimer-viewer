@@ -50,9 +50,8 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 		if (matching instanceof final IMutableEntity entity) {
 			entity.setLocation(toLocation);
 		} else if (Objects.nonNull(matching)) {
-			// TODO: Take properties in Entity constructor?
-			final IMutableEntity replacement = new Entity(id, toLocation, matching.getType());
-			matching.getAllProperties().forEach(replacement::setProperty);
+			final IMutableEntity replacement = new Entity(id, toLocation, matching.getType(),
+					matching.getAllProperties());
 			map.replaceEntity(matching, replacement);
 		}
 	}
@@ -62,9 +61,7 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final IMutableMap retval = (IMutableMap) map.copy();
-		// TODO: Take properties in Entity constructor?
-		final IMutableEntity replacement = new Entity(id, toLocation, matching.getType());
-		matching.getAllProperties().forEach(replacement::setProperty);
+		final IMutableEntity replacement = new Entity(id, toLocation, matching.getType(), matching.getAllProperties());
 		retval.replaceEntity(matching, replacement);
 		return retval;
 	}

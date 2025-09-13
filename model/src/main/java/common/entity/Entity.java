@@ -9,13 +9,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Entity implements IMutableEntity {
-	public Entity(final @NonNull EntityIdentifier id, final @NonNull Location location, final @NonNull String type) {
+	public Entity(final @NonNull EntityIdentifier id, final @NonNull Location location, final @NonNull String type,
+	              final @NonNull EntityProperty<?>... properties) {
 		this.location = location;
 		this.id = id;
 		if (type.isEmpty()) {
 			throw new IllegalArgumentException("Entity type cannot be empty");
 		}
 		this.type = type;
+		for (final EntityProperty<?> property : properties) {
+			setProperty(property);
+		}
+	}
+
+	public Entity(final @NonNull EntityIdentifier id, final @NonNull Location location, final @NonNull String type,
+	              final @NonNull Iterable<EntityProperty<?>> properties) {
+		this.location = location;
+		this.id = id;
+		if (type.isEmpty()) {
+			throw new IllegalArgumentException("Entity type cannot be empty");
+		}
+		this.type = type;
+		properties.forEach(this::setProperty);
 	}
 
 	private @NonNull Location location;
@@ -66,9 +81,7 @@ public final class Entity implements IMutableEntity {
 
 	@Override
 	public @NonNull Entity copy() {
-		final Entity retval = new Entity(id, location, type);
-		properties.values().forEach(retval::setProperty);
-		return retval;
+		return new Entity(id, location, type, properties.values());
 	}
 
 	@Override

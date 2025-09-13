@@ -12,6 +12,9 @@ import common.map.IMutableMap;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
+import java.util.function.Predicate;
+
+import static java.util.function.Predicate.not;
 
 public final class RemoveEntityPropertyChangeset<PropertyType> implements Changeset {
 	private final EntityIdentifier id;
@@ -48,8 +51,8 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 			entity.removeProperty(property);
 		} else {
 			// TODO: Maybe verify that we actually exclude one-and-only-one property?
-			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
-			matching.getAllProperties().stream().filter(p -> !Objects.equals(p, property)).forEach(entity::setProperty);
+			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType(),
+					matching.getAllProperties().stream().filter(not(Predicate.isEqual(property))).toList());
 			map.replaceEntity(matching, entity);
 		}
 	}
@@ -60,8 +63,8 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
-		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
-		matching.getAllProperties().stream().filter(p -> !Objects.equals(p, property)).forEach(entity::setProperty);
+		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType(),
+				matching.getAllProperties().stream().filter(not(Predicate.isEqual(property))).toList());
 		retval.replaceEntity(matching, entity);
 		return retval;
 	}

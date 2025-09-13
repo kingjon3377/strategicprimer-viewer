@@ -47,8 +47,8 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 		if (matching instanceof final IMutableEntity entity) {
 			entity.setProperty(property);
 		} else {
-			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
-			matching.getAllProperties().forEach(entity::setProperty);
+			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType(),
+					matching.getAllProperties());
 			entity.setProperty(property);
 			map.replaceEntity(matching, entity);
 		}
@@ -60,8 +60,8 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
-		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
-		matching.getAllProperties().forEach(entity::setProperty);
+		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType(),
+				matching.getAllProperties());
 		entity.setProperty(property);
 		retval.replaceEntity(matching, entity);
 		return retval;
