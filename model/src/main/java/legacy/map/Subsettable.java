@@ -34,8 +34,8 @@ public interface Subsettable<Element> {
 
 	// TODO: Refactor, if we can think of a way, to avoid "possible heap pollution" warning
 	default boolean passesAllPredicates(final @NonNull Consumer<String> report, final Element obj,
-	                                    final @NonNull Pair<@NonNull String, @NonNull Predicate<Element>>... predicates) {
-		for (final Pair<String, Predicate<Element>> pair : predicates) {
+	                                    final @NonNull Pair<@NonNull String, @NonNull Predicate<Element>>... tests) {
+		for (final Pair<String, Predicate<Element>> pair : tests) {
 			final String message = pair.getValue0();
 			final Predicate<Element> predicate = pair.getValue1();
 			if (!test(report, message, predicate, obj)) {
