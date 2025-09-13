@@ -31,7 +31,6 @@ import javax.swing.SwingUtilities;
 
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
-import org.jspecify.annotations.Nullable;
 
 /* package */ final class AppChooserGUI implements UtilityGUI {
 	public AppChooserGUI(final ICLIHelper cli, final SPOptions options) {

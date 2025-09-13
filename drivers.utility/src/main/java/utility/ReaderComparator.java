@@ -24,7 +24,6 @@ import drivers.common.SPOptions;
 import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
-import org.jspecify.annotations.Nullable;
 
 import javax.xml.stream.XMLStreamException;
 

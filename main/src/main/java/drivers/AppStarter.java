@@ -26,7 +26,6 @@ import drivers.common.DriverFactory;
 import drivers.common.cli.ICLIHelper;
 
 import lovelace.util.LovelaceLogger;
-import org.jspecify.annotations.Nullable;
 
 /* package */ final class AppStarter {
 	private final Map<String, List<DriverFactory>> driverCache =
