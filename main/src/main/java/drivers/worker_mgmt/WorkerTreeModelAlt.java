@@ -161,6 +161,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		/**
 		 * @deprecated We don't use cloning.
 		 */
+		// We can't make this final because of subclasses, and can't make it throw because a superclass
+		// implemented it and removed the 'throws' from the signature.
+		@SuppressWarnings("UseOfClone")
 		@Deprecated
 		@Override
 		public Object clone() {
