@@ -4,6 +4,7 @@ import legacy.map.fixtures.Implement;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import lovelace.util.ArraySet;
@@ -207,7 +208,7 @@ public final class Worker implements IMutableWorker {
 					jobSetsEqual(jobSet, that) &&
 					that.getRace().equals(race) &&
 					Objects.equals(stats, that.getStats()) &&
-					equipmentImpl.containsAll(that.getEquipment()) &&
+					new HashSet<>(equipmentImpl).containsAll(that.getEquipment()) &&
 					that.getEquipment().containsAll(equipmentImpl) &&
 					Objects.equals(mount, that.getMount());
 		} else {
