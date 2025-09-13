@@ -90,6 +90,7 @@ public interface ICLIHelper {
 	 */
 	@Nullable String inputMultilineString(String prompt);
 
+	// TODO: Make a "fromBoolean" helper method?
 	enum BooleanResponse {
 		YES, NO, QUIT, EOF;
 		public BooleanResponse and(final BooleanResponse next) {

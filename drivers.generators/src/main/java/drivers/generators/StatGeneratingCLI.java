@@ -168,29 +168,24 @@ import static lovelace.util.MatchingValue.matchingValue;
 	 * Get from the cache, or if not present there ask the user, if a
 	 * newcomer has come from the given village recently.
 	 */
-	private boolean hasLeviedRecently(final Village village) {
+	private ICLIHelper.BooleanResponse hasLeviedRecently(final Village village) {
 		if (excludedVillages.containsKey(village)) {
-			return excludedVillages.get(village);
+			return excludedVillages.get(village) ? ICLIHelper.BooleanResponse.YES : ICLIHelper.BooleanResponse.NO;
 		} else {
 			final ICLIHelper.BooleanResponse retval = cli.inputBoolean(
 					"Has a newcomer come from %s in the last 7 turns?".formatted(village.getName()));
 			switch (retval) {
 				case YES -> {
 					excludedVillages.put(village, true);
-					return true;
 				}
 				case NO -> {
 					excludedVillages.put(village, false);
-					return false;
 				}
-				case QUIT -> {
-					return false;
-				}
-				case EOF -> {
-					return false; // TODO: Somehow signal EOF to caller to abort further processing
+				case QUIT, EOF -> {
 				}
 				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
+			return retval;
 		}
 	}
 
@@ -593,14 +588,32 @@ import static lovelace.util.MatchingValue.matchingValue;
 				final int mpDistance = triplet.getValue0();
 				final double tileDistance = triplet.getValue1();
 				final Village village = triplet.getValue2();
-				if (hasLeviedRecently(village)) {
-					villagesToRemove.add(triplet);
-				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
-						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
-								tileDistance / TILE_DISTANCE_FACTOR)) + 1)) {
-					excludedVillages.put(village, true);
-					villagesToRemove.add(triplet);
-					home = village;
+				ICLIHelper.BooleanResponse hasLevied = hasLeviedRecently(village);
+				boolean didLevy;
+				switch (hasLevied) {
+					case YES -> {
+						villagesToRemove.add(triplet);
+						didLevy = false;
+					}
+					case NO -> {
+						if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
+								villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
+										tileDistance / TILE_DISTANCE_FACTOR)) + 1)) {
+							excludedVillages.put(village, true);
+							villagesToRemove.add(triplet);
+							home = village;
+							didLevy = true;
+						} else {
+							didLevy = false;
+						}
+					}
+					case QUIT, EOF -> {
+						// TODO: Signal these (or at least EOF) to caller
+						return;
+					}
+					default -> throw new IllegalStateException("Exhaustive switch wasn't");
+				}
+				if (didLevy) {
 					break;
 				}
 			}
