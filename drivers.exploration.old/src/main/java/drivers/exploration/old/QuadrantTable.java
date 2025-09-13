@@ -26,7 +26,6 @@ final class QuadrantTable implements EncounterTable {
 	 */
 	private final Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
 
-	// TODO: static?
 	private Map<Point, String> valuesFor(final MapDimensions dimensions, final List<String> possResults,
 	                                     final int quadrantRowCount) {
 		// Instance variables passed in because we want to call this from the
