@@ -119,7 +119,7 @@ public final class HuntingModel {
 	 */
 	private static final class ResultSupplier<Type> implements Supplier<Type> {
 		public ResultSupplier(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
-		                      final ToIntFunction<Type> dcGetter) {
+							  final ToIntFunction<Type> dcGetter) {
 			this.stream = new ArrayList<>(stream);
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -161,7 +161,7 @@ public final class HuntingModel {
 	 * desired proportion.
 	 */
 	private static <Type> Stream<Type> finiteResultStream(final Collection<Type> stream, final double nothingProportion,
-                                                          final Type nothingValue) {
+														  final Type nothingValue) {
 		return Stream.concat(stream.stream(), Stream.generate(() -> nothingValue)
 				.limit(Math.round(stream.size() * nothingProportion)));
 	}
@@ -248,7 +248,7 @@ public final class HuntingModel {
 	 * @param map Filter/provider to use to find the animals.
 	 */
 	private Supplier<Pair<Point, ? extends TileFixture>> chooseFromMap(final Point point,
-	                                                         final Function<Point, Stream<? extends TileFixture>> map) {
+															 final Function<Point, Stream<? extends TileFixture>> map) {
 		return new ResultSupplier<>(
 				new SurroundingPointIterable(point, dimensions).stream()
 						.flatMap(chooseFromMapImpl(map)).collect(Collectors.toList()), NOTHING_PROPORTION,

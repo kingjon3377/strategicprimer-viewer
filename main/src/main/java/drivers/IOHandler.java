@@ -72,7 +72,7 @@ public final class IOHandler implements ActionListener {
 	 */
 	// TODO: Use the possibly-throwing interface from j.u.concurrent instead of Runnable?
 	private void maybeSave(final String verb, final @Nullable Frame window, final Component source,
-	                       final Runnable ifNotCanceled) {
+						   final Runnable ifNotCanceled) {
 		final ModelDriver md = (ModelDriver) driver;
 		LovelaceLogger.trace("Checking if we need to save ...");
 		switch (md.getModel().getMapStatus()) {
@@ -133,7 +133,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	private static void handleError(final Exception except, final String filename, final @Nullable Component source,
-	                                final String errorTitle, final String verb) {
+									final String errorTitle, final String verb) {
 		final String message = switch (except) {
 			case final XMLStreamException xse -> "Malformed XML in " + filename;
 			case final FileNotFoundException fnfe -> "File %s not found".formatted(filename);
@@ -148,7 +148,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableLegacyMap> handler,
-	                                              final @Nullable Component source, final String errorTitle) {
+												  final @Nullable Component source, final String errorTitle) {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
@@ -211,8 +211,8 @@ public final class IOHandler implements ActionListener {
 	}
 
 	private static <Model extends IDriverModel> ModelDriver createDriver(final ModelDriverFactory<Model> factory,
-                                                                         final ICLIHelper cli, final SPOptions options,
-                                                                         final IDriverModel model) {
+																		 final ICLIHelper cli, final SPOptions options,
+																		 final IDriverModel model) {
 		return factory.createDriver(cli, options, factory.createModel(model));
 	}
 
@@ -330,7 +330,7 @@ public final class IOHandler implements ActionListener {
 					if (Objects.isNull(vdf)) {
 						JOptionPane.showMessageDialog(null,
 								"Either the map viewer was not included in this package, or loading it failed.",
-                                AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
+								AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
 						LovelaceLogger.error(
 								"Map viewer was not included in this assembly, or service discovery failed");
 					} else {
@@ -343,7 +343,7 @@ public final class IOHandler implements ActionListener {
 										"Error thrown from viewer driver");
 								JOptionPane.showMessageDialog(null,
 										"Error starting map viewer:%n%s".formatted(except.getMessage()),
-                                        AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
+										AboutDialog.APP_SUITE_TITLE, JOptionPane.ERROR_MESSAGE);
 							}
 						});
 					}

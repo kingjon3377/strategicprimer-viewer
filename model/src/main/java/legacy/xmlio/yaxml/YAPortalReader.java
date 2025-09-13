@@ -25,8 +25,8 @@ import org.jspecify.annotations.Nullable;
 
 	@Override
 	public Portal read(final StartElement element, final @Nullable Path path, final QName parent,
-	                   final Iterable<XMLEvent> stream)
-            throws UnwantedChildException, MissingPropertyException {
+					   final Iterable<XMLEvent> stream)
+			throws UnwantedChildException, MissingPropertyException {
 		requireTag(element, path, parent, "portal");
 		expectAttributes(element, path, "world", "row", "column", "id", "image");
 		final Portal retval = new Portal(getParameter(element, path, "world"), parsePoint(element, path),
