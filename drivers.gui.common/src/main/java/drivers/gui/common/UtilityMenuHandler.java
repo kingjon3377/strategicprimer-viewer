@@ -10,6 +10,7 @@ import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
 import drivers.gui.common.about.AboutDialog;
 
+import javax.swing.SwingUtilities;
 import java.nio.file.Path;
 import java.io.IOException;
 
@@ -55,16 +56,14 @@ public final class UtilityMenuHandler {
 
 	/**
 	 * Handle the user's chosen menu item.
-	 *
-	 * TODO: Most of this logic should be called on the EDT
 	 */
 	public void handleEvent(final ActionEvent event) {
 		final String command = event.getActionCommand().toLowerCase();
 		switch (command) {
-			case "load" -> SPFileChooser.open((Path) null).call(driver::open);
-			case "close" -> window.dispose();
+			case "load" -> SwingUtilities.invokeLater(() -> SPFileChooser.open((Path) null).call(driver::open));
+			case "close" -> SwingUtilities.invokeLater(window::dispose);
 			case "quit" -> System.exit(0);
-			case "about" -> aboutHandler();
+			case "about" -> SwingUtilities.invokeLater(this::aboutHandler);
 			default -> LovelaceLogger.info("Unhandled command %s", event.getActionCommand());
 		}
 	}
