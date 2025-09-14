@@ -124,12 +124,7 @@ public final class NewUnitDialog extends SPDialog implements NewUnitSource, Play
 			for (final NewUnitListener listener : listeners) {
 				listener.addNewUnit(unit);
 			}
-			// TODO: delegate to cancelListener()
-			kindField.setText("");
-			nameField.setText("");
-			idField.setText("");
-			setVisible(false);
-			dispose();
+			cancelListener();
 		}
 	}
 
