@@ -148,8 +148,7 @@ import java.util.function.Predicate;
 			final Player owner = owned.owner();
 			final String ownerName = (caseSensitivity) ? owner.getName() :
 					owner.getName().toLowerCase();
-			if (Objects.nonNull(idNum) && (owner.getPlayerId() == idNum || // FIXME: Parenthesization seems wrong here
-					ownerName.contains(pattern))) {
+			if (Objects.equals(owner.getPlayerId(), idNum) || ownerName.contains(pattern)) {
 				return true;
 			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
 				return true;
