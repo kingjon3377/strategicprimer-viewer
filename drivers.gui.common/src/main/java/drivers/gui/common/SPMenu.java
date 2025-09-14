@@ -34,6 +34,8 @@ import lovelace.util.ComponentParentStream;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.EnumSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -62,17 +64,8 @@ public final class SPMenu extends JMenuBar {
 	@SafeVarargs
 	private static JMenuItem enabledForDriver(final JMenuItem item, final Class<? extends ISPDriver> driverClass,
 	                                          final Class<? extends ISPDriver>... types) {
-		boolean any = false;
-		// TODO: Can we use a stream and method-reference logic to condense this?
-		for (final Class<?> type : types) {
-			if (type.isAssignableFrom(driverClass)) {
-				any = true;
-				break;
-			}
-		}
-		if (!any) {
-			item.setEnabled(false);
-		}
+		final Predicate<Class<? extends ISPDriver>> predicate = type -> type.isAssignableFrom(driverClass);
+		item.setEnabled(Stream.of(types).anyMatch(predicate));
 		return item;
 	}
 
@@ -83,16 +76,8 @@ public final class SPMenu extends JMenuBar {
 	@SafeVarargs
 	private static JMenuItem disabledForDriver(final JMenuItem item, final Class<? extends ISPDriver> driverClass,
 	                                           final Class<? extends ISPDriver>... types) {
-		boolean any = false;
-		for (final Class<?> type : types) {
-			if (type.isAssignableFrom(driverClass)) {
-				any = true;
-				break;
-			}
-		}
-		if (any) {
-			item.setEnabled(false);
-		}
+		final Predicate<Class<? extends ISPDriver>> predicate = type -> type.isAssignableFrom(driverClass);
+		item.setEnabled(Stream.of(types).noneMatch(predicate));
 		return item;
 	}
 
