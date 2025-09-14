@@ -149,7 +149,7 @@ import legacy.map.Point;
 			} catch (final ParseException except) {
 				LovelaceLogger.error(except,
 						"Parse failure after we checked input was numeric");
-				// FIXME: return here, surely?
+				return;
 			}
 			setVisible(false);
 			dispose();
