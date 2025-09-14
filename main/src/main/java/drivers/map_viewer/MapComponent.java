@@ -240,8 +240,10 @@ import java.awt.image.BufferedImage;
 	private void drawBackgroundImage(final Graphics context, final int tileSize) {
 		final BufferedImage temp = backgroundImage;
 		if (Objects.isNull(temp)) {
-			context.setColor(Color.white); // TODO: save and restore afterwards?
-			context.fillRect(0, 0, getWidth(), getHeight());
+			Graphics pen = context.create();
+			pen.setColor(Color.white);
+			pen.fillRect(0, 0, getWidth(), getHeight());
+			pen.dispose();
 		} else {
 			final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 			final MapDimensions mapDimensions = mapModel.getMapDimensions();
