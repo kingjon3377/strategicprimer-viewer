@@ -175,13 +175,11 @@ import java.util.Arrays;
 			inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 		}
 
-		// TODO: make a list of "shift inputs"?
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.SHIFT_DOWN_MASK),
-				"end");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_6, InputEvent.SHIFT_DOWN_MASK),
-				"caret");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.SHIFT_DOWN_MASK),
-				"dollar");
+		final List<Pair<Integer, String>> shiftInputs = List.of(Pair.with(KeyEvent.VK_3, "end"),
+				Pair.with(KeyEvent.VK_6, "caret"), Pair.with(KeyEvent.VK_4, "dollar"));
+		for (Pair<Integer, String> pair : shiftInputs) {
+			inputMap.put(KeyStroke.getKeyStroke(pair.getValue0(), InputEvent.SHIFT_DOWN_MASK), pair.getValue1());
+		}
 
 		actionMap.put("ctrl-home", new DirectionListener(join(selListener::jumpUp,
 				selListener::jumpLeft)));
