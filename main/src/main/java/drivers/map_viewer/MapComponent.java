@@ -258,7 +258,7 @@ import java.awt.image.BufferedImage;
 					Math.min(temp.getWidth() - x - 1, sliceWidth),
 					Math.min(temp.getHeight() - y - 1, sliceHeight));
 			context.drawImage(sliced, 0, 0, visibleDimensions.getWidth() * tileSize,
-					visibleDimensions.getHeight() * tileSize, null); // TODO: supply observer
+					visibleDimensions.getHeight() * tileSize, this);
 		}
 	}
 
